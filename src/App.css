@@ -16,18 +16,18 @@ h1 {
 }
 .unit {
   background-color: #a5e2f4;
-  width: 30px;
-  height: 30px;
-  border: 2px solid black;
-  border-radius: 4px;
+  width: 15px;
+  height: 15px;
+  border: 1px solid black;
+  border-radius: 0px;
 }
 
 .unit-container {
   display: grid;
   width: fit-content;
-  gap: 1px;
-  border: solid #4b82a8 5px;
-  border-radius: 10px;
+  gap: 0px;
+  /* border: solid #4b82a8 5px;
+  border-radius: 10px; */
   padding: 5px;
 }
 
