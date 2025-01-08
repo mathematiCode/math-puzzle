@@ -1,19 +1,27 @@
 /* eslint-disable react/prop-types */
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
+import { DragOverlay } from '@dnd-kit/core';
+import { Draggable } from './Draggable';
 import { range } from 'lodash';
 
-function Rectangle({ width, height }) {
+function Rectangle({ width, height, color, key }) {
   let total = width * height;
   return (
-    <motion.div
-      className="unit-container"
-      layout={true}
-      style={{ gridTemplateColumns: `repeat(${width}, 1fr)` }}
-    >
-      {range(total).map(unit => (
-        <motion.div className="unit" key={unit} layout={true} />
-      ))}
-    </motion.div>
+    <Draggable key={key}>
+      <motion.div
+        className="unit-container"
+        style={{ gridTemplateColumns: `repeat(${width}, 1fr)` }}
+      >
+        {range(total).map(unit => (
+          <motion.div
+            className="unit"
+            key={unit}
+            layout={true}
+            style={{ backgroundColor: color }}
+          />
+        ))}
+      </motion.div>
+    </Draggable>
   );
 }
 

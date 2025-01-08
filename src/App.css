@@ -4,6 +4,12 @@
   text-align: center;
 }
 
+main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+}
+
 .App {
   font-family: sans-serif;
   text-align: center;
@@ -16,8 +22,8 @@ h1 {
 }
 .unit {
   background-color: #a5e2f4;
-  width: 15px;
-  height: 15px;
+  width: 24px;
+  height: 24px;
   border: 1px solid black;
   border-radius: 0px;
 }
@@ -25,10 +31,20 @@ h1 {
 .unit-container {
   display: grid;
   width: fit-content;
+  height: min-content;
   gap: 0px;
   /* border: solid #4b82a8 5px;
   border-radius: 10px; */
-  padding: 5px;
+  padding: 0px;
+}
+
+.pieces-container {
+  display: flex;
+  flex-direction: row;
+  /* width: 700px; */
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
 }
 
 button {
