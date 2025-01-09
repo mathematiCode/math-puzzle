@@ -19,7 +19,7 @@ function App() {
     '	hsla(194, 78%, 80%, 1)',
   ];
 
-  const snapToGrid = useMemo(() => createSnapModifier(24), [24]);
+  const snapToGrid = useMemo(() => createSnapModifier(26), [26]);
 
   function handleDragStart() {
     console.log('Dragging has started.');
