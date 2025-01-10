@@ -1,15 +1,19 @@
-import { useState, useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import levels from './levels.json';
 import PuzzlePiece from './components/PuzzlePiece';
 import Board from './components/Board';
 import { motion } from 'motion/react';
 import { DndContext } from '@dnd-kit/core';
 import { createSnapModifier } from '@dnd-kit/modifiers';
+import { PiecesInPlayContext } from './context/PiecesInPlay';
+
 import './App.css';
 
 function App() {
   const pieces = levels[0].pieces;
-  const [piecesOnBoard, setPiecesOnBoard] = useState([]);
+
+  const { piecesInPlay, movePiece, resetPieces } =
+    useContext(PiecesInPlayContext);
 
   const colors = [
     'hsla(4, 35%, 56%, 1)',
@@ -25,18 +29,12 @@ function App() {
     console.log('Dragging has started.');
   }
 
-  function handleDragEnd() {
+  function handleDragEnd(event) {
     console.log('Dragging has ended');
-    /**  check if puzzle piece was already placed on the board 
-         - if it was update it's new location in the array of pieces placed on the board
-              - if it's still on the board, update new location
-              - if it's removed from the board, delete from array
-
-        - if it wasn't on the board yet add it to the array of pieces placed on the board. 
-
-        Then convert that object into pixel coordinates to display on the board in re-render. 
-    */
-    setPiecesOnBoard([{ id: 1, x: 2, y: 5, width: 5, height: 8 }]);
+    console.log(event);
+    const pieceIndex = event.active.id;
+    // const newLocation = ( x: event.over.rect.left, y: event.over.rect.top)
+    // movePiece(pieceIndex, newLocation);
   }
 
   return (
