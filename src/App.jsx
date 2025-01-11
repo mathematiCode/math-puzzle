@@ -1,10 +1,10 @@
-import { useContext, useMemo } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import levels from './levels.json';
 import PuzzlePiece from './components/PuzzlePiece';
 import Board from './components/Board';
 import PlacedPieces from './components/PlacedPieces';
 import { motion } from 'motion/react';
-import { DndContext } from '@dnd-kit/core';
+import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { createSnapModifier } from '@dnd-kit/modifiers';
 import { PiecesInPlayContext } from './context/PiecesInPlay';
 
@@ -12,6 +12,7 @@ import './App.css';
 
 function App() {
   const pieces = levels[0].pieces;
+  const [activePiece, setActivePiece] = useState(null);
 
   const { piecesInPlay, movePiece, resetPieces } =
     useContext(PiecesInPlayContext);
@@ -26,8 +27,9 @@ function App() {
 
   const snapToGrid = useMemo(() => createSnapModifier(26), [26]);
 
-  function handleDragStart() {
+  function handleDragStart(event) {
     console.log('Dragging has started.');
+    setActivePiece(pieces[event.active.id]);
   }
 
   function handleDragEnd(event) {
@@ -53,7 +55,7 @@ function App() {
               height={piece.height}
               key={pieceIndex}
               id={pieceIndex}
-              color={colors[pieceIndex % colors.length]}
+              color={piece.color}
             />
           ))}
         </motion.div>
@@ -61,6 +63,15 @@ function App() {
           <Board coordinates={levels[0].board} />
           <PlacedPieces piecesInPlay={piecesInPlay} />
         </div>
+        <DragOverlay>
+          {activePiece ? (
+            <PuzzlePiece
+              width={activePiece.width}
+              height={activePiece.height}
+              color={activePiece.color}
+            />
+          ) : null}
+        </DragOverlay>
       </main>
     </DndContext>
   );
