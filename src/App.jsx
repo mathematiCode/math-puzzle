@@ -35,6 +35,7 @@ function App() {
     console.log(event);
     const pieceIndex = event.active.id;
     const newLocation = event.over.id;
+    console.log(pieceIndex, newLocation);
     movePiece(pieceIndex, newLocation);
   }
 
