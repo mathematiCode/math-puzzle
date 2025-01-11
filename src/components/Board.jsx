@@ -1,5 +1,6 @@
 import LandingSquare from './LandingSquare';
 import { range } from 'lodash';
+import PropTypes from 'prop-types';
 
 function Board({ coordinates }) {
   const width = 22; // eventually will calculate from coordinates
@@ -17,8 +18,8 @@ function Board({ coordinates }) {
         return range(width).map((square, colIndex) => {
           return (
             <LandingSquare
-              key={`(${rowIndex},${colIndex})`}
-              id={`(${rowIndex},${colIndex})`}
+              key={`(${colIndex},${rowIndex})`}
+              id={`(${colIndex},${rowIndex})`}
               color={color}
             />
           );
@@ -27,5 +28,9 @@ function Board({ coordinates }) {
     </div>
   );
 }
+
+Board.propTypes = {
+  coordinates: PropTypes.array.isRequired,
+};
 
 export default Board;

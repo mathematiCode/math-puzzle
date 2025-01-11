@@ -10,6 +10,8 @@ import { PiecesInPlayContext } from './context/PiecesInPlay';
 
 import './App.css';
 
+export const sizeOfEachUnit = 26;
+
 function App() {
   const pieces = levels[0].pieces;
   const [activePiece, setActivePiece] = useState(null);
@@ -17,15 +19,7 @@ function App() {
   const { piecesInPlay, movePiece, resetPieces } =
     useContext(PiecesInPlayContext);
 
-  const colors = [
-    'hsla(4, 35%, 56%, 1)',
-    'hsla(205, 36%, 45%, 1)',
-    'hsla(74, 100%, 85%, 1)',
-    'hsla(236, 19%, 41%, 1)',
-    '	hsla(194, 78%, 80%, 1)',
-  ];
-
-  const snapToGrid = useMemo(() => createSnapModifier(26), [26]);
+  const snapToGrid = useMemo(() => createSnapModifier(sizeOfEachUnit), []);
 
   function handleDragStart(event) {
     console.log('Dragging has started.');
@@ -73,6 +67,9 @@ function App() {
           ) : null}
         </DragOverlay>
       </main>
+      <button onClick={resetPieces} className="reset">
+        Reset Game
+      </button>
     </DndContext>
   );
 }

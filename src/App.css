@@ -34,8 +34,6 @@ h1 {
   width: fit-content;
   height: min-content;
   gap: 0px;
-  /* border: solid #4b82a8 5px;
-  border-radius: 10px; */
   padding: 0px;
 }
 
@@ -80,4 +78,18 @@ button:focus {
   z-index: 1;
   grid-column: 1/2;
   grid-row: 1/2;
+  position: relative;
+}
+
+.reset {
+  color: black;
+  background-color: #bbf591;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.reset:hover,
+.reset:focus {
+  background-color: #d4ffb5;
+  color: black;
 }

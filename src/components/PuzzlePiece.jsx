@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { motion } from 'motion/react';
 import { useDraggable } from '@dnd-kit/core';
 import PropTypes from 'prop-types';
@@ -8,10 +7,9 @@ import { range } from 'lodash';
 function PuzzlePiece({ width, height, color, id, className }) {
   let total = width * height;
 
-  const { attributes, isDragging, listeners, setNodeRef, transform } =
-    useDraggable({
-      id: id,
-    });
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: id,
+  });
   const style = transform
     ? {
         transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
@@ -49,6 +47,7 @@ PuzzlePiece.propTypes = {
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
+  id: PropTypes.number,
   className: PropTypes.string,
 };
 
