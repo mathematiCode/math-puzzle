@@ -1,8 +1,13 @@
-import PuzzlePiece from './PuzzlePiece';
+/* eslint-disable react/prop-types */
+import PieceOnBoard from './PieceOnBoard';
 function PlacedPieces({ piecesInPlay }) {
   return (
     <div className="placed-pieces">
-      <PuzzlePiece width={5} height={6} color="blue" />
+      {piecesInPlay.map(piece =>
+        piece.location != null ? (
+          <PieceOnBoard key={piece.id} piece={piece} />
+        ) : null
+      )}
     </div>
   );
 }

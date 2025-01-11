@@ -1,8 +1,8 @@
 Tomorrow
 
 - read in piecesInPlay and position them accordingly
-- add color to the arrays somehow
-- add DragOverlay
+- add color to the arrays somehow ✅
+- add DragOverlay ✅
 
 In General
 
