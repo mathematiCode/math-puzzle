@@ -2,6 +2,7 @@ import { useContext, useMemo } from 'react';
 import levels from './levels.json';
 import PuzzlePiece from './components/PuzzlePiece';
 import Board from './components/Board';
+import PlacedPieces from './components/PlacedPieces';
 import { motion } from 'motion/react';
 import { DndContext } from '@dnd-kit/core';
 import { createSnapModifier } from '@dnd-kit/modifiers';
@@ -33,8 +34,8 @@ function App() {
     console.log('Dragging has ended');
     console.log(event);
     const pieceIndex = event.active.id;
-    // const newLocation = ( x: event.over.rect.left, y: event.over.rect.top)
-    // movePiece(pieceIndex, newLocation);
+    const newLocation = event.over.id;
+    movePiece(pieceIndex, newLocation);
   }
 
   return (
@@ -55,7 +56,10 @@ function App() {
             />
           ))}
         </motion.div>
-        <Board coordinates={levels[0].board} />
+        <div className="game-board">
+          <Board coordinates={levels[0].board} />
+          <PlacedPieces piecesInPlay={piecesInPlay} />
+        </div>
       </main>
     </DndContext>
   );

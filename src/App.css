@@ -64,3 +64,20 @@ button:focus {
   background-color: #4b82a8;
   color: white;
 }
+
+.game-board {
+  display: grid;
+  grid-area: 1fr;
+}
+
+.game-board > .board {
+  z-index: 0;
+  grid-column: 1/2;
+  grid-row: 1/2;
+}
+
+.game-board > .placed-pieces {
+  z-index: 1;
+  grid-column: 1/2;
+  grid-row: 1/2;
+}

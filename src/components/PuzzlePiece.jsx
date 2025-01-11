@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { motion } from 'motion/react';
-import { DragOverlay, useDraggable } from '@dnd-kit/core';
+import { useDraggable } from '@dnd-kit/core';
 
 import { range } from 'lodash';
 
@@ -16,14 +16,6 @@ function PuzzlePiece({ width, height, color, id }) {
         transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
       }
     : undefined;
-
-  //   function handleDragStart() {
-  //     console.log('Dragging has started.');
-  //   }
-
-  //   function handleDragEnd() {
-  //     console.log('Dragging has ended');
-  //   }
 
   return (
     <button ref={setNodeRef} {...listeners} {...attributes} style={style}>
