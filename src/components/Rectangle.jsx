@@ -8,7 +8,7 @@ function Rectangle({ width, height, color, ...delegated }) {
       className="unit-container"
       style={{
         gridTemplateColumns: `repeat(${width}, 1fr)`,
-        backgroundColor: 'black',
+        backgroundColor: 'transparent',
       }}
       {...delegated}
     >
@@ -18,7 +18,6 @@ function Rectangle({ width, height, color, ...delegated }) {
           key={unit}
           layout={true}
           style={{ backgroundColor: color }}
-          {...delegated}
         />
       ))}
     </motion.div>

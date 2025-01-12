@@ -13,18 +13,19 @@ const PieceOnBoard = ({ piece, id }) => {
 
   const { x, y } = convertlocationToXAndY(piece.location);
 
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: id,
-  });
+  const { attributes, isDragging, listeners, setNodeRef, transform } =
+    useDraggable({
+      id: id,
+    });
 
   const style = {
     position: 'absolute',
     left: `${x * sizeOfEachUnit - 1}px`,
     top: `${y * sizeOfEachUnit - 1}px`,
-    backgroundColor: 'yellow',
     ...(transform && {
       transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
     }),
+    ...(isDragging && { cursor: 'grab' }),
   };
 
   return (

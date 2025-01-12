@@ -30,11 +30,13 @@ function App() {
   function handleDragEnd(event) {
     console.log('Dragging has ended');
     const id = event.active.id;
-    console.log('ID IS:', id);
     const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
-    const newLocation = event.over.id;
-    console.log('pieceIndex', pieceIndex, 'location', newLocation);
-    movePiece(pieceIndex, newLocation);
+    if (event?.over?.id) {
+      console.log('ID IS:', id);
+      const newLocation = event.over.id;
+      console.log('pieceIndex', pieceIndex, 'location', newLocation);
+      movePiece(pieceIndex, newLocation);
+    } else movePiece(pieceIndex, null);
   }
 
   return (
@@ -68,7 +70,7 @@ function App() {
               width={activePiece.width}
               height={activePiece.height}
               color={activePiece.color}
-              style={{ zIndex: 100 }}
+              style={{ zIndex: 100, opacity: 0.5 }}
             />
           ) : null}
         </DragOverlay>

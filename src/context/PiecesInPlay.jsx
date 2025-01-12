@@ -25,7 +25,11 @@ function PiecesInPlayProvider({ children }) {
   function movePiece(pieceIndex, newLocation) {
     const updatedPieces = [...piecesInPlay];
     updatedPieces[pieceIndex].location = newLocation;
-    updatedPieces[pieceIndex].id = `inPlay-${pieceIndex}`;
+    if (newLocation != null) {
+      updatedPieces[pieceIndex].id = `inPlay-${pieceIndex}`;
+    } else {
+      updatedPieces[pieceIndex].id = `initial-${pieceIndex}`;
+    }
     setPiecesInPlay(updatedPieces);
     console.log(updatedPieces);
     console.log(piecesInPlay);
