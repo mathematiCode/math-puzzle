@@ -1,12 +1,10 @@
 /* eslint-disable react/prop-types */
-import { motion } from 'motion/react';
 import { useDraggable } from '@dnd-kit/core';
-import { range } from 'lodash';
 import { sizeOfEachUnit } from '../App';
+import Rectangle from './Rectangle';
+import { memo } from 'react';
 
-const PieceOnBoardV2 = ({ piece, id }) => {
-  let total = piece.width * piece.height;
-
+const PieceOnBoard = ({ piece, id }) => {
   function convertlocationToXAndY(location) {
     const cleanedString = location.replace(/[()]/g, '');
     const [x, y] = cleanedString.split(',').map(Number);
@@ -18,15 +16,16 @@ const PieceOnBoardV2 = ({ piece, id }) => {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: id,
   });
-  const style = transform
-    ? {
-        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-      }
-    : {
-        position: 'absolute',
-        left: x * sizeOfEachUnit - 1 + 'px',
-        top: y * sizeOfEachUnit - 1 + 'px',
-      };
+
+  const style = {
+    position: 'absolute',
+    left: `${x * sizeOfEachUnit - 1}px`,
+    top: `${y * sizeOfEachUnit - 1}px`,
+    backgroundColor: 'yellow',
+    ...(transform && {
+      transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+    }),
+  };
 
   return (
     <button
@@ -36,25 +35,14 @@ const PieceOnBoardV2 = ({ piece, id }) => {
       style={style}
       onClick={() => console.log('Hey you clicked me')}
     >
-      <motion.div
-        className="unit-container"
-        style={{
-          gridTemplateColumns: `repeat(${piece.width}, 1fr)`,
-        }}
-      >
-        {range(total).map(unit => (
-          <motion.div
-            className="unit"
-            key={unit}
-            layout={true}
-            style={{
-              backgroundColor: piece.color,
-            }}
-          />
-        ))}
-      </motion.div>
+      <Rectangle
+        width={piece.width}
+        height={piece.height}
+        color={piece.color}
+        {...listeners}
+      />
     </button>
   );
 };
 
-export default PieceOnBoardV2;
+export default memo(PieceOnBoard);

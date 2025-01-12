@@ -1,6 +1,7 @@
 import { useContext, useMemo, useState } from 'react';
 import levels from './levels.json';
 import PuzzlePiece from './components/PuzzlePiece';
+import Rectangle from './components/Rectangle';
 import Board from './components/Board';
 import PlacedPieces from './components/PlacedPieces';
 import { motion } from 'motion/react';
@@ -63,10 +64,11 @@ function App() {
         </div>
         <DragOverlay>
           {activePiece ? (
-            <PuzzlePiece
+            <Rectangle
               width={activePiece.width}
               height={activePiece.height}
               color={activePiece.color}
+              style={{ zIndex: 100 }}
             />
           ) : null}
         </DragOverlay>

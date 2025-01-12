@@ -1,11 +1,8 @@
-import { motion } from 'motion/react';
 import { useDraggable } from '@dnd-kit/core';
 import PropTypes from 'prop-types';
-import { range } from 'lodash';
+import Rectangle from './Rectangle';
 
 const PuzzlePiece = ({ width, height, color, id, className }) => {
-  let total = width * height;
-
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: id,
   });
@@ -24,21 +21,7 @@ const PuzzlePiece = ({ width, height, color, id, className }) => {
       className={className}
       onClick={() => console.log('Hey you clicked me')}
     >
-      <motion.div
-        className="unit-container"
-        style={{
-          gridTemplateColumns: `repeat(${width}, 1fr)`,
-        }}
-      >
-        {range(total).map(unit => (
-          <motion.div
-            className="unit"
-            key={unit}
-            layout={true}
-            style={{ backgroundColor: color }}
-          />
-        ))}
-      </motion.div>
+      <Rectangle width={width} height={height} color={color} />
     </button>
   );
 };
