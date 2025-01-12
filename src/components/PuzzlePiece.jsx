@@ -1,10 +1,9 @@
 import { motion } from 'motion/react';
 import { useDraggable } from '@dnd-kit/core';
 import PropTypes from 'prop-types';
-
 import { range } from 'lodash';
 
-function PuzzlePiece({ width, height, color, id, className }) {
+const PuzzlePiece = ({ width, height, color, id, className }) => {
   let total = width * height;
 
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
@@ -23,6 +22,7 @@ function PuzzlePiece({ width, height, color, id, className }) {
       {...attributes}
       style={style}
       className={className}
+      onClick={() => console.log('Hey you clicked me')}
     >
       <motion.div
         className="unit-container"
@@ -41,13 +41,15 @@ function PuzzlePiece({ width, height, color, id, className }) {
       </motion.div>
     </button>
   );
-}
+};
+
+PuzzlePiece.displayName = 'PuzzlePiece';
 
 PuzzlePiece.propTypes = {
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
-  id: PropTypes.number,
+  id: PropTypes.string,
   className: PropTypes.string,
 };
 

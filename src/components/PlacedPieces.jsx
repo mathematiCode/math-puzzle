@@ -3,9 +3,13 @@ import PieceOnBoard from './PieceOnBoard';
 function PlacedPieces({ piecesInPlay }) {
   return (
     <div className="placed-pieces">
-      {piecesInPlay.map(piece =>
+      {piecesInPlay.map((piece, index) =>
         piece.location != null ? (
-          <PieceOnBoard key={piece.id} piece={piece} />
+          <PieceOnBoard
+            piece={piece}
+            id={`inPlay-${index}`}
+            key={`inPlay-${index}`}
+          />
         ) : null
       )}
     </div>

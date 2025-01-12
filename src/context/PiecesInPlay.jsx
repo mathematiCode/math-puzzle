@@ -16,6 +16,7 @@ const futurePiecesList = levels[0].pieces;
 futurePiecesList.forEach((piece, index) => {
   piece.location = initialLocation;
   piece.color = colors[index % colors.length];
+  piece.id = `initial-${index}`;
 });
 
 function PiecesInPlayProvider({ children }) {
@@ -24,6 +25,7 @@ function PiecesInPlayProvider({ children }) {
   function movePiece(pieceIndex, newLocation) {
     const updatedPieces = [...piecesInPlay];
     updatedPieces[pieceIndex].location = newLocation;
+    updatedPieces[pieceIndex].id = `inPlay-${pieceIndex}`;
     setPiecesInPlay(updatedPieces);
     console.log(updatedPieces);
     console.log(piecesInPlay);

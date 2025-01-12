@@ -28,10 +28,11 @@ function App() {
 
   function handleDragEnd(event) {
     console.log('Dragging has ended');
-    console.log(event);
-    const pieceIndex = event.active.id;
+    const id = event.active.id;
+    console.log('ID IS:', id);
+    const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
     const newLocation = event.over.id;
-    console.log(pieceIndex, newLocation);
+    console.log('pieceIndex', pieceIndex, 'location', newLocation);
     movePiece(pieceIndex, newLocation);
   }
 
@@ -43,15 +44,18 @@ function App() {
     >
       <main>
         <motion.div className="pieces-container" layout={true}>
-          {pieces.map((piece, pieceIndex) => (
-            <PuzzlePiece
-              width={piece.width}
-              height={piece.height}
-              key={pieceIndex}
-              id={pieceIndex}
-              color={piece.color}
-            />
-          ))}
+          {pieces.map((piece, pieceIndex) => {
+            if (piece.location != null) return null;
+            return (
+              <PuzzlePiece
+                width={piece.width}
+                height={piece.height}
+                key={pieceIndex}
+                id={`initial-${pieceIndex}`}
+                color={piece.color}
+              />
+            );
+          })}
         </motion.div>
         <div className="game-board">
           <Board coordinates={levels[0].board} />
