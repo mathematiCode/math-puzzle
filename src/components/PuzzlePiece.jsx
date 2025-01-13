@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Rectangle from './Rectangle';
 
 const PuzzlePiece = ({ width, height, color, id, className }) => {
+  console.log('Puzzle piece is re-rendering now');
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: id,
   });

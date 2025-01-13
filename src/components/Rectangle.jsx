@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
 import { range } from 'lodash';
 import PropTypes from 'prop-types';
+import { memo } from 'react';
 function Rectangle({ width, height, color, ...delegated }) {
   const total = width * height;
   return (
@@ -29,4 +30,4 @@ Rectangle.propTypes = {
   color: PropTypes.string.isRequired,
 };
 
-export default Rectangle;
+export default memo(Rectangle);

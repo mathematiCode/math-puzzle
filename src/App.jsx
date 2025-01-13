@@ -5,6 +5,7 @@ import Rectangle from './components/Rectangle';
 import Board from './components/Board';
 import PlacedPieces from './components/PlacedPieces';
 import { motion } from 'motion/react';
+import { throttle } from 'lodash';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { createSnapModifier } from '@dnd-kit/modifiers';
 import { PiecesInPlayContext } from './context/PiecesInPlay';
@@ -22,12 +23,12 @@ function App() {
 
   const snapToGrid = useMemo(() => createSnapModifier(sizeOfEachUnit), []);
 
-  function handleDragStart(event) {
+  const handleDragStart = throttle(event => {
     console.log('Dragging has started.');
     setActivePiece(pieces[event.active.id]);
-  }
+  }, 200);
 
-  function handleDragEnd(event) {
+  const handleDragEnd = throttle(event => {
     console.log('Dragging has ended');
     const id = event.active.id;
     const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
@@ -37,7 +38,7 @@ function App() {
       console.log('pieceIndex', pieceIndex, 'location', newLocation);
       movePiece(pieceIndex, newLocation);
     } else movePiece(pieceIndex, null);
-  }
+  }, 200);
 
   return (
     <DndContext
