@@ -79,7 +79,7 @@ button:focus {
   position: relative;
 }
 
-.reset {
+.button {
   color: black;
   background-color: #bbf591;
   border-radius: 10px;
@@ -87,8 +87,18 @@ button:focus {
   margin: 20px;
 }
 
-.reset:hover,
-.reset:focus {
+.button:hover,
+.button:focus {
   background-color: #d4ffb5;
   color: black;
+}
+
+.icon-button {
+  padding: 4px;
+}
+
+.button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

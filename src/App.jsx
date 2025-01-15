@@ -7,7 +7,7 @@ import PlacedPieces from './components/PlacedPieces';
 import { motion } from 'motion/react';
 import { throttle } from 'lodash';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
-import { createSnapModifier } from '@dnd-kit/modifiers';
+import { createSnapModifier, restrictToWindowEdges } from '@dnd-kit/modifiers';
 import { PiecesInPlayContext } from './context/PiecesInPlay';
 
 import './App.css';
@@ -39,6 +39,10 @@ function App() {
       movePiece(pieceIndex, newLocation);
     } else movePiece(pieceIndex, null);
   }, 200);
+
+  function handleHorizontalStretch() {}
+
+  function handleVerticalStretch() {}
 
   return (
     <DndContext
@@ -76,9 +80,26 @@ function App() {
           ) : null}
         </DragOverlay>
       </main>
-      <button onClick={resetPieces} className="reset">
-        Reset Game
-      </button>
+      <div className="button-container">
+        <button
+          className="button icon-button"
+          onClick={handleHorizontalStretch}
+        >
+          <img
+            src="./assets/horizontalStretch.svg"
+            style={{ width: '35px', height: '35px' }}
+          />
+        </button>
+        <button className="button icon-button" onClick={handleVerticalStretch}>
+          <img
+            src="./assets/verticalStretch.svg"
+            style={{ width: '35px', height: '35px' }}
+          />
+        </button>
+        <button onClick={resetPieces} className="button">
+          Reset Game
+        </button>
+      </div>
     </DndContext>
   );
 }
