@@ -1,10 +1,13 @@
 /* eslint-disable react/prop-types */
 import { useDraggable } from '@dnd-kit/core';
-import { sizeOfEachUnit } from '../App';
 import Rectangle from './Rectangle';
-import { memo } from 'react';
+import { memo, useContext } from 'react';
+import { SelectedPieceContext } from '../context/SelectedPiece';
+import { pieces, sizeOfEachUnit } from '../CONSTANTS';
 
 const PieceOnBoard = ({ piece, id }) => {
+  const { selectedPiece, setSelectedPiece } = useContext(SelectedPieceContext);
+
   function convertlocationToXAndY(location) {
     const cleanedString = location.replace(/[()]/g, '');
     const [x, y] = cleanedString.split(',').map(Number);
@@ -26,7 +29,17 @@ const PieceOnBoard = ({ piece, id }) => {
       transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
     }),
     ...(isDragging && { cursor: 'grab' }),
+    ...(selectedPiece?.id === id && {
+      boxShadow:
+        'rgba(0, 0, 0, 0.5) 0px 19px 19px, rgba(0, 0, 0, 0.22) 0px 15px 12px',
+    }),
   };
+
+  function handlePieceSelected() {
+    const chosenPiece = pieces.find(piece => id === piece.id);
+    setSelectedPiece(chosenPiece);
+    console.log('new piece is selected');
+  }
 
   return (
     <button
@@ -34,7 +47,7 @@ const PieceOnBoard = ({ piece, id }) => {
       {...listeners}
       {...attributes}
       style={style}
-      onClick={() => console.log('Hey you clicked me')}
+      onClick={handlePieceSelected}
     >
       <Rectangle
         width={piece.width}

@@ -6,31 +6,55 @@ import Board from './components/Board';
 import PlacedPieces from './components/PlacedPieces';
 import { motion } from 'motion/react';
 import { throttle } from 'lodash';
-import { DndContext, DragOverlay } from '@dnd-kit/core';
+import { pieces, sizeOfEachUnit } from './CONSTANTS';
+import {
+  DndContext,
+  DragOverlay,
+  useSensor,
+  MouseSensor,
+  TouchSensor,
+  KeyboardSensor,
+  useSensors,
+} from '@dnd-kit/core';
 import { createSnapModifier, restrictToWindowEdges } from '@dnd-kit/modifiers';
 import { PiecesInPlayContext } from './context/PiecesInPlay';
+import { SelectedPieceContext } from './context/SelectedPiece';
 
 import './App.css';
 
-export const sizeOfEachUnit = 26;
-
 function App() {
-  const pieces = levels[0].pieces;
   const [activePiece, setActivePiece] = useState(null);
+  const { selectedPiece, setSelectedPiece } = useContext(SelectedPieceContext);
 
-  const { piecesInPlay, movePiece, resetPieces } =
+  const { piecesInPlay, movePiece, updateDimensions, resetPieces } =
     useContext(PiecesInPlayContext);
 
   const snapToGrid = useMemo(() => createSnapModifier(sizeOfEachUnit), []);
 
-  const handleDragStart = throttle(event => {
-    console.log('Dragging has started.');
-    setActivePiece(pieces[event.active.id]);
-  }, 200);
+  const activationConstraint = {
+    distance: 20,
+  };
+  const mouseSensor = useSensor(MouseSensor, {
+    activationConstraint,
+  });
+  const touchSensor = useSensor(TouchSensor, {
+    activationConstraint,
+  });
+  const keyboardSensor = useSensor(KeyboardSensor, {});
+  const sensors = useSensors(mouseSensor, touchSensor, keyboardSensor);
 
-  const handleDragEnd = throttle(event => {
+  const handleDragStart = event => {
+    console.log('Dragging has started.');
+    const id = event.active.id;
+    const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
+    setActivePiece(pieces[pieceIndex]);
+    setSelectedPiece(pieces[pieceIndex]);
+  };
+
+  const handleDragEnd = event => {
     console.log('Dragging has ended');
     const id = event.active.id;
+    console.log('width', activePiece.width, 'height', activePiece.height);
     const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
     if (event?.over?.id) {
       console.log('ID IS:', id);
@@ -38,14 +62,35 @@ function App() {
       console.log('pieceIndex', pieceIndex, 'location', newLocation);
       movePiece(pieceIndex, newLocation);
     } else movePiece(pieceIndex, null);
-  }, 200);
+  };
 
-  function handleHorizontalStretch() {}
+  function handleHorizontalStretch() {
+    console.log('I am the chosen one', selectedPiece);
+    if (Number.isInteger(selectedPiece.height / 2)) {
+      const newHeight = selectedPiece.height / 2;
+      const newWidth = selectedPiece.width * 2;
+      const id = selectedPiece.id;
+      const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
+      console.log(pieceIndex);
+      updateDimensions(pieceIndex, newWidth, newHeight);
+    }
+  }
 
-  function handleVerticalStretch() {}
+  function handleVerticalStretch() {
+    console.log('I am the chosen one', selectedPiece);
+    if (Number.isInteger(selectedPiece.width / 2)) {
+      const newHeight = selectedPiece.height * 2;
+      const newWidth = selectedPiece.width / 2;
+      const id = selectedPiece.id;
+      const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
+      console.log(pieceIndex);
+      updateDimensions(pieceIndex, newWidth, newHeight);
+    }
+  }
 
   return (
     <DndContext
+      sensors={sensors}
       modifiers={[snapToGrid]}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
@@ -61,6 +106,7 @@ function App() {
                 key={pieceIndex}
                 id={`initial-${pieceIndex}`}
                 color={piece.color}
+                pieces={pieces}
               />
             );
           })}
@@ -75,7 +121,6 @@ function App() {
               width={activePiece.width}
               height={activePiece.height}
               color={activePiece.color}
-              style={{ zIndex: 100, opacity: 0.5 }}
             />
           ) : null}
         </DragOverlay>

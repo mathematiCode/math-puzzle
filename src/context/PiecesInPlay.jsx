@@ -32,7 +32,14 @@ function PiecesInPlayProvider({ children }) {
     }
     setPiecesInPlay(updatedPieces);
     console.log(updatedPieces);
-    console.log(piecesInPlay);
+    console.log('piecesInPlay', piecesInPlay);
+  }
+
+  function updateDimensions(pieceIndex, width, height) {
+    const updatedPieces = [...piecesInPlay];
+    updatedPieces[pieceIndex].width = width;
+    updatedPieces[pieceIndex].height = height;
+    setPiecesInPlay(updatedPieces);
   }
 
   function resetPieces() {
@@ -45,7 +52,7 @@ function PiecesInPlayProvider({ children }) {
 
   return (
     <PiecesInPlayContext.Provider
-      value={{ piecesInPlay, movePiece, resetPieces }}
+      value={{ piecesInPlay, movePiece, updateDimensions, resetPieces }}
     >
       {children}
     </PiecesInPlayContext.Provider>
