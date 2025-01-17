@@ -1,12 +1,13 @@
-/* eslint-disable react/prop-types */
 import { useDraggable } from '@dnd-kit/core';
 import PropTypes from 'prop-types';
 import Rectangle from './Rectangle';
 import { useContext } from 'react';
 import { SelectedPieceContext } from '../context/SelectedPiece';
 import { pieces } from '../CONSTANTS';
+import { motion } from 'motion/react';
 
-const PuzzlePiece = ({ width, height, color, id, className }) => {
+const PuzzlePiece = ({ width, height, color, id, isRotating }) => {
+  console.log('re-rendering this piece:', id);
   const { selectedPiece, setSelectedPiece } = useContext(SelectedPieceContext);
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: id,
@@ -27,16 +28,18 @@ const PuzzlePiece = ({ width, height, color, id, className }) => {
   }
 
   return (
-    <button
+    <motion.button
       ref={setNodeRef}
       {...listeners}
       {...attributes}
       style={style}
-      className={className}
+      className="puzzle-piece"
       onClick={handlePieceSelected}
+      animate={{ rotate: isRotating ? 90 : 0 }}
+      transition={{ duration: 0.5 }}
     >
       <Rectangle width={width} height={height} color={color} />
-    </button>
+    </motion.button>
   );
 };
 
@@ -49,6 +52,7 @@ PuzzlePiece.propTypes = {
   id: PropTypes.string,
   className: PropTypes.string,
   activePiece: PropTypes.object,
+  isRotating: PropTypes.bool,
 };
 
 export default PuzzlePiece;

@@ -17,11 +17,20 @@
 
 1/14/2025
 
-- make the board generate based on the coordinate points
-- add buttons to change width and height
+- add buttons to change width and height ✅
+
+1/15/2025
+
+- set up contexts to make other features possible.
+
+1/16/2025
+
+- implement functions to select puzzle pieces and actually change their width and height ✅
 
 In General
 
+- Deselect puzzle pieces on clickAway with a custom hook
+- make the board generate based on the coordinate points
 - Perfect snapping to the grid
 - Make the bounds of the game board the bounds of where you can move the pieces
 - add another level

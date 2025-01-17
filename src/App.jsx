@@ -7,6 +7,7 @@ import PlacedPieces from './components/PlacedPieces';
 import { motion } from 'motion/react';
 import { throttle } from 'lodash';
 import { pieces, sizeOfEachUnit } from './CONSTANTS';
+import { RotateCw } from 'lucide-react';
 import {
   DndContext,
   DragOverlay,
@@ -19,15 +20,19 @@ import {
 import { createSnapModifier, restrictToWindowEdges } from '@dnd-kit/modifiers';
 import { PiecesInPlayContext } from './context/PiecesInPlay';
 import { SelectedPieceContext } from './context/SelectedPiece';
+import useClickAway from './hooks/useClickAway';
 
 import './App.css';
 
 function App() {
   const [activePiece, setActivePiece] = useState(null);
   const { selectedPiece, setSelectedPiece } = useContext(SelectedPieceContext);
+  const [rotatingPieceIndex, setRotatingPieceIndex] = useState(null);
 
   const { piecesInPlay, movePiece, updateDimensions, resetPieces } =
     useContext(PiecesInPlayContext);
+
+  useClickAway('Escape', console.log('Something was clicked'));
 
   const snapToGrid = useMemo(() => createSnapModifier(sizeOfEachUnit), []);
 
@@ -88,6 +93,16 @@ function App() {
     }
   }
 
+  function handleRotation() {
+    const newHeight = selectedPiece.width;
+    const newWidth = selectedPiece.height;
+    const id = selectedPiece.id;
+    const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
+    setRotatingPieceIndex(pieceIndex);
+    console.log('rotating piece is', rotatingPieceIndex);
+    updateDimensions(pieceIndex, newWidth, newHeight);
+  }
+
   return (
     <DndContext
       sensors={sensors}
@@ -107,6 +122,7 @@ function App() {
                 id={`initial-${pieceIndex}`}
                 color={piece.color}
                 pieces={pieces}
+                isRotating={pieceIndex == rotatingPieceIndex}
               />
             );
           })}
@@ -134,12 +150,22 @@ function App() {
             src="./assets/horizontalStretch.svg"
             style={{ width: '35px', height: '35px' }}
           />
+          Horizontal Stretch
         </button>
         <button className="button icon-button" onClick={handleVerticalStretch}>
           <img
             src="./assets/verticalStretch.svg"
             style={{ width: '35px', height: '35px' }}
           />
+          Vertical Stretch
+        </button>
+        <button className="button icon-button" onClick={handleRotation}>
+          <RotateCw />
+          Rotate
+          <p style={{ fontSize: '0.8rem', padding: 'none', margin: 'none' }}>
+            {' '}
+            Not completely working right yet
+          </p>
         </button>
         <button onClick={resetPieces} className="button">
           Reset Game
