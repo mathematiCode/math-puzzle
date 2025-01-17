@@ -8,6 +8,7 @@ import { motion } from 'motion/react';
 import { throttle } from 'lodash';
 import { pieces, sizeOfEachUnit } from './CONSTANTS';
 import { RotateCw } from 'lucide-react';
+import { useClickAway } from '@uidotdev/usehooks';
 import {
   DndContext,
   DragOverlay,
@@ -20,7 +21,6 @@ import {
 import { createSnapModifier, restrictToWindowEdges } from '@dnd-kit/modifiers';
 import { PiecesInPlayContext } from './context/PiecesInPlay';
 import { SelectedPieceContext } from './context/SelectedPiece';
-import useClickAway from './hooks/useClickAway';
 
 import './App.css';
 
@@ -32,7 +32,10 @@ function App() {
   const { piecesInPlay, movePiece, updateDimensions, resetPieces } =
     useContext(PiecesInPlayContext);
 
-  useClickAway('Escape', console.log('Something was clicked'));
+  // useClickAway('Escape', console.log('Something was clicked'));
+  const ref = useClickAway(() => {
+    setSelectedPiece(null);
+  });
 
   const snapToGrid = useMemo(() => createSnapModifier(sizeOfEachUnit), []);
 
@@ -122,6 +125,7 @@ function App() {
                 id={`initial-${pieceIndex}`}
                 color={piece.color}
                 pieces={pieces}
+                ref={ref}
                 isRotating={pieceIndex == rotatingPieceIndex}
               />
             );
