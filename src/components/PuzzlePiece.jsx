@@ -6,7 +6,7 @@ import { SelectedPieceContext } from '../context/SelectedPiece';
 import { pieces } from '../CONSTANTS';
 import { motion } from 'motion/react';
 
-const PuzzlePiece = ({ width, height, color, id, isRotating }) => {
+const PuzzlePiece = ({ width, height, color, id, isRotated }) => {
   console.log('re-rendering this piece:', id);
   const { selectedPiece, setSelectedPiece } = useContext(SelectedPieceContext);
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
@@ -35,7 +35,7 @@ const PuzzlePiece = ({ width, height, color, id, isRotating }) => {
       style={style}
       className="puzzle-piece"
       onClick={handlePieceSelected}
-      animate={{ rotate: isRotating ? 90 : 0 }}
+      animate={{ rotate: isRotated ? 90 : 0 }}
       transition={{ duration: 0.5 }}
     >
       <Rectangle width={width} height={height} color={color} />
@@ -52,7 +52,7 @@ PuzzlePiece.propTypes = {
   id: PropTypes.string,
   className: PropTypes.string,
   activePiece: PropTypes.object,
-  isRotating: PropTypes.bool,
+  isRotated: PropTypes.bool,
 };
 
 export default PuzzlePiece;

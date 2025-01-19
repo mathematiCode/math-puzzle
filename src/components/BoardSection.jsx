@@ -19,7 +19,6 @@ function BoardSection({ width, height, x, y, valid }) {
       >
         {range(height).map((row, rowIndex) => {
           return range(width).map((square, colIndex) => {
-            console.log(`(${colIndex + x},${rowIndex + y})`);
             return (
               <LandingSquare
                 key={`(${colIndex + x},${rowIndex + y})`}

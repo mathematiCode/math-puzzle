@@ -17,6 +17,7 @@ futurePiecesList.forEach((piece, index) => {
   piece.location = initialLocation;
   piece.color = colors[index % colors.length];
   piece.id = `initial-${index}`;
+  piece.isRotated = false;
 });
 
 function PiecesInPlayProvider({ children }) {
@@ -44,15 +45,32 @@ function PiecesInPlayProvider({ children }) {
 
   function resetPieces() {
     const updatedPieces = [...piecesInPlay];
-    updatedPieces.forEach(piece => {
+    updatedPieces.forEach((piece, index) => {
       piece.location = initialLocation;
+      piece.width = levels[0].pieces[index].width;
+      piece.height = levels[0].pieces[index].height;
+      piece.id = `initial-${index}`;
+      piece.isRotated = false;
+      console.log('updated Pieces is:', updatedPieces);
     });
+    setPiecesInPlay(updatedPieces);
+  }
+
+  function rotatePiece(pieceIndex) {
+    const updatedPieces = [...piecesInPlay];
+    updatedPieces[pieceIndex].isRotated = !updatedPieces[pieceIndex].isRotated;
     setPiecesInPlay(updatedPieces);
   }
 
   return (
     <PiecesInPlayContext.Provider
-      value={{ piecesInPlay, movePiece, updateDimensions, resetPieces }}
+      value={{
+        piecesInPlay,
+        movePiece,
+        updateDimensions,
+        rotatePiece,
+        resetPieces,
+      }}
     >
       {children}
     </PiecesInPlayContext.Provider>

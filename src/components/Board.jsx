@@ -5,19 +5,6 @@ import PropTypes from 'prop-types';
 function Board({ dimensions, boardSections }) {
   const boardWidth = dimensions.x;
 
-  /**
-   * boardSections.map((section) => {
-   *  check if section.length is > 1
-   *  if so then
-   * <div>
-   * section.map
-   * </div>
-   *
-   * if not then section[0] with no div.
-   * }
-   *
-   * );
-   */
   return (
     <div
       style={{
@@ -38,7 +25,7 @@ function Board({ dimensions, boardSections }) {
             />
           );
         } else {
-          console.log(row);
+          console.log('row is', row);
           return (
             <div
               key="div"

@@ -32,14 +32,16 @@
 - Implement piece rotations
 - Make the pieces look 3D (rounded edges, border, shadow) ✅
 
+1/18/2025
+
+- make the board generate based on the coordinate points ✅
+
 In General
 
 - Deselect puzzle pieces on clickAway with a custom hook
-- make the board generate based on the coordinate points
 - Perfect snapping to the grid
 - Make the bounds of the game board the bounds of where you can move the pieces
 - add another level
 - Make it impossible to put pieces on top of each other
-
 - Add animations to reset function
 - Implement piece rotations

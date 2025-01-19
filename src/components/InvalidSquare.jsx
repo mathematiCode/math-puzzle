@@ -15,6 +15,5 @@ function LandingSquare({ id }) {
 
 LandingSquare.propTypes = {
   id: PropTypes.string.isRequired,
-  color: PropTypes.string.isRequired,
 };
 export default LandingSquare;

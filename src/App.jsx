@@ -27,10 +27,14 @@ import './App.css';
 function App() {
   const [activePiece, setActivePiece] = useState(null);
   const { selectedPiece, setSelectedPiece } = useContext(SelectedPieceContext);
-  const [rotatingPieceIndex, setRotatingPieceIndex] = useState(null);
 
-  const { piecesInPlay, movePiece, updateDimensions, resetPieces } =
-    useContext(PiecesInPlayContext);
+  const {
+    piecesInPlay,
+    movePiece,
+    updateDimensions,
+    rotatePiece,
+    resetPieces,
+  } = useContext(PiecesInPlayContext);
 
   // useClickAway('Escape', console.log('Something was clicked'));
   const ref = useClickAway(() => {
@@ -97,18 +101,14 @@ function App() {
   }
 
   function handleRotation() {
-    const newHeight = selectedPiece.width;
-    const newWidth = selectedPiece.height;
     const id = selectedPiece.id;
     const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
-    setRotatingPieceIndex(pieceIndex);
-    console.log('rotating piece is', rotatingPieceIndex);
-    updateDimensions(pieceIndex, newWidth, newHeight);
+    rotatePiece(pieceIndex);
   }
 
   return (
     <DndContext
-      // sensors={sensors}
+      sensors={sensors}
       modifiers={[snapToGrid]}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
@@ -126,7 +126,7 @@ function App() {
                 color={piece.color}
                 pieces={pieces}
                 ref={ref}
-                isRotating={pieceIndex == rotatingPieceIndex}
+                isRotated={piece.isRotated}
               />
             );
           })}
