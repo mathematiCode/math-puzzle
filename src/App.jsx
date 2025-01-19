@@ -108,7 +108,7 @@ function App() {
 
   return (
     <DndContext
-      sensors={sensors}
+      // sensors={sensors}
       modifiers={[snapToGrid]}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
@@ -132,7 +132,10 @@ function App() {
           })}
         </motion.div>
         <div className="game-board">
-          <Board coordinates={levels[0].board} />
+          <Board
+            dimensions={levels[0].dimensions}
+            boardSections={levels[0].boardSections}
+          />
           <PlacedPieces piecesInPlay={piecesInPlay} />
         </div>
         <DragOverlay>

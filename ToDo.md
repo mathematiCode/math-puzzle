@@ -27,6 +27,11 @@
 
 - implement functions to select puzzle pieces and actually change their width and height ✅
 
+1/17/2025
+
+- Implement piece rotations
+- Make the pieces look 3D (rounded edges, border, shadow) ✅
+
 In General
 
 - Deselect puzzle pieces on clickAway with a custom hook
@@ -35,6 +40,6 @@ In General
 - Make the bounds of the game board the bounds of where you can move the pieces
 - add another level
 - Make it impossible to put pieces on top of each other
-- Make the pieces look 3D (rounded edges, border, shadow)
+
 - Add animations to reset function
 - Implement piece rotations
