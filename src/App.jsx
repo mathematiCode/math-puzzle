@@ -118,16 +118,7 @@ function App() {
           {pieces.map((piece, pieceIndex) => {
             if (piece.location != null) return null;
             return (
-              <PuzzlePiece
-                width={piece.width}
-                height={piece.height}
-                key={pieceIndex}
-                id={`initial-${pieceIndex}`}
-                color={piece.color}
-                pieces={pieces}
-                ref={ref}
-                isRotated={piece.isRotated}
-              />
+              <PuzzlePiece piece={piece} key={pieceIndex} forwardedRef={ref} />
             );
           })}
         </motion.div>
@@ -144,6 +135,7 @@ function App() {
               width={activePiece.width}
               height={activePiece.height}
               color={activePiece.color}
+              isRotated={activePiece.isRotated}
             />
           ) : null}
         </DragOverlay>

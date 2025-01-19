@@ -4,6 +4,7 @@ import Rectangle from './Rectangle';
 import { memo, useContext } from 'react';
 import { SelectedPieceContext } from '../context/SelectedPiece';
 import { pieces, sizeOfEachUnit } from '../CONSTANTS';
+import { motion } from 'motion/react';
 
 const PieceOnBoard = ({ piece, id }) => {
   const { selectedPiece, setSelectedPiece } = useContext(SelectedPieceContext);
@@ -42,12 +43,14 @@ const PieceOnBoard = ({ piece, id }) => {
   }
 
   return (
-    <button
+    <motion.button
       ref={setNodeRef}
       {...listeners}
       {...attributes}
       style={style}
       onClick={handlePieceSelected}
+      animate={{ rotate: piece.isRotated ? 90 : 0 }}
+      transition={{ duration: 0.5 }}
     >
       <Rectangle
         width={piece.width}
@@ -55,7 +58,7 @@ const PieceOnBoard = ({ piece, id }) => {
         color={piece.color}
         {...listeners}
       />
-    </button>
+    </motion.button>
   );
 };
 

@@ -6,24 +6,23 @@ import { SelectedPieceContext } from '../context/SelectedPiece';
 import { pieces } from '../CONSTANTS';
 import { motion } from 'motion/react';
 
-const PuzzlePiece = ({ width, height, color, id, isRotated }) => {
-  console.log('re-rendering this piece:', id);
+const PuzzlePiece = ({ piece }) => {
+  //console.log('re-rendering this piece:', piece.id);
   const { selectedPiece, setSelectedPiece } = useContext(SelectedPieceContext);
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: id,
+    id: piece.id,
   });
   const style = {
     ...(transform && {
       transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
     }),
-    ...(selectedPiece?.id === id && {
+    ...(selectedPiece?.id === piece.id && {
       boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
     }),
   };
 
   function handlePieceSelected() {
-    const chosenPiece = pieces.find(piece => id === piece.id);
-    setSelectedPiece(chosenPiece);
+    setSelectedPiece(piece);
     console.log('new piece is selected');
   }
 
@@ -35,10 +34,14 @@ const PuzzlePiece = ({ width, height, color, id, isRotated }) => {
       style={style}
       className="puzzle-piece"
       onClick={handlePieceSelected}
-      animate={{ rotate: isRotated ? 90 : 0 }}
+      animate={{ rotate: piece.isRotated ? 90 : 0 }}
       transition={{ duration: 0.5 }}
     >
-      <Rectangle width={width} height={height} color={color} />
+      <Rectangle
+        width={piece.width}
+        height={piece.height}
+        color={piece.color}
+      />
     </motion.button>
   );
 };
@@ -46,13 +49,9 @@ const PuzzlePiece = ({ width, height, color, id, isRotated }) => {
 PuzzlePiece.displayName = 'PuzzlePiece';
 
 PuzzlePiece.propTypes = {
-  width: PropTypes.number.isRequired,
-  height: PropTypes.number.isRequired,
-  color: PropTypes.string.isRequired,
-  id: PropTypes.string,
+  piece: PropTypes.object.isRequired,
   className: PropTypes.string,
   activePiece: PropTypes.object,
-  isRotated: PropTypes.bool,
 };
 
 export default PuzzlePiece;
