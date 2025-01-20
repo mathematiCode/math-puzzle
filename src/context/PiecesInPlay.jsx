@@ -5,11 +5,10 @@ export const PiecesInPlayContext = createContext();
 
 const initialLocation = null;
 const colors = [
-  'hsla(4, 35%, 56%, 1)',
-  'hsla(205, 36%, 45%, 1)',
-  'hsla(74, 100%, 85%, 1)',
-  'hsla(236, 19%, 41%, 1)',
+  'hsl(178, 100%, 24%)',
+  'hsl(0, 61%, 61%)',
   '	hsla(194, 78%, 80%, 1)',
+  'hsl(38, 87%, 64%)',
 ];
 
 const futurePiecesList = levels[0].pieces;
