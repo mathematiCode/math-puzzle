@@ -29,7 +29,7 @@
 
 1/17/2025
 
-- Implement piece rotations
+- Implement piece rotations 😵‍💫
 - Make the pieces look 3D (rounded edges, border, shadow) ✅
 
 1/18/2025
@@ -45,3 +45,4 @@ In General
 - Make it impossible to put pieces on top of each other
 - Add animations to reset function
 - Implement piece rotations
+- Make a popover component with buttons api
