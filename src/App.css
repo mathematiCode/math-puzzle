@@ -80,8 +80,8 @@ button:focus {
 }
 
 .button {
-  color: black;
-  background-color: #9dde7d;
+  color: white;
+  background-color: hsl(178, 100%, 23%);
   border-radius: 10px;
   padding: 10px;
   margin: 20px;

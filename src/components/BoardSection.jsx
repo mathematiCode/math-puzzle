@@ -4,9 +4,6 @@ import { range } from 'lodash';
 import PropTypes from 'prop-types';
 
 function BoardSection({ width, height, x, y, valid }) {
-  // check if valid
-  // return array of valid or invalid squares
-
   let color = 'hsl(209, 26%, 89%)';
   if (valid) {
     return (
@@ -15,6 +12,8 @@ function BoardSection({ width, height, x, y, valid }) {
         style={{
           gridTemplateColumns: `repeat(${width}, 1fr)`,
           backgroundColor: 'black',
+          boxShadow:
+            ' hsl(178, 100%, 23%) 0px 1px 8px, hsl(178, 100%, 23%) 0px 0px 0px 8px',
         }}
       >
         {range(height).map((row, rowIndex) => {
@@ -36,7 +35,8 @@ function BoardSection({ width, height, x, y, valid }) {
         className="unit-container board"
         style={{
           gridTemplateColumns: `repeat(${width}, 1fr)`,
-          zIndex: '3',
+          zIndex: '2',
+          transform: 'translate(-8px, -8px)',
         }}
       >
         {range(height).map((row, rowIndex) => {

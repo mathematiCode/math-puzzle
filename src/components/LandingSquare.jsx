@@ -6,7 +6,7 @@ function LandingSquare({ id, color }) {
     id: id,
   });
 
-  color = isOver ? 'white' : 'hsl(209, 26%, 89%)';
+  color = isOver ? 'white' : 'hsl(100, 65%, 92%)';
   return (
     <div
       className="unit"
