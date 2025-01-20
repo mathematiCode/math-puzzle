@@ -26,9 +26,9 @@ const PieceOnBoard = ({ piece, id }) => {
     position: 'absolute',
     left: `${x * sizeOfEachUnit - 1}px`,
     top: `${y * sizeOfEachUnit - 1}px`,
-    ...(transform && {
-      transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-    }),
+    // ...(transform && {
+    //   transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+    // }),
     ...(isDragging && { cursor: 'grab' }),
     ...(selectedPiece?.id === id && {
       boxShadow:

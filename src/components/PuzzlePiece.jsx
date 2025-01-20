@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Rectangle from './Rectangle';
 import { useContext } from 'react';
 import { SelectedPieceContext } from '../context/SelectedPiece';
-import { pieces } from '../CONSTANTS';
 import { motion } from 'motion/react';
 
 const PuzzlePiece = ({ piece }) => {
@@ -13,9 +12,9 @@ const PuzzlePiece = ({ piece }) => {
     id: piece.id,
   });
   const style = {
-    ...(transform && {
-      transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-    }),
+    // ...(transform && {
+    //   transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+    // }),
     ...(selectedPiece?.id === piece.id && {
       boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
     }),
@@ -41,6 +40,9 @@ const PuzzlePiece = ({ piece }) => {
         width={piece.width}
         height={piece.height}
         color={piece.color}
+        ref={setNodeRef}
+        {...listeners}
+        {...attributes}
       />
     </motion.button>
   );
