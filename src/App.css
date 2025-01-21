@@ -89,8 +89,7 @@ button:focus {
 
 .button:hover,
 .button:focus {
-  background-color: #d4ffb5;
-  color: black;
+  background-color: hsl(178, 60%, 35%);
 }
 
 .icon-button {

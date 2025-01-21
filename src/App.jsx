@@ -23,6 +23,7 @@ import { PiecesInPlayContext } from './context/PiecesInPlay';
 import { SelectedPieceContext } from './context/SelectedPiece';
 
 import './App.css';
+import IconButtonWithTooltip from './generic-components/IconButtonWithTooltip';
 
 function App() {
   const [activePiece, setActivePiece] = useState(null);
@@ -159,7 +160,6 @@ function App() {
           Vertical Stretch
         </button>
         <button className="button icon-button" onClick={handleRotation}>
-          <RotateCw />
           Rotate
           <p style={{ fontSize: '0.8rem', padding: 'none', margin: 'none' }}>
             {' '}

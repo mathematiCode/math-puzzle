@@ -4,6 +4,15 @@ import Rectangle from './Rectangle';
 import { useContext } from 'react';
 import { SelectedPieceContext } from '../context/SelectedPiece';
 import { motion } from 'motion/react';
+import ActionsPopUnder from './ActionsPopUnder';
+import {
+  makeStyles,
+  useId,
+  Button,
+  Popover,
+  PopoverTrigger,
+  PopoverSurface,
+} from '@fluentui/react-components';
 
 const PuzzlePiece = ({ piece }) => {
   //console.log('re-rendering this piece:', piece.id);
@@ -26,25 +35,31 @@ const PuzzlePiece = ({ piece }) => {
   }
 
   return (
-    <motion.button
-      ref={setNodeRef}
-      {...listeners}
-      {...attributes}
-      style={style}
-      className="puzzle-piece"
-      onClick={handlePieceSelected}
-      animate={{ rotate: piece.isRotated ? 90 : 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      <Rectangle
-        width={piece.width}
-        height={piece.height}
-        color={piece.color}
+    <>
+      <motion.button
         ref={setNodeRef}
         {...listeners}
         {...attributes}
-      />
-    </motion.button>
+        style={style}
+        className="puzzle-piece"
+        onClick={handlePieceSelected}
+        animate={{ rotate: piece.isRotated ? 90 : 0 }}
+        transition={{ duration: 0.5 }}
+        popoverTarget="actions"
+      >
+        <Rectangle
+          width={piece.width}
+          height={piece.height}
+          color={piece.color}
+          ref={setNodeRef}
+          {...listeners}
+          {...attributes}
+        />
+      </motion.button>
+      <div id="actions" popover="auto">
+        <ActionsPopUnder />
+      </div>
+    </>
   );
 };
 
