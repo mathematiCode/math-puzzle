@@ -7,7 +7,6 @@ import PlacedPieces from './components/PlacedPieces';
 import { motion } from 'motion/react';
 import { throttle } from 'lodash';
 import { pieces, sizeOfEachUnit } from './CONSTANTS';
-import { RotateCw } from 'lucide-react';
 import { useClickAway } from '@uidotdev/usehooks';
 import {
   DndContext,
@@ -28,13 +27,8 @@ function App() {
   const [activePiece, setActivePiece] = useState(null);
   const { selectedPiece, setSelectedPiece } = useContext(SelectedPieceContext);
 
-  const {
-    piecesInPlay,
-    movePiece,
-    updateDimensions,
-    rotatePiece,
-    resetPieces,
-  } = useContext(PiecesInPlayContext);
+  const { piecesInPlay, movePiece, resetPieces } =
+    useContext(PiecesInPlayContext);
 
   // useClickAway('Escape', console.log('Something was clicked'));
   const ref = useClickAway(() => {
@@ -76,36 +70,6 @@ function App() {
     } else movePiece(pieceIndex, null);
   };
 
-  function handleHorizontalStretch() {
-    console.log('I am the chosen one', selectedPiece);
-    if (Number.isInteger(selectedPiece.height / 2)) {
-      const newHeight = selectedPiece.height / 2;
-      const newWidth = selectedPiece.width * 2;
-      const id = selectedPiece.id;
-      const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
-      console.log(pieceIndex);
-      updateDimensions(pieceIndex, newWidth, newHeight);
-    }
-  }
-
-  function handleVerticalStretch() {
-    console.log('I am the chosen one', selectedPiece);
-    if (Number.isInteger(selectedPiece.width / 2)) {
-      const newHeight = selectedPiece.height * 2;
-      const newWidth = selectedPiece.width / 2;
-      const id = selectedPiece.id;
-      const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
-      console.log(pieceIndex);
-      updateDimensions(pieceIndex, newWidth, newHeight);
-    }
-  }
-
-  function handleRotation() {
-    const id = selectedPiece.id;
-    const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
-    rotatePiece(pieceIndex);
-  }
-
   return (
     <DndContext
       sensors={sensors}
@@ -141,30 +105,7 @@ function App() {
         </DragOverlay>
       </main>
       <div className="button-container">
-        <button
-          className="button icon-button"
-          onClick={handleHorizontalStretch}
-        >
-          <img
-            src="./assets/horizontalStretch.svg"
-            style={{ width: '35px', height: '35px' }}
-          />
-          Horizontal Stretch
-        </button>
-        <button className="button icon-button" onClick={handleVerticalStretch}>
-          <img
-            src="./assets/verticalStretch.svg"
-            style={{ width: '35px', height: '35px' }}
-          />
-          Vertical Stretch
-        </button>
-        <button className="button icon-button" onClick={handleRotation}>
-          Rotate
-          <p style={{ fontSize: '0.8rem', padding: 'none', margin: 'none' }}>
-            {' '}
-            Not completely working right yet
-          </p>
-        </button>
+        <button className="button">Next Level</button>
         <button onClick={resetPieces} className="button">
           Reset Game
         </button>

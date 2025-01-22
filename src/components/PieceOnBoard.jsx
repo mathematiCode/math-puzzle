@@ -6,8 +6,48 @@ import { SelectedPieceContext } from '../context/SelectedPiece';
 import { pieces, sizeOfEachUnit } from '../CONSTANTS';
 import { motion } from 'motion/react';
 
-const PieceOnBoard = ({ piece, id }) => {
+import {
+  Button,
+  Popover,
+  PopoverTrigger,
+  PopoverSurface,
+} from '@fluentui/react-components';
+import { RotateRightOutlined } from '@ant-design/icons';
+import { PiecesInPlayContext } from '../context/PiecesInPlay';
+
+function PieceOnBoard({ piece, id }) {
   const { selectedPiece, setSelectedPiece } = useContext(SelectedPieceContext);
+  const { updateDimensions, rotatePiece } = useContext(PiecesInPlayContext);
+
+  function handleRotation() {
+    const id = selectedPiece.id;
+    const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
+    rotatePiece(pieceIndex);
+  }
+
+  function handleHorizontalStretch() {
+    console.log('I am the chosen one', selectedPiece);
+    if (Number.isInteger(selectedPiece.height / 2)) {
+      const newHeight = selectedPiece.height / 2;
+      const newWidth = selectedPiece.width * 2;
+      const id = selectedPiece.id;
+      const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
+      console.log(pieceIndex);
+      updateDimensions(pieceIndex, newWidth, newHeight);
+    }
+  }
+
+  function handleVerticalStretch() {
+    console.log('I am the chosen one', selectedPiece);
+    if (Number.isInteger(selectedPiece.width / 2)) {
+      const newHeight = selectedPiece.height * 2;
+      const newWidth = selectedPiece.width / 2;
+      const id = selectedPiece.id;
+      const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
+      console.log(pieceIndex);
+      updateDimensions(pieceIndex, newWidth, newHeight);
+    }
+  }
 
   function convertlocationToXAndY(location) {
     const cleanedString = location.replace(/[()]/g, '');
@@ -43,23 +83,43 @@ const PieceOnBoard = ({ piece, id }) => {
   }
 
   return (
-    <motion.button
-      ref={setNodeRef}
-      {...listeners}
-      {...attributes}
-      style={style}
-      onClick={handlePieceSelected}
-      animate={{ rotate: piece.isRotated ? 90 : 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      <Rectangle
-        width={piece.width}
-        height={piece.height}
-        color={piece.color}
-        {...listeners}
-      />
-    </motion.button>
+    <Popover withArrow trapFocus size="medium" positioning="below">
+      <PopoverTrigger>
+        <motion.button
+          ref={setNodeRef}
+          {...listeners}
+          {...attributes}
+          style={style}
+          onClick={handlePieceSelected}
+          animate={{ rotate: piece.isRotated ? 90 : 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Rectangle
+            width={piece.width}
+            height={piece.height}
+            color={piece.color}
+            {...listeners}
+          />
+        </motion.button>
+      </PopoverTrigger>
+      <PopoverSurface id="actions">
+        <div className="actions-toolbar">
+          <Button className="icon-button" onClick={handleRotation}>
+            <RotateRightOutlined style={{ fontSize: '40px' }} />
+          </Button>
+          <Button className="icon-button" onClick={handleHorizontalStretch}>
+            <img
+              src="./assets/horizontalStretch.svg"
+              style={{ width: '40px' }}
+            />
+          </Button>
+          <Button className="icon-button" onClick={handleVerticalStretch}>
+            <img src="./assets/verticalStretch.svg" style={{ width: '40px' }} />
+          </Button>
+        </div>
+      </PopoverSurface>
+    </Popover>
   );
-};
+}
 
 export default memo(PieceOnBoard);

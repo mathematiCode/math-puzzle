@@ -5,27 +5,52 @@ import { useContext } from 'react';
 import { SelectedPieceContext } from '../context/SelectedPiece';
 import { motion } from 'motion/react';
 import {
-  makeStyles,
-  useId,
   Button,
   Popover,
   PopoverTrigger,
   PopoverSurface,
 } from '@fluentui/react-components';
 import { RotateRightOutlined } from '@ant-design/icons';
-
-// function handleRotation() {
-//   const id = selectedPiece.id;
-//   const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
-//   rotatePiece(pieceIndex);
-// }
+import { PiecesInPlayContext } from '../context/PiecesInPlay';
 
 const PuzzlePiece = ({ piece }) => {
   //console.log('re-rendering this piece:', piece.id);
+  const { updateDimensions, rotatePiece } = useContext(PiecesInPlayContext);
   const { selectedPiece, setSelectedPiece } = useContext(SelectedPieceContext);
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: piece.id,
   });
+
+  function handleRotation() {
+    const id = selectedPiece.id;
+    const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
+    rotatePiece(pieceIndex);
+  }
+
+  function handleHorizontalStretch() {
+    console.log('I am the chosen one', selectedPiece);
+    if (Number.isInteger(selectedPiece.height / 2)) {
+      const newHeight = selectedPiece.height / 2;
+      const newWidth = selectedPiece.width * 2;
+      const id = selectedPiece.id;
+      const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
+      console.log(pieceIndex);
+      updateDimensions(pieceIndex, newWidth, newHeight);
+    }
+  }
+
+  function handleVerticalStretch() {
+    console.log('I am the chosen one', selectedPiece);
+    if (Number.isInteger(selectedPiece.width / 2)) {
+      const newHeight = selectedPiece.height * 2;
+      const newWidth = selectedPiece.width / 2;
+      const id = selectedPiece.id;
+      const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
+      console.log(pieceIndex);
+      updateDimensions(pieceIndex, newWidth, newHeight);
+    }
+  }
+
   const style = {
     // ...(transform && {
     //   transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
@@ -66,16 +91,16 @@ const PuzzlePiece = ({ piece }) => {
       </PopoverTrigger>
       <PopoverSurface id="actions">
         <div className="actions-toolbar">
-          <Button className="icon-button">
+          <Button className="icon-button" onClick={handleRotation}>
             <RotateRightOutlined style={{ fontSize: '40px' }} />
           </Button>
-          <Button className="icon-button">
+          <Button className="icon-button" onClick={handleHorizontalStretch}>
             <img
               src="./assets/horizontalStretch.svg"
               style={{ width: '40px' }}
             />
           </Button>
-          <Button className="icon-button">
+          <Button className="icon-button" onClick={handleVerticalStretch}>
             <img src="./assets/verticalStretch.svg" style={{ width: '40px' }} />
           </Button>
         </div>

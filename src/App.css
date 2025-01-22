@@ -117,3 +117,8 @@ button:focus {
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
   /* box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px; */
 }
+
+.icon-button {
+  padding: 0px;
+  margin: 0px;
+}
