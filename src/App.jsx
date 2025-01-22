@@ -7,6 +7,7 @@ import PlacedPieces from './components/PlacedPieces';
 import { motion } from 'motion/react';
 import { initialPieces, sizeOfEachUnit } from './CONSTANTS';
 import { useClickAway } from '@uidotdev/usehooks';
+import { range } from 'lodash';
 import {
   DndContext,
   DragOverlay,
@@ -101,12 +102,31 @@ function App() {
           <PlacedPieces piecesInPlay={piecesInPlay} />
         </div>
         {activePiece ? (
-          <DragOverlay style={{ rotate: activePiece.isRotated ? 90 : 0 }}>
-            <Rectangle
+          <DragOverlay>
+            {/* <Rectangle
               width={activePiece.width}
               height={activePiece.height}
               color={activePiece.color}
-            />
+              style={{ rotate: activePiece.isRotated ? 90 : 0 }}
+            /> */}
+            <motion.div
+              ref={ref}
+              className="unit-container"
+              animate={{ rotate: activePiece.isRotated ? 90 : 0 }}
+              style={{
+                gridTemplateColumns: `repeat(${activePiece.width}, 1fr)`,
+                backgroundColor: 'transparent',
+              }}
+            >
+              {range(activePiece.width * activePiece.height).map(unit => (
+                <motion.div
+                  className="unit"
+                  key={unit}
+                  layout={true}
+                  style={{ backgroundColor: activePiece.color }}
+                />
+              ))}
+            </motion.div>
           </DragOverlay>
         ) : null}
       </main>
