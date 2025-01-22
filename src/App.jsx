@@ -23,7 +23,6 @@ import { PiecesInPlayContext } from './context/PiecesInPlay';
 import { SelectedPieceContext } from './context/SelectedPiece';
 
 import './App.css';
-import IconButtonWithTooltip from './generic-components/IconButtonWithTooltip';
 
 function App() {
   const [activePiece, setActivePiece] = useState(null);

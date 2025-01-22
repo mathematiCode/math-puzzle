@@ -4,7 +4,6 @@ import Rectangle from './Rectangle';
 import { useContext } from 'react';
 import { SelectedPieceContext } from '../context/SelectedPiece';
 import { motion } from 'motion/react';
-import ActionsPopUnder from './ActionsPopUnder';
 import {
   makeStyles,
   useId,
@@ -13,6 +12,13 @@ import {
   PopoverTrigger,
   PopoverSurface,
 } from '@fluentui/react-components';
+import { RotateRightOutlined } from '@ant-design/icons';
+
+// function handleRotation() {
+//   const id = selectedPiece.id;
+//   const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
+//   rotatePiece(pieceIndex);
+// }
 
 const PuzzlePiece = ({ piece }) => {
   //console.log('re-rendering this piece:', piece.id);
@@ -35,31 +41,46 @@ const PuzzlePiece = ({ piece }) => {
   }
 
   return (
-    <>
-      <motion.button
-        ref={setNodeRef}
-        {...listeners}
-        {...attributes}
-        style={style}
-        className="puzzle-piece"
-        onClick={handlePieceSelected}
-        animate={{ rotate: piece.isRotated ? 90 : 0 }}
-        transition={{ duration: 0.5 }}
-        popoverTarget="actions"
-      >
-        <Rectangle
-          width={piece.width}
-          height={piece.height}
-          color={piece.color}
+    <Popover withArrow trapFocus size="medium" positioning="below">
+      <PopoverTrigger>
+        <motion.button
           ref={setNodeRef}
           {...listeners}
           {...attributes}
-        />
-      </motion.button>
-      <div id="actions" popover="auto">
-        <ActionsPopUnder />
-      </div>
-    </>
+          style={style}
+          className="puzzle-piece"
+          onClick={handlePieceSelected}
+          animate={{ rotate: piece.isRotated ? 90 : 0 }}
+          transition={{ duration: 0.5 }}
+          popoverTarget="actions"
+        >
+          <Rectangle
+            width={piece.width}
+            height={piece.height}
+            color={piece.color}
+            ref={setNodeRef}
+            {...listeners}
+            {...attributes}
+          />
+        </motion.button>
+      </PopoverTrigger>
+      <PopoverSurface id="actions">
+        <div className="actions-toolbar">
+          <Button className="icon-button">
+            <RotateRightOutlined style={{ fontSize: '40px' }} />
+          </Button>
+          <Button className="icon-button">
+            <img
+              src="./assets/horizontalStretch.svg"
+              style={{ width: '40px' }}
+            />
+          </Button>
+          <Button className="icon-button">
+            <img src="./assets/verticalStretch.svg" style={{ width: '40px' }} />
+          </Button>
+        </div>
+      </PopoverSurface>
+    </Popover>
   );
 };
 

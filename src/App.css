@@ -105,3 +105,15 @@ button:focus {
   align-items: center;
   justify-content: center;
 }
+
+.actions-toolbar {
+  background-color: white;
+  color: hsl(178, 100%, 23%);
+  border-radius: 5px;
+  margin-top: 0px;
+  top: 0px;
+  padding-block: 8px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  /* box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px; */
+}

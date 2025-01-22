@@ -36,6 +36,15 @@
 
 - make the board generate based on the coordinate points ✅
 
+1/21/2025
+
+- Make or use a popover component for actions toolbar
+- Add popover component to the pieceOnBoardComponents
+
+1/22/2025
+
+- Implement action buttons and delete original action buttons
+
 In General
 
 - Deselect puzzle pieces on clickAway with a custom hook
@@ -45,4 +54,7 @@ In General
 - Make it impossible to put pieces on top of each other
 - Add animations to reset function
 - Implement piece rotations
-- Make a popover component with buttons api
+
+Bugs to Fix
+
+- When moving a piece with the spacebar and keyboard, and then pressing reset game, that piece stays on the board.
