@@ -5,7 +5,7 @@ import Rectangle from './components/Rectangle';
 import Board from './components/Board';
 import PlacedPieces from './components/PlacedPieces';
 import { motion } from 'motion/react';
-import { pieces, sizeOfEachUnit } from './CONSTANTS';
+import { initialPieces, sizeOfEachUnit } from './CONSTANTS';
 import { useClickAway } from '@uidotdev/usehooks';
 import {
   DndContext,
@@ -28,7 +28,7 @@ function App() {
 
   const { piecesInPlay, movePiece, resetPieces } =
     useContext(PiecesInPlayContext);
-
+  console.log('activePiece is', activePiece);
   // useClickAway('Escape', console.log('Something was clicked'));
   const ref = useClickAway(() => {
     setSelectedPiece(null);
@@ -50,16 +50,24 @@ function App() {
 
   const handleDragStart = event => {
     console.log('Dragging has started.');
+    console.log('intialPieces', initialPieces);
     const id = event.active.id;
     const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
-    setActivePiece(pieces[pieceIndex]);
-    setSelectedPiece(pieces[pieceIndex]);
+    setActivePiece(piecesInPlay[pieceIndex]);
+    setSelectedPiece(piecesInPlay[pieceIndex]);
   };
 
   const handleDragEnd = event => {
     console.log('Dragging has ended');
     const id = event.active.id;
-    console.log('width', activePiece.width, 'height', activePiece.height);
+    console.log(
+      'width',
+      activePiece.width,
+      'height',
+      activePiece.height,
+      'color',
+      activePiece.color
+    );
     const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
     if (event?.over?.id) {
       console.log('ID IS:', id);
@@ -78,7 +86,7 @@ function App() {
     >
       <main>
         <motion.div className="pieces-container" layout={true}>
-          {pieces.map((piece, pieceIndex) => {
+          {piecesInPlay.map((piece, pieceIndex) => {
             if (piece.location != null) return null;
             return (
               <PuzzlePiece piece={piece} key={pieceIndex} forwardedRef={ref} />

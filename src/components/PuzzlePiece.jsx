@@ -5,7 +5,6 @@ import { useContext } from 'react';
 import { SelectedPieceContext } from '../context/SelectedPiece';
 import { motion } from 'motion/react';
 import {
-  Button,
   Popover,
   PopoverTrigger,
   PopoverSurface,
@@ -62,9 +61,8 @@ const PuzzlePiece = ({ piece }) => {
 
   function handlePieceSelected() {
     setSelectedPiece(piece);
-    console.log('new piece is selected');
+    console.log('new piece is selected', piece);
   }
-
   return (
     <Popover
       withArrow

@@ -3,11 +3,10 @@ import { useDraggable } from '@dnd-kit/core';
 import Rectangle from './Rectangle';
 import { memo, useContext } from 'react';
 import { SelectedPieceContext } from '../context/SelectedPiece';
-import { pieces, sizeOfEachUnit } from '../CONSTANTS';
+import { sizeOfEachUnit } from '../CONSTANTS';
 import { motion } from 'motion/react';
 
 import {
-  Button,
   Popover,
   PopoverTrigger,
   PopoverSurface,
@@ -17,7 +16,8 @@ import { PiecesInPlayContext } from '../context/PiecesInPlay';
 
 function PieceOnBoard({ piece, id }) {
   const { selectedPiece, setSelectedPiece } = useContext(SelectedPieceContext);
-  const { updateDimensions, rotatePiece } = useContext(PiecesInPlayContext);
+  const { piecesInPlay, updateDimensions, rotatePiece } =
+    useContext(PiecesInPlayContext);
 
   function handleRotation() {
     const id = selectedPiece.id;
@@ -77,7 +77,7 @@ function PieceOnBoard({ piece, id }) {
   };
 
   function handlePieceSelected() {
-    const chosenPiece = pieces.find(piece => id === piece.id);
+    const chosenPiece = piecesInPlay.find(piece => id === piece.id);
     setSelectedPiece(chosenPiece);
     console.log('new piece is selected');
   }

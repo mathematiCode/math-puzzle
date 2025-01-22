@@ -1,25 +1,19 @@
 /* eslint-disable react/prop-types */
 import { createContext, useState } from 'react';
-import levels from '../levels.json';
+import { initialPieces, colors } from '../CONSTANTS';
 export const PiecesInPlayContext = createContext();
-
 const initialLocation = null;
-const colors = [
-  'hsl(178, 100%, 32%)',
-  'hsl(0, 61%, 66%)',
-  '	hsl(185, 78%, 80%)',
-  'hsl(38, 87%, 66%)',
-];
 
-const futurePiecesList = levels[0].pieces;
-futurePiecesList.forEach((piece, index) => {
-  piece.location = initialLocation;
-  piece.color = colors[index % colors.length];
-  piece.id = `initial-${index}`;
-  piece.isRotated = false;
-});
+const futurePiecesList = initialPieces.map((piece, index) => ({
+  ...piece,
+  location: initialLocation,
+  color: colors[index % colors.length],
+  id: `initial-${index}`,
+  isRotated: false,
+}));
 
 function PiecesInPlayProvider({ children }) {
+  console.log('futurePiecesList', futurePiecesList);
   const [piecesInPlay, setPiecesInPlay] = useState(futurePiecesList);
 
   function movePiece(pieceIndex, newLocation) {
@@ -46,11 +40,12 @@ function PiecesInPlayProvider({ children }) {
     const updatedPieces = [...piecesInPlay];
     updatedPieces.forEach((piece, index) => {
       piece.location = initialLocation;
-      piece.width = levels[0].pieces[index].width;
-      piece.height = levels[0].pieces[index].height;
+      piece.width = initialPieces[index].width;
+      piece.height = initialPieces[index].height;
       piece.id = `initial-${index}`;
       piece.isRotated = false;
       console.log('updated Pieces is:', updatedPieces);
+      console.log('levels pieces is', initialPieces);
     });
     setPiecesInPlay(updatedPieces);
   }
