@@ -66,7 +66,7 @@ const PuzzlePiece = ({ piece }) => {
   }
 
   return (
-    <Popover withArrow trapFocus size="medium" positioning="below">
+    <Popover withArrow trapFocus size="small" positioning="below">
       <PopoverTrigger>
         <motion.button
           ref={setNodeRef}
@@ -91,18 +91,20 @@ const PuzzlePiece = ({ piece }) => {
       </PopoverTrigger>
       <PopoverSurface id="actions">
         <div className="actions-toolbar">
-          <Button className="icon-button" onClick={handleRotation}>
-            <RotateRightOutlined style={{ fontSize: '40px' }} />
-          </Button>
-          <Button className="icon-button" onClick={handleHorizontalStretch}>
+          <button className="icon-button" onClick={handleRotation}>
+            <RotateRightOutlined
+              style={{ fontSize: '32px', color: 'hsl(178, 100%, 23%)' }}
+            />
+          </button>
+          <button className="icon-button" onClick={handleHorizontalStretch}>
             <img
               src="./assets/horizontalStretch.svg"
-              style={{ width: '40px' }}
+              style={{ width: '32px' }}
             />
-          </Button>
-          <Button className="icon-button" onClick={handleVerticalStretch}>
-            <img src="./assets/verticalStretch.svg" style={{ width: '40px' }} />
-          </Button>
+          </button>
+          <button className="icon-button" onClick={handleVerticalStretch}>
+            <img src="./assets/verticalStretch.svg" style={{ width: '32px' }} />
+          </button>
         </div>
       </PopoverSurface>
     </Popover>

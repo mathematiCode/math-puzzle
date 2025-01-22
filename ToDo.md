@@ -38,12 +38,11 @@
 
 1/21/2025
 
-- Make or use a popover component for actions toolbar
-- Add popover component to the pieceOnBoardComponents
+- Make or use a popover component for actions toolbar ✅
+- Add popover component to the pieceOnBoardComponents ✅
+- Implement action buttons and delete original action buttons ✅
 
 1/22/2025
-
-- Implement action buttons and delete original action buttons
 
 In General
 
@@ -54,6 +53,7 @@ In General
 - Make it impossible to put pieces on top of each other
 - Add animations to reset function
 - Implement piece rotations
+- Make reset game reset the pieces to their original widths and heights
 
 Bugs to Fix
 
