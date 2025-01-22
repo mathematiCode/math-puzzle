@@ -125,3 +125,9 @@ button:focus {
   margin: 0px;
   border: none;
 }
+
+button:disabled,
+button:disabled:hover {
+  background-color: gray;
+  color: darkgray;
+}

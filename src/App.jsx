@@ -5,7 +5,6 @@ import Rectangle from './components/Rectangle';
 import Board from './components/Board';
 import PlacedPieces from './components/PlacedPieces';
 import { motion } from 'motion/react';
-import { throttle } from 'lodash';
 import { pieces, sizeOfEachUnit } from './CONSTANTS';
 import { useClickAway } from '@uidotdev/usehooks';
 import {
@@ -25,7 +24,7 @@ import './App.css';
 
 function App() {
   const [activePiece, setActivePiece] = useState(null);
-  const { selectedPiece, setSelectedPiece } = useContext(SelectedPieceContext);
+  const { setSelectedPiece } = useContext(SelectedPieceContext);
 
   const { piecesInPlay, movePiece, resetPieces } =
     useContext(PiecesInPlayContext);
@@ -105,7 +104,9 @@ function App() {
         </DragOverlay>
       </main>
       <div className="button-container">
-        <button className="button">Next Level</button>
+        <button className="button" disabled>
+          Next Level
+        </button>
         <button onClick={resetPieces} className="button">
           Reset Game
         </button>
