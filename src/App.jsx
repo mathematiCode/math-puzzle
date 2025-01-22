@@ -92,16 +92,15 @@ function App() {
           />
           <PlacedPieces piecesInPlay={piecesInPlay} />
         </div>
-        <DragOverlay>
-          {activePiece ? (
+        {activePiece ? (
+          <DragOverlay style={{ rotate: activePiece.isRotated ? 90 : 0 }}>
             <Rectangle
               width={activePiece.width}
               height={activePiece.height}
               color={activePiece.color}
-              isRotated={activePiece.isRotated}
             />
-          ) : null}
-        </DragOverlay>
+          </DragOverlay>
+        ) : null}
       </main>
       <div className="button-container">
         <button className="button" disabled>

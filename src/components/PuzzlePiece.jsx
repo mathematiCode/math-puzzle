@@ -66,7 +66,13 @@ const PuzzlePiece = ({ piece }) => {
   }
 
   return (
-    <Popover withArrow trapFocus size="small" positioning="below">
+    <Popover
+      withArrow
+      trapFocus
+      size="small"
+      positioning="below"
+      style={{ gap: '0px' }}
+    >
       <PopoverTrigger>
         <motion.button
           ref={setNodeRef}

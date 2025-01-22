@@ -19,8 +19,8 @@
     "lodash": "^4.17.21",
     "lucide-react": "^0.471.1",
     "motion": "^11.16.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "styled-components": "^6.1.14"
   },
   "devDependencies": {

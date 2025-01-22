@@ -128,6 +128,6 @@ button:focus {
 
 button:disabled,
 button:disabled:hover {
-  background-color: gray;
+  background-color: lightgrey;
   color: darkgray;
 }
