@@ -1,11 +1,13 @@
+/* eslint-disable react/prop-types */
 import { motion } from 'motion/react';
 import { range } from 'lodash';
 import PropTypes from 'prop-types';
-import { memo } from 'react';
-function Rectangle({ width, height, color, ...delegated }) {
+import { memo, forwardRef } from 'react';
+function Rectangle({ width, height, color, ...delegated }, ref) {
   const total = width * height;
   return (
     <motion.div
+      ref={ref}
       className="unit-container"
       style={{
         gridTemplateColumns: `repeat(${width}, 1fr)`,
@@ -24,10 +26,11 @@ function Rectangle({ width, height, color, ...delegated }) {
     </motion.div>
   );
 }
-Rectangle.propTypes = {
-  width: PropTypes.number.isRequired,
-  height: PropTypes.number.isRequired,
-  color: PropTypes.string.isRequired,
-};
+// Rectangle.propTypes = {
+//   width: PropTypes.number.isRequired,
+//   height: PropTypes.number.isRequired,
+//   color: PropTypes.string.isRequired,
+// };
 
-export default memo(Rectangle);
+const MemoizedForwardedRectangle = memo(forwardRef(Rectangle));
+export default MemoizedForwardedRectangle;
