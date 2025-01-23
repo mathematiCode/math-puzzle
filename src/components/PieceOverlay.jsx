@@ -10,6 +10,7 @@ function PieceOverlay({ activePiece }) {
     <motion.div
       className="unit-container"
       animate={{ rotate: activePiece.isRotated ? 90 : 0 }}
+      transition={{ duration: 0 }}
       style={{
         gridTemplateColumns: `repeat(${activePiece.width}, 1fr)`,
         backgroundColor: 'transparent',

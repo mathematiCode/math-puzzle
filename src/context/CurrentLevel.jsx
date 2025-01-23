@@ -6,6 +6,7 @@ import { colors } from '../CONSTANTS';
 export const CurrentLevelContext = createContext();
 
 const initialLocation = null;
+const numberOfLevels = levels.length;
 
 function CurrentLevelProvider({ children }) {
   const [currentLevel, setCurrentLevel] = useState(0);
@@ -16,13 +17,32 @@ function CurrentLevelProvider({ children }) {
 
   const sizeOfEachUnit = Math.round(500 / Math.max(width, height));
 
-  const immutablePiecesList = initialPieces.map((piece, index) => ({
-    ...piece,
-    location: initialLocation,
-    color: colors[index % colors.length],
-    id: `initial-${index}`,
-    isRotated: false,
-  }));
+  console.log('updating immutable list with initialPieces', initialPieces);
+  const immutablePiecesList = levels[currentLevel].pieces.map(
+    (piece, index) => ({
+      ...piece,
+      location: initialLocation,
+      color: colors[index % colors.length],
+      id: `initial-${index}`,
+      isRotated: false,
+    })
+  );
+
+  function nextLevel() {
+    if (currentLevel === numberOfLevels - 1) {
+      return;
+    } else {
+      setCurrentLevel(currentLevel + 1);
+    }
+  }
+
+  function previousLevel() {
+    if (currentLevel === 0) {
+      return;
+    } else {
+      setCurrentLevel(currentLevel - 1);
+    }
+  }
 
   return (
     <CurrentLevelContext.Provider
@@ -31,6 +51,8 @@ function CurrentLevelProvider({ children }) {
         immutablePiecesList,
         initialPieces,
         sizeOfEachUnit,
+        nextLevel,
+        previousLevel,
         setCurrentLevel,
       }}
     >

@@ -1,6 +1,6 @@
 [
   {
-    "id": 2,
+    "id": 1,
     "dimensions": { "width": 10, "height": 11 },
     "boardSections": [
       [
@@ -19,7 +19,7 @@
     ]
   },
   {
-    "id": 1,
+    "id": 2,
     "dimensions": { "width": 22, "height": 18 },
     "boardSections": [
       [
