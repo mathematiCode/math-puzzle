@@ -1,8 +1,7 @@
 /* eslint-disable react/prop-types */
-import { createContext, useState } from 'react';
+import { createContext, useState, useContext } from 'react';
 import levels from '../levels.json';
 import { colors } from '../CONSTANTS';
-
 export const CurrentLevelContext = createContext();
 
 const initialLocation = null;
@@ -33,6 +32,7 @@ function CurrentLevelProvider({ children }) {
       return;
     } else {
       setCurrentLevel(currentLevel + 1);
+      setPiecesForNewLevel();
     }
   }
 
@@ -41,6 +41,7 @@ function CurrentLevelProvider({ children }) {
       return;
     } else {
       setCurrentLevel(currentLevel - 1);
+      setPiecesForNewLevel();
     }
   }
 

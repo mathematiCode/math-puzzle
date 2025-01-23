@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useState } from 'react';
 import levels from './levels.json';
 import PuzzlePiece from './components/PuzzlePiece';
 import PieceOverlay from './components/PieceOverlay';
@@ -18,11 +18,12 @@ function App() {
   const { currentLevel, previousLevel, nextLevel } =
     useContext(CurrentLevelContext);
   const [activePiece, setActivePiece] = useState(null);
-  const { piecesInPlay, resetPieces } = useContext(PiecesInPlayContext);
-
+  const { piecesInPlay, resetPieces, setPiecesForNewLevel } =
+    useContext(PiecesInPlayContext);
+  setPiecesForNewLevel();
   return (
     <main>
-      <DragAndDropArea setActivePiece={setActivePiece}>
+      <DragAndDropArea setActivePiece={setActivePiece} key={currentLevel}>
         <motion.div
           className="pieces-container"
           layout={true}

@@ -47,6 +47,9 @@ function PiecesInPlayProvider({ children }) {
     setPiecesInPlay(updatedPieces);
   }
 
+  function setPiecesForNewLevel() {
+    setPiecesInPlay(immutablePiecesList);
+  }
   return (
     <PiecesInPlayContext.Provider
       value={{
@@ -55,6 +58,7 @@ function PiecesInPlayProvider({ children }) {
         updateDimensions,
         rotatePiece,
         resetPieces,
+        setPiecesForNewLevel,
       }}
     >
       {children}
