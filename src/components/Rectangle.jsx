@@ -2,9 +2,10 @@
 import { motion } from 'motion/react';
 import { range } from 'lodash';
 import PropTypes from 'prop-types';
-import { memo, forwardRef } from 'react';
-import { sizeOfEachUnit } from '../CONSTANTS';
+import { memo, forwardRef, useContext } from 'react';
+import { CurrentLevelContext } from '../context/CurrentLevel';
 function Rectangle({ width, height, color, ...delegated }, ref) {
+  const { sizeOfEachUnit } = useContext(CurrentLevelContext);
   const total = width * height;
   return (
     <motion.div

@@ -25,7 +25,6 @@ function Board({ dimensions, boardSections }) {
             />
           );
         } else {
-          console.log('row is', row);
           return (
             <div
               key="div"

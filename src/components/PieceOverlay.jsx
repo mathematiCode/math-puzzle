@@ -1,10 +1,11 @@
-import { memo } from 'react';
+import { memo, useContext } from 'react';
 import { motion } from 'motion/react';
 import { range } from 'lodash';
 import PropTypes from 'prop-types';
-import { sizeOfEachUnit } from '../CONSTANTS';
+import { CurrentLevelContext } from '../context/CurrentLevel';
 
 function PieceOverlay({ activePiece }) {
+  const { sizeOfEachUnit } = useContext(CurrentLevelContext);
   return (
     <motion.div
       className="unit-container"

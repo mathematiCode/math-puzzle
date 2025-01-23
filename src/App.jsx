@@ -5,7 +5,7 @@ import PieceOverlay from './components/PieceOverlay';
 import Board from './components/Board';
 import PlacedPieces from './components/PlacedPieces';
 import { motion } from 'motion/react';
-import { initialPieces, sizeOfEachUnit, currentLevel } from './CONSTANTS';
+// import { initialPieces, sizeOfEachUnit, currentLevel } from './CONSTANTS';
 import { useClickAway } from '@uidotdev/usehooks';
 import {
   DndContext,
@@ -19,16 +19,18 @@ import {
 import { createSnapModifier, restrictToWindowEdges } from '@dnd-kit/modifiers';
 import { PiecesInPlayContext } from './context/PiecesInPlay';
 import { SelectedPieceContext } from './context/SelectedPiece';
+import { CurrentLevelContext } from './context/CurrentLevel';
 
 import './App.css';
 
 function App() {
   const [activePiece, setActivePiece] = useState(null);
   const { setSelectedPiece } = useContext(SelectedPieceContext);
+  const { currentLevel, initialPieces, sizeOfEachUnit } =
+    useContext(CurrentLevelContext);
 
   const { piecesInPlay, movePiece, resetPieces } =
     useContext(PiecesInPlayContext);
-  console.log('activePiece is', activePiece);
   // useClickAway('Escape', console.log('Something was clicked'));
   const ref = useClickAway(() => {
     setSelectedPiece(null);
@@ -49,8 +51,6 @@ function App() {
   const sensors = useSensors(mouseSensor, touchSensor, keyboardSensor);
 
   const handleDragStart = event => {
-    console.log('Dragging has started.');
-    console.log('intialPieces', initialPieces);
     const id = event.active.id;
     const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
     setActivePiece(piecesInPlay[pieceIndex]);
@@ -58,21 +58,10 @@ function App() {
   };
 
   const handleDragEnd = event => {
-    console.log('Dragging has ended');
     const id = event.active.id;
-    console.log(
-      'width',
-      activePiece.width,
-      'height',
-      activePiece.height,
-      'color',
-      activePiece.color
-    );
     const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
     if (event?.over?.id) {
-      console.log('ID IS:', id);
       const newLocation = event.over.id;
-      console.log('pieceIndex', pieceIndex, 'location', newLocation);
       movePiece(pieceIndex, newLocation);
     } else movePiece(pieceIndex, null);
   };
@@ -102,12 +91,6 @@ function App() {
         </div>
         {activePiece ? (
           <DragOverlay>
-            {/* <Rectangle
-              width={activePiece.width}
-              height={activePiece.height}
-              color={activePiece.color}
-              style={{ rotate: activePiece.isRotated ? 90 : 0 }}
-            /> */}
             <PieceOverlay activePiece={activePiece} />
           </DragOverlay>
         ) : null}

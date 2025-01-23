@@ -3,7 +3,6 @@ import { useDraggable } from '@dnd-kit/core';
 import Rectangle from './Rectangle';
 import { memo, useContext } from 'react';
 import { SelectedPieceContext } from '../context/SelectedPiece';
-import { sizeOfEachUnit } from '../CONSTANTS';
 import { motion } from 'motion/react';
 
 import {
@@ -13,11 +12,13 @@ import {
 } from '@fluentui/react-components';
 import { RotateRightOutlined } from '@ant-design/icons';
 import { PiecesInPlayContext } from '../context/PiecesInPlay';
+import { CurrentLevelContext } from '../context/CurrentLevel';
 
 function PieceOnBoard({ piece, id }) {
   const { selectedPiece, setSelectedPiece } = useContext(SelectedPieceContext);
   const { piecesInPlay, updateDimensions, rotatePiece } =
     useContext(PiecesInPlayContext);
+  const { sizeOfEachUnit } = useContext(CurrentLevelContext);
 
   function handleRotation() {
     const id = selectedPiece.id;
@@ -26,7 +27,6 @@ function PieceOnBoard({ piece, id }) {
   }
 
   function handleHorizontalStretch() {
-    console.log('I am the chosen one', selectedPiece);
     if (Number.isInteger(selectedPiece.height / 2)) {
       const newHeight = selectedPiece.height / 2;
       const newWidth = selectedPiece.width * 2;
@@ -38,7 +38,6 @@ function PieceOnBoard({ piece, id }) {
   }
 
   function handleVerticalStretch() {
-    console.log('I am the chosen one', selectedPiece);
     if (Number.isInteger(selectedPiece.width / 2)) {
       const newHeight = selectedPiece.height * 2;
       const newWidth = selectedPiece.width / 2;
@@ -79,7 +78,6 @@ function PieceOnBoard({ piece, id }) {
   function handlePieceSelected() {
     const chosenPiece = piecesInPlay.find(piece => id === piece.id);
     setSelectedPiece(chosenPiece);
-    console.log('new piece is selected');
   }
 
   return (

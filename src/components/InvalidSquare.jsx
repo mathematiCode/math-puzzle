@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
-import { sizeOfEachUnit } from '../CONSTANTS';
+import { useContext } from 'react';
+import { CurrentLevelContext } from '../context/CurrentLevel';
 
 function LandingSquare({ id }) {
+  const { sizeOfEachUnit } = useContext(CurrentLevelContext);
   return (
     <div
       className="unit"

@@ -1,5 +1,24 @@
 [
   {
+    "id": 2,
+    "dimensions": { "width": 10, "height": 11 },
+    "boardSections": [
+      [
+        { "x": 0, "y": 0, "width": 4, "height": 3, "valid": false },
+        { "x": 4, "y": 0, "width": 6, "height": 3, "valid": true }
+      ],
+      [{ "x": 0, "y": 3, "width": 10, "height": 8, "valid": true }]
+    ],
+    "pieces": [
+      { "width": 2, "height": 4 },
+      { "width": 2, "height": 4 },
+      { "width": 4, "height": 3 },
+      { "width": 6, "height": 5 },
+      { "width": 8, "height": 2 },
+      { "width": 8, "height": 3 }
+    ]
+  },
+  {
     "id": 1,
     "dimensions": { "width": 22, "height": 18 },
     "boardSections": [
@@ -18,25 +37,6 @@
       { "width": 9, "height": 6 },
       { "width": 4, "height": 7 },
       { "width": 12, "height": 4 }
-    ]
-  },
-  {
-    "id": 2,
-    "dimensions": { "width": 10, "height": 11 },
-    "boardSections": [
-      [
-        { "x": 0, "y": 0, "width": 4, "height": 3, "valid": false },
-        { "x": 4, "y": 0, "width": 6, "height": 3, "valid": true }
-      ],
-      [{ "x": 0, "y": 3, "width": 10, "height": 8, "valid": true }]
-    ],
-    "pieces": [
-      { "width": 2, "height": 4 },
-      { "width": 2, "height": 4 },
-      { "width": 4, "height": 3 },
-      { "width": 6, "height": 5 },
-      { "width": 8, "height": 2 },
-      { "width": 8, "height": 3 }
     ]
   }
 ]

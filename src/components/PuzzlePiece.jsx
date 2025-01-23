@@ -27,7 +27,6 @@ const PuzzlePiece = ({ piece }) => {
   }
 
   function handleHorizontalStretch() {
-    console.log('I am the chosen one', selectedPiece);
     if (Number.isInteger(selectedPiece.height / 2)) {
       const newHeight = selectedPiece.height / 2;
       const newWidth = selectedPiece.width * 2;
@@ -39,13 +38,11 @@ const PuzzlePiece = ({ piece }) => {
   }
 
   function handleVerticalStretch() {
-    console.log('I am the chosen one', selectedPiece);
     if (Number.isInteger(selectedPiece.width / 2)) {
       const newHeight = selectedPiece.height * 2;
       const newWidth = selectedPiece.width / 2;
       const id = selectedPiece.id;
       const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
-      console.log(pieceIndex);
       updateDimensions(pieceIndex, newWidth, newHeight);
     }
   }
@@ -61,7 +58,6 @@ const PuzzlePiece = ({ piece }) => {
 
   function handlePieceSelected() {
     setSelectedPiece(piece);
-    console.log('new piece is selected', piece);
   }
   return (
     <Popover

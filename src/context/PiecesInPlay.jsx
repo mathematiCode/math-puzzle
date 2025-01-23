@@ -1,20 +1,15 @@
 /* eslint-disable react/prop-types */
-import { createContext, useState } from 'react';
-import { initialPieces, colors } from '../CONSTANTS';
+import { createContext, useState, useContext } from 'react';
+// import { colors } from '../CONSTANTS';
 export const PiecesInPlayContext = createContext();
+
+import { CurrentLevelContext } from '../context/CurrentLevel';
 const initialLocation = null;
 
-const futurePiecesList = initialPieces.map((piece, index) => ({
-  ...piece,
-  location: initialLocation,
-  color: colors[index % colors.length],
-  id: `initial-${index}`,
-  isRotated: false,
-}));
-
 function PiecesInPlayProvider({ children }) {
-  console.log('futurePiecesList', futurePiecesList);
-  const [piecesInPlay, setPiecesInPlay] = useState(futurePiecesList);
+  const { immutablePiecesList, initialPieces } =
+    useContext(CurrentLevelContext);
+  const [piecesInPlay, setPiecesInPlay] = useState(immutablePiecesList);
 
   function movePiece(pieceIndex, newLocation) {
     const updatedPieces = [...piecesInPlay];
@@ -25,8 +20,6 @@ function PiecesInPlayProvider({ children }) {
       updatedPieces[pieceIndex].id = `initial-${pieceIndex}`;
     }
     setPiecesInPlay(updatedPieces);
-    console.log(updatedPieces);
-    console.log('piecesInPlay', piecesInPlay);
   }
 
   function updateDimensions(pieceIndex, width, height) {
@@ -44,8 +37,6 @@ function PiecesInPlayProvider({ children }) {
       piece.height = initialPieces[index].height;
       piece.id = `initial-${index}`;
       piece.isRotated = false;
-      console.log('updated Pieces is:', updatedPieces);
-      console.log('levels pieces is', initialPieces);
     });
     setPiecesInPlay(updatedPieces);
   }
