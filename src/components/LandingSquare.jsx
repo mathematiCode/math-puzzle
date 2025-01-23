@@ -1,5 +1,6 @@
 import { useDroppable } from '@dnd-kit/core';
 import PropTypes from 'prop-types';
+import { sizeOfEachUnit } from '../CONSTANTS';
 
 function LandingSquare({ id, color }) {
   const { isOver, setNodeRef } = useDroppable({
@@ -11,8 +12,11 @@ function LandingSquare({ id, color }) {
     <div
       className="unit"
       key={id}
+      id={id}
       style={{
         backgroundColor: color,
+        width: `${sizeOfEachUnit - 2}px`,
+        height: `${sizeOfEachUnit - 2}px`,
       }}
       ref={setNodeRef}
     />

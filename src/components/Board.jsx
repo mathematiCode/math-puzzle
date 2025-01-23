@@ -3,7 +3,7 @@ import BoardSection from './BoardSection';
 import PropTypes from 'prop-types';
 
 function Board({ dimensions, boardSections }) {
-  const boardWidth = dimensions.x;
+  const boardWidth = dimensions.width;
 
   return (
     <div
@@ -54,77 +54,6 @@ function Board({ dimensions, boardSections }) {
     </div>
   );
 }
-
-// return (
-//   <div
-//     style={{
-//       gridTemplateColumns: `repeat(${boardWidth}, 1fr)`,
-//       zIndex: '0',
-//     }}
-//   >
-//     <div
-//       style={{
-//         display: 'flex',
-//       }}
-//     >
-//       <div
-//         className="unit-container board"
-//         style={{
-//           gridTemplateColumns: `repeat(${6}, 1fr)`,
-//           zIndex: '3',
-//         }}
-//       >
-//         {range(9).map((row, rowIndex) => {
-//           return range(6).map((square, colIndex) => {
-//             return (
-//               <InvalidSquare
-//                 key={`(${colIndex},${rowIndex})`}
-//                 id={`(${colIndex},${rowIndex})`}
-//               />
-//             );
-//           });
-//         })}
-//       </div>
-//       <div
-//         className="unit-container board"
-//         style={{
-//           gridTemplateColumns: `repeat(${16}, 1fr)`,
-//         }}
-//       >
-//         {range(9).map((row, rowIndex) => {
-//           return range(16).map((square, colIndex) => {
-//             console.log(`(${colIndex + 6},${rowIndex})`);
-//             return (
-//               <LandingSquare
-//                 key={`(${colIndex + 6},${rowIndex})`}
-//                 id={`(${colIndex + 6},${rowIndex})`}
-//                 color={color}
-//               />
-//             );
-//           });
-//         })}
-//       </div>
-//     </div>
-//     <div
-//       className="unit-container board"
-//       style={{
-//         gridTemplateColumns: `repeat(${22}, 1fr)`,
-//       }}
-//     >
-//       {range(9).map((row, rowIndex) => {
-//         return range(22).map((square, colIndex) => {
-//           console.log(`(${colIndex},${rowIndex + 9})`);
-//           return (
-//             <LandingSquare
-//               key={`(${colIndex},${rowIndex + 9})`}
-//               id={`(${colIndex},${rowIndex + 9})`}
-//               color={color}
-//             />
-//           );
-//         });
-//       })}
-//     </div>
-//   </div>
 
 Board.propTypes = {
   dimensions: PropTypes.object.isRequired,

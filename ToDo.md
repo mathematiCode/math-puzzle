@@ -44,6 +44,8 @@
 
 1/22/2025
 
+- Make reset game reset the pieces to their original widths and heights ✅
+
 In General
 
 - Deselect puzzle pieces on clickAway with a custom hook
@@ -53,7 +55,7 @@ In General
 - Make it impossible to put pieces on top of each other
 - Add animations to reset function
 - Implement piece rotations
-- Make reset game reset the pieces to their original widths and heights
+- Implement a global variable for the sizeOfEachPiece dependent on the board size and screen size
 
 Bugs to Fix
 

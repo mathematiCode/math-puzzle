@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { range } from 'lodash';
 import PropTypes from 'prop-types';
 import { memo, forwardRef } from 'react';
+import { sizeOfEachUnit } from '../CONSTANTS';
 function Rectangle({ width, height, color, ...delegated }, ref) {
   const total = width * height;
   return (
@@ -20,7 +21,12 @@ function Rectangle({ width, height, color, ...delegated }, ref) {
           className="unit"
           key={unit}
           layout={true}
-          style={{ backgroundColor: color }}
+          style={{
+            backgroundColor: color,
+            width: `${sizeOfEachUnit - 2}px`,
+            height: `${sizeOfEachUnit - 2}px`,
+          }}
+          id={unit}
         />
       ))}
     </motion.div>

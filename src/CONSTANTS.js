@@ -1,8 +1,13 @@
 import levels from './levels.json';
 
-export const sizeOfEachUnit = 24;
+export const currentLevel = 1;
+export const initialPieces = levels[currentLevel].pieces;
+// export const sizeOfEachUnit = 45;
 
-export const initialPieces = levels[0].pieces;
+const { width, height } = levels[currentLevel].dimensions;
+console.log('dimensions', width, height);
+
+export const sizeOfEachUnit = Math.round(500 / Math.max(width, height));
 
 export const colors = [
   'hsl(178, 100%, 32%)',

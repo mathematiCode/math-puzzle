@@ -1,13 +1,12 @@
 import { useContext, useMemo, useState } from 'react';
 import levels from './levels.json';
 import PuzzlePiece from './components/PuzzlePiece';
-import Rectangle from './components/Rectangle';
+import PieceOverlay from './components/PieceOverlay';
 import Board from './components/Board';
 import PlacedPieces from './components/PlacedPieces';
 import { motion } from 'motion/react';
-import { initialPieces, sizeOfEachUnit } from './CONSTANTS';
+import { initialPieces, sizeOfEachUnit, currentLevel } from './CONSTANTS';
 import { useClickAway } from '@uidotdev/usehooks';
-import { range } from 'lodash';
 import {
   DndContext,
   DragOverlay,
@@ -96,8 +95,8 @@ function App() {
         </motion.div>
         <div className="game-board">
           <Board
-            dimensions={levels[0].dimensions}
-            boardSections={levels[0].boardSections}
+            dimensions={levels[currentLevel].dimensions}
+            boardSections={levels[currentLevel].boardSections}
           />
           <PlacedPieces piecesInPlay={piecesInPlay} />
         </div>
@@ -109,24 +108,7 @@ function App() {
               color={activePiece.color}
               style={{ rotate: activePiece.isRotated ? 90 : 0 }}
             /> */}
-            <motion.div
-              ref={ref}
-              className="unit-container"
-              animate={{ rotate: activePiece.isRotated ? 90 : 0 }}
-              style={{
-                gridTemplateColumns: `repeat(${activePiece.width}, 1fr)`,
-                backgroundColor: 'transparent',
-              }}
-            >
-              {range(activePiece.width * activePiece.height).map(unit => (
-                <motion.div
-                  className="unit"
-                  key={unit}
-                  layout={true}
-                  style={{ backgroundColor: activePiece.color }}
-                />
-              ))}
-            </motion.div>
+            <PieceOverlay activePiece={activePiece} />
           </DragOverlay>
         ) : null}
       </main>

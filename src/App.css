@@ -23,8 +23,6 @@ h1 {
 }
 .unit {
   background-color: #a5e2f4;
-  width: 22px;
-  height: 22px;
   border: 1px solid black;
   border-radius: 0px;
 }
@@ -35,6 +33,7 @@ h1 {
   height: min-content;
   gap: 0px;
   padding: 0px;
+  touch-action: none;
 }
 
 .pieces-container {
