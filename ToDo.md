@@ -36,6 +36,10 @@
 
 - make the board generate based on the coordinate points ✅
 
+1/19 - 1/20
+
+- Spent a lot of time researching different popover components from different component libraries trying to find one that would allow me to put buttons inside and a custom component as the trigger. Also tried to create my own component with the native popover API but I couldn't get the popover to be right below each puzzle piece. So instead I used the devtools to figure out how it was done on powerpoint, which is where I got inspiration for the popover in the first place. I found that they used their own component library called Fluent UI so I was able to use that as well.
+
 1/21/2025
 
 - Make or use a popover component for actions toolbar ✅
@@ -51,11 +55,14 @@
 - add another level ✅
 - Implement a global variable for the sizeOfEachPiece dependent on the board size and screen size (only based on board size so far) ✅
 - Reorganized some of the App.jsx file into smaller components like DragAndDropArea ✅
+- Add tooltips to the action buttons ✅
 
 In General
 
 - Deselect puzzle pieces on clickAway with a custom hook
-- Perfect snapping to the grid
+- Perfect snapping to the grid when moving from outside the grid
+- Perfect alignment with the grid with rotated shapes
+- Make rotations always go clockwise
 - Make the bounds of the game board the bounds of where you can move the pieces
 - Make it impossible to put pieces on top of each other
 - Add animations to reset function
