@@ -36,7 +36,7 @@ function BoardSection({ width, height, x, y, valid }) {
         style={{
           gridTemplateColumns: `repeat(${width}, 1fr)`,
           zIndex: '2',
-          transform: 'translate(-8px, -8px)',
+          // transform: 'translate(-8px, -8px)',
         }}
       >
         {range(height).map((row, rowIndex) => {

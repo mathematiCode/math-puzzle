@@ -1,53 +1,18 @@
 /* eslint-disable react/prop-types */
 import { useDraggable } from '@dnd-kit/core';
 import Rectangle from './Rectangle';
+import ActionsToolbarPopover from './ActionsToolbarPopover';
 import { memo, useContext } from 'react';
-import { SelectedPieceContext } from '../context/SelectedPiece';
 import { motion } from 'motion/react';
 
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverSurface,
-} from '@fluentui/react-components';
-import { RotateRightOutlined } from '@ant-design/icons';
-import { Tooltip } from 'antd';
+import { SelectedPieceContext } from '../context/SelectedPiece';
 import { PiecesInPlayContext } from '../context/PiecesInPlay';
 import { CurrentLevelContext } from '../context/CurrentLevel';
 
 function PieceOnBoard({ piece, id }) {
   const { selectedPiece, setSelectedPiece } = useContext(SelectedPieceContext);
-  const { piecesInPlay, updateDimensions, rotatePiece } =
-    useContext(PiecesInPlayContext);
+  const { piecesInPlay } = useContext(PiecesInPlayContext);
   const { sizeOfEachUnit } = useContext(CurrentLevelContext);
-
-  function handleRotation() {
-    const id = selectedPiece.id;
-    const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
-    rotatePiece(pieceIndex);
-  }
-
-  function handleHorizontalStretch() {
-    if (Number.isInteger(selectedPiece.height / 2)) {
-      const newHeight = selectedPiece.height / 2;
-      const newWidth = selectedPiece.width * 2;
-      const id = selectedPiece.id;
-      const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
-      console.log(pieceIndex);
-      updateDimensions(pieceIndex, newWidth, newHeight);
-    }
-  }
-
-  function handleVerticalStretch() {
-    if (Number.isInteger(selectedPiece.width / 2)) {
-      const newHeight = selectedPiece.height * 2;
-      const newWidth = selectedPiece.width / 2;
-      const id = selectedPiece.id;
-      const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
-      console.log(pieceIndex);
-      updateDimensions(pieceIndex, newWidth, newHeight);
-    }
-  }
 
   function convertlocationToXAndY(location) {
     const cleanedString = location.replace(/[()]/g, '');
@@ -83,57 +48,24 @@ function PieceOnBoard({ piece, id }) {
   }
 
   return (
-    <Popover withArrow trapFocus size="medium" positioning="below">
-      <PopoverTrigger>
-        <motion.button
-          ref={setNodeRef}
+    <ActionsToolbarPopover>
+      <motion.button
+        ref={setNodeRef}
+        {...listeners}
+        {...attributes}
+        style={style}
+        onClick={handlePieceSelected}
+        animate={{ rotate: piece.isRotated ? 90 : 0 }}
+        transition={{ duration: 0 }}
+      >
+        <Rectangle
+          width={piece.width}
+          height={piece.height}
+          color={piece.color}
           {...listeners}
-          {...attributes}
-          style={style}
-          onClick={handlePieceSelected}
-          animate={{ rotate: piece.isRotated ? 90 : 0 }}
-          transition={{ duration: 0 }}
-        >
-          <Rectangle
-            width={piece.width}
-            height={piece.height}
-            color={piece.color}
-            {...listeners}
-          />
-        </motion.button>
-      </PopoverTrigger>
-      <PopoverSurface id="actions">
-        <div className="actions-toolbar">
-          <Tooltip placement="bottom" title="Rotate">
-            <button className="icon-button" onClick={handleRotation}>
-              <RotateRightOutlined
-                style={{ fontSize: '32px', color: 'hsl(178, 100%, 23%)' }}
-              />
-            </button>
-          </Tooltip>
-          <Tooltip
-            placement="bottom"
-            title="Double Width & Halve Height"
-            style={{ width: '36px' }}
-          >
-            <button className="icon-button" onClick={handleHorizontalStretch}>
-              <img
-                src="./assets/horizontalStretch.svg"
-                style={{ width: '32px' }}
-              />
-            </button>
-          </Tooltip>
-          <Tooltip placement="bottom" title="Halve Width & Double Height">
-            <button className="icon-button" onClick={handleVerticalStretch}>
-              <img
-                src="./assets/verticalStretch.svg"
-                style={{ width: '32px' }}
-              />
-            </button>
-          </Tooltip>
-        </div>
-      </PopoverSurface>
-    </Popover>
+        />
+      </motion.button>
+    </ActionsToolbarPopover>
   );
 }
 

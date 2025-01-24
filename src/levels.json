@@ -1,6 +1,23 @@
 [
   {
     "id": 0,
+    "dimensions": { "width": 5, "height": 4 },
+    "boardSections": [
+      [
+        { "x": 0, "y": 0, "width": 2, "height": 2, "valid": false },
+        { "x": 1, "y": 0, "width": 3, "height": 2, "valid": true }
+      ],
+      [{ "x": 0, "y": 2, "width": 5, "height": 4, "valid": true }]
+    ],
+    "pieces": [
+      { "width": 2, "height": 1 },
+      { "width": 3, "height": 3 },
+      { "width": 2, "height": 3 },
+      { "width": 3, "height": 3 }
+    ]
+  },
+  {
+    "id": 1,
     "dimensions": { "width": 7, "height": 8 },
     "boardSections": [
       [{ "x": 0, "y": 0, "width": 7, "height": 8, "valid": true }]
@@ -17,7 +34,7 @@
     ]
   },
   {
-    "id": 1,
+    "id": 2,
     "dimensions": { "width": 15, "height": 14 },
     "boardSections": [
       [
@@ -38,7 +55,7 @@
     ]
   },
   {
-    "id": 2,
+    "id": 3,
     "dimensions": { "width": 10, "height": 11 },
     "boardSections": [
       [
@@ -57,7 +74,7 @@
     ]
   },
   {
-    "id": 3,
+    "id": 4,
     "dimensions": { "width": 22, "height": 18 },
     "boardSections": [
       [
@@ -78,7 +95,7 @@
     ]
   },
   {
-    "id": 4,
+    "id": 5,
     "dimensions": { "width": 18, "height": 12 },
     "boardSections": [
       [
@@ -101,7 +118,7 @@
     ]
   },
   {
-    "id": 5,
+    "id": 6,
     "dimensions": { "width": 11, "height": 8 },
     "boardSections": [
       [
@@ -116,6 +133,27 @@
       { "width": 3, "height": 8 },
       { "width": 4, "height": 6 },
       { "width": 2, "height": 4 }
+    ]
+  },
+  {
+    "id": 7,
+    "dimensions": { "width": 3, "height": 3 },
+    "boardSections": [
+      [
+        { "x": 0, "y": 0, "width": 1, "height": 1, "valid": false },
+        { "x": 1, "y": 0, "width": 2, "height": 1, "valid": true }
+      ],
+      [{ "x": 0, "y": 1, "width": 3, "height": 1, "valid": true }],
+      [
+        { "x": 0, "y": 2, "width": 2, "height": 1, "valid": true },
+        { "x": 2, "y": 2, "width": 1, "height": 1, "valid": false }
+      ]
+    ],
+    "pieces": [
+      { "width": 2, "height": 1 },
+      { "width": 1, "height": 2 },
+      { "width": 1, "height": 1 },
+      { "width": 1, "height": 2 }
     ]
   }
 ]
