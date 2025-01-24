@@ -46,16 +46,22 @@
 
 - Make reset game reset the pieces to their original widths and heights ✅
 
+1/23/2025
+
+- add another level ✅
+- Implement a global variable for the sizeOfEachPiece dependent on the board size and screen size (only based on board size so far) ✅
+- Reorganized some of the App.jsx file into smaller components like DragAndDropArea ✅
+
 In General
 
 - Deselect puzzle pieces on clickAway with a custom hook
 - Perfect snapping to the grid
 - Make the bounds of the game board the bounds of where you can move the pieces
-- add another level
 - Make it impossible to put pieces on top of each other
 - Add animations to reset function
 - Implement piece rotations
 - Implement a global variable for the sizeOfEachPiece dependent on the board size and screen size
+- Hold a variable that keeps track of if the shape was just rotated to determine the transition time for the animation
 
 Bugs to Fix
 

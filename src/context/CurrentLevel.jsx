@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { createContext, useState, useContext } from 'react';
+import { createContext, useState } from 'react';
 import levels from '../levels.json';
 import { colors } from '../CONSTANTS';
 export const CurrentLevelContext = createContext();
@@ -14,7 +14,16 @@ function CurrentLevelProvider({ children }) {
 
   const { width, height } = levels[currentLevel].dimensions;
 
-  const sizeOfEachUnit = Math.round(500 / Math.max(width, height));
+  const sizeOfEachUnit = Math.round(450 / Math.max(width, height));
+
+  let levelPosition = undefined;
+  if (currentLevel === numberOfLevels - 1) {
+    levelPosition = 'last';
+  } else if (currentLevel === 0) {
+    levelPosition = 'first';
+  } else {
+    levelPosition = 'middle';
+  }
 
   console.log('updating immutable list with initialPieces', initialPieces);
   const immutablePiecesList = levels[currentLevel].pieces.map(
@@ -32,7 +41,6 @@ function CurrentLevelProvider({ children }) {
       return;
     } else {
       setCurrentLevel(currentLevel + 1);
-      setPiecesForNewLevel();
     }
   }
 
@@ -41,7 +49,6 @@ function CurrentLevelProvider({ children }) {
       return;
     } else {
       setCurrentLevel(currentLevel - 1);
-      setPiecesForNewLevel();
     }
   }
 
@@ -51,6 +58,7 @@ function CurrentLevelProvider({ children }) {
         currentLevel,
         immutablePiecesList,
         initialPieces,
+        levelPosition,
         sizeOfEachUnit,
         nextLevel,
         previousLevel,

@@ -7,8 +7,16 @@
 main {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 50px;
   align-items: start;
   gap: 48px;
+}
+
+@media (max-width: 750px) {
+  main {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 50px;
+  }
 }
 
 .App {
@@ -33,6 +41,7 @@ h1 {
   height: min-content;
   gap: 0px;
   padding: 0px;
+  touch-action: none;
   touch-action: none;
 }
 
@@ -103,7 +112,10 @@ button:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 30px;
+  position: fixed;
+  bottom: 20px;
+  grid-column: 1/3;
+  justify-self: center;
 }
 
 .actions-toolbar {
@@ -129,5 +141,5 @@ button:focus {
 button:disabled,
 button:disabled:hover {
   background-color: lightgrey;
-  color: darkgray;
+  color: rgb(89, 88, 88);
 }

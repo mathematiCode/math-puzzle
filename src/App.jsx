@@ -6,7 +6,6 @@ import Board from './components/Board';
 import PlacedPieces from './components/PlacedPieces';
 import DragAndDropArea from './components/DragAndDropArea';
 import { motion } from 'motion/react';
-// import { initialPieces, sizeOfEachUnit, currentLevel } from './CONSTANTS';
 import { useClickAway } from '@uidotdev/usehooks';
 import { DragOverlay } from '@dnd-kit/core';
 import { PiecesInPlayContext } from './context/PiecesInPlay';
@@ -15,7 +14,7 @@ import { CurrentLevelContext } from './context/CurrentLevel';
 import './App.css';
 
 function App() {
-  const { currentLevel, previousLevel, nextLevel } =
+  const { currentLevel, levelPosition, previousLevel, nextLevel } =
     useContext(CurrentLevelContext);
   const [activePiece, setActivePiece] = useState(null);
   const { piecesInPlay, resetPieces, setPiecesForNewLevel } =
@@ -48,10 +47,18 @@ function App() {
         ) : null}
       </DragAndDropArea>
       <div className="button-container">
-        <button className="button" onClick={previousLevel}>
+        <button
+          className="button"
+          disabled={levelPosition == 'first'}
+          onClick={previousLevel}
+        >
           Previous Level
         </button>
-        <button className="button" onClick={nextLevel}>
+        <button
+          className="button"
+          disabled={levelPosition == 'last'}
+          onClick={nextLevel}
+        >
           Next Level
         </button>
         <button className="button" onClick={resetPieces}>

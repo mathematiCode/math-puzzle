@@ -51,6 +51,7 @@ const PuzzlePiece = ({ piece }) => {
     // ...(transform && {
     //   transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
     // }),
+    touchAction: 'none',
     ...(selectedPiece?.id === piece.id && {
       boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
     }),

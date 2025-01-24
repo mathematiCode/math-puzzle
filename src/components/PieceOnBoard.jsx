@@ -63,6 +63,7 @@ function PieceOnBoard({ piece, id }) {
 
   const style = {
     position: 'absolute',
+    touchAction: 'none',
     left: `${x * sizeOfEachUnit - 1}px`,
     top: `${y * sizeOfEachUnit - 1}px`,
     // ...(transform && {
