@@ -3,8 +3,9 @@ import InvalidSquare from './InvalidSquare';
 import { range } from 'lodash';
 import PropTypes from 'prop-types';
 
-function BoardSection({ width, height, x, y, valid }) {
-  let color = 'hsl(209, 26%, 89%)';
+function BoardSection({ width, height, x, y, valid, translation }) {
+  const color = 'hsl(209, 26%, 89%)';
+  const borderThickness = 8;
   if (valid) {
     return (
       <div
@@ -30,13 +31,25 @@ function BoardSection({ width, height, x, y, valid }) {
       </div>
     );
   } else {
+    let xTranslation = 0;
+    let yTranslation = 0;
+    if (translation.includes('top')) {
+      yTranslation = -borderThickness;
+    } else if (translation.includes('bottom')) {
+      yTranslation = borderThickness;
+    }
+    if (translation.includes('left')) {
+      xTranslation = -borderThickness;
+    } else if (translation.includes('right')) {
+      xTranslation = borderThickness;
+    }
     return (
       <div
         className="unit-container board"
         style={{
           gridTemplateColumns: `repeat(${width}, 1fr)`,
-          zIndex: '2',
-          // transform: 'translate(-8px, -8px)',
+          zIndex: 1,
+          transform: `translate(${xTranslation}px, ${yTranslation}px)`,
         }}
       >
         {range(height).map((row, rowIndex) => {
@@ -60,6 +73,7 @@ BoardSection.propTypes = {
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
   valid: PropTypes.bool.isRequired,
+  translation: PropTypes.array,
 };
 
 export default BoardSection;

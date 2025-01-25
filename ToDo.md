@@ -57,6 +57,8 @@
 - Reorganized some of the App.jsx file into smaller components like DragAndDropArea ✅
 - Add tooltips to the action buttons ✅
 
+1/24/2025
+
 In General
 
 - Deselect puzzle pieces on clickAway with a custom hook

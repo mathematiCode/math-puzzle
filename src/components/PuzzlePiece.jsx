@@ -37,7 +37,7 @@ const PuzzlePiece = ({ piece }) => {
         className="puzzle-piece"
         onClick={handlePieceSelected}
         animate={{ rotate: piece.isRotated ? 90 : 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.5, transformOrigin: 'bottom-left' }}
         popoverTarget="actions"
       >
         <Rectangle

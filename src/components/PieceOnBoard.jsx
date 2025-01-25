@@ -56,7 +56,7 @@ function PieceOnBoard({ piece, id }) {
         style={style}
         onClick={handlePieceSelected}
         animate={{ rotate: piece.isRotated ? 90 : 0 }}
-        transition={{ duration: 0 }}
+        transition={{ duration: 0, transformOrigin: 'bottom-left' }}
       >
         <Rectangle
           width={piece.width}

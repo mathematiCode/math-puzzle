@@ -9,7 +9,6 @@ function Board({ dimensions, boardSections }) {
     <div
       style={{
         gridTemplateColumns: `repeat(${boardWidth}, 1fr)`,
-        zIndex: '0',
       }}
     >
       {boardSections.map(row => {
@@ -22,6 +21,7 @@ function Board({ dimensions, boardSections }) {
               x={row[0].x}
               y={row[0].y}
               valid={row[0].valid}
+              translation={row[0].translation}
             />
           );
         } else {
@@ -30,7 +30,6 @@ function Board({ dimensions, boardSections }) {
               key="div"
               style={{
                 gridTemplateColumns: `repeat(${boardWidth}, 1fr)`,
-                zIndex: '0',
                 display: 'flex',
               }}
             >
@@ -43,6 +42,7 @@ function Board({ dimensions, boardSections }) {
                     x={section.x}
                     y={section.y}
                     valid={section.valid}
+                    translation={section.translation}
                   />
                 );
               })}
