@@ -250,9 +250,10 @@
     ],
     "pieces": [
       { "width": 2, "height": 1 },
-      { "width": 3, "height": 3 },
       { "width": 2, "height": 3 },
-      { "width": 3, "height": 3 }
+      { "width": 6, "height": 4 },
+      { "width": 4, "height": 8 },
+      { "width": 4, "height": 3 }
     ]
   },
   {
