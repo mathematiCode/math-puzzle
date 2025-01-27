@@ -9,8 +9,7 @@
           "y": 0,
           "width": 2,
           "height": 2,
-          "valid": false,
-          "translation": ["top", "left"]
+          "valid": false
         },
         { "x": 1, "y": 0, "width": 3, "height": 2, "valid": true }
       ],
@@ -50,8 +49,7 @@
           "y": 0,
           "width": 8,
           "height": 4,
-          "valid": false,
-          "translation": ["top", "left"]
+          "valid": false
         },
         { "x": 8, "y": 0, "width": 7, "height": 4, "valid": true }
       ],
@@ -78,8 +76,7 @@
           "y": 0,
           "width": 4,
           "height": 3,
-          "valid": false,
-          "translation": ["top", "left"]
+          "valid": false
         },
         { "x": 4, "y": 0, "width": 6, "height": 3, "valid": true }
       ],
@@ -104,8 +101,7 @@
           "y": 0,
           "width": 6,
           "height": 9,
-          "valid": false,
-          "translation": ["top", "left"]
+          "valid": false
         },
         { "x": 6, "y": 0, "width": 16, "height": 9, "valid": true }
       ],
@@ -132,8 +128,7 @@
           "y": 0,
           "width": 2,
           "height": 8,
-          "valid": false,
-          "translation": ["top", "left"]
+          "valid": false
         },
         { "x": 2, "y": 0, "width": 16, "height": 8, "valid": true }
       ],
@@ -169,8 +164,7 @@
           "y": 0,
           "width": 2,
           "height": 3,
-          "valid": false,
-          "translation": ["top", "right"]
+          "valid": false
         }
       ],
       [{ "x": 0, "y": 3, "width": 11, "height": 5, "valid": true }]
@@ -181,6 +175,137 @@
       { "width": 3, "height": 8 },
       { "width": 4, "height": 6 },
       { "width": 2, "height": 4 }
+    ]
+  },
+  {
+    "id": 7,
+    "dimensions": { "width": 3, "height": 3 },
+    "boardSections": [
+      [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1,
+          "valid": false
+        },
+        { "x": 1, "y": 0, "width": 2, "height": 1, "valid": true }
+      ],
+      [{ "x": 0, "y": 1, "width": 3, "height": 1, "valid": true }],
+      [
+        { "x": 0, "y": 2, "width": 2, "height": 1, "valid": true },
+        {
+          "x": 2,
+          "y": 2,
+          "width": 1,
+          "height": 1,
+          "valid": false
+        }
+      ]
+    ],
+    "pieces": [
+      { "width": 2, "height": 1 },
+      { "width": 2, "height": 1 },
+      { "width": 1, "height": 1 },
+      { "width": 1, "height": 2 }
+    ]
+  },
+  {
+    "id": 8,
+    "dimensions": { "width": 10, "height": 10 },
+    "boardSections": [
+      [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 6,
+          "height": 4,
+          "valid": true
+        },
+        {
+          "x": 6,
+          "y": 0,
+          "width": 4,
+          "height": 4,
+          "valid": false
+        }
+      ],
+      [{ "x": 0, "y": 4, "width": 10, "height": 2, "valid": true }],
+      [
+        {
+          "x": 0,
+          "y": 6,
+          "width": 2,
+          "height": 4,
+          "valid": false
+        },
+        {
+          "x": 2,
+          "y": 6,
+          "width": 8,
+          "height": 4,
+          "valid": true
+        }
+      ]
+    ],
+    "pieces": [
+      { "width": 2, "height": 1 },
+      { "width": 3, "height": 3 },
+      { "width": 2, "height": 3 },
+      { "width": 3, "height": 3 }
+    ]
+  },
+  {
+    "id": 9,
+    "dimensions": { "width": 10, "height": 14 },
+    "boardSections": [
+      [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 5,
+          "height": 2,
+          "valid": true
+        },
+        {
+          "x": 2,
+          "y": 0,
+          "width": 5,
+          "height": 2,
+          "valid": false
+        }
+      ],
+      [
+        {
+          "x": 0,
+          "y": 2,
+          "width": 2,
+          "height": 4,
+          "valid": false
+        },
+        {
+          "x": 2,
+          "y": 2,
+          "width": 8,
+          "height": 4,
+          "valid": true
+        }
+      ],
+      [{ "x": 0, "y": 6, "width": 10, "height": 8, "valid": true }]
+    ],
+    "pieces": [
+      { "width": 3, "height": 3 },
+      { "width": 2, "height": 1 },
+      { "width": 2, "height": 3 },
+      { "width": 3, "height": 3 },
+      { "width": 2, "height": 2 },
+      { "width": 8, "height": 4 },
+      { "width": 3, "height": 2 },
+      { "width": 1, "height": 2 },
+      { "width": 5, "height": 6 },
+      { "width": 2, "height": 1 },
+      { "width": 4, "height": 2 },
+      { "width": 4, "height": 3 }
     ]
   }
 ]

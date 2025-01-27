@@ -10,8 +10,8 @@ function LandingSquare({ id }) {
       key={id}
       id={id}
       style={{
-        backgroundColor: '#d6f1c8',
-        border: '1px solid #d6f1c8',
+        backgroundColor: 'transparent',
+        border: '1px solid transparent',
         width: `${sizeOfEachUnit - 2}px`,
         height: `${sizeOfEachUnit - 2}px`,
       }}

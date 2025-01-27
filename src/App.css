@@ -30,7 +30,7 @@ h1 {
   font-weight: 200;
 }
 .unit {
-  background-color: #a5e2f4;
+  background-color: #d6f1c8;
   border: 1px solid black;
   border-radius: 0px;
 }
@@ -79,6 +79,22 @@ button:focus {
 .game-board > .board {
   grid-column: 1/2;
   grid-row: 1/2;
+}
+
+.withBorder {
+  position: relative;
+}
+
+.withBorder::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  box-shadow: hsl(178, 100%, 23%) 0px 0px 0px 8px,
+    hsl(178, 100%, 23%) 0px 0px 0px 8px;
 }
 
 .game-board > .placed-pieces {

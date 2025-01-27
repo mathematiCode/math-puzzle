@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import levels from './levels.json';
-import PuzzlePiece from './components/PuzzlePiece';
+import InitialPuzzlePiece from './components/InitialPuzzlePiece';
 import PieceOverlay from './components/PieceOverlay';
 import Board from './components/Board';
 import PlacedPieces from './components/PlacedPieces';
@@ -30,7 +30,7 @@ function App() {
         >
           {piecesInPlay.map((piece, pieceIndex) => {
             if (piece.location != null) return null;
-            return <PuzzlePiece piece={piece} key={pieceIndex} />;
+            return <InitialPuzzlePiece piece={piece} key={pieceIndex} />;
           })}
         </motion.div>
         <div className="game-board">

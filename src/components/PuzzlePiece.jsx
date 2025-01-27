@@ -1,64 +1,34 @@
-import { useDraggable } from '@dnd-kit/core';
-import PropTypes from 'prop-types';
-import Rectangle from './Rectangle';
-import ActionsToolbarPopover from './ActionsToolbarPopover';
 import { useContext } from 'react';
 import { motion } from 'motion/react';
-import { SelectedPieceContext } from '../context/SelectedPiece';
+import { CurrentLevelContext } from '../context/CurrentLevel';
+import PropTypes from 'prop-types';
 
-const PuzzlePiece = ({ piece }) => {
-  //console.log('re-rendering this piece:', piece.id);
+const PuzzlePiece = ({ piece, children, style, ...props }) => {
+  const { sizeOfEachUnit } = useContext(CurrentLevelContext);
 
-  const { selectedPiece, setSelectedPiece } = useContext(SelectedPieceContext);
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: piece.id,
-  });
-
-  const style = {
-    // ...(transform && {
-    //   transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-    // }),
-    touchAction: 'none',
-    ...(selectedPiece?.id === piece.id && {
-      boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
+  const combinedStyle = {
+    ...style,
+    ...(piece.isRotated && {
+      transform: `rotate(90deg)`,
     }),
   };
 
-  function handlePieceSelected() {
-    setSelectedPiece(piece);
-  }
   return (
-    <ActionsToolbarPopover>
-      <motion.button
-        ref={setNodeRef}
-        {...listeners}
-        {...attributes}
-        style={style}
-        className="puzzle-piece"
-        onClick={handlePieceSelected}
-        animate={{ rotate: piece.isRotated ? 90 : 0 }}
-        transition={{ duration: 0.5, transformOrigin: 'bottom-left' }}
-        popoverTarget="actions"
-      >
-        <Rectangle
-          width={piece.width}
-          height={piece.height}
-          color={piece.color}
-          ref={setNodeRef}
-          {...listeners}
-          {...attributes}
-        />
-      </motion.button>
-    </ActionsToolbarPopover>
+    <motion.div
+      style={combinedStyle}
+      animate={{ rotate: piece.isRotated ? 90 : 0 }}
+      transition={{ duration: 0.5 }}
+      {...props}
+    >
+      {children}
+    </motion.div>
   );
 };
 
-PuzzlePiece.displayName = 'PuzzlePiece';
-
 PuzzlePiece.propTypes = {
   piece: PropTypes.object.isRequired,
-  className: PropTypes.string,
-  activePiece: PropTypes.object,
+  children: PropTypes.node.isRequired,
+  style: PropTypes.object,
 };
 
 export default PuzzlePiece;

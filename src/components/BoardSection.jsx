@@ -2,19 +2,19 @@ import LandingSquare from './LandingSquare';
 import InvalidSquare from './InvalidSquare';
 import { range } from 'lodash';
 import PropTypes from 'prop-types';
+import { useContext } from 'react';
+import { CurrentLevelContext } from '../context/CurrentLevel';
 
-function BoardSection({ width, height, x, y, valid, translation }) {
+function BoardSection({ width, height, x, y, valid }) {
   const color = 'hsl(209, 26%, 89%)';
-  const borderThickness = 8;
+
+  const { sizeOfEachUnit } = useContext(CurrentLevelContext);
   if (valid) {
     return (
       <div
-        className="unit-container board"
+        className="unit-container board withBorder"
         style={{
           gridTemplateColumns: `repeat(${width}, 1fr)`,
-          backgroundColor: 'black',
-          boxShadow:
-            ' hsl(178, 100%, 23%) 0px 1px 8px, hsl(178, 100%, 23%) 0px 0px 0px 8px',
         }}
       >
         {range(height).map((row, rowIndex) => {
@@ -31,25 +31,11 @@ function BoardSection({ width, height, x, y, valid, translation }) {
       </div>
     );
   } else {
-    let xTranslation = 0;
-    let yTranslation = 0;
-    if (translation.includes('top')) {
-      yTranslation = -borderThickness;
-    } else if (translation.includes('bottom')) {
-      yTranslation = borderThickness;
-    }
-    if (translation.includes('left')) {
-      xTranslation = -borderThickness;
-    } else if (translation.includes('right')) {
-      xTranslation = borderThickness;
-    }
     return (
       <div
         className="unit-container board"
         style={{
           gridTemplateColumns: `repeat(${width}, 1fr)`,
-          zIndex: 1,
-          transform: `translate(${xTranslation}px, ${yTranslation}px)`,
         }}
       >
         {range(height).map((row, rowIndex) => {
@@ -63,6 +49,13 @@ function BoardSection({ width, height, x, y, valid, translation }) {
           });
         })}
       </div>
+      // <div
+      //   style={{
+      //     width: `${width}*${sizeOfEachUnit}px`,
+      //     height: `${height}*${sizeOfEachUnit}px`,
+      //   }}
+      //   className="board"
+      // />
     );
   }
 }

@@ -8,14 +8,15 @@ function Board({ dimensions, boardSections }) {
   return (
     <div
       style={{
-        gridTemplateColumns: `repeat(${boardWidth}, 1fr)`,
+        display: 'grid',
+        gridTemplateRows: '1fr',
       }}
     >
-      {boardSections.map(row => {
+      {boardSections.map((row, index) => {
         if (row.length === 1) {
           return (
             <BoardSection
-              key="hi"
+              key={index}
               width={row[0].width}
               height={row[0].height}
               x={row[0].x}
@@ -27,10 +28,12 @@ function Board({ dimensions, boardSections }) {
         } else {
           return (
             <div
-              key="div"
+              key={index}
               style={{
+                display: 'grid',
+                gridTemplateRows: '1fr',
                 gridTemplateColumns: `repeat(${boardWidth}, 1fr)`,
-                display: 'flex',
+                width: 'min-content',
               }}
             >
               {row.map(section => {
@@ -42,7 +45,6 @@ function Board({ dimensions, boardSections }) {
                     x={section.x}
                     y={section.y}
                     valid={section.valid}
-                    translation={section.translation}
                   />
                 );
               })}
