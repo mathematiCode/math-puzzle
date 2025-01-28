@@ -6,7 +6,7 @@
 
 main {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 60% 40%;
   grid-template-rows: 1fr 50px;
   align-items: start;
   gap: 48px;

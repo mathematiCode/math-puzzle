@@ -10,7 +10,7 @@ import {
 import { SelectedPieceContext } from '../context/SelectedPiece';
 import { PiecesInPlayContext } from '../context/PiecesInPlay';
 
-function ActionsToolbarPopover({ children }) {
+function ActionsToolbarPopover({ children, ...delegated }) {
   const { updateDimensions, rotatePiece } = useContext(PiecesInPlayContext);
   const { selectedPiece } = useContext(SelectedPieceContext);
 
@@ -49,7 +49,7 @@ function ActionsToolbarPopover({ children }) {
       positioning="below"
       style={{ gap: '0px' }}
     >
-      <PopoverTrigger>{children}</PopoverTrigger>
+      <PopoverTrigger delegated={delegated}>{children}</PopoverTrigger>
       <PopoverSurface id="actions">
         <div className="actions-toolbar">
           <Tooltip placement="bottom" title="Rotate">

@@ -32,9 +32,6 @@ function PieceOnBoard({ piece, id }) {
     touchAction: 'none',
     left: `${x * sizeOfEachUnit - 1}px`,
     top: `${y * sizeOfEachUnit - 1}px`,
-    // ...(transform && {
-    //   transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-    // }),
     ...(isDragging && { cursor: 'grab' }),
     ...(selectedPiece?.id === id && {
       boxShadow:
@@ -64,7 +61,8 @@ function PieceOnBoard({ piece, id }) {
           width={piece.width}
           height={piece.height}
           color={piece.color}
-          {...listeners}
+          // isRotated={piece.isRotated}
+          // isSelected={selectedPiece?.id === id}
         />
       </motion.button>
     </ActionsToolbarPopover>

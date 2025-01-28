@@ -4,7 +4,10 @@ import { range } from 'lodash';
 import PropTypes from 'prop-types';
 import { memo, forwardRef, useContext } from 'react';
 import { CurrentLevelContext } from '../context/CurrentLevel';
-function Rectangle({ width, height, color, ...delegated }, ref) {
+function Rectangle(
+  { width, height, color, isRotated, isSelected, ...delegated },
+  ref
+) {
   const { sizeOfEachUnit } = useContext(CurrentLevelContext);
   const total = width * height;
   return (
@@ -14,7 +17,14 @@ function Rectangle({ width, height, color, ...delegated }, ref) {
       style={{
         gridTemplateColumns: `repeat(${width}, 1fr)`,
         backgroundColor: 'transparent',
+        // ...(isSelected && {
+        //   boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
+        // }),
       }}
+      // animate={{
+      //   rotate: isRotated ? 90 : 0,
+      // }}
+      // transition={{ duration: 0.5 }}
       {...delegated}
     >
       {range(total).map(unit => (

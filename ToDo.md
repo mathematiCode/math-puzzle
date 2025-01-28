@@ -75,3 +75,10 @@ In General
 Bugs to Fix
 
 - When moving a piece with the spacebar and keyboard, and then pressing reset game, that piece stays on the board.
+
+Things to Figure Out
+
+- Why does the puzzle piece rotate/rerender so much when I drag it?
+- Can I prevent the re-rotating somehow?
+- How should I implement the UI for distributive property operations?
+- Why do the pieces animate into place when switching from level 1 to level 2 but not any other levels?

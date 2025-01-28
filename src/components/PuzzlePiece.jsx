@@ -8,9 +8,6 @@ const PuzzlePiece = ({ piece, children, style, ...props }) => {
 
   const combinedStyle = {
     ...style,
-    ...(piece.isRotated && {
-      transform: `rotate(90deg)`,
-    }),
   };
 
   return (

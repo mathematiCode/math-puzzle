@@ -2,13 +2,13 @@ import LandingSquare from './LandingSquare';
 import InvalidSquare from './InvalidSquare';
 import { range } from 'lodash';
 import PropTypes from 'prop-types';
-import { useContext } from 'react';
-import { CurrentLevelContext } from '../context/CurrentLevel';
+// import { useContext } from 'react';
+// import { CurrentLevelContext } from '../context/CurrentLevel';
 
 function BoardSection({ width, height, x, y, valid }) {
   const color = 'hsl(209, 26%, 89%)';
 
-  const { sizeOfEachUnit } = useContext(CurrentLevelContext);
+  // const { sizeOfEachUnit } = useContext(CurrentLevelContext);
   if (valid) {
     return (
       <div

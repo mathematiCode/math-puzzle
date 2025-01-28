@@ -1,39 +1,29 @@
-import { memo, useContext } from 'react';
+import { memo } from 'react';
 import { motion } from 'motion/react';
-import { range } from 'lodash';
 import PropTypes from 'prop-types';
-import { CurrentLevelContext } from '../context/CurrentLevel';
+import Rectangle from './Rectangle';
 
-function PieceOverlay({ activePiece }) {
-  const { sizeOfEachUnit } = useContext(CurrentLevelContext);
+function PieceOverlay({ piece }) {
   return (
     <motion.div
       className="unit-container"
-      animate={{ rotate: activePiece.isRotated ? 90 : 0 }}
-      transition={{ duration: 0 }}
-      style={{
-        gridTemplateColumns: `repeat(${activePiece.width}, 1fr)`,
-        backgroundColor: 'transparent',
+      animate={{
+        rotate: piece.isRotated ? 90 : 0,
       }}
+      transition={{ duration: 0.5 }}
     >
-      {range(activePiece.width * activePiece.height).map(unit => (
-        <motion.div
-          className="unit"
-          key={unit}
-          layout={true}
-          style={{
-            backgroundColor: activePiece.color,
-            width: `${sizeOfEachUnit - 2}px`,
-            height: `${sizeOfEachUnit - 2}px`,
-          }}
-        />
-      ))}
+      <Rectangle
+        width={piece.width}
+        height={piece.height}
+        color={piece.color}
+        // isRotated={piece.isRotated}
+      />
     </motion.div>
   );
 }
 
 PieceOverlay.propTypes = {
-  activePiece: PropTypes.object.isRequired,
+  piece: PropTypes.object.isRequired,
 };
 
 const MemoizedPieceOverlay = memo(PieceOverlay);

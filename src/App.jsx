@@ -42,7 +42,7 @@ function App() {
         </div>
         {activePiece ? (
           <DragOverlay>
-            <PieceOverlay activePiece={activePiece} />
+            <PieceOverlay piece={activePiece} />
           </DragOverlay>
         ) : null}
       </DragAndDropArea>
