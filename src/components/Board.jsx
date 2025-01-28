@@ -14,17 +14,7 @@ function Board({ dimensions, boardSections }) {
     >
       {boardSections.map((row, index) => {
         if (row.length === 1) {
-          return (
-            <BoardSection
-              key={index}
-              width={row[0].width}
-              height={row[0].height}
-              x={row[0].x}
-              y={row[0].y}
-              valid={row[0].valid}
-              translation={row[0].translation}
-            />
-          );
+          return <BoardSection key={index} section={row[0]} />;
         } else {
           return (
             <div
@@ -40,11 +30,7 @@ function Board({ dimensions, boardSections }) {
                 return (
                   <BoardSection
                     key={`${section.x},${section.y}`}
-                    width={section.width}
-                    height={section.height}
-                    x={section.x}
-                    y={section.y}
-                    valid={section.valid}
+                    section={section}
                   />
                 );
               })}

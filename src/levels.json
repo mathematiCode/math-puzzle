@@ -11,7 +11,7 @@
           "height": 2,
           "valid": false
         },
-        { "x": 1, "y": 0, "width": 3, "height": 2, "valid": true }
+        { "x": 2, "y": 0, "width": 3, "height": 2, "valid": true }
       ],
       [{ "x": 0, "y": 2, "width": 5, "height": 4, "valid": true }]
     ],
@@ -267,7 +267,7 @@
           "valid": true
         },
         {
-          "x": 2,
+          "x": 5,
           "y": 0,
           "width": 5,
           "height": 2,

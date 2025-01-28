@@ -7,9 +7,8 @@ import { CurrentLevelContext } from '../context/CurrentLevel';
 const initialLocation = null;
 
 function PiecesInPlayProvider({ children }) {
-  const { immutablePiecesList, initialPieces } =
-    useContext(CurrentLevelContext);
-  const [piecesInPlay, setPiecesInPlay] = useState(immutablePiecesList);
+  const { initialPieces } = useContext(CurrentLevelContext);
+  const [piecesInPlay, setPiecesInPlay] = useState(initialPieces);
 
   function movePiece(pieceIndex, newLocation) {
     const updatedPieces = [...piecesInPlay];
@@ -48,7 +47,7 @@ function PiecesInPlayProvider({ children }) {
   }
 
   function setPiecesForNewLevel() {
-    setPiecesInPlay(immutablePiecesList);
+    setPiecesInPlay(initialPieces);
   }
   return (
     <PiecesInPlayContext.Provider

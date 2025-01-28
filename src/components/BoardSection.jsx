@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 // import { useContext } from 'react';
 // import { CurrentLevelContext } from '../context/CurrentLevel';
 
-function BoardSection({ width, height, x, y, valid }) {
+function BoardSection({ section }) {
   const color = 'hsl(209, 26%, 89%)';
-
+  const { width, height, x, y, valid } = section;
   // const { sizeOfEachUnit } = useContext(CurrentLevelContext);
   if (valid) {
     return (
@@ -61,12 +61,7 @@ function BoardSection({ width, height, x, y, valid }) {
 }
 
 BoardSection.propTypes = {
-  width: PropTypes.number.isRequired,
-  height: PropTypes.number.isRequired,
-  x: PropTypes.number.isRequired,
-  y: PropTypes.number.isRequired,
-  valid: PropTypes.bool.isRequired,
-  translation: PropTypes.array,
+  section: PropTypes.object.isRequired,
 };
 
 export default BoardSection;

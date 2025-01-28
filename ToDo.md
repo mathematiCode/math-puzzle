@@ -71,6 +71,7 @@ In General
 - Implement piece rotations
 - Implement a global variable for the sizeOfEachPiece dependent on the board size and screen size
 - Hold a variable that keeps track of if the shape was just rotated to determine the transition time for the animation
+-
 
 Bugs to Fix
 

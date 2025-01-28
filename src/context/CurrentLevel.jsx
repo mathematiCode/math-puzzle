@@ -10,8 +10,6 @@ const numberOfLevels = levels.length;
 function CurrentLevelProvider({ children }) {
   const [currentLevel, setCurrentLevel] = useState(0);
 
-  const initialPieces = levels[currentLevel].pieces;
-
   const { width, height } = levels[currentLevel].dimensions;
 
   const sizeOfEachUnit = Math.round(450 / Math.max(width, height));
@@ -25,16 +23,13 @@ function CurrentLevelProvider({ children }) {
     levelPosition = 'middle';
   }
 
-  console.log('updating immutable list with initialPieces', initialPieces);
-  const immutablePiecesList = levels[currentLevel].pieces.map(
-    (piece, index) => ({
-      ...piece,
-      location: initialLocation,
-      color: colors[index % colors.length],
-      id: `initial-${index}`,
-      isRotated: false,
-    })
-  );
+  const initialPieces = levels[currentLevel].pieces.map((piece, index) => ({
+    ...piece,
+    location: initialLocation,
+    color: colors[index % colors.length],
+    id: `initial-${index}`,
+    isRotated: false,
+  }));
 
   function nextLevel() {
     if (currentLevel === numberOfLevels - 1) {
@@ -56,7 +51,6 @@ function CurrentLevelProvider({ children }) {
     <CurrentLevelContext.Provider
       value={{
         currentLevel,
-        immutablePiecesList,
         initialPieces,
         levelPosition,
         sizeOfEachUnit,

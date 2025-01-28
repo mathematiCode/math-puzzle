@@ -1,12 +1,10 @@
 import { describe, it, expect } from 'vitest';
 import levels from '../src/levels.json';
 
-// Function to test area equivalence
 function testAreaEquivalence(level) {
   let totalValidArea = 0;
   let totalPieceArea = 0;
 
-  // Calculate total area of valid board sections
   level.boardSections.forEach(sectionList => {
     sectionList.forEach(section => {
       if (section.valid) {
@@ -15,33 +13,16 @@ function testAreaEquivalence(level) {
     });
   });
 
-  // Calculate total area of pieces
   level.pieces.forEach(piece => {
     totalPieceArea += piece.width * piece.height;
   });
 
-  // Assert that the areas are equal
   expect(totalValidArea).toBe(totalPieceArea);
-  if (totalPieceArea < totalValidArea) {
-    console.log(
-      `You need to add ${
-        totalValidArea - totalPieceArea
-      } more area to the pieces`
-    );
-  } else if (totalPieceArea > totalValidArea) {
-    console.log(
-      `You need to remove ${
-        totalPieceArea - totalValidArea
-      } area from the pieces`
-    );
-  }
 }
 
 function testMatchingHeights(level) {
-  // Calculate total width and height of board
   level.boardSections.forEach(sectionList => {
     sectionList.forEach(section => {
-      // check if each section.height is equal to the first section height
       expect(section.height).toBe(sectionList[0].height);
     });
   });
@@ -70,19 +51,52 @@ function testWidthsAddUp(level) {
   });
 }
 
-// Vitest test suite
-describe('Puzzle Game Level Area Tests', () => {
+function checkXValues(level) {
+  level.boardSections.forEach(row => {
+    let expectedX = 0;
+    row.forEach(section => {
+      expect(section.x).toBe(expectedX);
+      expectedX += section.width;
+    });
+  });
+}
+
+function checkYValues(level) {
+  let expectedY = 0;
+  level.boardSections.forEach(row => {
+    expect(row[0].y).toBe(expectedY);
+    expectedY += row[0].height;
+  });
+}
+
+describe('Checking total area', () => {
   levels.forEach(level => {
-    it(`pieces area adds up to total area for level ${level.id}`, () => {
+    it(`pieces area matches total area for level ${level.id}`, () => {
       testAreaEquivalence(level);
     });
-    it(`each row has a constant height for level ${level.id}`, () => {
+  });
+});
+
+describe('Checking x and y values', () => {
+  levels.forEach(level => {
+    it(`correct x values for level ${level.id}`, () => {
+      checkXValues(level);
+    });
+    it(`correct y values for level ${level.id}`, () => {
+      checkYValues(level);
+    });
+  });
+});
+
+describe('Checking widths and heights', () => {
+  levels.forEach(level => {
+    it(`constant row height for level ${level.id}`, () => {
       testMatchingHeights(level);
     });
-    it(`all rows should add up to the total height for level ${level.id}`, () => {
+    it(`rows add up to total height for level ${level.id}`, () => {
       testHeightsAddUp(level);
     });
-    it(`all sections should add up to the total width for level ${level.id}`, () => {
+    it(`sections add up to total width for level ${level.id}`, () => {
       testWidthsAddUp(level);
     });
   });
