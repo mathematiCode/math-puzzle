@@ -59,6 +59,16 @@
 
 1/24/2025
 
+- Refactored by moving actionsToolbarPopover into a separate component ✅
+
+1/27/2025
+
+- Adjusted CSS to show full borders for any level dynamically ✅
+
+1/28/2025
+
+- Added unit tests to test each level and make sure its written correctly in the JSON file. ✅
+
 In General
 
 - Deselect puzzle pieces on clickAway with a custom hook
@@ -71,7 +81,10 @@ In General
 - Implement piece rotations
 - Implement a global variable for the sizeOfEachPiece dependent on the board size and screen size
 - Hold a variable that keeps track of if the shape was just rotated to determine the transition time for the animation
--
+- Add distributive property functionality
+- Set up system to allow for fractional side lengths
+- Add limits to the UI to show how many actions the user can use
+- Add limits to the level json and import them through context
 
 Bugs to Fix
 
