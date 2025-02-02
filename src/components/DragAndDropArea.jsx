@@ -1,4 +1,5 @@
 import { useContext, useMemo } from 'react';
+import PropTypes from 'prop-types';
 // import { initialPieces, sizeOfEachUnit, currentLevel } from './CONSTANTS';
 import {
   DndContext,
@@ -61,5 +62,11 @@ function DragAndDropArea({ children, setActivePiece, boardRef }) {
     </DndContext>
   );
 }
+
+DragAndDropArea.propTypes = {
+  children: PropTypes.node.isRequired,
+  setActivePiece: PropTypes.func.isRequired,
+  boardRef: PropTypes.object,
+};
 
 export default DragAndDropArea;
