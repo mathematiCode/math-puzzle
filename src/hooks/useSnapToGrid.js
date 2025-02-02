@@ -1,11 +1,22 @@
 // import { Modifier } from '@dnd-kit/core';
 import { useMemo } from 'react';
 
-export function useSnapToGrid(gridSize, origin = { x: 0, y: 0 }) {
+export function useSnapToGrid(gridSize, origin) {
   return useMemo(() => {
     return ({ transform }) => {
-      const xOffset = (transform.x - origin.x) % gridSize;
-      const yOffset = (transform.y - origin.y) % gridSize;
+      let xOffset = (transform.x - origin.x) % gridSize;
+      if (xOffset < 0) {
+        xOffset += gridSize;
+      }
+      let yOffset = (transform.y - origin.y) % gridSize;
+      if (yOffset < 0) {
+        yOffset += gridSize;
+      }
+      console.log('origin', origin);
+      console.log('xOffset', xOffset);
+      console.log('yOffset', yOffset);
+      // let xOffset = 0;
+      // let yOffset = 0;
       return {
         ...transform,
         x: Math.ceil(transform.x / gridSize) * gridSize + xOffset,
