@@ -1,12 +1,15 @@
 /* eslint-disable react/prop-types */
 import BoardSection from './BoardSection';
 import PropTypes from 'prop-types';
+import { forwardRef } from 'react';
 
-function Board({ dimensions, boardSections }) {
+const Board = forwardRef(({ dimensions, boardSections }, ref) => {
   const boardWidth = dimensions.width;
 
   return (
     <div
+      id="board"
+      ref={ref}
       style={{
         display: 'grid',
         gridTemplateRows: '1fr',
@@ -40,7 +43,9 @@ function Board({ dimensions, boardSections }) {
       })}
     </div>
   );
-}
+});
+
+Board.displayName = 'Board';
 
 Board.propTypes = {
   dimensions: PropTypes.object.isRequired,

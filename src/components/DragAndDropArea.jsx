@@ -12,13 +12,16 @@ import { createSnapModifier, restrictToWindowEdges } from '@dnd-kit/modifiers';
 import { SelectedPieceContext } from '../context/SelectedPiece';
 import { CurrentLevelContext } from '../context/CurrentLevel';
 import { PiecesInPlayContext } from '../context/PiecesInPlay';
+import useSnapToGrid from '../hooks/useSnapToGrid';
+import { useElementPosition } from '../hooks/useItemPosition';
 
-function DragAndDropArea({ children, setActivePiece }) {
+function DragAndDropArea({ children, setActivePiece, boardRef }) {
   const { setSelectedPiece } = useContext(SelectedPieceContext);
   const { sizeOfEachUnit } = useContext(CurrentLevelContext);
   const { piecesInPlay, movePiece } = useContext(PiecesInPlayContext);
 
-  const snapToGrid = useMemo(() => createSnapModifier(sizeOfEachUnit), []);
+  const boardPosition = useElementPosition(boardRef);
+  const snapToGrid = useSnapToGrid(sizeOfEachUnit, boardPosition);
 
   const activationConstraint = {
     distance: 20,
