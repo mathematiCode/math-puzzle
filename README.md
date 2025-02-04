@@ -5,6 +5,7 @@ This is a game that I've been planning since October and started building in Jan
 There will be many levels with the earlier/easier with whole numbers and smaller boards and the later ones including fractions, mixed numbers, and decimals. 
 
 Target Age Range is 5th - 7th grade but it will also have some levels that are accessible to 3rd & 4th grade and would be a great activity to build number sense for older grades as well. 
+<img width="979" alt="Image of Puzzle Pieces and Board. Each puzzle piece has action buttons including rotate, double width and halve height, and halve width and double height" src="https://github.com/user-attachments/assets/d77e651d-9ecb-4578-acfb-2f5a91934933" />
 
 
 I am currently migrating my javascript code over to typescript. Then I will be digging into Dnd-kit to figure out how to create my own snap to grid modifier so my pieces are aligned to the grid when they are dragged from outside the grid. 
