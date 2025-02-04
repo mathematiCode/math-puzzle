@@ -1,7 +1,6 @@
 import LandingSquare from './LandingSquare';
 import InvalidSquare from './InvalidSquare';
 import { range } from 'lodash';
-import type { range as RangeType } from 'lodash';
 import PropTypes from 'prop-types';
 // import { useContext } from 'react';
 // import { CurrentLevelContext } from '../context/CurrentLevel';
@@ -26,7 +25,7 @@ function BoardSection({ section }: { section: Section }) {
           gridTemplateColumns: `repeat(${width}, 1fr)`,
         }}
       >
-        {range(height).map((row: Section[], rowIndex: number) => {
+        {range(height).map((row: number, rowIndex: number) => {
           return range(width).map((square: number, colIndex: number) => {
             return (
               <LandingSquare
@@ -47,7 +46,7 @@ function BoardSection({ section }: { section: Section }) {
           gridTemplateColumns: `repeat(${width}, 1fr)`,
         }}
       >
-        {range(height).map((row: Section[], rowIndex: number) => {
+        {range(height).map((row: number, rowIndex: number) => {
           return range(width).map((square: number, colIndex: number) => {
             return (
               <InvalidSquare

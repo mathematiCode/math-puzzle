@@ -16,7 +16,7 @@ interface BoardSectionData {
 
 interface BoardProps {
   dimensions: Dimensions;
-  boardSections: BoardSectionData[];
+  boardSections: BoardSectionData[][];
 }
 
 const Board = forwardRef(

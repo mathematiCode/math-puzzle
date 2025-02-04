@@ -6,7 +6,7 @@ import Board from './components/Board';
 import PlacedPieces from './components/PlacedPieces';
 import DragAndDropArea from './components/DragAndDropArea';
 import { motion } from 'motion/react';
-import { useClickAway } from '@uidotdev/usehooks';
+// import { useClickAway } from '@uidotdev/usehooks';
 import { DragOverlay } from '@dnd-kit/core';
 import { PiecesInPlayContext } from './context/PiecesInPlay';
 import { CurrentLevelContext } from './context/CurrentLevel';
