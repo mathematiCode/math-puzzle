@@ -16,7 +16,6 @@ function PieceOverlay({ piece }) {
         width={piece.width}
         height={piece.height}
         color={piece.color}
-        // isRotated={piece.isRotated}
       />
     </motion.div>
   );

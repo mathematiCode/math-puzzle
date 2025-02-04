@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { memo, forwardRef, useContext } from 'react';
 import { CurrentLevelContext } from '../context/CurrentLevel';
 function Rectangle(
-  { width, height, color, isRotated, isSelected, ...delegated },
+  { width, height, color, isRotated, isSelected, style, ...delegated },
   ref
 ) {
   const { sizeOfEachUnit } = useContext(CurrentLevelContext);
