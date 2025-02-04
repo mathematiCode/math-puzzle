@@ -1,6 +1,6 @@
 import { useDraggable } from '@dnd-kit/core';
 import Rectangle from './Rectangle.tsx';
-import ActionsToolbarPopover from './ActionsToolbarPopover.jsx';
+import ActionsToolbarPopover from './ActionsToolbarPopover.tsx';
 import { useContext } from 'react';
 import { motion } from 'motion/react';
 import { SelectedPieceContext } from '../context/SelectedPiece.jsx';

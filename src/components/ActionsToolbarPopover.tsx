@@ -10,7 +10,13 @@ import {
 import { SelectedPieceContext } from '../context/SelectedPiece';
 import { PiecesInPlayContext } from '../context/PiecesInPlay';
 
-function ActionsToolbarPopover({ children, ...delegated }) {
+function ActionsToolbarPopover({
+  children,
+  ...delegated
+}: {
+  children: React.ReactNode;
+  delegated: any;
+}) {
   const { updateDimensions, rotatePiece } = useContext(PiecesInPlayContext);
   const { selectedPiece } = useContext(SelectedPieceContext);
 
