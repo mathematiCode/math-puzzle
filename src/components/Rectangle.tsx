@@ -44,7 +44,6 @@ function Rectangle(
             width: `${sizeOfEachUnit - 2}px`,
             height: `${sizeOfEachUnit - 2}px`,
           }}
-          id={unit}
         />
       ))}
     </motion.div>

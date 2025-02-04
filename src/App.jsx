@@ -4,7 +4,7 @@ import InitialPuzzlePiece from './components/InitialPuzzlePiece.tsx';
 import PieceOverlay from './components/PieceOverlay.tsx';
 import Board from './components/Board.tsx';
 import PlacedPieces from './components/PlacedPieces.tsx';
-import DragAndDropArea from './components/DragAndDropArea';
+import DragAndDropArea from './components/DragAndDropArea.tsx';
 import { motion } from 'motion/react';
 // import { useClickAway } from '@uidotdev/usehooks';
 import { DragOverlay } from '@dnd-kit/core';

@@ -8,12 +8,19 @@ import {
   KeyboardSensor,
   useSensors,
 } from '@dnd-kit/core';
+import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core';
 import { createSnapModifier, restrictToWindowEdges } from '@dnd-kit/modifiers';
 import { SelectedPieceContext } from '../context/SelectedPiece';
 import { CurrentLevelContext } from '../context/CurrentLevel';
 import { PiecesInPlayContext } from '../context/PiecesInPlay';
+import Piece from '../types/piece';
 
-function DragAndDropArea({ children, setActivePiece }) {
+interface DragAndDropAreaProps {
+  children: React.ReactNode;
+  setActivePiece: (piece: Piece) => void;
+}
+
+function DragAndDropArea({ children, setActivePiece }: DragAndDropAreaProps) {
   const { setSelectedPiece } = useContext(SelectedPieceContext);
   const { sizeOfEachUnit } = useContext(CurrentLevelContext);
   const { piecesInPlay, movePiece } = useContext(PiecesInPlayContext);
@@ -32,15 +39,15 @@ function DragAndDropArea({ children, setActivePiece }) {
   const keyboardSensor = useSensor(KeyboardSensor, {});
   const sensors = useSensors(mouseSensor, touchSensor, keyboardSensor);
 
-  const handleDragStart = event => {
-    const id = event.active.id;
+  const handleDragStart = (event: DragStartEvent) => {
+    const id = event.active.id as string;
     const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
     setActivePiece(piecesInPlay[pieceIndex]);
     setSelectedPiece(piecesInPlay[pieceIndex]);
   };
 
-  const handleDragEnd = event => {
-    const id = event.active.id;
+  const handleDragEnd = (event: DragEndEvent) => {
+    const id = event.active.id as string;
     const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
     if (event?.over?.id) {
       const newLocation = event.over.id;
