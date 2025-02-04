@@ -1,14 +1,12 @@
-/* eslint-disable react/prop-types */
-import { ForwardedRef } from 'react';
-import BoardSection from './BoardSection';
-import PropTypes from 'prop-types';
+import { ForwardedRef, forwardRef } from 'react';
+import BoardSection from './BoardSection.tsx';
 
 interface Dimensions {
   width: number;
   height: number;
 }
 
-interface BoardSection {
+interface BoardSectionData {
   x: number;
   y: number;
   width: number;
@@ -18,7 +16,7 @@ interface BoardSection {
 
 interface BoardProps {
   dimensions: Dimensions;
-  boardSections: BoardSection[];
+  boardSections: BoardSectionData[][];
 }
 
 const Board = forwardRef(
@@ -33,7 +31,7 @@ const Board = forwardRef(
           gridTemplateRows: '1fr',
         }}
       >
-        {boardSections.map((row: BoardSection[], index: number) => {
+        {boardSections.map((row: BoardSectionData[], index: number) => {
           if (row.length === 1) {
             return <BoardSection key={index} section={row[0]} />;
           } else {
@@ -47,7 +45,7 @@ const Board = forwardRef(
                   width: 'min-content',
                 }}
               >
-                {row.map(section: BoardSection => {
+                {row.map((section: BoardSectionData) => {
                   return (
                     <BoardSection
                       key={`${section.x},${section.y}`}

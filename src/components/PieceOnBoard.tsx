@@ -1,7 +1,6 @@
-/* eslint-disable react/prop-types */
 import { useDraggable } from '@dnd-kit/core';
-import Rectangle from './Rectangle';
-import ActionsToolbarPopover from './ActionsToolbarPopover';
+import Rectangle from './Rectangle.tsx';
+import ActionsToolbarPopover from './ActionsToolbarPopover.tsx';
 import { memo, useContext } from 'react';
 import { motion } from 'motion/react';
 
@@ -9,12 +8,22 @@ import { SelectedPieceContext } from '../context/SelectedPiece';
 import { PiecesInPlayContext } from '../context/PiecesInPlay';
 import { CurrentLevelContext } from '../context/CurrentLevel';
 
-function PieceOnBoard({ piece, id }) {
+interface Piece {
+  id: string;
+  location: string | null;
+  isRotated: boolean;
+  width: number;
+  height: number;
+  color: string;
+}
+
+function PieceOnBoard({ piece, id }: { piece: Piece; id: string }) {
   const { selectedPiece, setSelectedPiece } = useContext(SelectedPieceContext);
   const { piecesInPlay } = useContext(PiecesInPlayContext);
   const { sizeOfEachUnit } = useContext(CurrentLevelContext);
 
-  function convertlocationToXAndY(location) {
+  function convertlocationToXAndY(location: string | null) {
+    if (!location) return { x: 0, y: 0 };
     const cleanedString = location.replace(/[()]/g, '');
     const [x, y] = cleanedString.split(',').map(Number);
     return { x, y };
@@ -40,7 +49,7 @@ function PieceOnBoard({ piece, id }) {
   };
 
   function handlePieceSelected() {
-    const chosenPiece = piecesInPlay.find(piece => id === piece.id);
+    const chosenPiece = piecesInPlay.find((piece: Piece) => id === piece.id);
     setSelectedPiece(chosenPiece);
   }
 

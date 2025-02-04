@@ -1,12 +1,12 @@
 import { useDraggable } from '@dnd-kit/core';
-import PropTypes from 'prop-types';
-import Rectangle from './Rectangle';
-import ActionsToolbarPopover from './ActionsToolbarPopover';
+import Rectangle from './Rectangle.tsx';
+import ActionsToolbarPopover from './ActionsToolbarPopover.tsx';
 import { useContext } from 'react';
 import { motion } from 'motion/react';
-import { SelectedPieceContext } from '../context/SelectedPiece';
+import { SelectedPieceContext } from '../context/SelectedPiece.jsx';
+import Piece from '../types/piece.ts';
 
-const InitialPuzzlePiece = ({ piece }) => {
+const InitialPuzzlePiece = ({ piece }: { piece: Piece }) => {
   //console.log('re-rendering this piece:', piece.id);
   const { selectedPiece, setSelectedPiece } = useContext(SelectedPieceContext);
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
@@ -59,11 +59,5 @@ const InitialPuzzlePiece = ({ piece }) => {
 };
 
 InitialPuzzlePiece.displayName = 'InitialPuzzlePiece';
-
-InitialPuzzlePiece.propTypes = {
-  piece: PropTypes.object.isRequired,
-  className: PropTypes.string,
-  activePiece: PropTypes.object,
-};
 
 export default InitialPuzzlePiece;

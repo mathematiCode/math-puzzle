@@ -1,8 +1,7 @@
-import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import { CurrentLevelContext } from '../context/CurrentLevel';
 
-function LandingSquare({ id }) {
+function LandingSquare({ id }: { id: string }) {
   const { sizeOfEachUnit } = useContext(CurrentLevelContext);
   return (
     <div
@@ -19,7 +18,4 @@ function LandingSquare({ id }) {
   );
 }
 
-LandingSquare.propTypes = {
-  id: PropTypes.string.isRequired,
-};
 export default LandingSquare;

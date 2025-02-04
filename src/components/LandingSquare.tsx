@@ -1,9 +1,8 @@
 import { useDroppable } from '@dnd-kit/core';
-import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import { CurrentLevelContext } from '../context/CurrentLevel';
 
-function LandingSquare({ id, color }) {
+function LandingSquare({ id, color }: { id: string; color: string }) {
   const { sizeOfEachUnit } = useContext(CurrentLevelContext);
   const { isOver, setNodeRef } = useDroppable({
     id: id,
@@ -25,8 +24,4 @@ function LandingSquare({ id, color }) {
   );
 }
 
-LandingSquare.propTypes = {
-  id: PropTypes.string.isRequired,
-  color: PropTypes.string.isRequired,
-};
 export default LandingSquare;

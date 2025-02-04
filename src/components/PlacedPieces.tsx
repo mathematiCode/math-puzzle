@@ -1,6 +1,7 @@
-/* eslint-disable react/prop-types */
-import PieceOnBoard from './PieceOnBoard';
-function PlacedPieces({ piecesInPlay }) {
+import PieceOnBoard from './PieceOnBoard.tsx';
+import Piece from '../types/piece';
+
+function PlacedPieces({ piecesInPlay }: { piecesInPlay: Piece[] }) {
   return (
     <div className="placed-pieces">
       {piecesInPlay.map((piece, index) =>
