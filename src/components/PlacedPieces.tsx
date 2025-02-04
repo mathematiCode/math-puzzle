@@ -1,6 +1,14 @@
-/* eslint-disable react/prop-types */
-import PieceOnBoard from './PieceOnBoard';
-function PlacedPieces({ piecesInPlay }) {
+import PieceOnBoard from './PieceOnBoard.tsx';
+
+interface Piece {
+  id: string;
+  location: string | null;
+  isRotated: boolean;
+  width: number;
+  height: number;
+  color: string;
+}
+function PlacedPieces({ piecesInPlay }: { piecesInPlay: Piece[] }) {
   return (
     <div className="placed-pieces">
       {piecesInPlay.map((piece, index) =>
