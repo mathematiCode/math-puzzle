@@ -1,6 +1,8 @@
 # Frectangles Game in React + Typescript + Dnd-kit
 
 This is a game that I've been planning since October and started building in January. See my [game design document.](https://docs.google.com/document/d/19n_Eb5vXucGJNiwmZuczLBsk5-oJEB7wVopWP7I0jtE/edit?usp=sharing)
+Check out the deployed (although very much not done) site [here](frectangles.netlify.app)
+. 
 
 There will be many levels with the earlier/easier with whole numbers and smaller boards and the later ones including fractions, mixed numbers, and decimals. 
 
