@@ -1,13 +1,6 @@
 import PieceOnBoard from './PieceOnBoard.tsx';
+import Piece from '../types/piece';
 
-interface Piece {
-  id: string;
-  location: string | null;
-  isRotated: boolean;
-  width: number;
-  height: number;
-  color: string;
-}
 function PlacedPieces({ piecesInPlay }: { piecesInPlay: Piece[] }) {
   return (
     <div className="placed-pieces">

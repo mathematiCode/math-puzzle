@@ -1,8 +1,8 @@
 import { useContext, useState } from 'react';
 import levels from './levels.json';
-import InitialPuzzlePiece from './components/InitialPuzzlePiece';
-import PieceOverlay from './components/PieceOverlay';
-import Board from './components/Board';
+import InitialPuzzlePiece from './components/InitialPuzzlePiece.tsx';
+import PieceOverlay from './components/PieceOverlay.tsx';
+import Board from './components/Board.tsx';
 import PlacedPieces from './components/PlacedPieces.tsx';
 import DragAndDropArea from './components/DragAndDropArea';
 import { motion } from 'motion/react';
