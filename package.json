@@ -23,7 +23,8 @@
     "motion": "^11.16.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "styled-components": "^6.1.14"
+    "styled-components": "^6.1.14",
+    "tsc": "^2.0.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

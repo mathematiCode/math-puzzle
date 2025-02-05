@@ -23,6 +23,17 @@ const InitialPuzzlePiece = ({ piece }: { piece: Piece }) => {
   function handlePieceSelected() {
     setSelectedPiece(piece);
   }
+
+  // const animateMe = e => {
+  //   // e.preventDefault();
+  //   console.log('animateMe');
+  //   piece.isRotated
+  //     ? {
+  //         rotate: 90,
+  //       }
+  //     : null;
+  // };
+
   return (
     <ActionsToolbarPopover>
       <motion.button
@@ -32,9 +43,7 @@ const InitialPuzzlePiece = ({ piece }: { piece: Piece }) => {
         style={style}
         onClick={handlePieceSelected}
         popoverTarget="actions"
-        animate={{
-          rotate: piece.isRotated ? 90 : 0,
-        }}
+        animate={piece.isRotated ? { rotate: 90 } : { rotate: 0 }}
         transition={{ duration: 0.5 }}
       >
         <Rectangle

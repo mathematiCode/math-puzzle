@@ -1,19 +1,12 @@
 /* eslint-disable react/prop-types */
 import { motion } from 'motion/react';
 import { range } from 'lodash';
+import PropTypes from 'prop-types';
 import { memo, forwardRef, useContext } from 'react';
 import { CurrentLevelContext } from '../context/CurrentLevel';
-
-interface RectangleProps {
-  width: number;
-  height: number;
-  color: string;
-  [key: string]: any;
-}
-
 function Rectangle(
-  { width, height, color, ...delegated }: RectangleProps,
-  ref: React.RefObject<HTMLDivElement>
+  { width, height, color, isRotated, isSelected, style, ...delegated },
+  ref
 ) {
   const { sizeOfEachUnit } = useContext(CurrentLevelContext);
   const total = width * height;
@@ -44,6 +37,7 @@ function Rectangle(
             width: `${sizeOfEachUnit - 2}px`,
             height: `${sizeOfEachUnit - 2}px`,
           }}
+          id={unit}
         />
       ))}
     </motion.div>
