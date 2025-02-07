@@ -69,6 +69,10 @@
 
 - Added unit tests to test each level and make sure its written correctly in the JSON file. ✅
 
+2/1/2025 - 2/5/2025
+
+- Converting the project to typescript. Attempting to fix the alignment issue.
+
 In General
 
 - Deselect puzzle pieces on clickAway with a custom hook
