@@ -7,7 +7,7 @@ import {
   PopoverTrigger,
   PopoverSurface,
 } from '@fluentui/react-components';
-import { SelectedPieceContext } from '../context/SelectedPiece';
+import { SelectedPieceContext } from '../context/SelectedPiece.tsx';
 import { PiecesInPlayContext } from '../context/PiecesInPlay';
 
 function ActionsToolbarPopover({

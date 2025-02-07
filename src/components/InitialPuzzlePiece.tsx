@@ -3,7 +3,7 @@ import Rectangle from './Rectangle.tsx';
 import ActionsToolbarPopover from './ActionsToolbarPopover.tsx';
 import { useContext } from 'react';
 import { motion } from 'motion/react';
-import { SelectedPieceContext } from '../context/SelectedPiece.jsx';
+import { SelectedPieceContext } from '../context/SelectedPiece.tsx';
 import Piece from '../types/piece.ts';
 
 const InitialPuzzlePiece = ({ piece }: { piece: Piece }) => {

@@ -3,7 +3,7 @@ import { createContext, useState, useContext } from 'react';
 // import { colors } from '../CONSTANTS';
 export const PiecesInPlayContext = createContext();
 
-import { CurrentLevelContext } from '../context/CurrentLevel';
+import { CurrentLevelContext } from './CurrentLevel.tsx';
 const initialLocation = null;
 
 function PiecesInPlayProvider({ children }) {

@@ -10,8 +10,8 @@ import {
 } from '@dnd-kit/core';
 import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core';
 import { createSnapModifier, restrictToWindowEdges } from '@dnd-kit/modifiers';
-import { SelectedPieceContext } from '../context/SelectedPiece';
-import { CurrentLevelContext } from '../context/CurrentLevel';
+import { SelectedPieceContext } from '../context/SelectedPiece.tsx';
+import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
 import { PiecesInPlayContext } from '../context/PiecesInPlay';
 import Piece from '../types/piece';
 

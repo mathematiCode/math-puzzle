@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { CurrentLevelContext } from '../context/CurrentLevel';
+import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
 
 function LandingSquare({ id }: { id: string }) {
   const { sizeOfEachUnit } = useContext(CurrentLevelContext);

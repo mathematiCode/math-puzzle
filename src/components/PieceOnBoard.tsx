@@ -4,9 +4,9 @@ import ActionsToolbarPopover from './ActionsToolbarPopover.tsx';
 import { memo, useContext } from 'react';
 import { motion } from 'motion/react';
 
-import { SelectedPieceContext } from '../context/SelectedPiece';
+import { SelectedPieceContext } from '../context/SelectedPiece.tsx';
 import { PiecesInPlayContext } from '../context/PiecesInPlay';
-import { CurrentLevelContext } from '../context/CurrentLevel';
+import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
 
 interface Piece {
   id: string;
