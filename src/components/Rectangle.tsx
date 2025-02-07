@@ -3,7 +3,7 @@ import { motion } from 'motion/react';
 import { range } from 'lodash';
 import PropTypes from 'prop-types';
 import { memo, forwardRef, useContext } from 'react';
-import { CurrentLevelContext } from '../context/CurrentLevel';
+import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
 function Rectangle(
   { width, height, color, isRotated, isSelected, style, ...delegated },
   ref
