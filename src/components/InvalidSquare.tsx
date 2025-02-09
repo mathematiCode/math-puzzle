@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
 
-function LandingSquare({ id }: { id: string }) {
+function InvalidSquare({ id }: { id: string }) {
   const { sizeOfEachUnit } = useContext(CurrentLevelContext);
   return (
     <div
@@ -18,4 +18,4 @@ function LandingSquare({ id }: { id: string }) {
   );
 }
 
-export default LandingSquare;
+export default InvalidSquare;

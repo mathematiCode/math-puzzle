@@ -2,8 +2,6 @@ import LandingSquare from './LandingSquare';
 import InvalidSquare from './InvalidSquare';
 import { range } from 'lodash';
 import PropTypes from 'prop-types';
-// import { useContext } from 'react';
-// import { CurrentLevelContext } from '../context/CurrentLevel';
 
 interface Section {
   x: number;
@@ -16,7 +14,7 @@ interface Section {
 function BoardSection({ section }: { section: Section }) {
   const color = 'hsl(209, 26%, 89%)';
   const { width, height, x, y, valid } = section;
-  // const { sizeOfEachUnit } = useContext(CurrentLevelContext);
+
   if (valid) {
     return (
       <div
@@ -57,13 +55,6 @@ function BoardSection({ section }: { section: Section }) {
           });
         })}
       </div>
-      // <div
-      //   style={{
-      //     width: `${width}*${sizeOfEachUnit}px`,
-      //     height: `${height}*${sizeOfEachUnit}px`,
-      //   }}
-      //   className="board"
-      // />
     );
   }
 }

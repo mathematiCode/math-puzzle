@@ -8,8 +8,10 @@ import DragAndDropArea from './components/DragAndDropArea.tsx';
 import { motion } from 'motion/react';
 // import { useClickAway } from '@uidotdev/usehooks';
 import { DragOverlay } from '@dnd-kit/core';
-import { PiecesInPlayContext } from './context/PiecesInPlay';
+import { PiecesInPlayContext } from './context/PiecesInPlay.jsx';
 import { CurrentLevelContext } from './context/CurrentLevel.tsx';
+import { range } from 'lodash';
+import InvalidSquare from './components/InvalidSquare.tsx';
 
 import './App.css';
 
@@ -21,6 +23,9 @@ function App() {
     useContext(PiecesInPlayContext);
   const boardRef = useRef(null);
   setPiecesForNewLevel();
+  let { width, height } = levels[currentLevel].dimensions;
+  width = Math.ceil(width * 1.3);
+  height = Math.ceil(height * 1.3);
   return (
     <main>
       <DragAndDropArea
@@ -28,16 +33,34 @@ function App() {
         boardRef={boardRef}
         key={currentLevel}
       >
-        <motion.div
+        {/* <motion.div
           className="pieces-container"
-          layout={true}
           key={currentLevel}
+          style={{ border: '2px solid red' }}
+        > */}
+        <div
+          className="inivisble-grid unit-container"
+          style={{
+            gridTemplateColumns: `repeat(${width}, 1fr)`,
+            border: '2px solid red',
+          }}
         >
-          {piecesInPlay.map((piece, pieceIndex) => {
-            if (piece.location != null) return null;
-            return <InitialPuzzlePiece piece={piece} key={pieceIndex} />;
+          {range(width).map((row: number, rowIndex: number) => {
+            return range(width).map((square: number, colIndex: number) => {
+              return (
+                <InvalidSquare
+                  key={`(${colIndex},${rowIndex})_initial`}
+                  id={`(${colIndex},${rowIndex})_initial`}
+                />
+              );
+            });
           })}
-        </motion.div>
+        </div>
+        {/* {piecesInPlay.map((piece, pieceIndex) => {
+          if (piece.location != null) return null;
+          return <InitialPuzzlePiece piece={piece} key={pieceIndex} />;
+        })} */}
+        {/* </motion.div> */}
         <div className="game-board">
           <Board
             ref={boardRef}
