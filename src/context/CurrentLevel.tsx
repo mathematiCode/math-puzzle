@@ -1,6 +1,6 @@
 import { createContext, useState, type ReactNode } from 'react';
 import levels from '../levels.json';
-import { colors } from '../CONSTANTS';
+import { colors } from '../CONSTANTS.ts';
 export const CurrentLevelContext = createContext<CurrentLevelContextType>(
   {} as CurrentLevelContextType
 );
