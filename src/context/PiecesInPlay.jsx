@@ -1,6 +1,5 @@
-/* eslint-disable react/prop-types */
 import { createContext, useState, useContext } from 'react';
-// import { colors } from '../CONSTANTS';
+
 export const PiecesInPlayContext = createContext();
 
 import { CurrentLevelContext } from './CurrentLevel.tsx';
