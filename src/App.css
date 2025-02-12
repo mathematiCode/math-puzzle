@@ -9,7 +9,7 @@ main {
   grid-template-columns: 60% 40%;
   grid-template-rows: 1fr 50px;
   align-items: start;
-  gap: 48px;
+  gap: 0px;
 }
 
 @media (max-width: 750px) {
@@ -46,13 +46,13 @@ h1 {
 }
 
 .pieces-container {
-  display: flex;
+  /* display: flex;
   flex-direction: row;
-  /* width: 700px; */
+  /* width: 700px; 
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 24px;
+  gap: 24px; */
 }
 
 button {

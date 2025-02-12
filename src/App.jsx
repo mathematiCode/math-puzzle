@@ -12,15 +12,34 @@ import { PiecesInPlayContext } from './context/PiecesInPlay';
 import { CurrentLevelContext } from './context/CurrentLevel.tsx';
 
 import './App.css';
+import { nodeModuleNameResolver } from 'typescript';
 
 function App() {
-  const { currentLevel, levelPosition, previousLevel, nextLevel } =
-    useContext(CurrentLevelContext);
+  const {
+    currentLevel,
+    sizeOfEachUnit,
+    levelPosition,
+    previousLevel,
+    nextLevel,
+  } = useContext(CurrentLevelContext);
   const [activePiece, setActivePiece] = useState(null);
   const { piecesInPlay, resetPieces, setPiecesForNewLevel } =
     useContext(PiecesInPlayContext);
   const boardRef = useRef(null);
+
   setPiecesForNewLevel();
+  const containerStyles = {
+    display: 'grid',
+    gridTemplateColumns: `repeat(auto-fill, ${sizeOfEachUnit}px)`,
+    gridAutoRows: `${sizeOfEachUnit}px`,
+    // minHeight: `${sizeOfEachUnit * 1.3 * 10}px`,
+    // minWidth: `${sizeOfEachUnit * 1.3 * 10}px`,
+    border: '1px solid black',
+    gap: `${sizeOfEachUnit}px`,
+    gridAutoFlow: 'dense',
+    overflow: 'auto',
+  };
+
   return (
     <main>
       <DragAndDropArea
@@ -28,11 +47,7 @@ function App() {
         boardRef={boardRef}
         key={currentLevel}
       >
-        <motion.div
-          className="pieces-container"
-          layout={true}
-          key={currentLevel}
-        >
+        <motion.div style={containerStyles} layout={true} key={currentLevel}>
           {piecesInPlay.map((piece, pieceIndex) => {
             if (piece.location != null) return null;
             return <InitialPuzzlePiece piece={piece} key={pieceIndex} />;

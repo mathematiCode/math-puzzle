@@ -17,6 +17,8 @@ const InitialPuzzlePiece = ({ piece }: { piece: Piece }) => {
     touchAction: 'none',
     ...(selectedPiece?.id === piece.id && {
       boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
+      gridRow: `span ${piece.height}`,
+      gridColumn: `span ${piece.width}`,
     }),
   };
 
