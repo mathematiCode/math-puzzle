@@ -37,7 +37,7 @@ function App() {
     border: '1px solid black',
     gap: `${sizeOfEachUnit}px`,
     gridAutoFlow: 'dense',
-    overflow: 'auto',
+    // overflow: 'auto',
   };
 
   return (
