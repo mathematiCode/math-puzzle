@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export function useElementPosition(elementRef) {
+export function useElementPosition(elementRef: React.RefObject<HTMLElement>) {
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
