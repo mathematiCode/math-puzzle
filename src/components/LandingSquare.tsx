@@ -1,6 +1,7 @@
 import { useDroppable } from '@dnd-kit/core';
 import { useContext } from 'react';
 import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
+import Unit from './Rectangle.tsx';
 
 function LandingSquare({ id, color }: { id: string; color: string }) {
   const { sizeOfEachUnit } = useContext(CurrentLevelContext);

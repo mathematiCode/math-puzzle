@@ -62,7 +62,6 @@ button {
   font-size: 1.4rem;
   cursor: pointer;
   padding: 0px;
-  /* margin: 15px; */
 }
 
 /* button:hover,
@@ -116,13 +115,13 @@ button:focus {
   background-color: hsl(178, 60%, 35%);
 }
 
-.icon-button {
+/* .icon-button {
   padding: 4px;
   padding-inline: 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
-}
+} */
 
 .button-container {
   display: flex;
@@ -134,7 +133,7 @@ button:focus {
   justify-self: center;
 }
 
-.actions-toolbar {
+/* .actions-toolbar {
   background-color: white;
   color: hsl(178, 100%, 23%);
   border-radius: 5px;
@@ -145,14 +144,14 @@ button:focus {
   display: flex;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-  /* box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px; */
-}
+  /* box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px; 
+} */
 
-.icon-button {
+/* .icon-button {
   padding: 0px;
   margin: 0px;
   border: none;
-}
+} */
 
 button:disabled,
 button:disabled:hover {

@@ -1,5 +1,6 @@
 import { ForwardedRef, forwardRef } from 'react';
 import BoardSection from './BoardSection.tsx';
+import styled from 'styled-components';
 
 interface Dimensions {
   width: number;
