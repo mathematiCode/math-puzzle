@@ -13,6 +13,7 @@ import { PiecesInPlayContext } from './context/PiecesInPlay.jsx';
 import { CurrentLevelContext } from './context/CurrentLevel.tsx';
 
 import './App.css';
+import Piece from './types/piece.ts';
 
 function App() {
   const { currentLevel, levelPosition, previousLevel, nextLevel } =
@@ -34,7 +35,7 @@ function App() {
           layout={true}
           key={currentLevel}
         >
-          {piecesInPlay.map((piece, pieceIndex) => {
+          {piecesInPlay.map((piece: Piece, pieceIndex: number) => {
             if (piece.location != null) return null;
             return <InitialPuzzlePiece piece={piece} key={pieceIndex} />;
           })}
