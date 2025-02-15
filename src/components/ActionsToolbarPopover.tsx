@@ -8,7 +8,7 @@ import {
   PopoverSurface,
 } from '@fluentui/react-components';
 import styled from 'styled-components';
-import { SelectedPieceContext } from '../context/SelectedPiece.tsx';
+import { useSelectedPiece } from '../context/SelectedPiece.tsx';
 import { PiecesInPlayContext } from '../context/PiecesInPlay';
 
 const StyledRotateIcon = styled(RotateRightOutlined)`
@@ -47,16 +47,16 @@ function ActionsToolbarPopover({
   delegated: any;
 }) {
   const { updateDimensions, rotatePiece } = useContext(PiecesInPlayContext);
-  const { selectedPiece } = useContext(SelectedPieceContext);
+  const { selectedPiece } = useSelectedPiece();
 
   function handleRotation() {
-    const id = selectedPiece.id;
-    const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
+    const id = selectedPiece?.id;
+    const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
     rotatePiece(pieceIndex);
   }
 
   function handleHorizontalStretch() {
-    if (Number.isInteger(selectedPiece.height / 2)) {
+    if (selectedPiece && Number.isInteger(selectedPiece.height / 2)) {
       const newHeight = selectedPiece.height / 2;
       const newWidth = selectedPiece.width * 2;
       const id = selectedPiece.id;
@@ -67,7 +67,7 @@ function ActionsToolbarPopover({
   }
 
   function handleVerticalStretch() {
-    if (Number.isInteger(selectedPiece.width / 2)) {
+    if (selectedPiece && Number.isInteger(selectedPiece.width / 2)) {
       const newHeight = selectedPiece.height * 2;
       const newWidth = selectedPiece.width / 2;
       const id = selectedPiece.id;

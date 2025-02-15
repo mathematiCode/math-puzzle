@@ -1,8 +1,11 @@
-import React, { createContext, useState } from 'react';
-
+import React, { createContext, useContext, useState } from 'react';
+import Piece from '../types/piece';
 type SelectedPieceContextType = {
-  selectedPiece: string | null;
-  setSelectedPiece: (piece: string | null) => void;
+  id: any;
+  height: number;
+  width: number;
+  selectedPiece: Piece | null;
+  setSelectedPiece: (piece: Piece | null) => void;
 };
 
 export const SelectedPieceContext =
@@ -17,5 +20,15 @@ function SelectedPieceProvider({ children }: { children: React.ReactNode }) {
     </SelectedPieceContext.Provider>
   );
 }
+
+export const useSelectedPiece = () => {
+  const context = useContext(SelectedPieceContext);
+  if (!context) {
+    throw new Error(
+      'useSelectedPiece must be used within a SelectedPieceProvider'
+    );
+  }
+  return context;
+};
 
 export default SelectedPieceProvider;

@@ -36,13 +36,13 @@ h1 {
 }
 
 .unit-container {
-  display: grid;
+  /* display: grid;
   width: fit-content;
   height: min-content;
   gap: 0px;
   padding: 0px;
   touch-action: none;
-  touch-action: none;
+  touch-action: none; */
 }
 
 .pieces-container {
@@ -71,8 +71,9 @@ button:focus {
 } */
 
 .game-board {
-  display: grid;
+  /* display: grid;
   grid-area: 1fr;
+  width: min-content; */
 }
 
 .game-board > .board {
@@ -80,7 +81,7 @@ button:focus {
   grid-row: 1/2;
 }
 
-.withBorder {
+/* .withBorder {
   position: relative;
 }
 
@@ -94,7 +95,7 @@ button:focus {
   z-index: -1;
   box-shadow: hsl(178, 100%, 23%) 0px 0px 0px 8px,
     hsl(178, 100%, 23%) 0px 0px 0px 8px;
-}
+} */
 
 .game-board > .placed-pieces {
   grid-column: 1/2;

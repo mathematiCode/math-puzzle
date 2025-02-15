@@ -30,6 +30,8 @@ const Board = forwardRef(
         style={{
           display: 'grid',
           gridTemplateRows: '1fr',
+          gridColumn: 1 / 2,
+          gridRow: 1 / 2,
         }}
       >
         {boardSections.map((row: BoardSectionData[], index: number) => {
