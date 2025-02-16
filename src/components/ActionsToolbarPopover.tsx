@@ -78,7 +78,7 @@ function ActionsToolbarPopover({
 
   return (
     <Popover withArrow trapFocus size="small" positioning="below">
-      <PopoverTrigger delegated={delegated}>{children}</PopoverTrigger>
+      <PopoverTrigger {...delegated}>{children}</PopoverTrigger>
       <PopoverSurface id="actions">
         <ActionsToolbar>
           <Tooltip placement="bottom" title="Rotate">
