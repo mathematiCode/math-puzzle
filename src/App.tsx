@@ -10,7 +10,7 @@ import { motion } from 'motion/react';
 import styled from 'styled-components';
 // import { useClickAway } from '@uidotdev/usehooks';
 import { DragOverlay } from '@dnd-kit/core';
-import { PiecesInPlayContext } from './context/PiecesInPlay.jsx';
+import { PiecesInPlayContext } from './context/PiecesInPlay.tsx';
 import { CurrentLevelContext } from './context/CurrentLevel.tsx';
 
 import './App.css';

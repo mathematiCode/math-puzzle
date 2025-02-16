@@ -1,16 +1,16 @@
 /* eslint-disable react/prop-types */
 import { createContext, useState, useContext } from 'react';
-// import { colors } from '../CONSTANTS';
-export const PiecesInPlayContext = createContext();
-
 import { CurrentLevelContext } from './CurrentLevel.tsx';
+// import { colors } from '../CONSTANTS';
+
+export const PiecesInPlayContext = createContext(null);
 const initialLocation = null;
 
-function PiecesInPlayProvider({ children }) {
+function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
   const { initialPieces } = useContext(CurrentLevelContext);
   const [piecesInPlay, setPiecesInPlay] = useState(initialPieces);
 
-  function movePiece(pieceIndex, newLocation) {
+  function movePiece(pieceIndex: number, newLocation: string | null) {
     const updatedPieces = [...piecesInPlay];
     updatedPieces[pieceIndex].location = newLocation;
     if (newLocation != null) {
@@ -21,7 +21,7 @@ function PiecesInPlayProvider({ children }) {
     setPiecesInPlay(updatedPieces);
   }
 
-  function updateDimensions(pieceIndex, width, height) {
+  function updateDimensions(pieceIndex: number, width: number, height: number) {
     const updatedPieces = [...piecesInPlay];
     updatedPieces[pieceIndex].width = width;
     updatedPieces[pieceIndex].height = height;

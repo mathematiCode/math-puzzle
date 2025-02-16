@@ -12,7 +12,7 @@ import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core';
 import { createSnapModifier, restrictToWindowEdges } from '@dnd-kit/modifiers';
 import { SelectedPieceContext } from '../context/SelectedPiece.tsx';
 import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
-import { PiecesInPlayContext } from '../context/PiecesInPlay';
+import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
 import Piece from '../types/piece';
 
 interface DragAndDropAreaProps {

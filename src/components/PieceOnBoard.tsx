@@ -6,7 +6,7 @@ import { motion } from 'motion/react';
 import styled from 'styled-components';
 
 import { SelectedPieceContext } from '../context/SelectedPiece.tsx';
-import { PiecesInPlayContext } from '../context/PiecesInPlay';
+import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
 import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
 
 interface Piece {

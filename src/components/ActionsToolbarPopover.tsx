@@ -9,7 +9,7 @@ import {
 } from '@fluentui/react-components';
 import styled from 'styled-components';
 import { useSelectedPiece } from '../context/SelectedPiece.tsx';
-import { PiecesInPlayContext } from '../context/PiecesInPlay';
+import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
 
 const StyledRotateIcon = styled(RotateRightOutlined)`
   font-size: 32px;

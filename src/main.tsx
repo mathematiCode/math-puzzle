@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App.tsx';
-import PiecesInPlayProvider from './context/PiecesInPlay.jsx';
+import PiecesInPlayProvider from './context/PiecesInPlay.tsx';
 import SelectedPieceProvider from './context/SelectedPiece.tsx';
 import CurrentLevelProvider from './context/CurrentLevel.tsx';
 
