@@ -1,28 +1,23 @@
 import { useDraggable } from '@dnd-kit/core';
 import Rectangle from './Rectangle.tsx';
 import ActionsToolbarPopover from './ActionsToolbarPopover.tsx';
-import { useContext } from 'react';
 import { motion } from 'motion/react';
-import { SelectedPieceContext } from '../context/SelectedPiece.tsx';
+import { useSelectedPiece } from '../context/SelectedPiece.tsx';
 import Piece from '../types/piece.ts';
+import styled, { css } from 'styled-components';
 
 const InitialPuzzlePiece = ({ piece }: { piece: Piece }) => {
   //console.log('re-rendering this piece:', piece.id);
-  const { selectedPiece, setSelectedPiece } = useContext(SelectedPieceContext);
+  const { selectedPiece, setSelectedPiece } = useSelectedPiece();
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: piece.id,
   });
 
-  const style = {
-    touchAction: 'none',
-    ...(selectedPiece?.id === piece.id && {
-      boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
-    }),
-  };
-
   function handlePieceSelected() {
     setSelectedPiece(piece);
   }
+
+  const isSelected = selectedPiece?.id === piece.id;
 
   // const animateMe = e => {
   //   // e.preventDefault();
@@ -33,30 +28,38 @@ const InitialPuzzlePiece = ({ piece }: { piece: Piece }) => {
   //       }
   //     : null;
   // };
-
   return (
-    <ActionsToolbarPopover>
-      <motion.button
-        ref={setNodeRef}
-        {...listeners}
-        {...attributes}
-        style={style}
-        onClick={handlePieceSelected}
-        popoverTarget="actions"
-        animate={piece.isRotated ? { rotate: 90 } : { rotate: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <Rectangle
-          width={piece.width}
-          height={piece.height}
-          color={piece.color}
-          // isRotated={piece.isRotated}
-          // isSelected={selectedPiece?.id === piece.id}
-        />
-      </motion.button>
-    </ActionsToolbarPopover>
+    <InitialPieceWrapper $isSelected={isSelected}>
+      <ActionsToolbarPopover delegated={{}}>
+        <motion.button
+          ref={setNodeRef}
+          {...listeners}
+          {...attributes}
+          onClick={handlePieceSelected}
+          animate={piece.isRotated ? { rotate: 90 } : { rotate: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Rectangle
+            width={piece.width}
+            height={piece.height}
+            color={piece.color}
+            // isRotated={piece.isRotated}
+            // isSelected={selectedPiece?.id === piece.id}
+          />
+        </motion.button>
+      </ActionsToolbarPopover>
+    </InitialPieceWrapper>
   );
 };
+
+export const InitialPieceWrapper = styled.div`
+  touch-action: none;
+  ${({ isSelected }) =>
+    isSelected &&
+    css`
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    `}
+`;
 
 InitialPuzzlePiece.displayName = 'InitialPuzzlePiece';
 
