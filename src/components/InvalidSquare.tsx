@@ -1,21 +1,16 @@
 import { useContext } from 'react';
 import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
+import Unit from './Unit.tsx';
 
-function LandingSquare({ id }: { id: string }) {
-  const { sizeOfEachUnit } = useContext(CurrentLevelContext);
+function InvalidSquare({ id }: { id: string }) {
   return (
-    <div
-      className="unit"
+    <Unit
       key={id}
       id={id}
-      style={{
-        backgroundColor: 'transparent',
-        border: '1px solid transparent',
-        width: `${sizeOfEachUnit - 2}px`,
-        height: `${sizeOfEachUnit - 2}px`,
-      }}
+      color="transparent"
+      style={{ border: '1px solid transparent' }}
     />
   );
 }
 
-export default LandingSquare;
+export default InvalidSquare;

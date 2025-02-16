@@ -3,51 +3,46 @@ import { motion } from 'motion/react';
 import { range } from 'lodash';
 import PropTypes from 'prop-types';
 import { memo, forwardRef, useContext } from 'react';
+import styled from 'styled-components';
 import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
+import Unit from './Unit.tsx';
+
+interface RectangleProps {
+  width: number;
+  height: number;
+  color: string;
+  isRotated?: boolean;
+  isSelected?: boolean;
+  style?: React.CSSProperties;
+}
+
+const Container = styled(motion.div)<{ $width: number; color: string }>`
+  display: grid;
+  grid-template-columns: repeat(${props => props.$width}, 1fr);
+  background-color: transparent;
+  width: fit-content;
+  height: min-content;
+  gap: 0px;
+  padding: 0px;
+  touch-action: none;
+  background-color: ${props => props.color};
+`;
+
 function Rectangle(
-  { width, height, color, isRotated, isSelected, style, ...delegated },
-  ref
+  { width, height, color, ...delegated }: RectangleProps,
+  ref: React.Ref<HTMLDivElement>
 ) {
   const { sizeOfEachUnit } = useContext(CurrentLevelContext);
   const total = width * height;
+
   return (
-    <motion.div
-      ref={ref}
-      className="unit-container"
-      style={{
-        gridTemplateColumns: `repeat(${width}, 1fr)`,
-        backgroundColor: 'transparent',
-        // ...(isSelected && {
-        //   boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
-        // }),
-      }}
-      // animate={{
-      //   rotate: isRotated ? 90 : 0,
-      // }}
-      // transition={{ duration: 0.5 }}
-      {...delegated}
-    >
+    <Container ref={ref} $width={width} color={color} {...delegated}>
       {range(total).map(unit => (
-        <motion.div
-          className="unit"
-          key={unit}
-          layout={true}
-          style={{
-            backgroundColor: color,
-            width: `${sizeOfEachUnit - 2}px`,
-            height: `${sizeOfEachUnit - 2}px`,
-          }}
-          id={unit}
-        />
+        <Unit key={unit} />
       ))}
-    </motion.div>
+    </Container>
   );
 }
-// Rectangle.propTypes = {
-//   width: PropTypes.number.isRequired,
-//   height: PropTypes.number.isRequired,
-//   color: PropTypes.string.isRequired,
-// };
 
 const MemoizedForwardedRectangle = memo(forwardRef(Rectangle));
 export default MemoizedForwardedRectangle;

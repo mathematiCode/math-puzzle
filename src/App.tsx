@@ -6,12 +6,14 @@ import Board from './components/Board.tsx';
 import PlacedPieces from './components/PlacedPieces.tsx';
 import DragAndDropArea from './components/DragAndDropArea.tsx';
 import { motion } from 'motion/react';
+import styled from 'styled-components';
 // import { useClickAway } from '@uidotdev/usehooks';
 import { DragOverlay } from '@dnd-kit/core';
-import { PiecesInPlayContext } from './context/PiecesInPlay';
+import { PiecesInPlayContext } from './context/PiecesInPlay.jsx';
 import { CurrentLevelContext } from './context/CurrentLevel.tsx';
 
 import './App.css';
+import Piece from './types/piece.ts';
 
 function App() {
   const { currentLevel, levelPosition, previousLevel, nextLevel } =
@@ -33,19 +35,19 @@ function App() {
           layout={true}
           key={currentLevel}
         >
-          {piecesInPlay.map((piece, pieceIndex) => {
+          {piecesInPlay.map((piece: Piece, pieceIndex: number) => {
             if (piece.location != null) return null;
             return <InitialPuzzlePiece piece={piece} key={pieceIndex} />;
           })}
         </motion.div>
-        <div className="game-board">
+        <BoardWrapper>
           <Board
             ref={boardRef}
             dimensions={levels[currentLevel].dimensions}
             boardSections={levels[currentLevel].boardSections}
           />
           <PlacedPieces piecesInPlay={piecesInPlay} />
-        </div>
+        </BoardWrapper>
         {activePiece ? (
           <DragOverlay>
             <PieceOverlay piece={activePiece} />
@@ -74,4 +76,10 @@ function App() {
     </main>
   );
 }
+
+export const BoardWrapper = styled.div`
+  display: grid;
+  grid-area: 1fr;
+  width: min-content;
+`;
 export default App;
