@@ -69,9 +69,13 @@
 
 - Added unit tests to test each level and make sure its written correctly in the JSON file. ✅
 
-2/1/2025 - 2/5/2025
+2/1/2025 - 2/6/2025
 
-- Converting the project to typescript. Attempting to fix the alignment issue.
+- Converting the project to typescript. ✅ Attempting to fix the alignment issue. ❌
+
+2/10/2025 - 2/16/2025
+
+- Converting the CSS to styled components and fixing the alignment issue. ✅
 
 In General
 

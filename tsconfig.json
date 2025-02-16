@@ -17,5 +17,5 @@
     "noEmit": true,
     "jsx": "react-jsx" // This is the important line for your error
   },
-  "include": ["src"]
+  "include": ["src", "brainstorm.js"]
 }
