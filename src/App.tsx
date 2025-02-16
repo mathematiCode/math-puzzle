@@ -101,5 +101,6 @@ export const PiecesContainer = styled.div.attrs({
   justify-content: right;
   gap: calc(var(--sizeOfEachUnit) - 2px);
 `;
+// Not sure why subtracting 2 from the sizeOfEachUnit works here. May be a box-sizing issue although it should all be set to border-box...
 
 export default App;
