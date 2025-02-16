@@ -17,8 +17,13 @@ import './App.css';
 import Piece from './types/piece.ts';
 
 function App() {
-  const { currentLevel, levelPosition, previousLevel, nextLevel } =
-    useContext(CurrentLevelContext);
+  const {
+    currentLevel,
+    levelPosition,
+    previousLevel,
+    nextLevel,
+    sizeOfEachUnit,
+  } = useContext(CurrentLevelContext);
   const [activePiece, setActivePiece] = useState(null);
   const { piecesInPlay, resetPieces, setPiecesForNewLevel } =
     useContext(PiecesInPlayContext);
@@ -69,7 +74,7 @@ export const Main = styled.main`
   grid-template-columns: 60% 40%;
   grid-template-rows: 1fr 50px;
   align-items: start;
-  gap: 48px;
+  gap: var(--sizeOfEachUnit);
 
   @media (max-width: 750px) {
     grid-template-columns: 1fr;
@@ -92,9 +97,9 @@ export const PiecesContainer = styled.div.attrs({
   flex-direction: row;
   /* width: 700px; */
   flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
+  align-items: start;
+  justify-content: right;
+  gap: calc(var(--sizeOfEachUnit) - 2px);
 `;
 
 export default App;

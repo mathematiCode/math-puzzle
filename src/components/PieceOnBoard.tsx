@@ -3,6 +3,7 @@ import Rectangle from './Rectangle.tsx';
 import ActionsToolbarPopover from './ActionsToolbarPopover.tsx';
 import { memo, useContext } from 'react';
 import { motion } from 'motion/react';
+import styled from 'styled-components';
 
 import { SelectedPieceContext } from '../context/SelectedPiece.tsx';
 import { PiecesInPlayContext } from '../context/PiecesInPlay';
@@ -16,6 +17,23 @@ interface Piece {
   height: number;
   color: string;
 }
+
+export const PieceWrapper = styled(motion.div).attrs(props => ({
+  onClick: props.onClick,
+  ref: props.ref,
+  animate: props.animate,
+  transition: props.transition,
+}))`
+  position: absolute;
+  touch-action: none;
+  left: ${({ x }) => `calc(${x} * var(--sizeOfEachUnit))`};
+  top: ${({ y }) => `calc(${y} * var(--sizeOfEachUnit))`};
+  cursor: ${({ isDragging }) => (isDragging ? 'grab' : 'auto')};
+  box-shadow: ${({ isSelected }) =>
+    isSelected
+      ? 'rgba(0, 0, 0, 0.5) 0px 19px 19px, rgba(0, 0, 0, 0.22) 0px 15px 12px'
+      : 'none'};
+`;
 
 function PieceOnBoard({ piece, id }: { piece: Piece; id: string }) {
   const { selectedPiece, setSelectedPiece } = useContext(SelectedPieceContext);
@@ -35,12 +53,13 @@ function PieceOnBoard({ piece, id }: { piece: Piece; id: string }) {
     useDraggable({
       id: id,
     });
+  const isSelected = selectedPiece?.id === id;
 
   const style = {
     position: 'absolute',
     touchAction: 'none',
-    left: `${x * sizeOfEachUnit - 1}px`,
-    top: `${y * sizeOfEachUnit - 1}px`,
+    left: `${x * sizeOfEachUnit}px`,
+    top: `${y * sizeOfEachUnit}px`,
     ...(isDragging && { cursor: 'grab' }),
     ...(selectedPiece?.id === id && {
       boxShadow:
@@ -55,26 +74,27 @@ function PieceOnBoard({ piece, id }: { piece: Piece; id: string }) {
 
   return (
     <ActionsToolbarPopover>
-      <motion.button
+      <PieceWrapper
         ref={setNodeRef}
         {...listeners}
         {...attributes}
-        style={style}
         onClick={handlePieceSelected}
         animate={{
           rotate: piece.isRotated ? 90 : 0,
         }}
         transition={{ duration: 0.5 }}
+        x={x}
+        y={y}
+        isDragging={isDragging}
+        isSelected={isSelected}
       >
         <Rectangle
           width={piece.width}
           height={piece.height}
           color={piece.color}
           isMotion={true}
-          // isRotated={piece.isRotated}
-          // isSelected={selectedPiece?.id === id}
         />
-      </motion.button>
+      </PieceWrapper>
     </ActionsToolbarPopover>
   );
 }
