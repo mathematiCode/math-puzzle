@@ -55,18 +55,6 @@ function PieceOnBoard({ piece, id }: { piece: Piece; id: string }) {
     });
   const isSelected = selectedPiece?.id === id;
 
-  const style = {
-    position: 'absolute',
-    touchAction: 'none',
-    left: `${x * sizeOfEachUnit}px`,
-    top: `${y * sizeOfEachUnit}px`,
-    ...(isDragging && { cursor: 'grab' }),
-    ...(selectedPiece?.id === id && {
-      boxShadow:
-        'rgba(0, 0, 0, 0.5) 0px 19px 19px, rgba(0, 0, 0, 0.22) 0px 15px 12px',
-    }),
-  };
-
   function handlePieceSelected() {
     const chosenPiece = piecesInPlay.find((piece: Piece) => id === piece.id);
     setSelectedPiece(chosenPiece);

@@ -70,6 +70,7 @@ export const Main = styled.main`
   grid-template-rows: 1fr 50px;
   align-items: start;
   gap: calc(var(--sizeOfEachUnit) - 1px);
+  margin-inline: 30px;
 
   @media (max-width: 750px) {
     grid-template-columns: 1fr;
