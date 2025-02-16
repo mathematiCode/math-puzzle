@@ -5,6 +5,7 @@ import PieceOverlay from './components/PieceOverlay.tsx';
 import Board from './components/Board.tsx';
 import PlacedPieces from './components/PlacedPieces.tsx';
 import DragAndDropArea from './components/DragAndDropArea.tsx';
+import Button from './components/Button.tsx';
 import { motion } from 'motion/react';
 import styled from 'styled-components';
 // import { useClickAway } from '@uidotdev/usehooks';
@@ -51,23 +52,13 @@ function App() {
         ) : null}
       </DragAndDropArea>
       <div className="button-container">
-        <button
-          className="button"
-          disabled={levelPosition == 'first'}
-          onClick={previousLevel}
-        >
+        <Button disabled={levelPosition == 'first'} onClick={previousLevel}>
           Previous Level
-        </button>
-        <button
-          className="button"
-          disabled={levelPosition == 'last'}
-          onClick={nextLevel}
-        >
+        </Button>
+        <Button disabled={levelPosition == 'last'} onClick={nextLevel}>
           Next Level
-        </button>
-        <button className="button" onClick={resetPieces}>
-          Reset Game
-        </button>
+        </Button>
+        <Button onClick={resetPieces}>Reset Game</Button>
       </div>
     </Main>
   );

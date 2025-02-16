@@ -133,17 +133,17 @@ button {
 }
 
 .button {
-  color: white;
+  /* color: white;
   background-color: hsl(178, 100%, 23%);
   border-radius: 10px;
   padding: 10px;
-  margin: 20px;
+  margin: 20px; */
 }
 
-.button:hover,
+/* .button:hover,
 .button:focus {
   background-color: hsl(178, 60%, 35%);
-}
+} */
 
 .button-container {
   display: flex;
@@ -155,8 +155,8 @@ button {
   justify-self: center;
 }
 
-button:disabled,
+/* button:disabled,
 button:disabled:hover {
-  background-color: lightgrey;
-  color: rgb(89, 88, 88);
-}
+  /* background-color: lightgrey;
+  color: rgb(89, 88, 88); 
+} */
