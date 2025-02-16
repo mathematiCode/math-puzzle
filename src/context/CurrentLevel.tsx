@@ -34,6 +34,10 @@ function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
 
   // 450 is an arbitrary number that seems to work well when divided by the width or height
   const sizeOfEachUnit = Math.round(450 / Math.max(width, height));
+  document.documentElement.style.setProperty(
+    '--sizeOfEachUnit',
+    `${sizeOfEachUnit}px`
+  );
 
   let levelPosition: 'first' | 'middle' | 'last';
   if (currentLevel === numberOfLevels - 1) {
