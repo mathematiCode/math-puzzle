@@ -6,7 +6,7 @@ interface UnitProps extends ComponentProps<'div'> {
   color?: string;
   ref?: any;
   id?: string;
-  key?: string;
+  key?: number | string;
 }
 
 export const BasicUnit = styled.div<{ $color?: string }>`

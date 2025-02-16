@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 
-interface ButtonProps {
-  onClick: () => null;
-  disabled: boolean;
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  disabled?: boolean;
   children: any;
 }
 

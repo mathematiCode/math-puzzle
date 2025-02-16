@@ -17,14 +17,9 @@ import './App.css';
 import Piece from './types/piece.ts';
 
 function App() {
-  const {
-    currentLevel,
-    levelPosition,
-    previousLevel,
-    nextLevel,
-    sizeOfEachUnit,
-  } = useContext(CurrentLevelContext);
-  const [activePiece, setActivePiece] = useState(null);
+  const { currentLevel, levelPosition, previousLevel, nextLevel } =
+    useContext(CurrentLevelContext);
+  const [activePiece, setActivePiece] = useState<Piece | null>(null);
   const { piecesInPlay, resetPieces, setPiecesForNewLevel } =
     useContext(PiecesInPlayContext);
   const boardRef = useRef(null);
@@ -56,7 +51,7 @@ function App() {
           </DragOverlay>
         ) : null}
       </DragAndDropArea>
-      <div className="button-container">
+      <ButtonContainer>
         <Button disabled={levelPosition == 'first'} onClick={previousLevel}>
           Previous Level
         </Button>
@@ -64,7 +59,7 @@ function App() {
           Next Level
         </Button>
         <Button onClick={resetPieces}>Reset Game</Button>
-      </div>
+      </ButtonContainer>
     </Main>
   );
 }
@@ -74,7 +69,7 @@ export const Main = styled.main`
   grid-template-columns: 60% 40%;
   grid-template-rows: 1fr 50px;
   align-items: start;
-  gap: var(--sizeOfEachUnit);
+  gap: calc(var(--sizeOfEachUnit) - 1px);
 
   @media (max-width: 750px) {
     grid-template-columns: 1fr;
@@ -88,10 +83,9 @@ export const BoardWrapper = styled.div`
   width: min-content;
 `;
 
-export const PiecesContainer = styled.div.attrs({
+export const PiecesContainer = styled(motion.div).attrs({
   layout: true,
   key: props => props.$currentLevel,
-  as: motion.div,
 })<{ $currentLevel: number }>`
   display: flex;
   flex-direction: row;
@@ -102,5 +96,15 @@ export const PiecesContainer = styled.div.attrs({
   gap: calc(var(--sizeOfEachUnit) - 2px);
 `;
 // Not sure why subtracting 2 from the sizeOfEachUnit works here. May be a box-sizing issue although it should all be set to border-box...
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  bottom: 20px;
+  grid-column: 1/3;
+  justify-self: center;
+`;
 
 export default App;
