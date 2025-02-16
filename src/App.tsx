@@ -99,7 +99,7 @@ export const PiecesContainer = styled.div.attrs({
   flex-wrap: wrap;
   align-items: start;
   justify-content: right;
-  gap: var(--sizeOfEachUnit);
+  gap: calc(var(--sizeOfEachUnit) - 2px);
 `;
 
 export default App;

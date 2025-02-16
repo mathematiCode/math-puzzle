@@ -1,10 +1,8 @@
 /* eslint-disable react/prop-types */
 import { motion } from 'motion/react';
 import { range } from 'lodash';
-import PropTypes from 'prop-types';
-import { memo, forwardRef, useContext } from 'react';
+import { memo, forwardRef } from 'react';
 import styled from 'styled-components';
-import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
 import { Unit, MotionUnit } from './Unit.tsx';
 
 interface RectangleProps {
@@ -33,17 +31,12 @@ function Rectangle(
   { width, height, color, isMotion, ...delegated }: RectangleProps,
   ref: React.Ref<HTMLDivElement>
 ) {
-  const { sizeOfEachUnit } = useContext(CurrentLevelContext);
   const total = width * height;
 
   return (
     <Container ref={ref} $width={width} color={color} {...delegated}>
       {range(total).map(unit =>
-        isMotion ? (
-          <MotionUnit key={unit} size={sizeOfEachUnit} color={color} />
-        ) : (
-          <Unit key={unit} />
-        )
+        isMotion ? <MotionUnit key={unit} color={color} /> : <Unit key={unit} />
       )}
     </Container>
   );

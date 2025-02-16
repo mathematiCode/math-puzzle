@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { ComponentProps, forwardRef, useContext } from 'react';
-import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
+import { ComponentProps, forwardRef } from 'react';
 
 interface UnitProps extends ComponentProps<'div'> {
   color?: string;
@@ -10,32 +9,22 @@ interface UnitProps extends ComponentProps<'div'> {
   key?: string;
 }
 
-export const Unit = forwardRef<HTMLDivElement, UnitProps>(
-  ({ color, ...delegated }, ref) => {
-    const { sizeOfEachUnit } = useContext(CurrentLevelContext);
-    const size = sizeOfEachUnit;
-    return <BasicUnit {...delegated} $size={size} ref={ref} />;
-  }
-);
-
-export const BasicUnit = styled.div<{ $size: number; $color?: string }>`
-  width: ${props => `${props.$size}px`};
-  height: ${props => `${props.$size}px`};
+export const BasicUnit = styled.div<{ $color?: string }>`
+  width: var(--sizeOfEachUnit);
+  height: var(--sizeOfEachUnit);
   border: 1px solid black;
   border-radius: 0px;
   background-color: ${props => props.$color || 'transparent'};
 `;
 
+export const Unit = forwardRef<HTMLDivElement, UnitProps>(
+  ({ color, ...delegated }, ref) => {
+    return <BasicUnit {...delegated} ref={ref} />;
+  }
+);
+
 export const StyledMotionUnit = styled(BasicUnit).attrs({ as: motion.div })``;
 
-export const MotionUnit = ({ color }: { size: number; color?: string }) => {
-  const { sizeOfEachUnit } = useContext(CurrentLevelContext);
-  const size = sizeOfEachUnit;
-  return (
-    <StyledMotionUnit
-      layout={true}
-      $size={size}
-      $color={color || 'transparent'}
-    />
-  );
+export const MotionUnit = ({ color }: { color?: string }) => {
+  return <StyledMotionUnit layout={true} $color={color || 'transparent'} />;
 };
