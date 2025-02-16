@@ -70,6 +70,7 @@ function PieceOnBoard({ piece, id }: { piece: Piece; id: string }) {
           width={piece.width}
           height={piece.height}
           color={piece.color}
+          isMotion={true}
           // isRotated={piece.isRotated}
           // isSelected={selectedPiece?.id === id}
         />

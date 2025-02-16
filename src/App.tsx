@@ -24,22 +24,18 @@ function App() {
   const boardRef = useRef(null);
   setPiecesForNewLevel();
   return (
-    <main>
+    <Main>
       <DragAndDropArea
         setActivePiece={setActivePiece}
         boardRef={boardRef}
         key={currentLevel}
       >
-        <motion.div
-          className="pieces-container"
-          layout={true}
-          key={currentLevel}
-        >
+        <PiecesContainer $currentLevel={currentLevel}>
           {piecesInPlay.map((piece: Piece, pieceIndex: number) => {
             if (piece.location != null) return null;
             return <InitialPuzzlePiece piece={piece} key={pieceIndex} />;
           })}
-        </motion.div>
+        </PiecesContainer>
         <BoardWrapper>
           <Board
             ref={boardRef}
@@ -73,13 +69,41 @@ function App() {
           Reset Game
         </button>
       </div>
-    </main>
+    </Main>
   );
 }
+
+export const Main = styled.main`
+  display: grid;
+  grid-template-columns: 60% 40%;
+  grid-template-rows: 1fr 50px;
+  align-items: start;
+  gap: 48px;
+
+  @media (max-width: 750px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 50px;
+  }
+`;
 
 export const BoardWrapper = styled.div`
   display: grid;
   grid-area: 1fr;
   width: min-content;
 `;
+
+export const PiecesContainer = styled.div.attrs({
+  layout: true,
+  key: props => props.$currentLevel,
+  as: motion.div,
+})<{ $currentLevel: number }>`
+  display: flex;
+  flex-direction: row;
+  /* width: 700px; */
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+`;
+
 export default App;
