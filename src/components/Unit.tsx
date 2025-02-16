@@ -7,17 +7,16 @@ interface UnitProps extends ComponentProps<'div'> {
   color?: string;
   ref?: any;
   id?: string;
+  key?: string;
 }
 
-const Unit = forwardRef<HTMLDivElement, UnitProps>(
+export const Unit = forwardRef<HTMLDivElement, UnitProps>(
   ({ color, ...delegated }, ref) => {
     const { sizeOfEachUnit } = useContext(CurrentLevelContext);
     const size = sizeOfEachUnit;
     return <BasicUnit {...delegated} $size={size} ref={ref} />;
   }
 );
-
-export default Unit;
 
 export const BasicUnit = styled.div<{ $size: number; $color?: string }>`
   width: ${props => `${props.$size}px`};
@@ -29,8 +28,14 @@ export const BasicUnit = styled.div<{ $size: number; $color?: string }>`
 
 export const StyledMotionUnit = styled(BasicUnit).attrs({ as: motion.div })``;
 
-export function MotionUnit({ color }: { size: number; color?: string }) {
+export const MotionUnit = ({ color }: { size: number; color?: string }) => {
   const { sizeOfEachUnit } = useContext(CurrentLevelContext);
   const size = sizeOfEachUnit;
-  return <StyledMotionUnit $size={size} $color={color || 'transparent'} />;
-}
+  return (
+    <StyledMotionUnit
+      layout={true}
+      $size={size}
+      $color={color || 'transparent'}
+    />
+  );
+};

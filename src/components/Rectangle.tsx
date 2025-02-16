@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { memo, forwardRef, useContext } from 'react';
 import styled from 'styled-components';
 import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
-import Unit from './Unit.tsx';
+import { Unit, MotionUnit } from './Unit.tsx';
 
 interface RectangleProps {
   width: number;
@@ -13,6 +13,7 @@ interface RectangleProps {
   color: string;
   isRotated?: boolean;
   isSelected?: boolean;
+  isMotion?: boolean;
   style?: React.CSSProperties;
 }
 
@@ -29,7 +30,7 @@ const Container = styled(motion.div)<{ $width: number; color: string }>`
 `;
 
 function Rectangle(
-  { width, height, color, ...delegated }: RectangleProps,
+  { width, height, color, isMotion, ...delegated }: RectangleProps,
   ref: React.Ref<HTMLDivElement>
 ) {
   const { sizeOfEachUnit } = useContext(CurrentLevelContext);
@@ -37,9 +38,13 @@ function Rectangle(
 
   return (
     <Container ref={ref} $width={width} color={color} {...delegated}>
-      {range(total).map(unit => (
-        <Unit key={unit} />
-      ))}
+      {range(total).map(unit =>
+        isMotion ? (
+          <MotionUnit key={unit} size={sizeOfEachUnit} color={color} />
+        ) : (
+          <Unit key={unit} />
+        )
+      )}
     </Container>
   );
 }

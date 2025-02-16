@@ -1,7 +1,7 @@
 import { useDroppable } from '@dnd-kit/core';
 import { useContext } from 'react';
 import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
-import Unit from './Unit.tsx';
+import { Unit } from './Unit.tsx';
 
 function LandingSquare({ id, color }: { id: string; color: string }) {
   const { isOver, setNodeRef } = useDroppable({

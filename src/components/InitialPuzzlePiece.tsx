@@ -43,8 +43,7 @@ const InitialPuzzlePiece = ({ piece }: { piece: Piece }) => {
             width={piece.width}
             height={piece.height}
             color={piece.color}
-            // isRotated={piece.isRotated}
-            // isSelected={selectedPiece?.id === piece.id}
+            isMotion={true}
           />
         </motion.button>
       </ActionsToolbarPopover>
@@ -52,10 +51,10 @@ const InitialPuzzlePiece = ({ piece }: { piece: Piece }) => {
   );
 };
 
-export const InitialPieceWrapper = styled.div`
+export const InitialPieceWrapper = styled(motion.div)`
   touch-action: none;
-  ${({ isSelected }) =>
-    isSelected &&
+  ${({ $isSelected }) =>
+    $isSelected &&
     css`
       box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     `}

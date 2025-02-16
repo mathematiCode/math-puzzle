@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
-import Unit from './Unit.tsx';
+import { Unit } from './Unit.tsx';
 
 function InvalidSquare({ id }: { id: string }) {
   return (
