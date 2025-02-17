@@ -3,15 +3,16 @@ import Rectangle from './Rectangle.tsx';
 import ActionsToolbarPopover from './ActionsToolbarPopover.tsx';
 import { motion } from 'motion/react';
 import { useSelectedPiece } from '../context/SelectedPiece.tsx';
-import Piece from '../types/piece.ts';
-import styled, { css } from 'styled-components';
+import { Piece } from '../types/piece.ts';
+import styled from 'styled-components';
 
 const InitialPuzzlePiece = ({ piece }: { piece: Piece }) => {
   //console.log('re-rendering this piece:', piece.id);
   const { selectedPiece, setSelectedPiece } = useSelectedPiece();
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: piece.id,
-  });
+  const { attributes, listeners, setNodeRef, isDragging, transform } =
+    useDraggable({
+      id: piece.id,
+    });
 
   function handlePieceSelected() {
     setSelectedPiece(piece);
@@ -29,7 +30,7 @@ const InitialPuzzlePiece = ({ piece }: { piece: Piece }) => {
   //     : null;
   // };
   return (
-    <InitialPieceWrapper $isSelected={isSelected}>
+    <InitialPieceWrapper isSelected={isSelected} isDragging={isDragging}>
       <ActionsToolbarPopover delegated={{}}>
         <motion.button
           ref={setNodeRef}
@@ -51,13 +52,12 @@ const InitialPuzzlePiece = ({ piece }: { piece: Piece }) => {
   );
 };
 
+// Fix cursor type so when isDragging is true, it's grab, otherwise it's pointer
+// Change to button and fix extra space below.
 export const InitialPieceWrapper = styled(motion.div)`
-  touch-action: none;
-  ${({ $isSelected }) =>
-    $isSelected &&
-    css`
-      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    `}
+  cursor: ${({ isDragging }) => (isDragging ? 'grab' : 'pointer')};
+  box-shadow: ${({ isSelected }) =>
+    isSelected ? 'rgba(0, 0, 0, 0.35) 0px 5px 15px' : ''};
 `;
 
 InitialPuzzlePiece.displayName = 'InitialPuzzlePiece';
