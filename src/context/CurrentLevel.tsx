@@ -5,14 +5,17 @@ export const CurrentLevelContext = createContext<CurrentLevelContextType>(
   {} as CurrentLevelContextType
 );
 
-interface CurrentLevelContextType {
+export interface CurrentLevelContextType {
   currentLevel: number;
   initialPieces: Array<{
-    location: string | null;
-    color: string;
-    id: string;
-    isRotated: boolean;
+    // location: string | null;
+    // color: string;
+    // id: string;
+    // isRotated: boolean;
+    width: number;
+    height: number;
   }>;
+  boardDimensions: { boardWidth: number; boardHeight: number };
   levelPosition: 'first' | 'middle' | 'last';
   sizeOfEachUnit: number;
   nextLevel: () => void;
@@ -30,6 +33,10 @@ interface CurrentLevelProviderProps {
 function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
   const [currentLevel, setCurrentLevel] = useState(0);
 
+  const boardDimensions = {
+    boardWidth: levels[currentLevel].dimensions.width,
+    boardHeight: levels[currentLevel].dimensions.height,
+  };
   const { width, height } = levels[currentLevel].dimensions;
 
   // 450 is an arbitrary number that seems to work well when divided by the width or height
@@ -79,6 +86,7 @@ function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
           currentLevel,
           initialPieces,
           levelPosition,
+          boardDimensions,
           sizeOfEachUnit,
           nextLevel,
           previousLevel,

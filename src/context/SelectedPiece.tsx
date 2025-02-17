@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState } from 'react';
-import Piece from '../types/piece';
-type SelectedPieceContextType = {
+import { Piece } from '../types/piece';
+
+export type SelectedPieceContextType = {
   id: any;
   height: number;
   width: number;

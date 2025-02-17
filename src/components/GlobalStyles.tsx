@@ -1,3 +1,6 @@
+import { createGlobalStyle } from 'styled-components';
+
+const GlobalStyles = createGlobalStyle`
 #root {
   margin: 0 auto;
   padding: 2rem;
@@ -20,6 +23,9 @@ button {
   border: 1px solid black;
   border-radius: 0px;
   font-size: 1.4rem;
-  cursor: pointer;
   padding: 0px;
 }
+     
+`;
+
+export default GlobalStyles;

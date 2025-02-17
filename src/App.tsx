@@ -8,13 +8,14 @@ import DragAndDropArea from './components/DragAndDropArea.tsx';
 import Button from './components/Button.tsx';
 import { motion } from 'motion/react';
 import styled from 'styled-components';
+import GlobalStyles from './components/GlobalStyles.tsx';
 // import { useClickAway } from '@uidotdev/usehooks';
 import { DragOverlay } from '@dnd-kit/core';
 import { PiecesInPlayContext } from './context/PiecesInPlay.tsx';
 import { CurrentLevelContext } from './context/CurrentLevel.tsx';
 
 import './App.css';
-import Piece from './types/piece.ts';
+import { Piece } from './types/piece.ts';
 
 function App() {
   const { currentLevel, levelPosition, previousLevel, nextLevel } =
@@ -60,6 +61,7 @@ function App() {
         </Button>
         <Button onClick={resetPieces}>Reset Game</Button>
       </ButtonContainer>
+      <GlobalStyles />
     </Main>
   );
 }
