@@ -9,3 +9,10 @@ export function updatePiecesInPlay() {
         Then convert that object into pixel coordinates to display on the board in re-render. 
     */
 }
+
+export function convertLocationToXAndY(location: string | null) {
+  if (!location) return { x: 0, y: 0 };
+  const cleanedString = location.replace(/[()]/g, '');
+  const [x, y] = cleanedString.split(',').map(Number);
+  return { x, y };
+}
