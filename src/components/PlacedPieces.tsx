@@ -1,5 +1,5 @@
 import PieceOnBoard from './PieceOnBoard.tsx';
-import Piece from '../types/piece';
+import { Piece } from '../types/piece';
 import styled from 'styled-components';
 function PlacedPieces({ piecesInPlay }: { piecesInPlay: Piece[] }) {
   return (

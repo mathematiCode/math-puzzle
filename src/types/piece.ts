@@ -1,4 +1,4 @@
-interface Piece {
+export interface Piece {
   id: string;
   location: string | null;
   isRotated: boolean;
@@ -6,5 +6,3 @@ interface Piece {
   height: number;
   color: string;
 }
-
-export default Piece;

@@ -14,6 +14,7 @@ export const StyledButton = styled.button.attrs(props => ({
   border-radius: 10px;
   padding: 10px;
   margin: 20px;
+  cursor: pointer;
 
   &:focus,
   &:hover {
