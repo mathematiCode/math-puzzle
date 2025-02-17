@@ -4,10 +4,16 @@ import ActionsToolbarPopover from './ActionsToolbarPopover.tsx';
 import { memo, useContext } from 'react';
 import { motion } from 'motion/react';
 import styled from 'styled-components';
+import { convertLocationToXAndY } from '../utilities.ts';
 
-import { SelectedPieceContext } from '../context/SelectedPiece.tsx';
-import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
-import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
+import {
+  SelectedPieceContext,
+  SelectedPieceContextType,
+} from '../context/SelectedPiece.tsx';
+import {
+  PiecesInPlayContext,
+  PiecesInPlayContextType,
+} from '../context/PiecesInPlay.tsx';
 
 interface Piece {
   id: string;
@@ -18,17 +24,16 @@ interface Piece {
   color: string;
 }
 
-export const PieceWrapper = styled(motion.div).attrs(props => ({
+export const PieceWrapper = styled(motion.button).attrs(props => ({
   onClick: props.onClick,
   ref: props.ref,
   animate: props.animate,
   transition: props.transition,
 }))`
   position: absolute;
-  touch-action: none;
   left: ${({ x }) => `calc(${x} * var(--sizeOfEachUnit))`};
   top: ${({ y }) => `calc(${y} * var(--sizeOfEachUnit))`};
-  cursor: ${({ isDragging }) => (isDragging ? 'grab' : 'auto')};
+  cursor: ${({ isDragging }) => (isDragging ? 'grab' : 'pointer')};
   box-shadow: ${({ isSelected }) =>
     isSelected
       ? 'rgba(0, 0, 0, 0.5) 0px 19px 19px, rgba(0, 0, 0, 0.22) 0px 15px 12px'
@@ -36,18 +41,12 @@ export const PieceWrapper = styled(motion.div).attrs(props => ({
 `;
 
 function PieceOnBoard({ piece, id }: { piece: Piece; id: string }) {
-  const { selectedPiece, setSelectedPiece } = useContext(SelectedPieceContext);
-  const { piecesInPlay } = useContext(PiecesInPlayContext);
-  const { sizeOfEachUnit } = useContext(CurrentLevelContext);
+  const { selectedPiece, setSelectedPiece } =
+    useContext<SelectedPieceContextType>(SelectedPieceContext);
+  const { piecesInPlay } =
+    useContext<PiecesInPlayContextType>(PiecesInPlayContext);
 
-  function convertlocationToXAndY(location: string | null) {
-    if (!location) return { x: 0, y: 0 };
-    const cleanedString = location.replace(/[()]/g, '');
-    const [x, y] = cleanedString.split(',').map(Number);
-    return { x, y };
-  }
-
-  const { x, y } = convertlocationToXAndY(piece.location);
+  const { x, y } = convertLocationToXAndY(piece.location);
 
   const { attributes, isDragging, listeners, setNodeRef, transform } =
     useDraggable({
