@@ -4,17 +4,11 @@ import { colors } from '../CONSTANTS';
 export const CurrentLevelContext = createContext<CurrentLevelContextType>(
   {} as CurrentLevelContextType
 );
+import { InitialPiece } from '../types/piece.ts';
 
 export interface CurrentLevelContextType {
   currentLevel: number;
-  initialPieces: Array<{
-    // location: string | null;
-    // color: string;
-    // id: string;
-    // isRotated: boolean;
-    width: number;
-    height: number;
-  }>;
+  initialPieces: InitialPiece[];
   boardDimensions: { boardWidth: number; boardHeight: number };
   levelPosition: 'first' | 'middle' | 'last';
   sizeOfEachUnit: number;
