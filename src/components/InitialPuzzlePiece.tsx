@@ -1,50 +1,65 @@
+// @ts-nocheck
+import { useContext, useState } from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import Rectangle from './Rectangle.tsx';
 import ActionsToolbarPopover from './ActionsToolbarPopover.tsx';
-import { motion } from 'motion/react';
+import { motion, useAnimate } from 'motion/react';
 import { useSelectedPiece } from '../context/SelectedPiece.tsx';
+import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
 import { Piece } from '../types/piece.ts';
 import styled from 'styled-components';
+import { mergeRefs } from '@chakra-ui/react';
 
 const InitialPuzzlePiece = ({ piece }: { piece: Piece }) => {
-  //console.log('re-rendering this piece:', piece.id);
   const { selectedPiece, setSelectedPiece } = useSelectedPiece();
-  const { attributes, listeners, setNodeRef, isDragging, transform } =
-    useDraggable({
-      id: piece.id,
-    });
+  const [isRotating, setIsRotating] = useState(false);
+  const [scope, animate] = useAnimate();
+  const { updateDimensions } = useContext(PiecesInPlayContext);
+  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
+    id: piece.id,
+  });
+  const refs = mergeRefs(scope, setNodeRef);
 
   function handlePieceSelected() {
     setSelectedPiece(piece);
   }
 
+  async function runRotationAnimation(selectedPiece) {
+    const id = selectedPiece?.id;
+    const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
+    setIsRotating(true);
+    await animate(scope.current, { rotate: 90 }, { duration: 1 });
+    updateDimensions(pieceIndex, selectedPiece?.height, selectedPiece.width);
+    await animate(scope.current, { rotate: 0 }, { duration: 0 });
+    setIsRotating(false);
+  }
+
   const isSelected = selectedPiece?.id === piece.id;
 
-  // const animateMe = e => {
-  //   // e.preventDefault();
-  //   console.log('animateMe');
-  //   piece.isRotated
-  //     ? {
-  //         rotate: 90,
-  //       }
-  //     : null;
-  // };
   return (
     <InitialPieceWrapper isSelected={isSelected} isDragging={isDragging}>
-      <ActionsToolbarPopover delegated={{}}>
+      <ActionsToolbarPopover
+        delegated={{}}
+        runRotationAnimation={runRotationAnimation}
+      >
         <motion.button
-          ref={setNodeRef}
+          ref={refs}
           {...listeners}
           {...attributes}
           onClick={handlePieceSelected}
-          animate={piece.isRotated ? { rotate: 90 } : { rotate: 0 }}
-          transition={{ duration: 0.5 }}
+          layout={!isRotating}
+          style={{
+            boxShadow: isSelected ? 'rgba(0, 0, 0, 0.35) 0px 5px 15px' : '',
+          }}
+          // animate={piece.isRotated ? { rotate: 90 } : { rotate: 0 }}
+          // transition={{ duration: 0.5 }}
         >
           <Rectangle
             width={piece.width}
             height={piece.height}
             color={piece.color}
-            isMotion={true}
+            isMotion={!isRotating}
+            layout={!isRotating}
           />
         </motion.button>
       </ActionsToolbarPopover>
@@ -56,8 +71,7 @@ const InitialPuzzlePiece = ({ piece }: { piece: Piece }) => {
 // Change to button and fix extra space below.
 export const InitialPieceWrapper = styled(motion.div)`
   cursor: ${({ isDragging }) => (isDragging ? 'grab' : 'pointer')};
-  box-shadow: ${({ isSelected }) =>
-    isSelected ? 'rgba(0, 0, 0, 0.35) 0px 5px 15px' : ''};
+  border: none;
 `;
 
 InitialPuzzlePiece.displayName = 'InitialPuzzlePiece';

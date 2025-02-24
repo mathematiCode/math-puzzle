@@ -72,7 +72,7 @@ function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
 
   function rotatePiece(pieceIndex: number) {
     const updatedPieces = [...piecesInPlay];
-    updatedPieces[pieceIndex].isRotated = !updatedPieces[pieceIndex].isRotated;
+    // updatedPieces[pieceIndex].isRotated = !updatedPieces[pieceIndex].isRotated;
     setPiecesInPlay(updatedPieces);
   }
 
