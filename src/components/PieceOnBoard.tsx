@@ -14,15 +14,7 @@ import {
   PiecesInPlayContext,
   PiecesInPlayContextType,
 } from '../context/PiecesInPlay.tsx';
-
-interface Piece {
-  id: string;
-  location: string | null;
-  isRotated: boolean;
-  width: number;
-  height: number;
-  color: string;
-}
+import { Piece } from '../types/piece.ts';
 
 export const PieceWrapper = styled(motion.button).attrs(props => ({
   onClick: props.onClick,

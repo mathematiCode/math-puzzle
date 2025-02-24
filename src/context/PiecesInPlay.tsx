@@ -5,8 +5,9 @@ import {
   CurrentLevelContextType,
 } from './CurrentLevel.tsx';
 // import { colors } from '../CONSTANTS';
-import { Piece } from '../types/piece.ts';
+import { InitialPiece, Piece } from '../types/piece.ts';
 import { convertLocationToXAndY } from '../utilities.ts';
+import { useAnimate } from 'motion/dist/react';
 
 export type PiecesInPlayContextType = {
   piecesInPlay: Piece[];
@@ -24,7 +25,9 @@ const initialLocation = null;
 function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
   const { initialPieces, boardDimensions } =
     useContext<CurrentLevelContextType>(CurrentLevelContext);
-  const [piecesInPlay, setPiecesInPlay] = useState<Piece[]>(initialPieces);
+  const [piecesInPlay, setPiecesInPlay] = useState<InitialPiece[] | Piece[]>(
+    initialPieces
+  );
   const { boardWidth, boardHeight } = boardDimensions;
 
   function movePiece(pieceIndex: number, newLocation: string) {
@@ -72,7 +75,8 @@ function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
 
   function rotatePiece(pieceIndex: number) {
     const updatedPieces = [...piecesInPlay];
-    updatedPieces[pieceIndex].isRotated = !updatedPieces[pieceIndex].isRotated;
+    // updatedPieces[pieceIndex].isRotated = !updatedPieces[pieceIndex].isRotated;
+
     setPiecesInPlay(updatedPieces);
   }
 

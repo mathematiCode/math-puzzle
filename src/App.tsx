@@ -14,7 +14,6 @@ import { DragOverlay } from '@dnd-kit/core';
 import { PiecesInPlayContext } from './context/PiecesInPlay.tsx';
 import { CurrentLevelContext } from './context/CurrentLevel.tsx';
 
-import './App.css';
 import { Piece } from './types/piece.ts';
 
 function App() {
