@@ -28,7 +28,11 @@ const InitialPuzzlePiece = ({ piece }: { piece: Piece }) => {
     const id = selectedPiece?.id;
     const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
     setIsRotating(true);
-    await animate(scope.current, { rotate: 90 }, { duration: 1 });
+    await animate(
+      scope.current,
+      { rotate: 90 },
+      { type: 'spring', stiffness: 100, damping: 12 }
+    );
     updateDimensions(pieceIndex, selectedPiece?.height, selectedPiece.width);
     await animate(scope.current, { rotate: 0 }, { duration: 0 });
     setIsRotating(false);
