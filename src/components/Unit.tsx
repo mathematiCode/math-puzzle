@@ -25,6 +25,12 @@ export const Unit = forwardRef<HTMLDivElement, UnitProps>(
 
 export const StyledMotionUnit = styled(BasicUnit).attrs({ as: motion.div })``;
 
-export const MotionUnit = ({ color }: { color?: string }) => {
-  return <StyledMotionUnit layout={true} $color={color || 'transparent'} />;
+export const MotionUnit = ({
+  color,
+  layout = true,
+}: {
+  color?: string;
+  layout?: boolean;
+}) => {
+  return <StyledMotionUnit layout={layout} $color={color || 'transparent'} />;
 };

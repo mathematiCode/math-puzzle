@@ -41,18 +41,22 @@ const ActionsToolbar = styled.div`
 
 function ActionsToolbarPopover({
   children,
+  runRotationAnimation,
   ...delegated
 }: {
   children: React.ReactNode;
+  runRotationAnimation: any;
   delegated: any;
 }) {
   const { updateDimensions, rotatePiece } = useContext(PiecesInPlayContext);
   const { selectedPiece } = useSelectedPiece();
 
   function handleRotation() {
-    const id = selectedPiece?.id;
-    const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
-    rotatePiece(pieceIndex);
+    // const id = selectedPiece?.id;
+    // const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
+    // rotatePiece(pieceIndex);
+    console.log(selectedPiece);
+    runRotationAnimation(selectedPiece);
   }
 
   function handleHorizontalStretch() {

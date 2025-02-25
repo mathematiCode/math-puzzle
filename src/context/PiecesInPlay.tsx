@@ -44,7 +44,6 @@ function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
         newValidLocation = `(${boardWidth - pieceWidth},${y})`;
       }
     }
-
     updatedPieces[pieceIndex].location = newValidLocation;
     if (newValidLocation != null) {
       updatedPieces[pieceIndex].id = `inPlay-${pieceIndex}`;
