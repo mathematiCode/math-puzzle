@@ -19,6 +19,8 @@ import {
   CurrentLevelContextType,
 } from '../context/CurrentLevel.tsx';
 import { mergeRefs } from '@chakra-ui/react';
+import { Piece } from '../types/piece.ts';
+
 
 export const PieceWrapper = styled(motion.button).attrs(props => ({
   onClick: props.onClick,
