@@ -76,47 +76,67 @@
 2/10/2025 - 2/16/2025
 
 - Converting the CSS to styled components and fixing the alignment issue. ✅
+- Perfect snapping to the grid when moving from outside the grid ✅
 
-Goals for 2/17 - 2/22
+2/17/2025
 
 - Limit the pieces to fall within the bounds of the game board ✅
-- Handle UX for a piece that is too tall or too long to fit on the board
-- Detect and prevent collisions between pieces.
+
+2/23 - 2/25
+
+- Implement piece rotations ✅
+- Make rotations always go clockwise ✅
+- Perfect alignment with the grid with rotated shapes ✅
+
+Goals for 2/25 - 2/28
+
+- Implement a global variable for the sizeOfEachPiece dependent on the board size and screen size
 
 In General
 
-- Deselect puzzle pieces on clickAway with a custom hook
-- Perfect snapping to the grid when moving from outside the grid
-- Perfect alignment with the grid with rotated shapes
-- Make rotations always go clockwise
-- Make the bounds of the game board the bounds of where you can move the pieces
-- Make it impossible to put pieces on top of each other
+Priority Fixes and Features
+
+- When a piece is dragged across the board, make the transition time 0 so it doesn't appear to re-animate from it's original location after it's already been dragged away.
+- Make the rotation appear to be about the origin, not re-rendering it at the top left of the original rectangle.
+- Make the shift after a rotation that causes a piece to be un-aligned with the grid more graceful/animated.
+- Make the original piece disappear as soon as it's being dragged in the air.
+- Handle case where a rotation causes a piece to go partly off the board.
+- Handle UX for a piece that is too tall or too long to fit on the board
+- Detect and prevent/handle collisions between pieces.
+- Tweak animations with stiffness and damping
+
+Features to Add Later
+
+- Add animation for collisions
 - Add animations to reset function
-- Implement piece rotations
-- Implement a global variable for the sizeOfEachPiece dependent on the board size and screen size
-- Hold a variable that keeps track of if the shape was just rotated to determine the transition time for the animation
+- Deselect puzzle pieces on clickAway with a custom hook
 - Add distributive property functionality
-- Set up system to allow for fractional side lengths
+- Add a win screen/ message
+- Add game instructions & rules
+- Add something to hint to the user that they can click the pieces to see the possible actions.
 - Add limits to the UI to show how many actions the user can use
 - Add limits to the level json and import them through context
+
+Much Later or Possibly not at all
+
+- Set up system to allow for fractional side lengths
+- Add sound effects for collisions and piece placements
 
 Bugs to Fix
 
 - When moving a piece with the spacebar and keyboard, and then pressing reset game, that piece stays on the board.
+  - This appears to be fixed now although I'm not sure why. ✅
+- Sometimes there is an empty border and it appears the actual piece is displaced but it's border is still there. Upon inspection of the CSS the motion.div from rectangle was mysteriously getting a transform3d style from somewhere(?) so I used !important to set transform3d to 0px in all directions as a temporary fix.
 
 Things to Figure Out
 
 - Why does the puzzle piece rotate/rerender so much when I drag it?
-- Can I prevent the re-rotating somehow?
-- How can I rotate a piece one time and then leave it rotated across multiple components acting as one?
+- Can I prevent the re-rotating somehow? Yes! ✅
+- How can I rotate a piece one time and then leave it rotated across multiple components acting as one? Answer: After the rotation animation, swap the width and the height and unrotate it in 0 seconds so it appears to still be rotated but acts like a normal puzzle piece with the width and height swapped.
 - How should I implement the UI for distributive property operations?
 - Is it okay to have PiecesInPlay context derived from CurrentLevelContext?
 - Is it okay to have 3 different components all acting as puzzlePieces?
 - How to make the initialPieces container a nice UX for when moving pieces into and out of it and changing the size of pieces? Let them constantly shift or allow overlap??
+- How should I handle piece collisions in terms of UX?
 - Why do the pieces animate into place when switching from level 1 to level 2 but not any other levels?
-
-2/17
-
-- Figure out why isDragging is not causing the cursor to change to 'grab' in InitialPuzzlePiece and PieceOnBoard
-- Fix some of the typescript errors
-- Understand this error from the console: hook.js:608 Warning: Cannot update a component (`PiecesInPlayProvider`) while rendering a different component (`App`). To locate the bad setState() call inside `App`, follow the stack trace as described in https://reactjs.org/link/setstate-in-render Error Component Stack at App (App.tsx:21:5) at SelectedPieceProvider (SelectedPiece.tsx:14:34) at PiecesInPlayProvider (PiecesInPlay.tsx:13:33) at CurrentLevelProvider (CurrentLevel.tsx:30:33)
+- Where is transform3d coming from on the rectangle pieces?
