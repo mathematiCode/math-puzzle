@@ -38,21 +38,13 @@ const InitialPuzzlePiece = ({ piece }: { piece: Piece }) => {
 
   return (
     <InitialPieceWrapper isSelected={isSelected} isDragging={isDragging}>
-      <ActionsToolbarPopover
-        delegated={{}}
-        runRotationAnimation={runRotationAnimation}
-      >
+      <ActionsToolbarPopover runRotationAnimation={runRotationAnimation}>
         <motion.button
           ref={refs}
           {...listeners}
           {...attributes}
           onClick={handlePieceSelected}
           layout={!isRotating}
-          style={{
-            boxShadow: isSelected ? 'rgba(0, 0, 0, 0.35) 0px 5px 15px' : '',
-          }}
-          // animate={piece.isRotated ? { rotate: 90 } : { rotate: 0 }}
-          // transition={{ duration: 0.5 }}
         >
           <Rectangle
             width={piece.width}
@@ -60,6 +52,7 @@ const InitialPuzzlePiece = ({ piece }: { piece: Piece }) => {
             color={piece.color}
             isMotion={!isRotating}
             layout={!isRotating}
+            isSelected={isSelected}
           />
         </motion.button>
       </ActionsToolbarPopover>

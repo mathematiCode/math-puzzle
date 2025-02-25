@@ -55,6 +55,7 @@ function ActionsToolbarPopover({
     // const id = selectedPiece?.id;
     // const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
     // rotatePiece(pieceIndex);
+    console.log(selectedPiece);
     runRotationAnimation(selectedPiece);
   }
 
