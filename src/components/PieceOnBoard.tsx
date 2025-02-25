@@ -19,8 +19,6 @@ import {
   CurrentLevelContextType,
 } from '../context/CurrentLevel.tsx';
 import { mergeRefs } from '@chakra-ui/react';
-import { Piece } from '../types/piece.ts';
-
 
 export const PieceWrapper = styled(motion.button).attrs(props => ({
   onClick: props.onClick,
@@ -63,14 +61,11 @@ function PieceOnBoard({ piece, id }: { piece: Piece; id: string }) {
     const id = selectedPiece?.id;
     const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
     setIsRotating(true);
-    // await animate(
-    //   scope.current,
-    //   {
-    //     transform: `translateX(${xOffset}px) translateY(${yOffset}px) rotate(90deg)`,
-    //   },
-    //   { duration: 1 }
-    // );
-    await animate(scope.current, { rotate: 90 }, { duration: 1 });
+    await animate(
+      scope.current,
+      { rotate: 90 },
+      { type: 'spring', stiffness: 100, damping: 12 }
+    );
     updateDimensions(pieceIndex, selectedPiece?.height, selectedPiece.width);
     await animate(scope.current, { rotate: 0 }, { duration: 0 });
     setIsRotating(false);
@@ -88,10 +83,6 @@ function PieceOnBoard({ piece, id }: { piece: Piece; id: string }) {
         {...listeners}
         {...attributes}
         onClick={handlePieceSelected}
-        // animate={{
-        //   rotate: piece.isRotated ? 90 : 0,
-        // }}
-        // transition={{ duration: 0.5 }}
         x={x}
         y={y}
         layout={!isRotating}
