@@ -38,8 +38,7 @@ function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
 
   // 450 is an arbitrary number that seems to work well when divided by the width or height
   const sizeOfEachUnit = Math.round(
-    600 /
-      ((Math.max(width, height) * Math.max(windowWidth, windowHeight)) / 1000)
+    (0.5 * Math.min(windowWidth, windowHeight)) / Math.max(width, height)
   );
   document.documentElement.style.setProperty(
     '--sizeOfEachUnit',
