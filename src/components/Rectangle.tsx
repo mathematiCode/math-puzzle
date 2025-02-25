@@ -12,6 +12,7 @@ interface RectangleProps {
   isRotated?: boolean;
   isSelected?: boolean;
   isMotion?: boolean;
+  layout?: boolean;
   style?: React.CSSProperties;
 }
 
