@@ -15,6 +15,8 @@ export const StyledButton = styled.button.attrs(props => ({
   padding: 10px;
   margin: 20px;
   cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none; // Makes the text not selectable
 
   &:focus,
   &:hover {

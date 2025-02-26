@@ -128,6 +128,7 @@ Bugs to Fix
 - When moving a piece with the spacebar and keyboard, and then pressing reset game, that piece stays on the board.
   - This appears to be fixed now although I'm not sure why. ✅
 - Sometimes there is an empty border and it appears the actual piece is displaced but it's border is still there. Upon inspection of the CSS the motion.div from rectangle was mysteriously getting a transform3d style from somewhere(?) so I used !important to set transform3d to 0px in all directions as a temporary fix.
+- Make button text not selectable
 
 Things to Figure Out
 
