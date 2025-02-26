@@ -76,6 +76,7 @@ export const Main = styled.main`
   @media (max-width: 750px) {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr 50px;
+    margin-inline: 10px;
   }
 `;
 
@@ -102,14 +103,15 @@ export const PiecesContainer = styled(motion.div).attrs({
 export const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
+  justify-self: center;
   justify-content: center;
   position: fixed;
   bottom: 20px;
   grid-column: 1/3;
-  justify-self: center;
 
   @media (max-width: 750px) {
     bottom: 0px;
+
     button {
       font-size: 1rem;
       margin: 5px;
