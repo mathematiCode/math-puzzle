@@ -77,6 +77,7 @@ export const Main = styled.main`
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr 50px;
     margin-inline: 10px;
+    align-items: center;
   }
 `;
 
