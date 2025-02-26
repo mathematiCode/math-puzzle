@@ -72,12 +72,13 @@ export const Main = styled.main`
   align-items: start;
   gap: calc(var(--sizeOfEachUnit) - 1px);
   margin-inline: 30px;
+  height: 100%;
 
   @media (max-width: 750px) {
     grid-template-columns: 1fr;
     grid-template-rows: 50% 45% 5%;
     margin-inline: 10px;
-    align-items: center;
+    justify-items: center;
   }
 `;
 

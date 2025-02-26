@@ -5,6 +5,11 @@ const GlobalStyles = createGlobalStyle`
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  height: 100%;
+}
+
+body {
+  height: 100%;
 }
 
 .App {
