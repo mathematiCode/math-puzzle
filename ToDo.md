@@ -90,7 +90,8 @@
 
 Goals for 2/25 - 2/28
 
-- Implement a global variable for the sizeOfEachPiece dependent on the board size and screen size
+- Implement a global variable for the sizeOfEachPiece dependent on the board size and screen size ✅
+- Tweak animations with stiffness and damping ✅
 
 In General
 
@@ -103,7 +104,6 @@ Priority Fixes and Features
 - Handle case where a rotation causes a piece to go partly off the board.
 - Handle UX for a piece that is too tall or too long to fit on the board
 - Detect and prevent/handle collisions between pieces.
-- Tweak animations with stiffness and damping
 
 Features to Add Later
 

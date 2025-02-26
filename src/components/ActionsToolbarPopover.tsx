@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { useContext } from 'react';
 import { Tooltip } from 'antd';
 import { RotateRightOutlined } from '@ant-design/icons';
