@@ -5,28 +5,43 @@ This is a game that I've been planning since October and started building in Jan
 Check out the deployed (although very much not done) site [here.](frectangles.netlify.app)
  
 
-There will be many levels with the earlier/easier with whole numbers and smaller boards and the later ones including fractions, mixed numbers, and decimals. 
+There will be many levels with the earlier/easier with whole numbers and smaller boards and the later ones possibly including fractions, mixed numbers, and decimals. 
 
-Target Age Range is 5th - 7th grade but it will also have some levels that are accessible to 3rd & 4th grade and would be a great activity to build number sense for older grades as well. 
+Target Age Range is 5th - 7th grade but it will also have some levels that are accessible to 3rd & 4th grade and would be a great activity to build number sense for older grades as well. I was very inspired by Stick and Split when planning this game. This would be a great game to play after mastering Stick and Split because the concepts build on Stick and Split but my game requires some more complex mathematical thinking. 
 <img width="979" alt="Image of Puzzle Pieces and Board. Each puzzle piece has action buttons including rotate, double width and halve height, and halve width and double height" src="https://github.com/user-attachments/assets/d77e651d-9ecb-4578-acfb-2f5a91934933" />
 
-
-I am currently migrating my javascript code over to typescript. Then I will be digging into Dnd-kit to figure out how to create my own snap to grid modifier so my pieces are aligned to the grid when they are dragged from outside the grid. 
 Here are some other items on my to do list for this project: 
 
-- Deselect puzzle pieces on clickAway with a custom hook
-- Perfect snapping to the grid when moving from outside the grid
-- Perfect alignment with the grid with rotated shapes
-- Make rotations always go clockwise
-- Make the bounds of the game board the bounds of where you can move the pieces
-- Make it impossible to put pieces on top of each other
+Priority Fixes and Features
+
+- When a piece is dragged across the board, make the transition time 0 so it doesn't appear to re-animate from it's original location after it's already been dragged away.
+- Make the rotation appear to be about the origin, not re-rendering it at the top left of the original rectangle.
+- Make the shift after a rotation that causes a piece to be un-aligned with the grid more graceful/animated.
+- Make the original piece disappear as soon as it's being dragged in the air.
+- Handle case where a rotation causes a piece to go partly off the board.
+- Handle UX for a piece that is too tall or too long to fit on the board
+- Detect and prevent/handle collisions between pieces.
+
+Features to Add Later
+
+- Add animation for collisions
 - Add animations to reset function
-- Make the sizeOfEachPiece variable dependent on the board size AND the screen size (right now it's just based on the board size)
-- Make design responsive for mobile devices
-- Hold a variable that keeps track of if the shape was just rotated to determine the transition time for the animation
+- Deselect puzzle pieces on clickAway with a custom hook
 - Add distributive property functionality
-- Set up system to allow for fractional side lengths (will require some architechtural changes) 
+- Add a win screen/ message
+- Add game instructions & rules
+- Add something to hint to the user that they can click the pieces to see the possible actions.
 - Add limits to the UI to show how many actions the user can use
-- Add limits for actions to the level json and import them through context
+- Add limits to the level json and import them through context
+
+Much Later or Possibly not at all
+
+- Set up system to allow for fractional side lengths
+- Add sound effects for collisions and piece placements
+
+Bugs to Fix
+
+- Sometimes there is an empty border and it appears the actual piece is displaced but it's border is still there. Upon inspection of the CSS the motion.div from rectangle was mysteriously getting a transform3d style from somewhere(?) so I used !important to set transform3d to 0px in all directions as a temporary fix.
+- Layout issues on mobile caused by pieces being on top or underneath the board. 
 
 
