@@ -13,6 +13,10 @@ import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
 const StyledRotateIcon = styled(RotateRightOutlined)`
   font-size: 32px;
   color: hsl(178, 100%, 23%);
+
+  @media (max-width: 750px) {
+    font-size: 20px;
+  }
 `;
 
 const IconButton = styled.button`
@@ -23,6 +27,10 @@ const IconButton = styled.button`
 
 const Icon = styled.img`
   width: 32px;
+
+  @media (max-width: 750px) {
+    width: 20px;
+  }
 `;
 
 const ActionsToolbar = styled.div`
@@ -36,6 +44,12 @@ const ActionsToolbar = styled.div`
   display: flex;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+
+  @media (max-width: 750px) {
+    padding: 4px;
+    padding-block: 2px;
+    gap: 6px;
+  }
 `;
 
 function ActionsToolbarPopover({
