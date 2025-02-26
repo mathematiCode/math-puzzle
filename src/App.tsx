@@ -114,7 +114,7 @@ export const ButtonContainer = styled.div`
     bottom: 0px;
 
     button {
-      font-size: 1.1rem;
+      font-size: 0.9rem;
       margin: 5px;
       padding-inline: 4px;
       padding: 4px;
