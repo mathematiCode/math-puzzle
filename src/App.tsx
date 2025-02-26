@@ -114,11 +114,10 @@ export const ButtonContainer = styled.div`
     bottom: 0px;
 
     button {
-      font-size: 0.9rem;
-      margin: 3px;
+      font-size: 1.1rem;
+      margin: 5px;
       padding-inline: 4px;
-      padding-block: 2px;
-      border-radius: 4px;
+      padding: 4px;
     }
   }
 `;
