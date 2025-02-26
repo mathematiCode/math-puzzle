@@ -107,6 +107,14 @@ export const ButtonContainer = styled.div`
   bottom: 20px;
   grid-column: 1/3;
   justify-self: center;
+
+  @media (max-width: 750px) {
+    bottom: 0px;
+    button {
+      font-size: 1rem;
+      margin: 5px;
+    }
+  }
 `;
 
 export default App;

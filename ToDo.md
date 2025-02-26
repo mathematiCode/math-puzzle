@@ -92,6 +92,7 @@ Goals for 2/25 - 2/28
 
 - Implement a global variable for the sizeOfEachPiece dependent on the board size and screen size ✅
 - Tweak animations with stiffness and damping ✅
+- Improve design for mobile devices
 
 In General
 
