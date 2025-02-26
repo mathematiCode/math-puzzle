@@ -75,7 +75,7 @@ export const Main = styled.main`
 
   @media (max-width: 750px) {
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr 50px;
+    grid-template-rows: 50% 45% 5%;
     margin-inline: 10px;
     align-items: center;
   }
@@ -114,8 +114,11 @@ export const ButtonContainer = styled.div`
     bottom: 0px;
 
     button {
-      font-size: 1rem;
-      margin: 5px;
+      font-size: 0.9rem;
+      margin: 3px;
+      padding-inline: 4px;
+      padding-block: 2px;
+      border-radius: 4px;
     }
   }
 `;

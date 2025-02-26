@@ -35,6 +35,13 @@ export const ValidSection = styled.div<{ $width: number; $color: string }>`
     box-shadow: hsl(178, 100%, 23%) 0px 0px 0px 8px,
       hsl(178, 100%, 23%) 0px 0px 0px 8px;
   }
+
+  @media (max-width: 750px) {
+    &::before {
+      box-shadow: hsl(178, 100%, 23%) 0px 0px 0px 4px,
+        hsl(178, 100%, 23%) 0px 0px 0px 4px;
+    }
+  }
 `;
 
 export const InvalidSection = styled.div<{ $width: number }>`
