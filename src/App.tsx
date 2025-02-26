@@ -76,7 +76,7 @@ export const Main = styled.main`
 
   @media (max-width: 750px) {
     grid-template-columns: 1fr;
-    grid-template-rows: 60% 35% 5%;
+    grid-template-rows: 55% 40% 5%;
     margin-inline: 10px;
     justify-items: center;
   }
