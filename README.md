@@ -45,3 +45,9 @@ Bugs to Fix
 - Layout issues on mobile caused by pieces being on top or underneath the board. 
 
 
+April 2025 Update
+I have paused on working on this game to develop my understanding of backend tools like Node and Express, Git and Tailwind as these are common requirements for the jobs I'm applying for. I plan to pick this back up in late April and hope to be finished with it by the end of June. 
+These are some of the things I've been working on during this break
+- [Lesson Links Hackathon Project in React](https://github.com/JoleneKearse/lessonLinks)
+- [To do list with Node, Express, React, and Tailwind](https://github.com/mathematiCode/To-Do-List)
+  
