@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+// @ts-nocheck
 import { createContext, useState, useContext } from 'react';
 import {
   CurrentLevelContext,

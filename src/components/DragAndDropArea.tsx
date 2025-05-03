@@ -13,14 +13,16 @@ import { createSnapModifier, restrictToWindowEdges } from '@dnd-kit/modifiers';
 import { SelectedPieceContext } from '../context/SelectedPiece.tsx';
 import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
 import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
-import Piece from '../types/piece';
+import { Piece } from '../types/piece';
 
 interface DragAndDropAreaProps {
   children: React.ReactNode;
   setActivePiece: (piece: Piece) => void;
+  isRotating: boolean;
+  setIsRotating: (isRotating: boolean) => void;
 }
 
-function DragAndDropArea({ children, setActivePiece }: DragAndDropAreaProps) {
+function DragAndDropArea({ children, setActivePiece, isRotating, setIsRotating }: DragAndDropAreaProps) {
   const { setSelectedPiece } = useContext(SelectedPieceContext);
   const { sizeOfEachUnit } = useContext(CurrentLevelContext);
   const { piecesInPlay, movePiece } = useContext(PiecesInPlayContext);
@@ -42,8 +44,17 @@ function DragAndDropArea({ children, setActivePiece }: DragAndDropAreaProps) {
   const handleDragStart = (event: DragStartEvent) => {
     const id = event.active.id as string;
     const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
-    setActivePiece(piecesInPlay[pieceIndex]);
-    setSelectedPiece(piecesInPlay[pieceIndex]);
+    if (isRotating) {
+      setTimeout(() => {
+        setActivePiece(piecesInPlay[pieceIndex]);
+        setSelectedPiece(piecesInPlay[pieceIndex]);
+        setIsRotating(false);
+      }, 500);
+      console.log('Sorry I needed to finish rotating first.', isRotating);
+    } else {
+      setActivePiece(piecesInPlay[pieceIndex]);
+      setSelectedPiece(piecesInPlay[pieceIndex]);
+    }
   };
 
   const handleDragEnd = (event: DragEndEvent) => {

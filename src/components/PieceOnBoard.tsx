@@ -38,14 +38,13 @@ export const PieceWrapper = styled(motion.button).attrs(props => ({
       : 'none'};
 `;
 
-function PieceOnBoard({ piece, id }: { piece: Piece; id: string }) {
+function PieceOnBoard({ piece, id, isRotating, setIsRotating }: { piece: Piece; id: string, isRotating: boolean, setIsRotating: (isRotating: boolean) => void }) {
   const { selectedPiece, setSelectedPiece } =
     useContext<SelectedPieceContextType>(SelectedPieceContext);
   const { piecesInPlay, updateDimensions } =
     useContext<PiecesInPlayContextType>(PiecesInPlayContext);
   const { sizeOfEachUnit } =
     useContext<CurrentLevelContextType>(CurrentLevelContext);
-  const [isRotating, setIsRotating] = useState(false);
   const [scope, animate] = useAnimate();
 
   const { x, y } = convertLocationToXAndY(piece.location);
@@ -63,14 +62,17 @@ function PieceOnBoard({ piece, id }: { piece: Piece; id: string }) {
     const id = selectedPiece?.id;
     const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
     setIsRotating(true);
-    await animate(
-      scope.current,
-      { rotate: 90 },
-      { type: 'spring', stiffness: 150, damping: 11 }
-    );
-    updateDimensions(pieceIndex, selectedPiece?.height, selectedPiece.width);
-    await animate(scope.current, { rotate: 0 }, { duration: 0 });
-    setIsRotating(false);
+    try {
+      await animate(
+        scope.current,
+        { rotate: 90 },
+        { type: 'spring', stiffness: 150, damping: 11 }
+      );
+      updateDimensions(pieceIndex, selectedPiece.height, selectedPiece.width);
+      await animate(scope.current, { rotate: 0 }, { duration: 0 });
+    } finally {
+      setIsRotating(false);
+    }
   }
 
   function handlePieceSelected() {

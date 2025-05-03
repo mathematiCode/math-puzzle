@@ -10,9 +10,8 @@ import { Piece } from '../types/piece.ts';
 import styled from 'styled-components';
 import { mergeRefs } from '@chakra-ui/react';
 
-const InitialPuzzlePiece = ({ piece }: { piece: Piece }) => {
+const InitialPuzzlePiece = ({ piece, isRotating, setIsRotating }: { piece: Piece, isRotating: boolean, setIsRotating: (isRotating: boolean) => void }) => {
   const { selectedPiece, setSelectedPiece } = useSelectedPiece();
-  const [isRotating, setIsRotating] = useState(false);
   const [scope, animate] = useAnimate();
   const { updateDimensions } = useContext(PiecesInPlayContext);
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({

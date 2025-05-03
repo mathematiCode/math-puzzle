@@ -24,22 +24,25 @@ function App() {
   const [activePiece, setActivePiece] = useState<Piece | null>(null);
   const { piecesInPlay, resetPieces, setPiecesForNewLevel } =
     useContext(PiecesInPlayContext);
+  const [isRotating, setIsRotating] = useState(false);
 
   const boardRef = useRef(null);
   setPiecesForNewLevel();
-
+  console.log('isRotating:', isRotating);
   return (
     <Main>
       <DragAndDropArea
         setActivePiece={setActivePiece}
         boardRef={boardRef}
         key={currentLevel}
+        isRotating={isRotating}
+        setIsRotating={setIsRotating}
       >
         
         <PiecesContainer $currentLevel={currentLevel}>
           {piecesInPlay.map((piece: Piece, pieceIndex: number) => {
             if (piece.location != null) return null;
-            return <InitialPuzzlePiece piece={piece} key={pieceIndex} />;
+            return <InitialPuzzlePiece piece={piece} isRotating={isRotating} setIsRotating={setIsRotating} key={pieceIndex} />;
           })}
         </PiecesContainer>
         <BoardWrapper>
@@ -48,9 +51,9 @@ function App() {
             dimensions={levels[currentLevel].dimensions}
             boardSections={levels[currentLevel].boardSections}
           />
-          <PlacedPieces piecesInPlay={piecesInPlay} />
+          <PlacedPieces piecesInPlay={piecesInPlay} isRotating={isRotating} setIsRotating={setIsRotating} />
         </BoardWrapper>
-        {activePiece ? (
+        {activePiece && !isRotating ? (
           <DragOverlay>
             <PieceOverlay piece={activePiece} />
           </DragOverlay>
@@ -64,7 +67,6 @@ function App() {
           Next Level
         </Button>
         <Button onClick={resetPieces}>Reset Game</Button>
-        {/* <Button onClick={() => setInstructionsShown(true)}>Instructions</Button> */}
         <InstructionsModal />
       </ButtonContainer>
       <GlobalStyles />

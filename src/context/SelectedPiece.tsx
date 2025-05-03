@@ -13,7 +13,7 @@ export const SelectedPieceContext =
   createContext<SelectedPieceContextType | null>(null);
 
 function SelectedPieceProvider({ children }: { children: React.ReactNode }) {
-  const [selectedPiece, setSelectedPiece] = useState<string | null>(null);
+  const [selectedPiece, setSelectedPiece] = useState<Piece | null>(null);
 
   return (
     <SelectedPieceContext.Provider value={{ selectedPiece, setSelectedPiece }}>
