@@ -129,6 +129,8 @@ Bugs to Fix
   - This appears to be fixed now although I'm not sure why. ✅
 - Sometimes there is an empty border and it appears the actual piece is displaced but it's border is still there. Upon inspection of the CSS the motion.div from rectangle was mysteriously getting a transform3d style from somewhere(?) so I used !important to set transform3d to 0px in all directions as a temporary fix.
 - Make button text not selectable
+- When a piece is rotated and then dragged quickly, the rotating gets undone. Maybe disallow dragging until animation is complete? 
+- Make the example piece in the instructions actually work with all the actions. 
 
 Things to Figure Out
 

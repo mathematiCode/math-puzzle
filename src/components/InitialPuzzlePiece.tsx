@@ -69,6 +69,7 @@ const InitialPuzzlePiece = ({ piece }: { piece: Piece }) => {
 export const InitialPieceWrapper = styled(motion.div)`
   cursor: ${({ isDragging }) => (isDragging ? 'grab' : 'pointer')};
   border: none;
+  z-index: 2;
 `;
 
 InitialPuzzlePiece.displayName = 'InitialPuzzlePiece';

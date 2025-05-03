@@ -31,6 +31,7 @@ export const PieceWrapper = styled(motion.button).attrs(props => ({
   left: ${({ x }) => `calc(${x} * var(--sizeOfEachUnit))`};
   top: ${({ y }) => `calc(${y} * var(--sizeOfEachUnit))`};
   cursor: ${({ isDragging }) => (isDragging ? 'grab' : 'pointer')};
+  z-index: 2;
   box-shadow: ${({ isSelected }) =>
     isSelected
       ? 'rgba(0, 0, 0, 0.5) 0px 19px 19px, rgba(0, 0, 0, 0.22) 0px 15px 12px'

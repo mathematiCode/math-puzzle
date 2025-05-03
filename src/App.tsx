@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useContext, useState, useRef } from 'react';
 import levels from './levels.json';
 import InitialPuzzlePiece from './components/InitialPuzzlePiece.tsx';
@@ -6,6 +7,7 @@ import Board from './components/Board.tsx';
 import PlacedPieces from './components/PlacedPieces.tsx';
 import DragAndDropArea from './components/DragAndDropArea.tsx';
 import Button from './components/Button.tsx';
+import InstructionsModal from './components/InstructionsModal.tsx';
 import { motion } from 'motion/react';
 import styled from 'styled-components';
 import GlobalStyles from './components/GlobalStyles.tsx';
@@ -22,8 +24,10 @@ function App() {
   const [activePiece, setActivePiece] = useState<Piece | null>(null);
   const { piecesInPlay, resetPieces, setPiecesForNewLevel } =
     useContext(PiecesInPlayContext);
+
   const boardRef = useRef(null);
   setPiecesForNewLevel();
+
   return (
     <Main>
       <DragAndDropArea
@@ -31,6 +35,7 @@ function App() {
         boardRef={boardRef}
         key={currentLevel}
       >
+        
         <PiecesContainer $currentLevel={currentLevel}>
           {piecesInPlay.map((piece: Piece, pieceIndex: number) => {
             if (piece.location != null) return null;
@@ -59,8 +64,11 @@ function App() {
           Next Level
         </Button>
         <Button onClick={resetPieces}>Reset Game</Button>
+        {/* <Button onClick={() => setInstructionsShown(true)}>Instructions</Button> */}
+        <InstructionsModal />
       </ButtonContainer>
       <GlobalStyles />
+      
     </Main>
   );
 }
