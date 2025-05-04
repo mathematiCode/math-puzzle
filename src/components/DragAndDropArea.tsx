@@ -50,7 +50,6 @@ function DragAndDropArea({ children, setActivePiece, isRotating, setIsRotating }
         setSelectedPiece(piecesInPlay[pieceIndex]);
         setIsRotating(false);
       }, 500);
-      console.log('Sorry I needed to finish rotating first.', isRotating);
     } else {
       setActivePiece(piecesInPlay[pieceIndex]);
       setSelectedPiece(piecesInPlay[pieceIndex]);

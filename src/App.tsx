@@ -28,7 +28,6 @@ function App() {
 
   const boardRef = useRef(null);
   setPiecesForNewLevel();
-  console.log('isRotating:', isRotating);
   return (
     <Main>
       <DragAndDropArea
@@ -67,7 +66,7 @@ function App() {
           Next Level
         </Button>
         <Button onClick={resetPieces}>Reset Game</Button>
-        <InstructionsModal />
+        <InstructionsModal isRotating={isRotating} setIsRotating={setIsRotating} piecesInPlay={piecesInPlay} />
       </ButtonContainer>
       <GlobalStyles />
       

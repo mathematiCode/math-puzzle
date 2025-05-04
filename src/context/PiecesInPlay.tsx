@@ -59,6 +59,7 @@ function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
     updatedPieces[pieceIndex].width = width;
     updatedPieces[pieceIndex].height = height;
     setPiecesInPlay(updatedPieces);
+    console.log(`Reset piece ${pieceIndex} to have width:${width} and height:${height}`)
   }
 
   function resetPieces() {
