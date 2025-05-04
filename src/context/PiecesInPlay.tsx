@@ -55,6 +55,10 @@ function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
   }
 
   function updateDimensions(pieceIndex: number, width: number, height: number) {
+    if (pieceIndex === 1000) {
+      console.log('This is the sample piece.');
+      return;
+    }
     const updatedPieces = [...piecesInPlay];
     updatedPieces[pieceIndex].width = width;
     updatedPieces[pieceIndex].height = height;

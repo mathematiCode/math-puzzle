@@ -144,3 +144,6 @@ Things to Figure Out
 - How should I handle piece collisions in terms of UX?
 - Why do the pieces animate into place when switching from level 1 to level 2 but not any other levels?
 - Where is transform3d coming from on the rectangle pieces?
+
+Refactoring
+ - Change isRotating to a context variable to prevent prop drilling. 

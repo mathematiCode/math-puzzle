@@ -67,7 +67,7 @@ function App() {
           Next Level
         </Button>
         <Button onClick={resetPieces}>Reset Game</Button>
-        <InstructionsModal />
+        <InstructionsModal isRotating={isRotating} setIsRotating={setIsRotating} />
       </ButtonContainer>
       <GlobalStyles />
       
