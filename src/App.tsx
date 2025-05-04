@@ -25,7 +25,7 @@ function App() {
   const { piecesInPlay, resetPieces, setPiecesForNewLevel } =
     useContext(PiecesInPlayContext);
   const [isRotating, setIsRotating] = useState(false);
-
+  console.log("pieces in play is ", piecesInPlay);
   const boardRef = useRef(null);
   setPiecesForNewLevel();
   return (

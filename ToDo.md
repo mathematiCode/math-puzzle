@@ -105,7 +105,7 @@ Priority Fixes and Features
 - Handle case where a rotation causes a piece to go partly off the board.
 - Handle UX for a piece that is too tall or too long to fit on the board
 - Detect and prevent/handle collisions between pieces.
-- Disable scrolling when instructionsModal is open and style border/backdrop to look nicer. 
+- Disable scrolling when instructionsModal is open and style border/backdrop to look nicer. Close the modal when the user clicks outside of the modal. 
 
 Features to Add Later
 
@@ -148,3 +148,11 @@ Things to Figure Out
 
 Refactoring
  - Change isRotating to a context variable to prevent prop drilling. 
+
+
+Tests to Add
+ - Simulate rotating and moving pieces and then resetting. Check that pieces all reset to original state. 
+
+
+ Notes to Self
+  It seems like setPiecesInPlay(piecesAfterReset) does actually reset all the pieces but then they get set again before you notice them reset???? 

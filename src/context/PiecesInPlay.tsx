@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-// @ts-nocheck
+
 import { createContext, useState, useContext } from 'react';
 import {
   CurrentLevelContext,
@@ -9,6 +9,8 @@ import {
 import { InitialPiece, Piece } from '../types/piece.ts';
 import { convertLocationToXAndY } from '../utilities.ts';
 import { useAnimate } from 'motion/dist/react';
+import levels from '../levels.json';
+import { colors } from '../CONSTANTS';
 
 export type PiecesInPlayContextType = {
   piecesInPlay: Piece[];
@@ -24,7 +26,7 @@ export const PiecesInPlayContext =
 const initialLocation = null;
 
 function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
-  const { initialPieces, boardDimensions } =
+  const { initialPieces, boardDimensions, currentLevel } =
     useContext<CurrentLevelContextType>(CurrentLevelContext);
   const [piecesInPlay, setPiecesInPlay] = useState<InitialPiece[] | Piece[]>(
     initialPieces
@@ -63,15 +65,32 @@ function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
   }
 
   function resetPieces() {
-    const updatedPieces = [...piecesInPlay];
-    updatedPieces.forEach((piece, index) => {
-      piece.location = initialLocation;
-      piece.width = initialPieces[index].width;
-      piece.height = initialPieces[index].height;
-      piece.id = `initial-${index}`;
-      piece.isRotated = false;
-    });
-    setPiecesInPlay(updatedPieces);
+    const initialLocation = null;
+    console.log('resetPieces has been called.')
+    try {
+      const piecesAfterReset = [
+        {
+          width: 3,
+          height: 2,
+          location: 'instructions',
+          color: 'hsl(0, 61%, 66%)',
+          id: 'sample-0',
+          isRotated: false,
+        },
+        ...levels[currentLevel].pieces.map((piece, index) => ({
+          ...piece,
+          location: initialLocation,
+          color: colors[index % colors.length],
+          id: `initial-${index + 1}`,
+          isRotated: false,
+        }))
+      ];
+      console.log(piecesInPlay);
+      console.log(piecesAfterReset);
+      setPiecesInPlay(piecesAfterReset);
+    } catch (error) {
+      console.error('Error resetting pieces:', error);
+    }
   }
 
   function rotatePiece(pieceIndex: number) {
