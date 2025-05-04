@@ -65,14 +65,13 @@ function ActionsToolbarPopover({
   if (!context) {
     throw new Error('ActionsToolbarPopover must be used within a PiecesInPlayProvider');
   }
-  const { updateDimensions, rotatePiece } = context;
+  const { updateDimensions } = context;
   const { selectedPiece } = useSelectedPiece();
 
   function handleRotation() {
     // const id = selectedPiece?.id;
     // const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
     // rotatePiece(pieceIndex);
-    console.log(selectedPiece);
     runRotationAnimation(selectedPiece);
   }
 
@@ -82,19 +81,16 @@ function ActionsToolbarPopover({
       const newWidth = selectedPiece.width * 2;
       const id = selectedPiece.id;
       const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
-      console.log(pieceIndex);
       updateDimensions(pieceIndex, newWidth, newHeight);
     }
   }
 
   function handleVerticalStretch() {
     if (selectedPiece && Number.isInteger(selectedPiece.width / 2)) {
-      console.log('selectedPiece:', selectedPiece);
       const newHeight = selectedPiece.height * 2;
       const newWidth = selectedPiece.width / 2;
       const id = selectedPiece.id;
       const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
-      console.log('the correct props are:', pieceIndex, newWidth, newHeight);
       updateDimensions(pieceIndex, newWidth, newHeight);
     }
   }

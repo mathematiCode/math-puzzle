@@ -5,7 +5,7 @@ function PlacedPieces({ piecesInPlay, isRotating, setIsRotating }: { piecesInPla
   return (
     <PlacedPiecesWrapper>
       {piecesInPlay.map((piece, index) =>
-        piece.location != null ? (
+        piece.location != null && piece.location != 'instructions' ? (
           <PieceOnBoard
             piece={piece}
             id={`inPlay-${index}`}

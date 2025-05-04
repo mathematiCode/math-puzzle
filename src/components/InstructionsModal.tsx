@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import {
   Dialog,
   DialogTrigger,
@@ -12,12 +12,14 @@ import {
 import styled from 'styled-components';
 import Button from './Button.tsx';
 import InitialPuzzlePiece from './InitialPuzzlePiece.tsx';
+import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
 
+// Instructions on how to use Griffel/ makeStyles here: https://learn.microsoft.com/en-us/shows/fluent-ui-insights/fluent-ui-trainings-styling-components-theming#time=20m55s
 const useClasses = makeStyles({
   Surface: {
     backgroundColor: '#007571',
     width: '70%',
-    paddingBottom: '100px',
+    paddingBottom: '3px',
     paddingInline: '20px',
     position: 'fixed',
     borderRadius: '10px',
@@ -32,10 +34,10 @@ const useClasses = makeStyles({
     }
   },
   Title: {
-    fontSize: '1.8rem'
+    fontSize: '1.7rem'
   },
   h2: {
-    fontSize: '1.5rem',
+    fontSize: '1.4rem',
     marginTop: '15px'
   },
   div: {
@@ -44,16 +46,22 @@ const useClasses = makeStyles({
  }
 })
 
-
-const InstructionsModal = ({ isRotating, setIsRotating }: { isRotating: boolean, setIsRotating: (isRotating: boolean) => void }) => {
+const InstructionsModal = ({ isRotating, setIsRotating, piecesInPlay }: { isRotating: boolean, setIsRotating: (isRotating: boolean) => void }) => {
   const classes = useClasses();
   const [instructionsShown, setInstructionsShown] = useState(false);
+    const context = useContext(PiecesInPlayContext);
+  if (!context) {
+    throw new Error('InstructionsModal must be used within a PiecesInPlayProvider');
+  }
+  const { updateDimensions } = context;
+
   const closeModal = () => {
+    updateDimensions(0, 3, 2);
     setInstructionsShown(false);
   }
   
   return (
-    <Dialog modalType="non-modal">
+    <Dialog modalType="non-modal" onOpenChange={closeModal}>
       <DialogTrigger disableButtonEnhancement>
         <Button>How to Play</Button>
       </DialogTrigger>
@@ -79,18 +87,12 @@ const InstructionsModal = ({ isRotating, setIsRotating }: { isRotating: boolean,
                 <li>Break one piece into two (coming soon!)</li>
                 <li>Merge two pieces into one (coming soon!)</li>
               </ul>
+              <h2 className={classes.h2}>Try clicking the piece below. </h2>
                 <div className={classes.div}>
-                <InitialPuzzlePiece piece={{
-                  width: 3,
-                  height: 2,
-                  id: 'samplePiece-1000',
-                  location: null,
-                  isRotated: false,
-                  color: 'hsl(0, 61%, 66%)'
-                }}
+                <InitialPuzzlePiece piece={piecesInPlay[0]}
                 isRotating={isRotating}
                 setIsRotating={setIsRotating} />  
-                </div>                     
+              </div>
             </div>
           </DialogContent>
         </DialogBody>

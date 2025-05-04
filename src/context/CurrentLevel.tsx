@@ -54,13 +54,25 @@ function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
     levelPosition = 'middle';
   }
 
-  const initialPieces = levels[currentLevel].pieces.map((piece, index) => ({
-    ...piece,
-    location: initialLocation,
-    color: colors[index % colors.length],
-    id: `initial-${index}`,
-    isRotated: false,
-  }));
+  const initialPieces = [
+    {
+      width: 3,
+      height: 2,
+      location: 'instructions',
+      color: 'hsl(0, 61%, 66%)',
+      id: 'sample-0',
+      isRotated: false,
+    },
+    ...levels[currentLevel].pieces.map((piece, index) => ({
+      ...piece,
+      location: initialLocation,
+      color: colors[index % colors.length],
+      id: `initial-${index+1}`,
+      isRotated: false,
+    }))
+  ];
+  console.log(initialPieces);
+  
 
   function nextLevel() {
     if (currentLevel === numberOfLevels - 1) {

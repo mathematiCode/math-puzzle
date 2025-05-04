@@ -105,6 +105,7 @@ Priority Fixes and Features
 - Handle case where a rotation causes a piece to go partly off the board.
 - Handle UX for a piece that is too tall or too long to fit on the board
 - Detect and prevent/handle collisions between pieces.
+- Disable scrolling when instructionsModal is open and style border/backdrop to look nicer. 
 
 Features to Add Later
 
@@ -136,10 +137,10 @@ Things to Figure Out
 
 - Why does the puzzle piece rotate/rerender so much when I drag it?
 - Can I prevent the re-rotating somehow? Yes! ✅
-- How can I rotate a piece one time and then leave it rotated across multiple components acting as one? Answer: After the rotation animation, swap the width and the height and unrotate it in 0 seconds so it appears to still be rotated but acts like a normal puzzle piece with the width and height swapped.
+- How can I rotate a piece one time and then leave it rotated across multiple components acting as one? Answer: After the rotation animation, swap the width and the height and unrotate it in 0 seconds so it appears to still be rotated but acts like a normal puzzle piece with the width and height swapped. ✅
 - How should I implement the UI for distributive property operations?
-- Is it okay to have PiecesInPlay context derived from CurrentLevelContext?
-- Is it okay to have 3 different components all acting as puzzlePieces?
+- Is it okay to have PiecesInPlay context derived from CurrentLevelContext? 
+- Is it okay to have 3 different components all acting as puzzlePieces? ✅
 - How to make the initialPieces container a nice UX for when moving pieces into and out of it and changing the size of pieces? Let them constantly shift or allow overlap??
 - How should I handle piece collisions in terms of UX?
 - Why do the pieces animate into place when switching from level 1 to level 2 but not any other levels?
