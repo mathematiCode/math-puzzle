@@ -11,6 +11,7 @@ import { convertLocationToXAndY } from '../utilities.ts';
 import { useAnimate } from 'motion/dist/react';
 import levels from '../levels.json';
 import { colors } from '../CONSTANTS';
+import { useSelectedPiece } from './SelectedPiece.tsx';
 
 export type PiecesInPlayContextType = {
   piecesInPlay: Piece[];
@@ -28,6 +29,7 @@ const initialLocation = null;
 function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
   const { initialPieces, boardDimensions, currentLevel } =
     useContext<CurrentLevelContextType>(CurrentLevelContext);
+  const { setSelectedPiece } = useSelectedPiece();
   const [piecesInPlay, setPiecesInPlay] = useState<InitialPiece[] | Piece[]>(
     initialPieces
   );
@@ -88,8 +90,10 @@ function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
       console.log(piecesInPlay);
       console.log(piecesAfterReset);
       setPiecesInPlay(piecesAfterReset);
-    } catch (error) {
-      console.error('Error resetting pieces:', error);
+      throw new Error('You\'re doing great!');
+    } finally {
+      console.log('You\'re doing wonderfully!');
+      setSelectedPiece(null);
     }
   }
 

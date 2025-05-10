@@ -19,15 +19,23 @@ import { CurrentLevelContext } from './context/CurrentLevel.tsx';
 import { Piece } from './types/piece.ts';
 
 function App() {
+  console.log('Re-rendering App');
   const { currentLevel, levelPosition, previousLevel, nextLevel } =
     useContext(CurrentLevelContext);
   const [activePiece, setActivePiece] = useState<Piece | null>(null);
+  console.log("active piece is ", activePiece);
   const { piecesInPlay, resetPieces, setPiecesForNewLevel } =
     useContext(PiecesInPlayContext);
   const [isRotating, setIsRotating] = useState(false);
   console.log("pieces in play is ", piecesInPlay);
   const boardRef = useRef(null);
   setPiecesForNewLevel();
+
+  function resetGame() {
+    console.log('Resetting game');
+    setActivePiece(null);
+    resetPieces();
+  }
   return (
     <Main>
       <DragAndDropArea
@@ -65,7 +73,7 @@ function App() {
         <Button disabled={levelPosition == 'last'} onClick={nextLevel}>
           Next Level
         </Button>
-        <Button onClick={resetPieces}>Reset Game</Button>
+        <Button onClick={resetGame}>Reset Game</Button>
         <InstructionsModal isRotating={isRotating} setIsRotating={setIsRotating} piecesInPlay={piecesInPlay} />
       </ButtonContainer>
       <GlobalStyles />

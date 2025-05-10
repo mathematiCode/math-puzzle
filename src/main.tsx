@@ -9,11 +9,11 @@ import CurrentLevelProvider from './context/CurrentLevel.tsx';
 createRoot(document.getElementById('root') as HTMLElement).render(
   <StrictMode>
     <CurrentLevelProvider>
-      <PiecesInPlayProvider>
         <SelectedPieceProvider>
+      <PiecesInPlayProvider>
           <App />
-        </SelectedPieceProvider>
       </PiecesInPlayProvider>
+        </SelectedPieceProvider>
     </CurrentLevelProvider>
   </StrictMode>
 );
