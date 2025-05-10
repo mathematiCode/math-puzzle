@@ -71,8 +71,17 @@ function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
       isRotated: false,
     }))
   ];
-  console.log(initialPieces);
   
+  function setSizeOfEachUnit(currentLevel: number) {
+    const { width, height } = levels[currentLevel].dimensions;
+    const sizeOfEachUnit = Math.round(
+      (0.55 * Math.min(windowWidth, windowHeight)) / Math.max(width, height)
+    );
+    document.documentElement.style.setProperty(
+      '--sizeOfEachUnit',
+      `${sizeOfEachUnit}px`
+    );
+  }
 
   function nextLevel() {
     if (currentLevel === numberOfLevels - 1) {
@@ -99,6 +108,7 @@ function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
           levelPosition,
           boardDimensions,
           sizeOfEachUnit,
+          setSizeOfEachUnit,
           nextLevel,
           previousLevel,
           setCurrentLevel,

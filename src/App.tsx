@@ -19,7 +19,7 @@ import { CurrentLevelContext } from './context/CurrentLevel.tsx';
 import { Piece } from './types/piece.ts';
 
 function App() {
-  const { currentLevel, levelPosition, previousLevel, nextLevel } =
+  const { currentLevel, levelPosition, previousLevel, nextLevel, setSizeOfEachUnit } =
     useContext(CurrentLevelContext);
   const [activePiece, setActivePiece] = useState<Piece | null>(null);
   const { piecesInPlay, resetPieces, setPiecesForNewLevel } =
@@ -27,7 +27,19 @@ function App() {
   const [isRotating, setIsRotating] = useState(false);
 
   const boardRef = useRef(null);
-  setPiecesForNewLevel();
+
+  async function setToPrevious() {
+    await previousLevel();
+    await setSizeOfEachUnit(currentLevel);
+    await setPiecesForNewLevel();
+  }
+
+  async function setToNext() {
+    await nextLevel();
+    await setSizeOfEachUnit(currentLevel);
+    await setPiecesForNewLevel();
+  }
+
   return (
     <Main>
       <DragAndDropArea
@@ -59,10 +71,10 @@ function App() {
         ) : null}
       </DragAndDropArea>
       <ButtonContainer>
-        <Button disabled={levelPosition == 'first'} onClick={previousLevel}>
+        <Button disabled={levelPosition == 'first'} onClick={setToPrevious}>
           Previous Level
         </Button>
-        <Button disabled={levelPosition == 'last'} onClick={nextLevel}>
+        <Button disabled={levelPosition == 'last'} onClick={setToNext}>
           Next Level
         </Button>
         <Button onClick={resetPieces}>Reset Game</Button>
