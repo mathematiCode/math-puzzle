@@ -31,20 +31,19 @@ function App() {
   const { piecesInPlay, resetPieces, setPiecesForNewLevel } =
     useContext(PiecesInPlayContext);
   const [isRotating, setIsRotating] = useState(false);
-  const getInitialPieces = useInitialPieces;
 
   const boardRef = useRef(null);
 
   async function setToPrevious() {
     await previousLevel();
-    const newPieces = getInitialPieces(currentLevel - 1);
+    const newPieces = useInitialPieces(currentLevel - 1);
     await setPiecesForNewLevel(newPieces);
     await setSizeOfEachUnit(currentLevel - 1);
   }
 
   async function setToNext() {
     await nextLevel();
-    const newPieces = getInitialPieces(currentLevel + 1);
+    const newPieces = useInitialPieces(currentLevel + 1);
     await setPiecesForNewLevel(newPieces);
     await setSizeOfEachUnit(currentLevel + 1);
   }
