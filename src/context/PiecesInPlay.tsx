@@ -5,10 +5,11 @@ import {
   CurrentLevelContext,
   CurrentLevelContextType,
 } from './CurrentLevel.tsx';
-// import { colors } from '../CONSTANTS';
+import { colors } from '../CONSTANTS';
 import { InitialPiece, Piece } from '../types/piece.ts';
 import { convertLocationToXAndY } from '../utilities.ts';
 import { useAnimate } from 'motion/dist/react';
+import levels from '../levels.json';
 
 export type PiecesInPlayContextType = {
   piecesInPlay: Piece[];
@@ -16,7 +17,7 @@ export type PiecesInPlayContextType = {
   updateDimensions: (pieceIndex: number, width: number, height: number) => void;
   rotatePiece: (pieceIndex: number) => void;
   resetPieces: () => void;
-  setPiecesForNewLevel: () => void;
+  setPiecesForNewLevel: (newPieces?: InitialPiece[]) => void;
 };
 
 export const PiecesInPlayContext =
@@ -24,7 +25,7 @@ export const PiecesInPlayContext =
 const initialLocation = null;
 
 function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
-  const { initialPieces, boardDimensions } =
+  const { initialPieces, boardDimensions, currentLevel } =
     useContext<CurrentLevelContextType>(CurrentLevelContext);
   const [piecesInPlay, setPiecesInPlay] = useState<InitialPiece[] | Piece[]>(
     initialPieces
@@ -59,19 +60,47 @@ function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
     updatedPieces[pieceIndex].width = width;
     updatedPieces[pieceIndex].height = height;
     setPiecesInPlay(updatedPieces);
-    console.log(`Reset piece ${pieceIndex} to have width:${width} and height:${height}`)
+    console.log(
+      `Reset piece ${pieceIndex} to have width:${width} and height:${height}`
+    );
   }
 
+  // function resetPieces() {
+  //   const updatedPieces = [...piecesInPlay];
+  //   updatedPieces.forEach((piece, index) => {
+  //     piece.location = initialLocation;
+  //     piece.width = initialPieces[index].width;
+  //     piece.height = initialPieces[index].height;
+  //     piece.id = `initial-${index}`;
+  //     piece.isRotated = false;
+  //   });
+  //   setPiecesInPlay(updatedPieces);
+  // }
+
   function resetPieces() {
-    const updatedPieces = [...piecesInPlay];
-    updatedPieces.forEach((piece, index) => {
-      piece.location = initialLocation;
-      piece.width = initialPieces[index].width;
-      piece.height = initialPieces[index].height;
-      piece.id = `initial-${index}`;
-      piece.isRotated = false;
-    });
-    setPiecesInPlay(updatedPieces);
+    const initialLocation = null;
+    try {
+      const piecesAfterReset = [
+        {
+          width: 3,
+          height: 2,
+          location: 'instructions',
+          color: 'hsl(0, 61%, 66%)',
+          id: 'sample-0',
+          isRotated: false,
+        },
+        ...levels[currentLevel].pieces.map((piece, index) => ({
+          ...piece,
+          location: initialLocation,
+          color: colors[index % colors.length],
+          id: `initial-${index + 1}`,
+          isRotated: false,
+        })),
+      ];
+      setPiecesInPlay(piecesAfterReset);
+    } catch (error) {
+      console.error('Error resetting pieces:', error);
+    }
   }
 
   function rotatePiece(pieceIndex: number) {
@@ -81,8 +110,8 @@ function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
     setPiecesInPlay(updatedPieces);
   }
 
-  function setPiecesForNewLevel() {
-    setPiecesInPlay(initialPieces);
+  function setPiecesForNewLevel(newPieces?: InitialPiece[]) {
+    setPiecesInPlay(newPieces || initialPieces);
   }
   return (
     <PiecesInPlayContext.Provider
