@@ -17,7 +17,7 @@ export type PiecesInPlayContextType = {
   updateDimensions: (pieceIndex: number, width: number, height: number) => void;
   rotatePiece: (pieceIndex: number) => void;
   resetPieces: () => void;
-  setPiecesForNewLevel: () => void;
+  setPiecesForNewLevel: (newPieces?: InitialPiece[]) => void;
 };
 
 export const PiecesInPlayContext =
@@ -60,7 +60,9 @@ function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
     updatedPieces[pieceIndex].width = width;
     updatedPieces[pieceIndex].height = height;
     setPiecesInPlay(updatedPieces);
-    console.log(`Reset piece ${pieceIndex} to have width:${width} and height:${height}`)
+    console.log(
+      `Reset piece ${pieceIndex} to have width:${width} and height:${height}`
+    );
   }
 
   // function resetPieces() {
@@ -93,14 +95,13 @@ function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
           color: colors[index % colors.length],
           id: `initial-${index + 1}`,
           isRotated: false,
-        }))
+        })),
       ];
       setPiecesInPlay(piecesAfterReset);
     } catch (error) {
       console.error('Error resetting pieces:', error);
     }
   }
-   
 
   function rotatePiece(pieceIndex: number) {
     const updatedPieces = [...piecesInPlay];
@@ -109,8 +110,8 @@ function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
     setPiecesInPlay(updatedPieces);
   }
 
-  function setPiecesForNewLevel() {
-    setPiecesInPlay(initialPieces);
+  function setPiecesForNewLevel(newPieces?: InitialPiece[]) {
+    setPiecesInPlay(newPieces || initialPieces);
   }
   return (
     <PiecesInPlayContext.Provider

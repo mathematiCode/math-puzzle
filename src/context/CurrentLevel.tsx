@@ -24,6 +24,26 @@ interface CurrentLevelProviderProps {
   children: ReactNode;
 }
 
+function useInitialPieces(level: number) {
+  return [
+    {
+      width: 3,
+      height: 2,
+      location: 'instructions',
+      color: 'hsl(0, 61%, 66%)',
+      id: 'sample-0',
+      isRotated: false,
+    },
+    ...levels[level].pieces.map((piece, index) => ({
+      ...piece,
+      location: initialLocation,
+      color: colors[index % colors.length],
+      id: `initial-${index + 1}`,
+      isRotated: false,
+    })),
+  ];
+}
+
 function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
   const [currentLevel, setCurrentLevel] = useState(0);
 
@@ -54,24 +74,8 @@ function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
     levelPosition = 'middle';
   }
 
-  const initialPieces = [
-    {
-      width: 3,
-      height: 2,
-      location: 'instructions',
-      color: 'hsl(0, 61%, 66%)',
-      id: 'sample-0',
-      isRotated: false,
-    },
-    ...levels[currentLevel].pieces.map((piece, index) => ({
-      ...piece,
-      location: initialLocation,
-      color: colors[index % colors.length],
-      id: `initial-${index+1}`,
-      isRotated: false,
-    }))
-  ];
-  
+  const initialPieces = useInitialPieces(currentLevel);
+
   function setSizeOfEachUnit(currentLevel: number) {
     const { width, height } = levels[currentLevel].dimensions;
     const sizeOfEachUnit = Math.round(
@@ -84,19 +88,23 @@ function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
   }
 
   function nextLevel() {
+    console.log('currentLevel before update', currentLevel);
     if (currentLevel === numberOfLevels - 1) {
       return;
     } else {
       setCurrentLevel(currentLevel + 1);
     }
+    console.log('currentLevel', currentLevel);
   }
 
   function previousLevel() {
+    console.log('currentLevel before update', currentLevel);
     if (currentLevel === 0) {
       return;
     } else {
       setCurrentLevel(currentLevel - 1);
     }
+    console.log('currentLevel', currentLevel);
   }
 
   return (
