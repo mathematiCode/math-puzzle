@@ -13,7 +13,7 @@ import levels from '../levels.json';
 
 export type PiecesInPlayContextType = {
   piecesInPlay: Piece[];
-  movePiece: (pieceIndex: number, newLocation: string) => void;
+  movePiece: (pieceIndex: number, newLocation: string | null) => void;
   updateDimensions: (pieceIndex: number, width: number, height: number) => void;
   rotatePiece: (pieceIndex: number) => void;
   resetPieces: () => void;
@@ -32,7 +32,7 @@ function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
   );
   const { boardWidth, boardHeight } = boardDimensions;
 
-  function movePiece(pieceIndex: number, newLocation: string) {
+  function movePiece(pieceIndex: number, newLocation: string | null) {
     const updatedPieces = [...piecesInPlay];
     let newValidLocation = newLocation;
     if (newValidLocation != null) {

@@ -11,7 +11,6 @@ import InstructionsModal from './components/InstructionsModal.tsx';
 import { motion } from 'motion/react';
 import styled from 'styled-components';
 import GlobalStyles from './components/GlobalStyles.tsx';
-// import { useClickAway } from '@uidotdev/usehooks';
 import { DragOverlay } from '@dnd-kit/core';
 import { PiecesInPlayContext } from './context/PiecesInPlay.tsx';
 import { CurrentLevelContext } from './context/CurrentLevel.tsx';

@@ -2,9 +2,6 @@ import { createContext, useContext, useState, ReactNode } from 'react';
 import { Piece } from '../types/piece';
 
 export type SelectedPieceContextType = {
-  id: any;
-  height: number;
-  width: number;
   selectedPiece: Piece | null;
   setSelectedPiece: (piece: Piece | null) => void;
 };

@@ -25,15 +25,16 @@ interface CurrentLevelProviderProps {
 }
 
 function useInitialPieces(level: number) {
+  const instructionsPiece = {
+    width: 3,
+    height: 2,
+    location: 'instructions',
+    color: 'hsl(0, 61%, 66%)',
+    id: 'sample-0',
+    isRotated: false,
+  };
   return [
-    {
-      width: 3,
-      height: 2,
-      location: 'instructions',
-      color: 'hsl(0, 61%, 66%)',
-      id: 'sample-0',
-      isRotated: false,
-    },
+    instructionsPiece,
     ...levels[level].pieces.map((piece, index) => ({
       ...piece,
       location: initialLocation,
