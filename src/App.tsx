@@ -11,31 +11,38 @@ import InstructionsModal from './components/InstructionsModal.tsx';
 import { motion } from 'motion/react';
 import styled from 'styled-components';
 import GlobalStyles from './components/GlobalStyles.tsx';
-// import { useClickAway } from '@uidotdev/usehooks';
 import { DragOverlay } from '@dnd-kit/core';
 import { PiecesInPlayContext } from './context/PiecesInPlay.tsx';
 import { CurrentLevelContext } from './context/CurrentLevel.tsx';
+import { useInitialPieces } from './hooks/useInitialPieces';
 
 import { Piece } from './types/piece.ts';
 
 function App() {
-  console.log('Re-rendering App');
   const { currentLevel, levelPosition, previousLevel, nextLevel } =
     useContext(CurrentLevelContext);
   const [activePiece, setActivePiece] = useState<Piece | null>(null);
-  console.log("active piece is ", activePiece);
+  console.log('active piece is ', activePiece);
   const { piecesInPlay, resetPieces, setPiecesForNewLevel } =
     useContext(PiecesInPlayContext);
   const [isRotating, setIsRotating] = useState(false);
-  console.log("pieces in play is ", piecesInPlay);
+  console.log('pieces in play is ', piecesInPlay);
   const boardRef = useRef(null);
-  setPiecesForNewLevel();
 
-  function resetGame() {
-    console.log('Resetting game');
-    setActivePiece(null);
-    resetPieces();
+  async function setToPrevious() {
+    await previousLevel();
+    const newPieces = useInitialPieces(currentLevel - 1);
+    await setPiecesForNewLevel(newPieces);
+    await setSizeOfEachUnit(currentLevel - 1);
   }
+
+  async function setToNext() {
+    await nextLevel();
+    const newPieces = useInitialPieces(currentLevel + 1);
+    await setPiecesForNewLevel(newPieces);
+    await setSizeOfEachUnit(currentLevel + 1);
+  }
+
   return (
     <Main>
       <DragAndDropArea
@@ -45,11 +52,17 @@ function App() {
         isRotating={isRotating}
         setIsRotating={setIsRotating}
       >
-        
         <PiecesContainer $currentLevel={currentLevel}>
           {piecesInPlay.map((piece: Piece, pieceIndex: number) => {
             if (piece.location != null) return null;
-            return <InitialPuzzlePiece piece={piece} isRotating={isRotating} setIsRotating={setIsRotating} key={pieceIndex} />;
+            return (
+              <InitialPuzzlePiece
+                piece={piece}
+                isRotating={isRotating}
+                setIsRotating={setIsRotating}
+                key={pieceIndex}
+              />
+            );
           })}
         </PiecesContainer>
         <BoardWrapper>
@@ -58,7 +71,11 @@ function App() {
             dimensions={levels[currentLevel].dimensions}
             boardSections={levels[currentLevel].boardSections}
           />
-          <PlacedPieces piecesInPlay={piecesInPlay} isRotating={isRotating} setIsRotating={setIsRotating} />
+          <PlacedPieces
+            piecesInPlay={piecesInPlay}
+            isRotating={isRotating}
+            setIsRotating={setIsRotating}
+          />
         </BoardWrapper>
         {activePiece && !isRotating ? (
           <DragOverlay>
@@ -67,17 +84,20 @@ function App() {
         ) : null}
       </DragAndDropArea>
       <ButtonContainer>
-        <Button disabled={levelPosition == 'first'} onClick={previousLevel}>
+        <Button disabled={levelPosition == 'first'} onClick={setToPrevious}>
           Previous Level
         </Button>
-        <Button disabled={levelPosition == 'last'} onClick={nextLevel}>
+        <Button disabled={levelPosition == 'last'} onClick={setToNext}>
           Next Level
         </Button>
-        <Button onClick={resetGame}>Reset Game</Button>
-        <InstructionsModal isRotating={isRotating} setIsRotating={setIsRotating} piecesInPlay={piecesInPlay} />
+        <Button onClick={resetPieces}>Reset Game</Button>
+        <InstructionsModal
+          isRotating={isRotating}
+          setIsRotating={setIsRotating}
+          piecesInPlay={piecesInPlay}
+        />
       </ButtonContainer>
       <GlobalStyles />
-      
     </Main>
   );
 }

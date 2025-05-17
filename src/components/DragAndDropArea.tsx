@@ -1,5 +1,4 @@
 import { useContext, useMemo } from 'react';
-// import { initialPieces, sizeOfEachUnit, currentLevel } from './CONSTANTS';
 import {
   DndContext,
   useSensor,
@@ -10,10 +9,10 @@ import {
 } from '@dnd-kit/core';
 import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core';
 import { createSnapModifier, restrictToWindowEdges } from '@dnd-kit/modifiers';
-import { SelectedPieceContext } from '../context/SelectedPiece.tsx';
 import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
 import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
 import { Piece } from '../types/piece';
+import { useSelectedPiece } from '../context/SelectedPiece.tsx';
 
 interface DragAndDropAreaProps {
   children: React.ReactNode;
@@ -22,10 +21,21 @@ interface DragAndDropAreaProps {
   setIsRotating: (isRotating: boolean) => void;
 }
 
-function DragAndDropArea({ children, setActivePiece, isRotating, setIsRotating }: DragAndDropAreaProps) {
-  const { setSelectedPiece } = useContext(SelectedPieceContext);
+function DragAndDropArea({
+  children,
+  setActivePiece,
+  isRotating,
+  setIsRotating,
+}: DragAndDropAreaProps) {
+  const { setSelectedPiece } = useSelectedPiece();
   const { sizeOfEachUnit } = useContext(CurrentLevelContext);
-  const { piecesInPlay, movePiece } = useContext(PiecesInPlayContext);
+  const context = useContext(PiecesInPlayContext);
+  if (!context) {
+    throw new Error(
+      'DragAndDropArea must be used within a PiecesInPlayProvider'
+    );
+  }
+  const { piecesInPlay, movePiece } = context;
 
   const snapToGrid = useMemo(() => createSnapModifier(sizeOfEachUnit), []);
 
@@ -60,7 +70,7 @@ function DragAndDropArea({ children, setActivePiece, isRotating, setIsRotating }
     const id = event.active.id as string;
     const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
     if (event?.over?.id) {
-      const newLocation = event.over.id;
+      const newLocation = event.over.id.toString();
       movePiece(pieceIndex, newLocation);
     } else movePiece(pieceIndex, null);
   };

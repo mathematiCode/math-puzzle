@@ -1,10 +1,7 @@
-import React, { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, ReactNode } from 'react';
 import { Piece } from '../types/piece';
 
 export type SelectedPieceContextType = {
-  id: any;
-  height: number;
-  width: number;
   selectedPiece: Piece | null;
   setSelectedPiece: (piece: Piece | null) => void;
 };
@@ -12,7 +9,7 @@ export type SelectedPieceContextType = {
 export const SelectedPieceContext =
   createContext<SelectedPieceContextType | null>(null);
 
-function SelectedPieceProvider({ children }: { children: React.ReactNode }) {
+function SelectedPieceProvider({ children }: { children: ReactNode }) {
   const [selectedPiece, setSelectedPiece] = useState<Piece | null>(null);
 
   return (
