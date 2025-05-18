@@ -13,6 +13,7 @@ interface RectangleProps {
   isSelected?: boolean;
   isMotion?: boolean;
   layout?: boolean;
+  isExample?: boolean;
   style?: React.CSSProperties;
 }
 
@@ -21,6 +22,7 @@ const Container = styled(motion.div)<{
   $width: number;
   color: string;
   isSelected?: boolean;
+  isExample?: boolean;
 }>`
   transform: translate3d(0px, 0px, 0px) !important;
   display: grid;
@@ -44,6 +46,7 @@ function Rectangle(
     isMotion,
     isSelected,
     layout,
+    isExample,
     ...delegated
   }: RectangleProps,
   ref: React.Ref<HTMLDivElement>
@@ -61,9 +64,14 @@ function Rectangle(
     >
       {range(total).map(unit =>
         isMotion ? (
-          <MotionUnit key={unit} color={color} layout={layout} />
+          <MotionUnit
+            key={unit}
+            color={color}
+            layout={layout}
+            isExample={isExample}
+          />
         ) : (
-          <Unit key={unit} />
+          <Unit key={unit} isExample={isExample} />
         )
       )}
     </Container>

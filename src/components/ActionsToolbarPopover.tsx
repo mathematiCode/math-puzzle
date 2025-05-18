@@ -54,7 +54,7 @@ const ActionsToolbar = styled.div`
 
 function ActionsToolbarPopover({
   children,
-  runRotationAnimation,
+  runRotationAnimation, // lives in InitialPuzzlePiece
   ...delegated
 }: {
   children: React.ReactElement;
@@ -63,17 +63,12 @@ function ActionsToolbarPopover({
 }) {
   const context = useContext(PiecesInPlayContext);
   if (!context) {
-    throw new Error('ActionsToolbarPopover must be used within a PiecesInPlayProvider');
+    throw new Error(
+      'ActionsToolbarPopover must be used within a PiecesInPlayProvider'
+    );
   }
   const { updateDimensions } = context;
   const { selectedPiece } = useSelectedPiece();
-
-  function handleRotation() {
-    // const id = selectedPiece?.id;
-    // const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
-    // rotatePiece(pieceIndex);
-    runRotationAnimation(selectedPiece);
-  }
 
   function handleHorizontalStretch() {
     if (selectedPiece && Number.isInteger(selectedPiece.height / 2)) {
@@ -101,7 +96,7 @@ function ActionsToolbarPopover({
       <PopoverSurface id="actions">
         <ActionsToolbar>
           <Tooltip placement="bottom" title="Rotate">
-            <IconButton onClick={handleRotation}>
+            <IconButton onClick={() => runRotationAnimation(selectedPiece)}>
               <StyledRotateIcon />
             </IconButton>
           </Tooltip>

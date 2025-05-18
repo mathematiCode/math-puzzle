@@ -38,7 +38,17 @@ export const PieceWrapper = styled(motion.button).attrs(props => ({
       : 'none'};
 `;
 
-function PieceOnBoard({ piece, id, isRotating, setIsRotating }: { piece: Piece; id: string, isRotating: boolean, setIsRotating: (isRotating: boolean) => void }) {
+function PieceOnBoard({
+  piece,
+  id,
+  isRotating,
+  setIsRotating,
+}: {
+  piece: Piece;
+  id: string;
+  isRotating: boolean;
+  setIsRotating: (isRotating: boolean) => void;
+}) {
   const { selectedPiece, setSelectedPiece } =
     useContext<SelectedPieceContextType>(SelectedPieceContext);
   const { piecesInPlay, updateDimensions } =

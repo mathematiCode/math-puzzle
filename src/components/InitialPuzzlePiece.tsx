@@ -10,7 +10,17 @@ import { Piece } from '../types/piece.ts';
 import styled from 'styled-components';
 import { mergeRefs } from '@chakra-ui/react';
 
-const InitialPuzzlePiece = ({ piece, isRotating, setIsRotating }: { piece: Piece, isRotating: boolean, setIsRotating: (isRotating: boolean) => void }) => {
+const InitialPuzzlePiece = ({
+  piece,
+  isRotating,
+  setIsRotating,
+  isExample = false,
+}: {
+  piece: Piece;
+  isRotating: boolean;
+  setIsRotating: (isRotating: boolean) => void;
+  isExample?: boolean;
+}) => {
   const { selectedPiece, setSelectedPiece } = useSelectedPiece();
   const [scope, animate] = useAnimate();
   const { updateDimensions } = useContext(PiecesInPlayContext);
@@ -32,8 +42,8 @@ const InitialPuzzlePiece = ({ piece, isRotating, setIsRotating }: { piece: Piece
       { rotate: 90 },
       { type: 'spring', stiffness: 150, damping: 11 }
     );
-      updateDimensions(pieceIndex, selectedPiece?.height, selectedPiece.width);
-      await animate(scope.current, { rotate: 0 }, { duration: 0 });
+    updateDimensions(pieceIndex, selectedPiece?.height, selectedPiece.width);
+    await animate(scope.current, { rotate: 0 }, { duration: 0 });
     setIsRotating(false);
   }
 
@@ -53,9 +63,10 @@ const InitialPuzzlePiece = ({ piece, isRotating, setIsRotating }: { piece: Piece
             width={piece.width}
             height={piece.height}
             color={piece.color}
-            isMotion={!isRotating}
+            isMotion={true}
             layout={!isRotating}
             isSelected={isSelected}
+            isExample={isExample}
           />
         </motion.button>
       </ActionsToolbarPopover>
