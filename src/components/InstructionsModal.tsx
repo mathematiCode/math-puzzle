@@ -63,6 +63,7 @@ const InstructionsModal = ({
 }: {
   isRotating: boolean;
   setIsRotating: (isRotating: boolean) => void;
+  piecesInPlay: Piece[];
 }) => {
   const classes = useClasses();
   const [instructionsShown, setInstructionsShown] = useState(false);
@@ -87,7 +88,9 @@ const InstructionsModal = ({
       <DialogSurface className={classes.Surface}>
         <DialogBody>
           <DialogTitle className={classes.Title}>How to Play</DialogTitle>
-          <X className={classes.X} onClick={closeModal} />
+          <DialogTrigger disableButtonEnhancement>
+            <X className={classes.X} />
+          </DialogTrigger>
           <DialogContent>
             <div>
               <h2 className={classes.h2}>The Goal</h2>
