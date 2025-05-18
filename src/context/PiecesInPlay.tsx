@@ -60,22 +60,7 @@ function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
     updatedPieces[pieceIndex].width = width;
     updatedPieces[pieceIndex].height = height;
     setPiecesInPlay(updatedPieces);
-    console.log(
-      `Reset piece ${pieceIndex} to have width:${width} and height:${height}`
-    );
   }
-
-  // function resetPieces() {
-  //   const updatedPieces = [...piecesInPlay];
-  //   updatedPieces.forEach((piece, index) => {
-  //     piece.location = initialLocation;
-  //     piece.width = initialPieces[index].width;
-  //     piece.height = initialPieces[index].height;
-  //     piece.id = `initial-${index}`;
-  //     piece.isRotated = false;
-  //   });
-  //   setPiecesInPlay(updatedPieces);
-  // }
 
   function resetPieces() {
     const initialLocation = null;
