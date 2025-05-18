@@ -2,12 +2,15 @@ import { memo } from 'react';
 import { motion } from 'motion/react';
 import PropTypes from 'prop-types';
 import Rectangle from './Rectangle.tsx';
-import Piece from '../types/piece';
+import { Piece } from '../types/piece';
 
 function PieceOverlay({ piece }: { piece: Piece }) {
   return (
     <motion.div
       className="unit-container"
+      style={{
+        cursor: 'grab',
+      }}
       animate={{
         rotate: piece.isRotated ? 90 : 0,
       }}

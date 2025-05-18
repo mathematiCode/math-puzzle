@@ -78,6 +78,7 @@ const InitialPuzzlePiece = ({
 // Change to button and fix extra space below.
 export const InitialPieceWrapper = styled(motion.div)`
   cursor: ${({ isDragging }) => (isDragging ? 'grab' : 'pointer')};
+  visibility: ${({ isDragging }) => (isDragging ? 'hidden' : 'visible')};
   border: none;
   z-index: 2;
 `;
