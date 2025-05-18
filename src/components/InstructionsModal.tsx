@@ -113,6 +113,7 @@ const InstructionsModal = ({
                   piece={piecesInPlay[0]}
                   isRotating={isRotating}
                   setIsRotating={setIsRotating}
+                  isExample={true}
                 />
               </div>
             </div>
