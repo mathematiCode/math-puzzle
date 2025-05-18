@@ -9,11 +9,12 @@ import {
   DialogContent,
   makeStyles,
 } from '@fluentui/react-components';
+import { X } from 'lucide-react';
+import { RemoveScroll } from 'react-remove-scroll';
 import styled from 'styled-components';
 import Button from './Button.tsx';
 import InitialPuzzlePiece from './InitialPuzzlePiece.tsx';
 import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
-import { X } from 'lucide-react';
 
 // Instructions on how to use Griffel/ makeStyles here: https://learn.microsoft.com/en-us/shows/fluent-ui-insights/fluent-ui-trainings-styling-components-theming#time=20m55s
 const useClasses = makeStyles({
@@ -85,44 +86,48 @@ const InstructionsModal = ({
       <DialogTrigger disableButtonEnhancement>
         <Button>How to Play</Button>
       </DialogTrigger>
-      <DialogSurface className={classes.Surface}>
-        <DialogBody>
-          <DialogTitle className={classes.Title}>How to Play</DialogTitle>
-          <DialogTrigger disableButtonEnhancement>
-            <X className={classes.X} />
-          </DialogTrigger>
-          <DialogContent>
-            <div>
-              <h2 className={classes.h2}>The Goal</h2>
-              <p>Fill the board with pieces so that it's completely covered.</p>
+      <RemoveScroll enabled={true}>
+        <DialogSurface className={classes.Surface}>
+          <DialogBody>
+            <DialogTitle className={classes.Title}>How to Play</DialogTitle>
+            <DialogTrigger disableButtonEnhancement>
+              <X className={classes.X} />
+            </DialogTrigger>
+            <DialogContent>
+              <div>
+                <h2 className={classes.h2}>The Goal</h2>
+                <p>
+                  Fill the board with pieces so that it's completely covered.
+                </p>
 
-              <h2 className={classes.h2}>The Rules</h2>
-              <ul>
-                <li>Puzzle pieces cannot overlap.</li>
-                <li>Puzzle pieces must be fully on the board.</li>
-              </ul>
+                <h2 className={classes.h2}>The Rules</h2>
+                <ul>
+                  <li>Puzzle pieces cannot overlap.</li>
+                  <li>Puzzle pieces must be fully on the board.</li>
+                </ul>
 
-              <h2 className={classes.h2}>The Tools</h2>
-              <ul>
-                <li>Rotate</li>
-                <li>Double the width and halve the height</li>
-                <li>Double the height and halve the width</li>
-                <li>Break one piece into two (coming soon!)</li>
-                <li>Merge two pieces into one (coming soon!)</li>
-              </ul>
-              <h2 className={classes.h2}>Try clicking the piece below. </h2>
-              <div className={classes.div}>
-                <InitialPuzzlePiece
-                  piece={piecesInPlay[0]}
-                  isRotating={isRotating}
-                  setIsRotating={setIsRotating}
-                  isExample={true}
-                />
+                <h2 className={classes.h2}>The Tools</h2>
+                <ul>
+                  <li>Rotate</li>
+                  <li>Double the width and halve the height</li>
+                  <li>Double the height and halve the width</li>
+                  <li>Break one piece into two (coming soon!)</li>
+                  <li>Merge two pieces into one (coming soon!)</li>
+                </ul>
+                <h2 className={classes.h2}>Try clicking the piece below. </h2>
+                <div className={classes.div}>
+                  <InitialPuzzlePiece
+                    piece={piecesInPlay[0]}
+                    isRotating={isRotating}
+                    setIsRotating={setIsRotating}
+                    isExample={true}
+                  />
+                </div>
               </div>
-            </div>
-          </DialogContent>
-        </DialogBody>
-      </DialogSurface>
+            </DialogContent>
+          </DialogBody>
+        </DialogSurface>
+      </RemoveScroll>
     </Dialog>
   );
 };
