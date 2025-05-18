@@ -24,6 +24,7 @@
     "motion": "^11.16.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-remove-scroll": "^2.6.3",
     "styled-components": "^6.1.14",
     "tsc": "^2.0.4"
   },

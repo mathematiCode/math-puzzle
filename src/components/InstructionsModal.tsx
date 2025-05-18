@@ -9,6 +9,8 @@ import {
   DialogContent,
   makeStyles,
 } from '@fluentui/react-components';
+import { X } from 'lucide-react';
+import { RemoveScroll } from 'react-remove-scroll';
 import styled from 'styled-components';
 import Button from './Button.tsx';
 import InitialPuzzlePiece from './InitialPuzzlePiece.tsx';
@@ -23,6 +25,8 @@ const useClasses = makeStyles({
     paddingInline: '20px',
     position: 'fixed',
     borderRadius: '10px',
+    border: '1px solid hsl(0, 0.00%, 0.00%)',
+    boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.7) !important',
     inline: 0,
     marginTop: '50px',
     zIndex: 1,
@@ -44,6 +48,13 @@ const useClasses = makeStyles({
     padding: '30px',
     width: '90px',
   },
+  X: {
+    position: 'absolute',
+    top: '15px',
+    right: '15px',
+    color: 'white',
+    cursor: 'pointer',
+  },
 });
 
 const InstructionsModal = ({
@@ -53,6 +64,7 @@ const InstructionsModal = ({
 }: {
   isRotating: boolean;
   setIsRotating: (isRotating: boolean) => void;
+  piecesInPlay: Piece[];
 }) => {
   const classes = useClasses();
   const [instructionsShown, setInstructionsShown] = useState(false);
@@ -65,50 +77,57 @@ const InstructionsModal = ({
   const { updateDimensions } = context;
 
   const closeModal = () => {
-    updateDimensions(0, 3, 2);
+    updateDimensions(0, 3, 2); // Resetting the example piece to it's original dimensions
     setInstructionsShown(false);
   };
 
   return (
-    <Dialog modalType="non-modal" onOpenChange={closeModal}>
+    <Dialog modalType="modal" onOpenChange={closeModal}>
       <DialogTrigger disableButtonEnhancement>
         <Button>How to Play</Button>
       </DialogTrigger>
-      <DialogSurface className={classes.Surface}>
-        <DialogBody>
-          <DialogTitle className={classes.Title}>How to Play</DialogTitle>
-          <DialogContent>
-            <div>
-              <h2 className={classes.h2}>The Goal</h2>
-              <p>Fill the board with pieces so that it's completely covered.</p>
+      <RemoveScroll enabled={true}>
+        <DialogSurface className={classes.Surface}>
+          <DialogBody>
+            <DialogTitle className={classes.Title}>How to Play</DialogTitle>
+            <DialogTrigger disableButtonEnhancement>
+              <X className={classes.X} />
+            </DialogTrigger>
+            <DialogContent>
+              <div>
+                <h2 className={classes.h2}>The Goal</h2>
+                <p>
+                  Fill the board with pieces so that it's completely covered.
+                </p>
 
-              <h2 className={classes.h2}>The Rules</h2>
-              <ul>
-                <li>Puzzle pieces cannot overlap.</li>
-                <li>Puzzle pieces must be fully on the board.</li>
-              </ul>
+                <h2 className={classes.h2}>The Rules</h2>
+                <ul>
+                  <li>Puzzle pieces cannot overlap.</li>
+                  <li>Puzzle pieces must be fully on the board.</li>
+                </ul>
 
-              <h2 className={classes.h2}>The Tools</h2>
-              <ul>
-                <li>Rotate</li>
-                <li>Double the width and halve the height</li>
-                <li>Double the height and halve the width</li>
-                <li>Break one piece into two (coming soon!)</li>
-                <li>Merge two pieces into one (coming soon!)</li>
-              </ul>
-              <h2 className={classes.h2}>Try clicking the piece below. </h2>
-              <div className={classes.div}>
-                <InitialPuzzlePiece
-                  piece={piecesInPlay[0]}
-                  isRotating={isRotating}
-                  setIsRotating={setIsRotating}
-                  isExample={true}
-                />
+                <h2 className={classes.h2}>The Tools</h2>
+                <ul>
+                  <li>Rotate</li>
+                  <li>Double the width and halve the height</li>
+                  <li>Double the height and halve the width</li>
+                  <li>Break one piece into two (coming soon!)</li>
+                  <li>Merge two pieces into one (coming soon!)</li>
+                </ul>
+                <h2 className={classes.h2}>Try clicking the piece below. </h2>
+                <div className={classes.div}>
+                  <InitialPuzzlePiece
+                    piece={piecesInPlay[0]}
+                    isRotating={isRotating}
+                    setIsRotating={setIsRotating}
+                    isExample={true}
+                  />
+                </div>
               </div>
-            </div>
-          </DialogContent>
-        </DialogBody>
-      </DialogSurface>
+            </DialogContent>
+          </DialogBody>
+        </DialogSurface>
+      </RemoveScroll>
     </Dialog>
   );
 };

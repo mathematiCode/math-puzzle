@@ -89,23 +89,19 @@ function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
   }
 
   function nextLevel() {
-    console.log('currentLevel before update', currentLevel);
     if (currentLevel === numberOfLevels - 1) {
       return;
     } else {
       setCurrentLevel(currentLevel + 1);
     }
-    console.log('currentLevel', currentLevel);
   }
 
   function previousLevel() {
-    console.log('currentLevel before update', currentLevel);
     if (currentLevel === 0) {
       return;
     } else {
       setCurrentLevel(currentLevel - 1);
     }
-    console.log('currentLevel', currentLevel);
   }
 
   return (
