@@ -34,8 +34,9 @@ const useClasses = makeStyles({
     fontWeight: 600,
 
     '@media screen and (max-width: 768px)': {
-      width: '90%',
+      width: '96%',
       marginTop: '20px',
+      paddingInline: '10px',
       fontSize: '0.9rem',
     },
   },
@@ -64,6 +65,11 @@ const useClasses = makeStyles({
     right: '15px',
     color: 'white',
     cursor: 'pointer',
+  },
+  li: {
+    '@media screen and (max-width: 768px)': {
+      marginLeft: '-20px',
+    },
   },
 });
 
