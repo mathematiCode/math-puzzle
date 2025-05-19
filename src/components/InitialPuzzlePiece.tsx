@@ -56,7 +56,7 @@ const InitialPuzzlePiece = ({
         {...listeners}
         {...attributes}
         onClick={handlePieceSelected}
-        $isDragging={isDragging}
+        isDragging={isDragging}
       >
         <Rectangle
           width={piece.width}
@@ -72,7 +72,9 @@ const InitialPuzzlePiece = ({
   );
 };
 
-export const InitialPieceWrapper = styled.button`
+export const InitialPieceWrapper = styled.button.attrs(props => ({
+  $isDragging: props.isDragging,
+}))`
   visibility: ${({ isDragging }) => (isDragging ? 'hidden' : 'visible')};
   border: none;
   z-index: 2;
