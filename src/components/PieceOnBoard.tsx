@@ -51,7 +51,7 @@ function PieceOnBoard({
 }) {
   const { selectedPiece, setSelectedPiece } =
     useContext<SelectedPieceContextType>(SelectedPieceContext);
-  const { piecesInPlay, updateDimensions } =
+  const { piecesInPlay, updateDimensions, movePiece } =
     useContext<PiecesInPlayContextType>(PiecesInPlayContext);
   const { sizeOfEachUnit } =
     useContext<CurrentLevelContextType>(CurrentLevelContext);
@@ -82,6 +82,12 @@ function PieceOnBoard({
       await animate(scope.current, { rotate: 0 }, { duration: 0 });
     } finally {
       setIsRotating(false);
+      const { x, y } = convertLocationToXAndY(selectedPiece.location);
+      let newX = x + Math.ceil(selectedPiece.height / 2) - 1;
+      let newY = y + Math.ceil(selectedPiece.width / 2) - 1;
+      console.log('newX', newX);
+      console.log('newY', newY);
+      movePiece(pieceIndex, `(${newX},${newY})`);
     }
   }
 
