@@ -34,15 +34,26 @@ const useClasses = makeStyles({
     fontWeight: 600,
 
     '@media screen and (max-width: 768px)': {
-      width: '90%',
+      width: '96%',
+      marginTop: '20px',
+      paddingInline: '10px',
+      fontSize: '0.9rem',
     },
   },
   Title: {
-    fontSize: '1.7rem',
+    fontSize: '1.6rem',
+
+    '@media screen and (max-width: 768px)': {
+      fontSize: '1.3rem',
+    },
   },
   h2: {
     fontSize: '1.4rem',
     marginTop: '15px',
+
+    '@media screen and (max-width: 768px)': {
+      fontSize: '1.1rem',
+    },
   },
   div: {
     padding: '30px',
@@ -54,6 +65,11 @@ const useClasses = makeStyles({
     right: '15px',
     color: 'white',
     cursor: 'pointer',
+  },
+  li: {
+    '@media screen and (max-width: 768px)': {
+      marginLeft: '-20px',
+    },
   },
 });
 
