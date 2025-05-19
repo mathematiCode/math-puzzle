@@ -138,7 +138,7 @@ export const PiecesContainer = styled(motion.div).attrs({
   flex-wrap: wrap;
   align-items: start;
   justify-content: right;
-  gap: calc(var(--sizeOfEachUnit) - 2px);
+  gap: var(--sizeOfEachUnit);
 `;
 // Not sure why subtracting 2 from the sizeOfEachUnit works here. May be a box-sizing issue although it should all be set to border-box...
 

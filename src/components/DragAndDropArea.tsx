@@ -8,7 +8,11 @@ import {
   useSensors,
 } from '@dnd-kit/core';
 import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core';
-import { createSnapModifier, restrictToWindowEdges } from '@dnd-kit/modifiers';
+import {
+  createSnapModifier,
+  restrictToWindowEdges,
+  snapCenterToCursor,
+} from '@dnd-kit/modifiers';
 import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
 import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
 import { Piece } from '../types/piece';
@@ -71,13 +75,14 @@ function DragAndDropArea({
     const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
     if (event?.over?.id) {
       const newLocation = event.over.id.toString();
+      console.log('newLocation', newLocation);
       movePiece(pieceIndex, newLocation);
     } else movePiece(pieceIndex, null);
   };
   return (
     <DndContext
       sensors={sensors}
-      modifiers={[snapToGrid]}
+      modifiers={[snapCenterToCursor, snapToGrid]}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
