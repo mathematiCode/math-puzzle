@@ -35,14 +35,24 @@ const useClasses = makeStyles({
 
     '@media screen and (max-width: 768px)': {
       width: '90%',
+      marginTop: '20px',
+      fontSize: '1rem',
     },
   },
   Title: {
     fontSize: '1.7rem',
+
+    '@media screen and (max-width: 768px)': {
+      fontSize: '1.4rem',
+    },
   },
   h2: {
     fontSize: '1.4rem',
     marginTop: '15px',
+
+    '@media screen and (max-width: 768px)': {
+      fontSize: '1.2rem',
+    },
   },
   div: {
     padding: '30px',
