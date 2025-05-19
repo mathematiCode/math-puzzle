@@ -85,8 +85,6 @@ function PieceOnBoard({
       const { x, y } = convertLocationToXAndY(selectedPiece.location);
       let newX = x + Math.ceil(selectedPiece.height / 2) - 1;
       let newY = y + Math.ceil(selectedPiece.width / 2) - 1;
-      console.log('newX', newX);
-      console.log('newY', newY);
       movePiece(pieceIndex, `(${newX},${newY})`);
     }
   }
