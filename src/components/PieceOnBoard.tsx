@@ -21,7 +21,7 @@ import {
   CurrentLevelContextType,
 } from '../context/CurrentLevel.tsx';
 
-export const PieceWrapper = styled(motion.button).attrs(props => ({
+export const PieceWrapper = styled.button.attrs(props => ({
   onClick: props.onClick,
   ref: props.ref,
   animate: props.animate,
@@ -30,12 +30,11 @@ export const PieceWrapper = styled(motion.button).attrs(props => ({
   position: absolute;
   left: ${({ x }) => `calc(${x} * var(--sizeOfEachUnit))`};
   top: ${({ y }) => `calc(${y} * var(--sizeOfEachUnit))`};
-  cursor: ${({ isDragging }) => (isDragging ? 'grab' : 'pointer')};
+  visibility: ${({ isDragging }) => (isDragging ? 'hidden' : 'visible')};
   z-index: 2;
-  box-shadow: ${({ isSelected }) =>
-    isSelected
-      ? 'rgba(0, 0, 0, 0.5) 0px 19px 19px, rgba(0, 0, 0, 0.22) 0px 15px 12px'
-      : 'none'};
+  &:active {
+    cursor: grab;
+  }
 `;
 
 function PieceOnBoard({
@@ -99,9 +98,7 @@ function PieceOnBoard({
         onClick={handlePieceSelected}
         x={x}
         y={y}
-        layout={!isRotating}
-        isDragging={isDragging}
-        isSelected={isSelected}
+        $isDragging={isDragging}
       >
         <Rectangle
           width={piece.width}
