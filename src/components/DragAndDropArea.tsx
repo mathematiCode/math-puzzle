@@ -75,7 +75,6 @@ function DragAndDropArea({
     const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
     if (event?.over?.id) {
       const newLocation = event.over.id.toString();
-      console.log('newLocation', newLocation);
       movePiece(pieceIndex, newLocation);
     } else movePiece(pieceIndex, null);
   };

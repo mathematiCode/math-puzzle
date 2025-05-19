@@ -37,33 +37,25 @@ function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
     const oldLocation = updatedPieces[pieceIndex].location;
     let newValidLocation = newLocation;
     if (newValidLocation != null) {
-      console.log('newValidLocation is not null');
       const { x, y } = convertLocationToXAndY(newValidLocation);
       let correctedX = x;
       let correctedY = y;
       const pieceHeight = piecesInPlay[pieceIndex].height;
       const pieceWidth = piecesInPlay[pieceIndex].width;
       if (oldLocation === null) {
-        console.log('oldLocation', oldLocation);
-        console.log('x', x);
-        console.log('pieceWidth', pieceWidth);
         if (pieceWidth > 1) {
           correctedX = x - 1; // Temporary fix for pieces shifting one to the right when dragged from initial container
-          console.log('CORRECTED X', correctedX);
         }
       }
       if (correctedX + pieceWidth > boardWidth) {
         correctedX = boardWidth - pieceWidth;
-        console.log('CORRECTED X', correctedX);
       }
       // I have no idea why adding 1 works here to correct pieces placed below the bottom of the board
       if (y + pieceHeight + 1 > boardHeight) {
         correctedY = boardHeight - pieceHeight;
-        console.log('CORRECTED Y', correctedY);
       }
       newValidLocation = `(${correctedX},${correctedY})`;
     }
-    console.log('newValidLocation', newValidLocation);
     updatedPieces[pieceIndex].location = newValidLocation;
     if (newValidLocation != null) {
       updatedPieces[pieceIndex].id = `inPlay-${pieceIndex}`;
