@@ -72,9 +72,7 @@ const InitialPuzzlePiece = ({
   );
 };
 
-export const InitialPieceWrapper = styled.button.attrs(props => ({
-  $isDragging: props.isDragging,
-}))`
+export const InitialPieceWrapper = styled.button`
   visibility: ${({ isDragging }) => (isDragging ? 'hidden' : 'visible')};
   border: none;
   z-index: 2;
