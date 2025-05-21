@@ -9,6 +9,7 @@ import {
 import styled from 'styled-components';
 import { useSelectedPiece } from '../context/SelectedPiece.tsx';
 import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
+import { HorizontalStretchIcon, VerticalStretchIcon } from './SvgIcons.tsx';
 
 const StyledRotateIcon = styled(RotateRightOutlined)`
   font-size: 32px;
@@ -23,13 +24,15 @@ const IconButton = styled.button`
   padding: 0px;
   margin: 0px;
   border: none;
-`;
 
-const Icon = styled.img`
-  width: 32px;
+  svg {
+    width: 32px;
+    height: 32px;
 
-  @media (max-width: 750px) {
-    width: 20px;
+    @media (max-width: 750px) {
+      width: 20px;
+      height: 20px;
+    }
   }
 `;
 
@@ -102,12 +105,12 @@ function ActionsToolbarPopover({
           </Tooltip>
           <Tooltip placement="bottom" title="Double Width & Halve Height">
             <IconButton onClick={handleHorizontalStretch}>
-              <Icon src="./assets/horizontalStretch.svg" />
+              <HorizontalStretchIcon />
             </IconButton>
           </Tooltip>
           <Tooltip placement="bottom" title="Halve Width & Double Height">
             <IconButton onClick={handleVerticalStretch}>
-              <Icon src="./assets/verticalStretch.svg" />
+              <VerticalStretchIcon />
             </IconButton>
           </Tooltip>
         </ActionsToolbar>
