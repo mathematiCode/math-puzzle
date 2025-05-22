@@ -57,6 +57,7 @@ const InitialPuzzlePiece = ({
         {...attributes}
         onClick={handlePieceSelected}
         isDragging={isDragging}
+        layoutId={piece.id}
       >
         <Rectangle
           width={piece.width}
@@ -72,7 +73,7 @@ const InitialPuzzlePiece = ({
   );
 };
 
-export const InitialPieceWrapper = styled.button`
+export const InitialPieceWrapper = styled(motion.button)`
   visibility: ${({ isDragging }) => (isDragging ? 'hidden' : 'visible')};
   border: none;
   z-index: 2;
