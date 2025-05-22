@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { Tooltip } from 'antd';
 import { RotateRightOutlined } from '@ant-design/icons';
+import { motion } from 'motion/react';
 import {
   Popover,
   PopoverTrigger,
@@ -36,7 +37,7 @@ const IconButton = styled.button`
   }
 `;
 
-const ActionsToolbar = styled.div`
+const ActionsToolbar = styled(motion.div)`
   background-color: white;
   color: hsl(178, 100%, 23%);
   border-radius: 5px;

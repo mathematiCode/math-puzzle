@@ -19,7 +19,8 @@ import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
 // Instructions on how to use Griffel/ makeStyles here: https://learn.microsoft.com/en-us/shows/fluent-ui-insights/fluent-ui-trainings-styling-components-theming#time=20m55s
 const useClasses = makeStyles({
   Surface: {
-    backgroundColor: '#007571',
+    backgroundColor: 'hsl(100, 40%, 86%)',
+    color: 'black',
     width: '70%',
     paddingBottom: '3px',
     paddingInline: '20px',
@@ -63,7 +64,7 @@ const useClasses = makeStyles({
     position: 'absolute',
     top: '15px',
     right: '15px',
-    color: 'white',
+    color: 'black',
     cursor: 'pointer',
   },
   li: {
