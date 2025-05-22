@@ -20,6 +20,8 @@ import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
 const useClasses = makeStyles({
   Surface: {
     backgroundColor: '#007571',
+    backgroundColor: 'hsl(100, 65%, 89%)',
+    color: 'black',
     width: '70%',
     paddingBottom: '3px',
     paddingInline: '20px',
