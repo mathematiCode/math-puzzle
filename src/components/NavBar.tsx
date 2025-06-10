@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import styled from 'styled-components';
 import { Menu, X } from 'lucide-react';
+import { useNavigate } from 'react-router';
 
 const NavContainer = styled.nav`
   position: fixed;
@@ -50,7 +51,7 @@ const DesktopNav = styled.div`
   }
 `;
 
-const NavLink = styled.button`
+const NavLink = styled.button<{ $isActive?: boolean }>`
   background: none;
   border: none;
   color: white;
@@ -60,6 +61,14 @@ const NavLink = styled.button`
   padding: 8px 16px;
   border-radius: 6px;
   transition: all 0.3s ease;
+  position: relative;
+
+  ${props =>
+    props.$isActive &&
+    `
+    background-color: rgba(255, 255, 255, 0.2);
+    font-weight: 600;
+  `}
 
   &:hover {
     background-color: rgba(255, 255, 255, 0.1);
@@ -103,7 +112,7 @@ const MobileMenu = styled(motion.div)`
   gap: 15px;
 `;
 
-const MobileNavLink = styled.button`
+const MobileNavLink = styled.button<{ $isActive?: boolean }>`
   background: none;
   border: none;
   color: white;
@@ -114,6 +123,20 @@ const MobileNavLink = styled.button`
   border-radius: 8px;
   text-align: left;
   transition: all 0.3s ease;
+  position: relative;
+
+  ${props =>
+    props.$isActive &&
+    `
+    background-color: rgba(255, 255, 255, 0.2);
+    font-weight: 600;
+    
+    &::before {
+      content: '●';
+      margin-right: 10px;
+      color: white;
+    }
+  `}
 
   &:hover {
     background-color: rgba(255, 255, 255, 0.1);
@@ -121,32 +144,53 @@ const MobileNavLink = styled.button`
   }
 `;
 
-const NavBar = () => {
+interface NavBarProps {
+  currentPath: string;
+}
+
+const NavBar = ({ currentPath }: NavBarProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  const handleLinkClick = (linkName: string) => {
-    console.log(`Clicked: ${linkName}`);
-    setIsMobileMenuOpen(false); // Close mobile menu when link is clicked
+  const handleLinkClick = (path: string) => {
+    if (path !== currentPath) {
+      navigate(path);
+    }
+    setIsMobileMenuOpen(false);
   };
+
+  const handleLogoClick = () => {
+    navigate('/');
+    setIsMobileMenuOpen(false);
+  };
+
+  const navItems = [
+    { path: '/math', label: 'What Math is this Teaching' },
+    { path: '/about', label: 'About The Creator' },
+    { path: '/game', label: 'Play The Game' },
+  ];
 
   return (
     <NavContainer>
       <NavContent>
-        <Logo>Math Puzzle</Logo>
+        <Logo onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
+          Frectangles
+        </Logo>
 
         <DesktopNav>
-          <NavLink
-            onClick={() => handleLinkClick('What Math is this Teaching')}
-          >
-            What Math is this Teaching
-          </NavLink>
-          <NavLink onClick={() => handleLinkClick('About Us')}>
-            About Us
-          </NavLink>
+          {navItems.map(item => (
+            <NavLink
+              key={item.path}
+              onClick={() => handleLinkClick(item.path)}
+              $isActive={item.path === currentPath}
+            >
+              {item.label}
+            </NavLink>
+          ))}
         </DesktopNav>
 
         <MobileMenuButton onClick={toggleMobileMenu}>
@@ -162,14 +206,15 @@ const NavBar = () => {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
           >
-            <MobileNavLink
-              onClick={() => handleLinkClick('What Math is this Teaching')}
-            >
-              What Math is this Teaching
-            </MobileNavLink>
-            <MobileNavLink onClick={() => handleLinkClick('About Us')}>
-              About Us
-            </MobileNavLink>
+            {navItems.map(item => (
+              <MobileNavLink
+                key={item.path}
+                onClick={() => handleLinkClick(item.path)}
+                $isActive={item.path === currentPath}
+              >
+                {item.label}
+              </MobileNavLink>
+            ))}
           </MobileMenu>
         )}
       </AnimatePresence>
