@@ -8,6 +8,7 @@ import PlacedPieces from './components/PlacedPieces.tsx';
 import DragAndDropArea from './components/DragAndDropArea.tsx';
 import Button from './components/Button.tsx';
 import InstructionsModal from './components/InstructionsModal.tsx';
+import NavBar from './components/NavBar.tsx';
 import { motion } from 'motion/react';
 import styled from 'styled-components';
 import GlobalStyles from './components/GlobalStyles.tsx';
@@ -47,61 +48,64 @@ function App() {
   }
 
   return (
-    <Main>
-      <DragAndDropArea
-        setActivePiece={setActivePiece}
-        boardRef={boardRef}
-        key={currentLevel}
-        isRotating={isRotating}
-        setIsRotating={setIsRotating}
-      >
-        <PiecesContainer $currentLevel={currentLevel}>
-          {piecesInPlay.map((piece: Piece, pieceIndex: number) => {
-            if (piece.location != null) return null;
-            return (
-              <InitialPuzzlePiece
-                piece={piece}
-                isRotating={isRotating}
-                setIsRotating={setIsRotating}
-                key={pieceIndex}
-              />
-            );
-          })}
-        </PiecesContainer>
-        <BoardWrapper>
-          <Board
-            ref={boardRef}
-            dimensions={levels[currentLevel].dimensions}
-            boardSections={levels[currentLevel].boardSections}
-          />
-          <PlacedPieces
-            piecesInPlay={piecesInPlay}
-            isRotating={isRotating}
-            setIsRotating={setIsRotating}
-          />
-        </BoardWrapper>
-        {activePiece && !isRotating ? (
-          <DragOverlay>
-            <PieceOverlay piece={activePiece} />
-          </DragOverlay>
-        ) : null}
-      </DragAndDropArea>
-      <ButtonContainer>
-        <Button disabled={levelPosition == 'first'} onClick={setToPrevious}>
-          Previous Level
-        </Button>
-        <Button disabled={levelPosition == 'last'} onClick={setToNext}>
-          Next Level
-        </Button>
-        <Button onClick={resetPieces}>Reset Game</Button>
-        <InstructionsModal
+    <>
+      <NavBar />
+      <Main>
+        <DragAndDropArea
+          setActivePiece={setActivePiece}
+          boardRef={boardRef}
+          key={currentLevel}
           isRotating={isRotating}
           setIsRotating={setIsRotating}
-          piecesInPlay={piecesInPlay}
-        />
-      </ButtonContainer>
-      <GlobalStyles />
-    </Main>
+        >
+          <PiecesContainer $currentLevel={currentLevel}>
+            {piecesInPlay.map((piece: Piece, pieceIndex: number) => {
+              if (piece.location != null) return null;
+              return (
+                <InitialPuzzlePiece
+                  piece={piece}
+                  isRotating={isRotating}
+                  setIsRotating={setIsRotating}
+                  key={pieceIndex}
+                />
+              );
+            })}
+          </PiecesContainer>
+          <BoardWrapper>
+            <Board
+              ref={boardRef}
+              dimensions={levels[currentLevel].dimensions}
+              boardSections={levels[currentLevel].boardSections}
+            />
+            <PlacedPieces
+              piecesInPlay={piecesInPlay}
+              isRotating={isRotating}
+              setIsRotating={setIsRotating}
+            />
+          </BoardWrapper>
+          {activePiece && !isRotating ? (
+            <DragOverlay>
+              <PieceOverlay piece={activePiece} />
+            </DragOverlay>
+          ) : null}
+        </DragAndDropArea>
+        <ButtonContainer>
+          <Button disabled={levelPosition == 'first'} onClick={setToPrevious}>
+            Previous Level
+          </Button>
+          <Button disabled={levelPosition == 'last'} onClick={setToNext}>
+            Next Level
+          </Button>
+          <Button onClick={resetPieces}>Reset Game</Button>
+          <InstructionsModal
+            isRotating={isRotating}
+            setIsRotating={setIsRotating}
+            piecesInPlay={piecesInPlay}
+          />
+        </ButtonContainer>
+        <GlobalStyles />
+      </Main>
+    </>
   );
 }
 
@@ -112,12 +116,14 @@ export const Main = styled.main`
   align-items: start;
   gap: calc(var(--sizeOfEachUnit) - 1px);
   margin-inline: 30px;
+  margin-top: 90px;
   height: 100%;
 
   @media (max-width: 750px) {
     grid-template-columns: 1fr;
     grid-template-rows: 55% 40% 5%;
     margin-inline: 10px;
+    margin-top: 80px;
     justify-items: center;
   }
 `;

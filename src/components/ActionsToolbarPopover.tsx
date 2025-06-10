@@ -17,7 +17,7 @@ const StyledRotateIcon = styled(RotateRightOutlined)`
   color: hsl(178, 100%, 23%);
 
   @media (max-width: 750px) {
-    font-size: 20px;
+    font-size: 28px;
   }
 `;
 
@@ -31,8 +31,8 @@ const IconButton = styled.button`
     height: 32px;
 
     @media (max-width: 750px) {
-      width: 20px;
-      height: 20px;
+      width: 28px;
+      height: 28px;
     }
   }
 `;
