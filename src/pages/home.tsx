@@ -2,7 +2,7 @@
 
 import styled from 'styled-components';
 import { useNavigate } from 'react-router';
-import { RotateCw, Maximize2, Scissors, Link } from 'lucide-react';
+import MathematicalTools from '../components/MathematicalTools';
 
 const Container = styled.div`
   max-width: 1200px;
@@ -12,16 +12,14 @@ const Container = styled.div`
 
 const HeroSection = styled.section`
   text-align: center;
-  padding: 60px 0;
-  background: linear-gradient(135deg, #007571 0%, #00a396 100%);
+  padding: 80px 0 60px 0;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #20b2aa 0%, #007571 100%);
   color: white;
-  margin: -90px -20px 60px -20px;
-  padding-top: 150px;
+  margin: 0 -20px 60px -20px;
 
   @media (max-width: 768px) {
-    margin-top: -80px;
-    padding-top: 120px;
-    padding: 120px 20px 60px;
+    padding: 60px 20px;
   }
 `;
 
@@ -29,6 +27,7 @@ const Title = styled.h1`
   font-size: 3.5rem;
   font-weight: bold;
   margin-bottom: 1rem;
+  color: white;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 
   @media (max-width: 768px) {
@@ -40,7 +39,7 @@ const Subtitle = styled.h2`
   font-size: 1.5rem;
   font-weight: 300;
   margin-bottom: 2rem;
-  opacity: 0.9;
+  color: rgba(255, 255, 255, 0.9);
 
   @media (max-width: 768px) {
     font-size: 1.2rem;
@@ -114,60 +113,6 @@ const BenefitText = styled.p`
   color: #666;
   line-height: 1.6;
   font-size: 1rem;
-`;
-
-const ToolsSection = styled.div`
-  background: #f8f9fa;
-  padding: 60px 0;
-  margin: 60px -20px;
-`;
-
-const ToolsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 30px;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-`;
-
-const ToolCard = styled.div`
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
-  text-align: center;
-  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-
-  &:hover {
-    transform: translateY(-3px);
-  }
-`;
-
-const ToolIcon = styled.div`
-  color: #007571;
-  margin-bottom: 1rem;
-  display: flex;
-  justify-content: center;
-`;
-
-const ToolTitle = styled.h4`
-  color: #007571;
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
-`;
-
-const ToolConnection = styled.p`
-  color: #666;
-  font-size: 0.9rem;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-`;
-
-const ToolExample = styled.p`
-  color: #888;
-  font-size: 0.85rem;
-  font-style: italic;
 `;
 
 const CallToAction = styled.div`
@@ -246,45 +191,7 @@ function Home() {
         </Section>
       </Container>
 
-      <ToolsSection>
-        <Container>
-          <SectionTitle>Mathematical Tools & Connections</SectionTitle>
-          <ToolsGrid>
-            <ToolCard>
-              <ToolIcon>
-                <RotateCw size={40} />
-              </ToolIcon>
-              <ToolTitle>Rotation Tool</ToolTitle>
-              <ToolConnection>Commutative Property</ToolConnection>
-              <ToolExample>3 × 5 = 5 × 3</ToolExample>
-            </ToolCard>
-            <ToolCard>
-              <ToolIcon>
-                <Maximize2 size={40} />
-              </ToolIcon>
-              <ToolTitle>Double & Halve Tool</ToolTitle>
-              <ToolConnection>Associative Property</ToolConnection>
-              <ToolExample>4 × (2 × 3) = (4 × 2) × 3</ToolExample>
-            </ToolCard>
-            <ToolCard>
-              <ToolIcon>
-                <Scissors size={40} />
-              </ToolIcon>
-              <ToolTitle>Cut Tool</ToolTitle>
-              <ToolConnection>Distributive Property</ToolConnection>
-              <ToolExample>3(2 + 3) = 3(2) + 3(3)</ToolExample>
-            </ToolCard>
-            <ToolCard>
-              <ToolIcon>
-                <Link size={40} />
-              </ToolIcon>
-              <ToolTitle>Glue Tool</ToolTitle>
-              <ToolConnection>Distributive Property</ToolConnection>
-              <ToolExample>3(2) + 3(3) = 3(2 + 3)</ToolExample>
-            </ToolCard>
-          </ToolsGrid>
-        </Container>
-      </ToolsSection>
+      <MathematicalTools />
 
       <CallToAction>
         <Container>

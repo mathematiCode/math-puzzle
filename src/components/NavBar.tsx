@@ -169,8 +169,8 @@ const NavBar = ({ currentPath }: NavBarProps) => {
   };
 
   const navItems = [
-    { path: '/math', label: 'What Math is this Teaching' },
-    { path: '/about', label: 'About The Creator' },
+    { path: '/aboutgame', label: 'About The Game' },
+    { path: '/aboutcreator', label: 'About The Creator' },
     { path: '/game', label: 'Play The Game' },
   ];
 

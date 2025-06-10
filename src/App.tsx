@@ -16,18 +16,18 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: 'about',
+    path: 'aboutgame',
     element: (
       <Layout>
-        <About />
+        <Math />
       </Layout>
     ),
   },
   {
-    path: 'math',
+    path: 'aboutcreator',
     element: (
       <Layout>
-        <Math />
+        <About />
       </Layout>
     ),
   },
