@@ -57,16 +57,15 @@ function About() {
         <img src="./assets/headshot.png" alt="Image of Julianna" />
         <p>
           Hi I'm Julianna, a Front-End Software Engineer and former math
-          teacher! I've taught math for 5 years (2019-2024), ranging from 6th
-          grade to 9th grade, as well as math intervention. I love crafting
-          creative and engaging lessons and interactive tools that build on
-          students prior knowledge and get them where they need to be. My
-          strengths as a teacher were using visuals and intentional questioning
-          to help students develop a deeper understanding of the math they're
-          learning. I was inspired to build this game after playing
-          multiplication games like Stick and Split and Number Hive and wanting
-          something similarly fun and educational for middle school students. I
-          am currently looking for a frontend development role, ideally at an
+          teacher. I've taught math for 5 years (2019-2024), ranging from 6th
+          grade to 9th grade, as well as math intervention. As a teacher, I
+          loved crafting creative and engaging lessons and interactive tools
+          that build on students prior knowledge and get them where they need to
+          be. I was inspired to build this game after playing multiplication
+          games like Stick and Split and Number Hive and wanting something
+          similarly fun and educational for middle school students. I'm inspired
+          by math games that make the MATH itself the fun part of the game. I am
+          currently looking for a frontend development role, ideally at an
           edtech company.
         </p>
       </Content>

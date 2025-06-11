@@ -113,7 +113,7 @@ function MathematicalTools({ variant = 'embedded' }: MathematicalToolsProps) {
             <ToolIcon>
               <PanelRight size={40} />
             </ToolIcon>
-            <ToolTitle>Glue Tool (Coming Soon)</ToolTitle>
+            <ToolTitle>Combine Tool (Coming Soon)</ToolTitle>
             <ToolConnection>Distributive Property</ToolConnection>
             <ToolExample>3(2) + 3(3) = 3(2 + 3)</ToolExample>
           </ToolCard>

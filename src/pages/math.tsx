@@ -10,7 +10,6 @@ const Container = styled.div`
 const Title = styled.h1`
   color: #007571;
   font-size: 2.5rem;
-  margin-bottom: 2rem;
   text-align: center;
 `;
 
@@ -29,6 +28,9 @@ const PillContainer = styled.div`
   gap: 2rem;
   justify-content: center;
   margin-block: 0.8rem;
+
+  @media (max-width: 768px) {
+    gap: 0.5rem;
 `;
 
 const Pill = styled.span`
@@ -36,8 +38,12 @@ const Pill = styled.span`
   color: #fff;
   padding: 0.3rem 0.5rem;
   border-radius: 0.5rem;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
+
+  @media (max-width: 768px) {
+    font-size: 1.2rem;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -61,23 +67,12 @@ const FeatureTitle = styled.h3`
   margin-bottom: 1rem;
 `;
 
-const Quote = styled.blockquote`
-  font-style: italic;
-  color: #555;
-  border-left: 3px solid #007571;
-  padding-left: 20px;
-  margin: 20px 0;
-  background-color: #f9f9f9;
-  padding: 15px 20px;
-  border-radius: 0 8px 8px 0;
-`;
-
 function Math() {
   return (
     <Container>
       <Content>
         <Section>
-          <Title>What Math is this Teaching?</Title>
+          <Title>What Math Can This Help Me Learn or Teach?</Title>
           <PillContainer>
             <Pill>Commutative Property</Pill>
             <Pill>Associative Property</Pill>
@@ -125,8 +120,8 @@ function Math() {
             Planned Features to Encourage Mathematical Thinking
           </SectionTitle>
           <p>
-            To address this challenge, I'm developing two key features designed
-            to promote more intentional mathematical reasoning:
+            I'm developing two key features designed to promote more intentional
+            mathematical reasoning:
           </p>
 
           <FeatureBox>
