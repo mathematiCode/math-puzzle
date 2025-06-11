@@ -80,8 +80,8 @@ function Math() {
           </PillContainer>
           <p>
             The puzzles require transforming the rectangles in various ways
-            using the mathematical properties below. They see the
-            transformations visually, and can then build on these experiences
+            using the properties of operations. They see the transformations
+            visually in the game, and can then build on these experiences
             formally with a teacher.
           </p>
           <MathematicalTools variant="standalone" />
@@ -133,6 +133,7 @@ function Math() {
               doubling a width of 4 will actually produce the dimensions they
               need, rather than relying purely on visual estimation.
             </p>
+            <img src="./assets/PiecesWithLabels.png" alt="No Grid Example" />
           </FeatureBox>
 
           <FeatureBox>

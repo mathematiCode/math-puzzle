@@ -6,6 +6,7 @@ const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
+  container-type: inline-size;
 `;
 
 const ToolsSection = styled.div<{ variant?: 'standalone' | 'embedded' }>`
@@ -28,18 +29,20 @@ const SectionTitle = styled.h2`
 `;
 
 const ToolsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 30px;
-  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
 
-  @media (max-width: 768px) {
+  @container (max-width: 768px) {
     gap: 20px;
   }
 `;
 
 const ToolCard = styled.div`
+  width: 250px;
   background: white;
   padding: 25px;
   border-radius: 12px;
@@ -49,6 +52,14 @@ const ToolCard = styled.div`
 
   &:hover {
     transform: translateY(-3px);
+  }
+
+  @container (max-width: 1000px) {
+    flex: 0 1 40%;
+  }
+
+  @container (max-width: 768px) {
+    flex: 0 1 80%;
   }
 `;
 
