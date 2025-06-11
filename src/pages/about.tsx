@@ -29,7 +29,8 @@ const Content = styled.div`
   img {
     width: 100%;
     height: 100%;
-    object-fit: scale-down;
+    object-fit: cover;
+    object-position: center 30%;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 
@@ -37,6 +38,7 @@ const Content = styled.div`
       max-width: 300px;
       height: 300px;
       margin: 0 auto 1rem auto;
+      object-position: center 20%;
     }
   }
 
