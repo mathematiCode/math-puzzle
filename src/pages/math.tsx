@@ -62,6 +62,12 @@ const FeatureBox = styled.div`
   border-left: 4px solid #007571;
 `;
 
+const Image = styled.img`
+  width: 100%;
+  height: auto;
+  margin-top: 1rem;
+`;
+
 const FeatureTitle = styled.h3`
   color: #007571;
   margin-bottom: 1rem;
@@ -133,7 +139,7 @@ function Math() {
               doubling a width of 4 will actually produce the dimensions they
               need, rather than relying purely on visual estimation.
             </p>
-            <img src="./assets/PiecesWithLabels.png" alt="No Grid Example" />
+            <Image src="./assets/PiecesWithLabels.png" alt="No Grid Example" />
           </FeatureBox>
 
           <FeatureBox>
@@ -145,6 +151,7 @@ function Math() {
               thinking and helps prevent the random trial-and-error approach
               that bypasses mathematical reasoning.
             </p>
+            <Image src="./assets/LimitsExample.png" alt="No Grid Example" />
           </FeatureBox>
         </Section>
 
