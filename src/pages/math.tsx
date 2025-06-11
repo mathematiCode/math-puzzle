@@ -42,7 +42,7 @@ const Pill = styled.span`
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
 
   @media (max-width: 768px) {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
 `;
 

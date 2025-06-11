@@ -58,7 +58,7 @@ function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
   const windowHeight = window.innerHeight;
 
   const sizeOfEachUnit = Math.round(
-    (0.0003 * windowWidth * (windowHeight - 200)) / Math.max(width, height) - 1
+    (0.0005 * windowWidth * (windowHeight - 200)) / Math.max(width, height) - 1
   );
   console.log(sizeOfEachUnit);
   document.documentElement.style.setProperty(

@@ -33,7 +33,10 @@ const ToolsGrid = styled.div`
   gap: 30px;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
+
+  @media (max-width: 768px) {
+    gap: 20px;
+  }
 `;
 
 const ToolCard = styled.div`

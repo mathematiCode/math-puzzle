@@ -130,12 +130,6 @@ const MobileNavLink = styled.button<{ $isActive?: boolean }>`
     `
     background-color: rgba(255, 255, 255, 0.2);
     font-weight: 600;
-    
-    &::before {
-      content: '●';
-      margin-right: 10px;
-      color: white;
-    }
   `}
 
   &:hover {
