@@ -1,4 +1,4 @@
-export const HorizontalStretchIcon = ({ size = '32px' }) => {
+export const HorizontalStretchIcon = ({ size = 32 }) => {
   return (
     <svg
       id="e1m6fFAuxBZ1"
@@ -7,8 +7,8 @@ export const HorizontalStretchIcon = ({ size = '32px' }) => {
       viewBox="0 0 300 300"
       shapeRendering="geometricPrecision"
       textRendering="geometricPrecision"
-      width={size}
-      height={size}
+      width={`${size}px`}
+      height={`${size}px`}
     >
       <g>
         <line

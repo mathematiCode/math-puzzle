@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { RotateCw, Maximize2, Scissors, Link } from 'lucide-react';
+import { RotateCw, Scissors, Combine, PanelRight } from 'lucide-react';
+import { HorizontalStretchIcon } from './SvgIcons.tsx';
 
 const Container = styled.div`
   max-width: 1200px;
@@ -94,7 +95,7 @@ function MathematicalTools({ variant = 'embedded' }: MathematicalToolsProps) {
           </ToolCard>
           <ToolCard>
             <ToolIcon>
-              <Maximize2 size={40} />
+              <HorizontalStretchIcon size={40} />
             </ToolIcon>
             <ToolTitle>Double & Halve Tool</ToolTitle>
             <ToolConnection>Associative Property</ToolConnection>
@@ -104,15 +105,15 @@ function MathematicalTools({ variant = 'embedded' }: MathematicalToolsProps) {
             <ToolIcon>
               <Scissors size={40} />
             </ToolIcon>
-            <ToolTitle>Cut Tool</ToolTitle>
+            <ToolTitle>Cut Tool (Coming Soon)</ToolTitle>
             <ToolConnection>Distributive Property</ToolConnection>
             <ToolExample>3(2 + 3) = 3(2) + 3(3)</ToolExample>
           </ToolCard>
           <ToolCard>
             <ToolIcon>
-              <Link size={40} />
+              <PanelRight size={40} />
             </ToolIcon>
-            <ToolTitle>Glue Tool</ToolTitle>
+            <ToolTitle>Glue Tool (Coming Soon)</ToolTitle>
             <ToolConnection>Distributive Property</ToolConnection>
             <ToolExample>3(2) + 3(3) = 3(2 + 3)</ToolExample>
           </ToolCard>

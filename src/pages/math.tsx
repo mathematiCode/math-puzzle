@@ -24,6 +24,22 @@ const Section = styled.section`
   margin: 2.5rem 0;
 `;
 
+const PillContainer = styled.div`
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  margin-block: 0.8rem;
+`;
+
+const Pill = styled.span`
+  background-color: hsl(0, 61%, 66%);
+  color: #fff;
+  padding: 0.3rem 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 1.2rem;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
+`;
+
 const SectionTitle = styled.h2`
   color: #007571;
   font-size: 1.8rem;
@@ -59,32 +75,46 @@ const Quote = styled.blockquote`
 function Math() {
   return (
     <Container>
-      <Title>What Math is this Teaching?</Title>
       <Content>
         <Section>
+          <Title>What Math is this Teaching?</Title>
+          <PillContainer>
+            <Pill>Commutative Property</Pill>
+            <Pill>Associative Property</Pill>
+            <Pill>Distributive Property</Pill>
+          </PillContainer>
           <p>
-            As a former math teacher, I understand that simply presenting
-            mathematically interesting content to students doesn't automatically
-            encourage mathematical thinking. The challenge lies in finding the
-            right balance between creating problems that are open and accessible
-            enough to maintain student engagement while still promoting deep
-            mathematical reasoning about the learning objectives.
+            The puzzles require transforming the rectangles in various ways
+            using the mathematical properties below. They see the
+            transformations visually, and can then build on these experiences
+            formally with a teacher.
+          </p>
+          <MathematicalTools variant="standalone" />
+        </Section>
+        <Section>
+          <p>
+            Simply presenting mathematically interesting content to students
+            isn't always enough to encourage mathematical thinking. The
+            challenge lies in finding the right balance between creating
+            problems that are open and accessible enough to maintain student
+            engagement while still promoting deep mathematical reasoning about
+            the learning objectives.
           </p>
         </Section>
 
         <Section>
           <SectionTitle>The Current Challenge</SectionTitle>
           <p>
-            In the current version of Frectangles, students likely approach the
-            puzzles through visual estimation—eyeballing side lengths and using
-            intuition to determine which pieces might fit where. While they may
-            recognize that the "double width, halve height" tool creates
-            shorter, longer rectangles, they may not be processing the
+            In the current version of Frectangles, students will likely approach
+            the puzzles through visual estimation, eyeballing side lengths and
+            using intuition to determine which pieces might fit where. While
+            they may recognize that the "double width, halve height" tool
+            creates shorter, longer rectangles, they may not be processing the
             underlying mathematical relationships.
           </p>
           <p>
             This presents a common educational challenge: students might
-            randomly cycle through available tools until something works,
+            randomly try all of the available tools until something works,
             missing opportunities to engage with the mathematical concepts that
             make each transformation meaningful.
           </p>
@@ -123,47 +153,6 @@ function Math() {
         </Section>
 
         <Section>
-          <SectionTitle>Design Philosophy & User Experience</SectionTitle>
-          <p>
-            These features require careful calibration to maintain accessibility
-            while promoting mathematical thinking. The goal is to create enough
-            cognitive demand to encourage mathematical processing without
-            creating frustration that leads students to disengage.
-          </p>
-
-          <Quote>
-            "If a student makes a mistake that makes it impossible to win the
-            level, they most likely aren't going to keep persisting."
-            <br />— David Tymm, creator of Stick and Split
-          </Quote>
-
-          <p>
-            This insight reinforces the importance of designing multiple
-            solution pathways and recovery mechanisms. Students need
-            opportunities to reverse mistakes and explore different approaches
-            without being penalized by dead-end situations.
-          </p>
-        </Section>
-
-        <Section>
-          <SectionTitle>Learning from Existing Games</SectionTitle>
-          <p>
-            Games like Stick and Split handle similar challenges by allowing
-            unlimited actions while tracking the number of moves required to
-            reach a solution. This approach encourages efficiency and strategic
-            thinking while maintaining accessibility. However, observational
-            data suggests that move tracking alone may not motivate all students
-            to engage in deeper mathematical thinking.
-          </p>
-          <p>
-            This highlights the importance of user testing and iterative design.
-            Effective educational game design requires experimentation and
-            research to determine which features best support learning
-            objectives for diverse student populations.
-          </p>
-        </Section>
-
-        <Section>
           <SectionTitle>Next Steps: Testing & Iteration</SectionTitle>
           <p>
             Once these features are implemented, extensive testing with actual
@@ -180,8 +169,6 @@ function Math() {
             effective and enjoyable.
           </p>
         </Section>
-
-        <MathematicalTools variant="standalone" />
       </Content>
     </Container>
   );
