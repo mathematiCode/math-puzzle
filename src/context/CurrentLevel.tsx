@@ -57,10 +57,10 @@ function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
   const windowWidth = window.innerWidth;
   const windowHeight = window.innerHeight;
 
-  // 450 is an arbitrary number that seems to work well when divided by the width or height
   const sizeOfEachUnit = Math.round(
-    (0.55 * Math.min(windowWidth, windowHeight)) / Math.max(width, height)
+    (0.0005 * windowWidth * (windowHeight - 200)) / Math.max(width, height) - 1
   );
+  console.log(sizeOfEachUnit);
   document.documentElement.style.setProperty(
     '--sizeOfEachUnit',
     `${sizeOfEachUnit}px`
@@ -79,9 +79,10 @@ function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
 
   function setSizeOfEachUnit(currentLevel: number) {
     const { width, height } = levels[currentLevel].dimensions;
-    const sizeOfEachUnit = Math.round(
-      (0.55 * Math.min(windowWidth, windowHeight)) / Math.max(width, height)
-    );
+    const sizeOfEachUnit =
+      Math.round(
+        (0.55 * Math.min(windowWidth, windowHeight)) / Math.max(width, height)
+      ) - 3;
     document.documentElement.style.setProperty(
       '--sizeOfEachUnit',
       `${sizeOfEachUnit}px`
