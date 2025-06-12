@@ -191,7 +191,7 @@ function Home() {
         </Section>
       </Container>
 
-      <MathematicalTools />
+      <MathematicalTools variant="standalone" />
 
       <CallToAction>
         <Container>
