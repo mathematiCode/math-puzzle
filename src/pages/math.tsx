@@ -62,8 +62,13 @@ const FeatureBox = styled.div`
   border-left: 4px solid #007571;
 `;
 
-const Image = styled.img`
-  width: 100%;
+interface ImageProps {
+  width?: string;
+}
+
+const Image = styled.img<ImageProps>`
+  width: ${props => props.width || '100%'};
+  justify-self: center;
   height: auto;
   margin-top: 1rem;
 `;
@@ -85,10 +90,17 @@ function Math() {
             <Pill>Distributive Property</Pill>
           </PillContainer> */}
           <p>
-            The puzzles require transforming the rectangles in various ways
-            using the properties of operations. They see the transformations
-            visually in the game, and can then build on these experiences
-            formally with a teacher.
+            Frectangles is designed to encourage students to recognize
+            equivalent expressions visually through rectangles. Two rectangles
+            with equal areas can be written as two equivalent expressions
+            although in the game they are only shown visually. Each level gives
+            players a set of rectangular puzzle pieces and a game board to place
+            those pieces. As the levels progress, more and more mathematical
+            transformations are required to turn the pieces they have into the
+            pieces they need to fill board. Students can experience these
+            mathematical transformations visually in the game, and can then
+            build on these experiences formally and algebraically with a
+            teacher.
           </p>
           <MathematicalTools variant="standalone" />
         </Section>
@@ -139,7 +151,9 @@ function Math() {
               students to predict the mathematical effects of each
               transformation before acting. This creates incentive for strategic
               thinking and helps prevent the random trial-and-error approach
-              that bypasses mathematical reasoning.
+              that bypasses mathematical reasoning. I'm thinking of using icons
+              similar to notifications to show how many uses of each tool are
+              remaining.
             </p>
             <Image
               src="./assets/LimitsExample.png"
