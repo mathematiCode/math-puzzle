@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { RotateCw, Scissors, Combine, PanelRight } from 'lucide-react';
+import { RotateCw, Scissors, PanelRight } from 'lucide-react';
 import { HorizontalStretchIcon } from './SvgIcons.tsx';
 
 const Container = styled.div`
@@ -49,6 +49,7 @@ const ToolCard = styled.div`
   text-align: center;
   box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
+  position: relative;
 
   &:hover {
     transform: translateY(-3px);
@@ -61,6 +62,20 @@ const ToolCard = styled.div`
   @container (max-width: 768px) {
     flex: 0 1 80%;
   }
+`;
+
+const Tag = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgb(248, 162, 162);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 `;
 
 const ToolIcon = styled.div`
@@ -116,18 +131,20 @@ function MathematicalTools({ variant = 'embedded' }: MathematicalToolsProps) {
             <ToolExample>4 × (2 × 3) = (4 × 2) × 3</ToolExample>
           </ToolCard>
           <ToolCard>
+            <Tag>Coming Soon</Tag>
             <ToolIcon>
               <Scissors size={40} />
             </ToolIcon>
-            <ToolTitle>Cut Tool (Coming Soon)</ToolTitle>
+            <ToolTitle>Cut Tool</ToolTitle>
             <ToolConnection>Distributive Property</ToolConnection>
             <ToolExample>3(2 + 3) = 3(2) + 3(3)</ToolExample>
           </ToolCard>
           <ToolCard>
+            <Tag>Coming Soon</Tag>
             <ToolIcon>
               <PanelRight size={40} />
             </ToolIcon>
-            <ToolTitle>Combine Tool (Coming Soon)</ToolTitle>
+            <ToolTitle>Combine Tool</ToolTitle>
             <ToolConnection>Distributive Property</ToolConnection>
             <ToolExample>3(2) + 3(3) = 3(2 + 3)</ToolExample>
           </ToolCard>
