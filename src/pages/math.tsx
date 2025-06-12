@@ -23,28 +23,28 @@ const Section = styled.section`
   margin: 2.5rem 0;
 `;
 
-const PillContainer = styled.div`
-  display: flex;
-  gap: 2rem;
-  justify-content: center;
-  margin-block: 0.8rem;
+// const PillContainer = styled.div`
+//   display: flex;
+//   gap: 2rem;
+//   justify-content: center;
+//   margin-block: 0.8rem;
 
-  @media (max-width: 768px) {
-    gap: 0.5rem;
-`;
+//   @media (max-width: 768px) {
+//     gap: 0.5rem;
+// `;
 
-const Pill = styled.span`
-  background-color: hsl(0, 61%, 66%);
-  color: #fff;
-  padding: 0.3rem 0.5rem;
-  border-radius: 0.5rem;
-  font-size: 1.4rem;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
+// const Pill = styled.span`
+//   background-color: hsl(0, 61%, 66%);
+//   color: #fff;
+//   padding: 0.3rem 0.5rem;
+//   border-radius: 0.5rem;
+//   font-size: 1.4rem;
+//   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
 
-  @media (max-width: 768px) {
-    font-size: 1rem;
-  }
-`;
+//   @media (max-width: 768px) {
+//     font-size: 1rem;
+//   }
+// `;
 
 const SectionTitle = styled.h2`
   color: #007571;
@@ -79,11 +79,11 @@ function Math() {
       <Content>
         <Section>
           <Title>What Math Can This Help Me Learn or Teach?</Title>
-          <PillContainer>
+          {/* <PillContainer>
             <Pill>Commutative Property</Pill>
             <Pill>Associative Property</Pill>
             <Pill>Distributive Property</Pill>
-          </PillContainer>
+          </PillContainer> */}
           <p>
             The puzzles require transforming the rectangles in various ways
             using the properties of operations. They see the transformations
@@ -91,16 +91,6 @@ function Math() {
             formally with a teacher.
           </p>
           <MathematicalTools variant="standalone" />
-        </Section>
-        <Section>
-          <p>
-            Simply presenting mathematically interesting content to students
-            isn't always enough to encourage mathematical thinking. The
-            challenge lies in finding the right balance between creating
-            problems that are open and accessible enough to maintain student
-            engagement while still promoting deep mathematical reasoning about
-            the learning objectives.
-          </p>
         </Section>
 
         <Section>
@@ -151,7 +141,11 @@ function Math() {
               thinking and helps prevent the random trial-and-error approach
               that bypasses mathematical reasoning.
             </p>
-            <Image src="./assets/LimitsExample.png" alt="No Grid Example" />
+            <Image
+              src="./assets/LimitsExample.png"
+              alt="No Grid Example"
+              width="70%"
+            />
           </FeatureBox>
         </Section>
 
