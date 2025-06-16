@@ -2,7 +2,7 @@
 
 This is a game that I've been planning since October and started building in January. See my [game design document.](https://docs.google.com/document/d/19n_Eb5vXucGJNiwmZuczLBsk5-oJEB7wVopWP7I0jtE/edit?usp=sharing)
 
-Check out the deployed (although very much not done) site [here.](frectangles.netlify.app)
+Check out the deployed (although very much not done) site [here.](https://frectangles.com?utm_source=github&utm_medium=readme)
  
 
 There will be many levels with the earlier/easier with whole numbers and smaller boards and the later ones possibly including fractions, mixed numbers, and decimals. 
