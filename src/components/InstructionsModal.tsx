@@ -121,6 +121,10 @@ const InstructionsModal = ({
                 <ul>
                   <li>Puzzle pieces cannot overlap.</li>
                   <li>Puzzle pieces must be fully on the board.</li>
+                  <li>
+                    You can use any of the tools below to transform the pieces
+                    as needed.
+                  </li>
                 </ul>
 
                 <h2 className={classes.h2}>The Tools</h2>
