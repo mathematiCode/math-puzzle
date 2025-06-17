@@ -2,12 +2,12 @@
 
 This is a game that I've been planning since October and started building in January. See my [game design document.](https://docs.google.com/document/d/19n_Eb5vXucGJNiwmZuczLBsk5-oJEB7wVopWP7I0jtE/edit?usp=sharing)
 
-Check out the deployed (although very much not done) site [here.](https://frectangles.com?utm_source=github&utm_medium=readme)
+Check out the deployed (although not completely done) site [here.](https://frectangles.com?utm_source=github&utm_medium=readme)
  
 
 There will be many levels with the earlier/easier with whole numbers and smaller boards and the later ones possibly including fractions, mixed numbers, and decimals. 
 
-The target Age Range is 5th - 7th grade but it will also have some levels that are accessible to 3rd & 4th grade and would be a great activity to build number sense for older grades as well. I was very inspired by Stick and Split when planning this game. This would be a great game to play after mastering Stick and Split because the concepts build on Stick and Split but my game requires some more complex mathematical thinking. 
+The target Age Range is 5th - 7th grade but it will also have some levels that are accessible to 3rd & 4th grade and would be a great activity to build number sense for older grades as well. I was very inspired by Stick and Split when planning this game. This would be a great game to play after mastering Stick and Split because the concepts build on Stick and Split but my game requires some more complex mathematical thinking. Specifically, this game is designed to build learners intuition around the properties of operations (the distributive, associative, and commutative properties) by presenting them with increasingly complex puzzles which these concepts to transform the puzzle pieces into the necessary shapes. 
 <img width="979" alt="Image of Puzzle Pieces and Board. Each puzzle piece has action buttons including rotate, double width and halve height, and halve width and double height" src="https://github.com/user-attachments/assets/d77e651d-9ecb-4578-acfb-2f5a91934933" />
 
 Here are some other items on my to do list for this project: 
