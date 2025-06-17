@@ -100,17 +100,26 @@ function ActionsToolbarPopover({
       <PopoverSurface id="actions">
         <ActionsToolbar>
           <Tooltip placement="bottom" title="Rotate">
-            <IconButton onClick={() => runRotationAnimation(selectedPiece)}>
+            <IconButton
+              onClick={() => runRotationAnimation(selectedPiece)}
+              aria-label="Rotate"
+            >
               <StyledRotateIcon />
             </IconButton>
           </Tooltip>
           <Tooltip placement="bottom" title="Double Width & Halve Height">
-            <IconButton onClick={handleHorizontalStretch}>
+            <IconButton
+              onClick={handleHorizontalStretch}
+              aria-label="Double Width & Halve Height"
+            >
               <HorizontalStretchIcon />
             </IconButton>
           </Tooltip>
           <Tooltip placement="bottom" title="Halve Width & Double Height">
-            <IconButton onClick={handleVerticalStretch}>
+            <IconButton
+              onClick={handleVerticalStretch}
+              aria-label="Halve Width & Double Height"
+            >
               <VerticalStretchIcon />
             </IconButton>
           </Tooltip>
