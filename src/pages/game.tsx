@@ -13,7 +13,8 @@ import styled from 'styled-components';
 import { DragOverlay } from '@dnd-kit/core';
 import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
 import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
-import { useInitialPieces } from '../hooks/useInitialPieces.ts';
+import { getInitialPieces } from '../utils/getInitialPieces.ts';
+import { getBoardSquares } from '../utils/getBoardSquares.ts';
 import { Piece } from '../types/piece.ts';
 
 function Home() {
@@ -30,17 +31,18 @@ function Home() {
   const [isRotating, setIsRotating] = useState(false);
 
   const boardRef = useRef(null);
+  getBoardSquares(currentLevel);
 
   async function setToPrevious() {
     await previousLevel();
-    const newPieces = useInitialPieces(currentLevel - 1);
+    const newPieces = getInitialPieces(currentLevel - 1);
     await setPiecesForNewLevel(newPieces);
     await setSizeOfEachUnit(currentLevel - 1);
   }
 
   async function setToNext() {
     await nextLevel();
-    const newPieces = useInitialPieces(currentLevel + 1);
+    const newPieces = getInitialPieces(currentLevel + 1);
     await setPiecesForNewLevel(newPieces);
     await setSizeOfEachUnit(currentLevel + 1);
   }

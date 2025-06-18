@@ -6,7 +6,7 @@ import ActionsToolbarPopover from './ActionsToolbarPopover.tsx';
 import { useState, memo, useContext } from 'react';
 import { motion, useAnimate } from 'motion/react';
 import styled from 'styled-components';
-import { convertLocationToXAndY } from '../utilities.ts';
+import { convertLocationToXAndY } from '../utils/utilities.ts';
 import { Piece } from '../types/piece.ts';
 import {
   SelectedPieceContext,

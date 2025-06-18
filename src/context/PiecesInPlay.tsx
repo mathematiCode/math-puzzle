@@ -7,7 +7,7 @@ import {
 } from './CurrentLevel.tsx';
 import { colors } from '../CONSTANTS';
 import { InitialPiece, Piece } from '../types/piece.ts';
-import { convertLocationToXAndY } from '../utilities.ts';
+import { convertLocationToXAndY } from '../utils/utilities.ts';
 import { useAnimate } from 'motion/dist/react';
 import levels from '../levels.json';
 

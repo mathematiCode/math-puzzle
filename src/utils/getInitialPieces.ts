@@ -4,7 +4,7 @@ import { colors } from '../CONSTANTS';
 
 const initialLocation = null;
 
-export function useInitialPieces(level: number): InitialPiece[] {
+export function getInitialPieces(level: number): InitialPiece[] {
   return [
     {
       width: 3,

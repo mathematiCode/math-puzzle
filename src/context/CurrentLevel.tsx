@@ -24,7 +24,7 @@ interface CurrentLevelProviderProps {
   children: ReactNode;
 }
 
-function useInitialPieces(level: number) {
+function getInitialPieces(level: number) {
   const instructionsPiece = {
     width: 3,
     height: 2,
@@ -75,7 +75,7 @@ function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
     levelPosition = 'middle';
   }
 
-  const initialPieces = useInitialPieces(currentLevel);
+  const initialPieces = getInitialPieces(currentLevel);
 
   function setSizeOfEachUnit(currentLevel: number) {
     const { width, height } = levels[currentLevel].dimensions;
