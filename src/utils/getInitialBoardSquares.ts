@@ -1,6 +1,6 @@
 import levels from '../levels.json';
 
-export function getBoardSquares(level: number) {
+export function getInitialBoardSquares(level: number) {
   //const dimensions = levels[level].dimensions;
   const boardSections = levels[level].boardSections;
   //   const dimensions = { width: 15, height: 14 };

@@ -14,10 +14,10 @@ import { DragOverlay } from '@dnd-kit/core';
 import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
 import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
 import { getInitialPieces } from '../utils/getInitialPieces.ts';
-import { getBoardSquares } from '../utils/getBoardSquares.ts';
 import { Piece } from '../types/piece.ts';
+import { BoardSquaresContext } from '../context/BoardSquares.tsx';
 
-function Home() {
+function Game() {
   const {
     currentLevel,
     levelPosition,
@@ -28,16 +28,17 @@ function Home() {
   const [activePiece, setActivePiece] = useState<Piece | null>(null);
   const { piecesInPlay, resetPieces, setPiecesForNewLevel } =
     useContext(PiecesInPlayContext);
+  const { boardSquares, resetBoardSquares } = useContext(BoardSquaresContext);
   const [isRotating, setIsRotating] = useState(false);
 
   const boardRef = useRef(null);
-  getBoardSquares(currentLevel);
 
   async function setToPrevious() {
     await previousLevel();
     const newPieces = getInitialPieces(currentLevel - 1);
     await setPiecesForNewLevel(newPieces);
     await setSizeOfEachUnit(currentLevel - 1);
+    resetBoardSquares(currentLevel - 1);
   }
 
   async function setToNext() {
@@ -45,6 +46,13 @@ function Home() {
     const newPieces = getInitialPieces(currentLevel + 1);
     await setPiecesForNewLevel(newPieces);
     await setSizeOfEachUnit(currentLevel + 1);
+    resetBoardSquares(currentLevel + 1);
+  }
+
+  function resetLevel() {
+    resetPieces();
+    resetBoardSquares(currentLevel);
+    console.log(boardSquares);
   }
 
   return (
@@ -94,7 +102,7 @@ function Home() {
         <Button disabled={levelPosition == 'last'} onClick={setToNext}>
           Next Level
         </Button>
-        <Button onClick={resetPieces}>Reset Game</Button>
+        <Button onClick={resetLevel}>Reset Game</Button>
         <InstructionsModal
           isRotating={isRotating}
           setIsRotating={setIsRotating}
@@ -163,4 +171,4 @@ export const ButtonContainer = styled.div`
   }
 `;
 
-export default Home;
+export default Game;

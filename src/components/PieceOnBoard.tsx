@@ -24,7 +24,7 @@ import {
 export const PieceWrapper = styled.button.attrs(props => ({
   onClick: props.onClick,
   ref: props.ref,
-  $isDragging: props.isDragging,
+  isDragging: props.isDragging,
   animate: props.animate,
   transition: props.transition,
 }))`
@@ -103,7 +103,7 @@ function PieceOnBoard({
         onClick={handlePieceSelected}
         x={x}
         y={y}
-        isDragging={isDragging}
+        $isDragging={isDragging}
       >
         <Rectangle
           width={piece.width}

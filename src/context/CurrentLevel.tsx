@@ -60,7 +60,7 @@ function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
   const sizeOfEachUnit = Math.round(
     (0.0005 * windowWidth * (windowHeight - 200)) / Math.max(width, height) - 1
   );
-  console.log(sizeOfEachUnit);
+  //console.log(sizeOfEachUnit);
   document.documentElement.style.setProperty(
     '--sizeOfEachUnit',
     `${sizeOfEachUnit}px`

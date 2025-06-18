@@ -8,15 +8,12 @@ import {
   useSensors,
 } from '@dnd-kit/core';
 import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core';
-import {
-  createSnapModifier,
-  restrictToWindowEdges,
-  snapCenterToCursor,
-} from '@dnd-kit/modifiers';
+import { createSnapModifier, snapCenterToCursor } from '@dnd-kit/modifiers';
 import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
 import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
 import { Piece } from '../types/piece';
 import { useSelectedPiece } from '../context/SelectedPiece.tsx';
+import { BoardSquaresContext } from '../context/BoardSquares.tsx';
 
 interface DragAndDropAreaProps {
   children: React.ReactNode;
@@ -40,6 +37,18 @@ function DragAndDropArea({
     );
   }
   const { piecesInPlay, movePiece } = context;
+  const boardSquaresContext = useContext(BoardSquaresContext);
+  if (!boardSquaresContext) {
+    throw new Error(
+      'DragAndDropArea must be used within a BoardSquaresProvider'
+    );
+  }
+  const {
+    boardSquares,
+    addPieceToBoard,
+    removePieceFromBoard,
+    movePieceOnBoard,
+  } = boardSquaresContext;
 
   const snapToGrid = useMemo(() => createSnapModifier(sizeOfEachUnit), []);
 
@@ -76,7 +85,9 @@ function DragAndDropArea({
     if (event?.over?.id) {
       const newLocation = event.over.id.toString();
       movePiece(pieceIndex, newLocation);
-    } else movePiece(pieceIndex, null);
+    } else {
+      movePiece(pieceIndex, null);
+    }
   };
   return (
     <DndContext

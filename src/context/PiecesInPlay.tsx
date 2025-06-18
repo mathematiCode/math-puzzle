@@ -5,11 +5,14 @@ import {
   CurrentLevelContext,
   CurrentLevelContextType,
 } from './CurrentLevel.tsx';
+import { BoardSquaresContext } from './BoardSquares.tsx';
 import { colors } from '../CONSTANTS';
 import { InitialPiece, Piece } from '../types/piece.ts';
 import { convertLocationToXAndY } from '../utils/utilities.ts';
 import { useAnimate } from 'motion/dist/react';
 import levels from '../levels.json';
+import Board from '../components/Board.tsx';
+import { remove } from 'lodash';
 
 export type PiecesInPlayContextType = {
   piecesInPlay: Piece[];
@@ -27,6 +30,8 @@ const initialLocation = null;
 function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
   const { initialPieces, boardDimensions, currentLevel } =
     useContext<CurrentLevelContextType>(CurrentLevelContext);
+  const { addPieceToBoard, removePieceFromBoard, resetBoardSquares } =
+    useContext(BoardSquaresContext);
   const [piecesInPlay, setPiecesInPlay] = useState<InitialPiece[] | Piece[]>(
     initialPieces
   );
@@ -34,14 +39,19 @@ function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
 
   function movePiece(pieceIndex: number, newLocation: string | null) {
     const updatedPieces = [...piecesInPlay];
-    const oldLocation = updatedPieces[pieceIndex].location;
+    const oldLocation = piecesInPlay[pieceIndex].location;
+    const { x: oldX, y: oldY } = convertLocationToXAndY(oldLocation);
+
     let newValidLocation = newLocation;
-    if (newValidLocation != null) {
+    const pieceHeight = piecesInPlay[pieceIndex].height;
+    const pieceWidth = piecesInPlay[pieceIndex].width;
+    if (oldLocation != null) {
+      removePieceFromBoard(oldX, oldY, pieceWidth, pieceHeight);
+    }
+    if (newLocation != null) {
       const { x, y } = convertLocationToXAndY(newValidLocation);
       let correctedX = x;
       let correctedY = y;
-      const pieceHeight = piecesInPlay[pieceIndex].height;
-      const pieceWidth = piecesInPlay[pieceIndex].width;
       if (oldLocation === null) {
         if (pieceWidth > 1 && x > 0) {
           correctedX = x - 1; // Temporary fix for pieces shifting one to the right when dragged from initial container
@@ -55,13 +65,13 @@ function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
         correctedY = boardHeight - pieceHeight;
       }
       newValidLocation = `(${correctedX},${correctedY})`;
-    }
-    updatedPieces[pieceIndex].location = newValidLocation;
-    if (newValidLocation != null) {
       updatedPieces[pieceIndex].id = `inPlay-${pieceIndex}`;
+      addPieceToBoard(correctedX, correctedY, pieceWidth, pieceHeight);
     } else {
       updatedPieces[pieceIndex].id = `initial-${pieceIndex}`;
+      //  removePieceFromBoard(oldX, oldY, pieceWidth, pieceHeight);
     }
+    updatedPieces[pieceIndex].location = newValidLocation;
     setPiecesInPlay(updatedPieces);
   }
 
@@ -98,12 +108,12 @@ function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  function rotatePiece(pieceIndex: number) {
-    const updatedPieces = [...piecesInPlay];
-    // updatedPieces[pieceIndex].isRotated = !updatedPieces[pieceIndex].isRotated;
+  // function rotatePiece(pieceIndex: number) {
+  //   const updatedPieces = [...piecesInPlay];
+  //   // updatedPieces[pieceIndex].isRotated = !updatedPieces[pieceIndex].isRotated;
 
-    setPiecesInPlay(updatedPieces);
-  }
+  //   setPiecesInPlay(updatedPieces);
+  // }
 
   function setPiecesForNewLevel(newPieces?: InitialPiece[]) {
     setPiecesInPlay(newPieces || initialPieces);
@@ -114,7 +124,6 @@ function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
         piecesInPlay,
         movePiece,
         updateDimensions,
-        rotatePiece,
         resetPieces,
         setPiecesForNewLevel,
       }}
