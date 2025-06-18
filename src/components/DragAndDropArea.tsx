@@ -13,7 +13,7 @@ import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
 import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
 import { Piece } from '../types/piece';
 import { useSelectedPiece } from '../context/SelectedPiece.tsx';
-import { BoardSquaresContext } from '../context/BoardSquares.tsx';
+//import { BoardSquaresContext } from '../context/BoardSquares.tsx';
 
 interface DragAndDropAreaProps {
   children: React.ReactNode;
@@ -37,18 +37,17 @@ function DragAndDropArea({
     );
   }
   const { piecesInPlay, movePiece } = context;
-  const boardSquaresContext = useContext(BoardSquaresContext);
-  if (!boardSquaresContext) {
-    throw new Error(
-      'DragAndDropArea must be used within a BoardSquaresProvider'
-    );
-  }
-  const {
-    boardSquares,
-    addPieceToBoard,
-    removePieceFromBoard,
-    movePieceOnBoard,
-  } = boardSquaresContext;
+  // const boardSquaresContext = useContext(BoardSquaresContext);
+  // if (!boardSquaresContext) {
+  //   throw new Error(
+  //     'DragAndDropArea must be used within a BoardSquaresProvider'
+  //   );
+  // }
+  // const {
+  //   boardSquares,
+  //   addPieceToBoard,
+  //   removePieceFromBoard,
+  // } = boardSquaresContext;
 
   const snapToGrid = useMemo(() => createSnapModifier(sizeOfEachUnit), []);
 

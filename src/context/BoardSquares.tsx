@@ -1,10 +1,7 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 import levels from '../levels.json';
 import { getInitialBoardSquares } from '../utils/getInitialBoardSquares';
-import {
-  CurrentLevelContext,
-  CurrentLevelContextType,
-} from './CurrentLevel.tsx';
+import { CurrentLevelContext } from './CurrentLevel.tsx';
 
 export type BoardSquaresContextType = {
   boardSquares: string[][];
@@ -16,12 +13,6 @@ export type BoardSquaresContextType = {
     height: number
   ) => void;
   removePieceFromBoard: (
-    x: number,
-    y: number,
-    width: number,
-    height: number
-  ) => void;
-  movePieceOnBoard: (
     x: number,
     y: number,
     width: number,
@@ -70,12 +61,7 @@ function BoardSquaresProvider({ children }: { children: ReactNode }) {
     setBoardSquares(newBoardSquares);
     console.log('after removal', newBoardSquares);
   }
-  function movePieceOnBoard(
-    x: number,
-    y: number,
-    width: number,
-    height: number
-  ) {}
+
   function resetBoardSquares(level: number) {
     console.log('resetting squares for level', level);
     setBoardSquares(getInitialBoardSquares(level));
@@ -88,7 +74,6 @@ function BoardSquaresProvider({ children }: { children: ReactNode }) {
         setBoardSquares,
         addPieceToBoard,
         removePieceFromBoard,
-        movePieceOnBoard,
         resetBoardSquares,
       }}
     >

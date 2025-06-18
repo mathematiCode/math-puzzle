@@ -13,25 +13,34 @@ import { useAnimate } from 'motion/dist/react';
 import levels from '../levels.json';
 import Board from '../components/Board.tsx';
 import { remove } from 'lodash';
+import { X } from 'lucide-react';
 
-export type PiecesInPlayContextType = {
+export interface PiecesInPlayContextType {
   piecesInPlay: Piece[];
   movePiece: (pieceIndex: number, newLocation: string | null) => void;
   updateDimensions: (pieceIndex: number, width: number, height: number) => void;
   rotatePiece: (pieceIndex: number) => void;
   resetPieces: () => void;
   setPiecesForNewLevel: (newPieces?: InitialPiece[]) => void;
-};
+}
 
 export const PiecesInPlayContext =
   createContext<PiecesInPlayContextType | null>(null);
 const initialLocation = null;
 
-function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
+export function PiecesInPlayProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const { initialPieces, boardDimensions, currentLevel } =
     useContext<CurrentLevelContextType>(CurrentLevelContext);
-  const { addPieceToBoard, removePieceFromBoard, resetBoardSquares } =
-    useContext(BoardSquaresContext);
+  const {
+    boardSquares,
+    addPieceToBoard,
+    removePieceFromBoard,
+    resetBoardSquares,
+  } = useContext(BoardSquaresContext);
   const [piecesInPlay, setPiecesInPlay] = useState<InitialPiece[] | Piece[]>(
     initialPieces
   );
@@ -41,7 +50,6 @@ function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
     const updatedPieces = [...piecesInPlay];
     const oldLocation = piecesInPlay[pieceIndex].location;
     const { x: oldX, y: oldY } = convertLocationToXAndY(oldLocation);
-
     let newValidLocation = newLocation;
     const pieceHeight = piecesInPlay[pieceIndex].height;
     const pieceWidth = piecesInPlay[pieceIndex].width;
@@ -77,8 +85,16 @@ function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
 
   function updateDimensions(pieceIndex: number, width: number, height: number) {
     const updatedPieces = [...piecesInPlay];
+    const {
+      location,
+      width: oldWidth,
+      height: oldHeight,
+    } = piecesInPlay[pieceIndex];
+    const { x, y } = convertLocationToXAndY(location);
+    removePieceFromBoard(x, y, oldWidth, oldHeight);
     updatedPieces[pieceIndex].width = width;
     updatedPieces[pieceIndex].height = height;
+    addPieceToBoard(x, y, width, height);
     setPiecesInPlay(updatedPieces);
   }
 
@@ -132,5 +148,3 @@ function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
     </PiecesInPlayContext.Provider>
   );
 }
-
-export default PiecesInPlayProvider;
