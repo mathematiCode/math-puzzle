@@ -1,9 +1,6 @@
 import { createContext, useState, type ReactNode } from 'react';
 import levels from '../levels.json';
 import { colors } from '../CONSTANTS';
-export const CurrentLevelContext = createContext<CurrentLevelContextType>(
-  {} as CurrentLevelContextType
-);
 import { InitialPiece } from '../types/piece.ts';
 
 export interface CurrentLevelContextType {
@@ -16,6 +13,10 @@ export interface CurrentLevelContextType {
   previousLevel: () => void;
   setCurrentLevel: (level: number) => void;
 }
+
+export const CurrentLevelContext = createContext<CurrentLevelContextType>(
+  {} as CurrentLevelContextType
+);
 
 const initialLocation = null;
 const numberOfLevels = levels.length;
@@ -45,7 +46,7 @@ function getInitialPieces(level: number) {
   ];
 }
 
-function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
+export function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
   const [currentLevel, setCurrentLevel] = useState(0);
 
   const boardDimensions = {
@@ -58,9 +59,10 @@ function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
   const windowHeight = window.innerHeight;
 
   const sizeOfEachUnit = Math.round(
-    (0.0005 * windowWidth * (windowHeight - 200)) / Math.max(width, height) - 1
+    (0.0005 * windowWidth * (windowHeight - 200)) / Math.max(width, height)
   );
   //console.log(sizeOfEachUnit);
+  // use effect here maybe??
   document.documentElement.style.setProperty(
     '--sizeOfEachUnit',
     `${sizeOfEachUnit}px`
@@ -79,14 +81,14 @@ function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
 
   function setSizeOfEachUnit(currentLevel: number) {
     const { width, height } = levels[currentLevel].dimensions;
-    const sizeOfEachUnit =
-      Math.round(
-        (0.55 * Math.min(windowWidth, windowHeight)) / Math.max(width, height)
-      ) - 1;
+    // const sizeOfEachUnit = Math.round(
+    //  (0.0005 * windowWidth * (windowHeight - 200)) / Math.max(width, height)
+    //  );
     document.documentElement.style.setProperty(
       '--sizeOfEachUnit',
       `${sizeOfEachUnit}px`
     );
+    // Need to investigate if this is the right approach to keep all the sizeOfEachUnit states consistent across the app.
   }
 
   function nextLevel() {
@@ -125,5 +127,3 @@ function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
     </CurrentLevelContext.Provider>
   );
 }
-
-export default CurrentLevelProvider;

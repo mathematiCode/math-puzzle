@@ -8,7 +8,7 @@ import { Unit, MotionUnit } from './Unit.tsx';
 interface RectangleProps {
   width: number;
   height: number;
-  color: string;
+  color: string | undefined;
   isRotated?: boolean;
   isSelected?: boolean;
   isMotion?: boolean;
@@ -20,7 +20,7 @@ interface RectangleProps {
 // Transform3d was appearing in my styles mysteriously and messing up the layout so setting it to 0px always fixes it for now.
 const Container = styled(motion.div)<{
   $width: number;
-  color: string;
+  color: string | undefined;
   isSelected?: boolean;
   isExample?: boolean;
 }>`
@@ -55,7 +55,6 @@ function Rectangle(
 
   return (
     <Container
-      ref={ref}
       $width={width}
       color={color}
       layout={layout}
