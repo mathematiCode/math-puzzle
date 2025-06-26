@@ -60,11 +60,14 @@ export function PiecesInPlayProvider({
       const { x, y } = convertLocationToXAndY(newValidLocation);
       let correctedX = x;
       let correctedY = y;
-      if (oldLocation === null) {
-        if (pieceWidth > 1 && x > 0) {
-          correctedX = x - 1; // Temporary fix for pieces shifting one to the right when dragged from initial container
-        }
-      }
+      // if (oldLocation === null) {
+      // if (pieceWidth > 1 && x > 0) {
+      //   correctedX = x - 1; // Temporary fix for pieces shifting one to the right when dragged from initial container
+      // }
+      // if (pieceHeight > 1 && y > 0) {
+      //   correctedY = y - 1;
+      // }
+      // }
       if (correctedX + pieceWidth > boardWidth) {
         correctedX = boardWidth - pieceWidth;
       }
@@ -91,10 +94,18 @@ export function PiecesInPlayProvider({
       height: oldHeight,
     } = piecesInPlay[pieceIndex];
     const { x, y } = convertLocationToXAndY(location);
-    removePieceFromBoard(x, y, oldWidth, oldHeight);
+    try {
+      removePieceFromBoard(x, y, oldWidth, oldHeight);
+    } catch {
+      console.log('Unable to remove piece from board');
+    }
     updatedPieces[pieceIndex].width = width;
     updatedPieces[pieceIndex].height = height;
-    addPieceToBoard(x, y, width, height);
+    try {
+      addPieceToBoard(x, y, width, height);
+    } catch {
+      console.log('Unable to add piece to board');
+    }
     setPiecesInPlay(updatedPieces);
   }
 
