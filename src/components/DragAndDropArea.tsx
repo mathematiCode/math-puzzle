@@ -11,7 +11,11 @@ import {
   rectIntersection,
 } from '@dnd-kit/core';
 import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core';
-import { createSnapModifier, restrictToWindowEdges } from '@dnd-kit/modifiers';
+import {
+  createSnapModifier,
+  // restrictToWindowEdges,
+  // snapCenterToCursor,
+} from '@dnd-kit/modifiers';
 import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
 import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
 import { Piece } from '../types/piece';
