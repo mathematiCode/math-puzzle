@@ -50,36 +50,36 @@ const InitialPuzzlePiece = ({
   const isSelected = selectedPiece?.id === piece.id;
 
   return (
-    <InitialPieceWrapper isSelected={isSelected} isDragging={isDragging}>
-      <ActionsToolbarPopover runRotationAnimation={runRotationAnimation}>
-        <motion.button
-          ref={refs}
-          {...listeners}
-          {...attributes}
-          onClick={handlePieceSelected}
+    <ActionsToolbarPopover runRotationAnimation={runRotationAnimation}>
+      <InitialPieceWrapper
+        ref={refs}
+        {...listeners}
+        {...attributes}
+        onClick={handlePieceSelected}
+        isDragging={isDragging}
+        layoutId={piece.id}
+      >
+        <Rectangle
+          width={piece.width}
+          height={piece.height}
+          color={piece.color}
+          isMotion={true}
           layout={!isRotating}
-        >
-          <Rectangle
-            width={piece.width}
-            height={piece.height}
-            color={piece.color}
-            isMotion={true}
-            layout={!isRotating}
-            isSelected={isSelected}
-            isExample={isExample}
-          />
-        </motion.button>
-      </ActionsToolbarPopover>
-    </InitialPieceWrapper>
+          isSelected={isSelected}
+          isExample={isExample}
+        />
+      </InitialPieceWrapper>
+    </ActionsToolbarPopover>
   );
 };
 
-// Fix cursor type so when isDragging is true, it's grab, otherwise it's pointer
-// Change to button and fix extra space below.
-export const InitialPieceWrapper = styled(motion.div)`
-  cursor: ${({ isDragging }) => (isDragging ? 'grab' : 'pointer')};
+export const InitialPieceWrapper = styled(motion.button)`
+  visibility: ${({ isDragging }) => (isDragging ? 'hidden' : 'visible')};
   border: none;
   z-index: 2;
+  &:active {
+    cursor: grab;
+  }
 `;
 
 InitialPuzzlePiece.displayName = 'InitialPuzzlePiece';

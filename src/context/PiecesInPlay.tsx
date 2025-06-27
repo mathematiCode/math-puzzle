@@ -38,17 +38,27 @@ export function PiecesInPlayProvider({
 
   function movePiece(pieceIndex: number, newLocation: string | null) {
     const updatedPieces = [...piecesInPlay];
+    const oldLocation = updatedPieces[pieceIndex].location;
     let newValidLocation = newLocation;
     if (newValidLocation != null) {
       const { x, y } = convertLocationToXAndY(newValidLocation);
+      let correctedX = x;
+      let correctedY = y;
       const pieceHeight = piecesInPlay[pieceIndex].height;
       const pieceWidth = piecesInPlay[pieceIndex].width;
+      if (oldLocation === null) {
+        if (pieceWidth > 1 && x > 0) {
+          correctedX = x - 1; // Temporary fix for pieces shifting one to the right when dragged from initial container
+        }
+      }
+      if (correctedX + pieceWidth > boardWidth) {
+        correctedX = boardWidth - pieceWidth;
+      }
+      // I have no idea why adding 1 works here to correct pieces placed below the bottom of the board
       if (y + pieceHeight + 1 > boardHeight) {
-        newValidLocation = `(${x},${boardHeight - pieceHeight})`;
+        correctedY = boardHeight - pieceHeight;
       }
-      if (x + pieceWidth > boardWidth) {
-        newValidLocation = `(${boardWidth - pieceWidth},${y})`;
-      }
+      newValidLocation = `(${correctedX},${correctedY})`;
     }
     updatedPieces[pieceIndex].location = newValidLocation;
     if (newValidLocation != null) {

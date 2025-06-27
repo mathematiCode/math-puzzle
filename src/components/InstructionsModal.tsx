@@ -19,7 +19,8 @@ import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
 // Instructions on how to use Griffel/ makeStyles here: https://learn.microsoft.com/en-us/shows/fluent-ui-insights/fluent-ui-trainings-styling-components-theming#time=20m55s
 const useClasses = makeStyles({
   Surface: {
-    backgroundColor: '#007571',
+    backgroundColor: 'hsl(100, 65%, 89%)',
+    color: 'black',
     width: '70%',
     paddingBottom: '3px',
     paddingInline: '20px',
@@ -34,15 +35,26 @@ const useClasses = makeStyles({
     fontWeight: 600,
 
     '@media screen and (max-width: 768px)': {
-      width: '90%',
+      width: '96%',
+      marginTop: '20px',
+      paddingInline: '10px',
+      fontSize: '0.9rem',
     },
   },
   Title: {
-    fontSize: '1.7rem',
+    fontSize: '1.6rem',
+
+    '@media screen and (max-width: 768px)': {
+      fontSize: '1.3rem',
+    },
   },
   h2: {
     fontSize: '1.4rem',
     marginTop: '15px',
+
+    '@media screen and (max-width: 768px)': {
+      fontSize: '1.1rem',
+    },
   },
   div: {
     padding: '30px',
@@ -52,8 +64,13 @@ const useClasses = makeStyles({
     position: 'absolute',
     top: '15px',
     right: '15px',
-    color: 'white',
+    color: 'black',
     cursor: 'pointer',
+  },
+  li: {
+    '@media screen and (max-width: 768px)': {
+      marginLeft: '-20px',
+    },
   },
 });
 
@@ -104,6 +121,10 @@ const InstructionsModal = ({
                 <ul>
                   <li>Puzzle pieces cannot overlap.</li>
                   <li>Puzzle pieces must be fully on the board.</li>
+                  <li>
+                    You can use any of the tools below to transform the pieces
+                    as needed.
+                  </li>
                 </ul>
 
                 <h2 className={classes.h2}>The Tools</h2>

@@ -28,6 +28,7 @@ function Game() {
   const [activePiece, setActivePiece] = useState<Piece | null>(null);
   const { piecesInPlay, resetPieces, setPiecesForNewLevel } =
     useContext(PiecesInPlayContext);
+
   const { boardSquares, resetBoardSquares } = useContext(BoardSquaresContext);
   const [isRotating, setIsRotating] = useState(false);
 
@@ -35,6 +36,7 @@ function Game() {
 
   async function setToPrevious() {
     await previousLevel();
+
     const newPieces = getInitialPieces(currentLevel - 1);
     await setPiecesForNewLevel(newPieces);
     //await setSizeOfEachUnit(currentLevel - 1);
@@ -53,6 +55,9 @@ function Game() {
     resetPieces();
     resetBoardSquares(currentLevel);
     console.log(boardSquares);
+    const newPieces = useInitialPieces(currentLevel + 1);
+    await setPiecesForNewLevel(newPieces);
+    await setSizeOfEachUnit(currentLevel + 1);
   }
 
   return (
@@ -146,7 +151,7 @@ export const PiecesContainer = styled(motion.div).attrs({
   flex-wrap: wrap;
   align-items: start;
   justify-content: right;
-  gap: calc(var(--sizeOfEachUnit));
+  gap: var(--sizeOfEachUnit);
 `;
 // Not sure why subtracting 2 from the sizeOfEachUnit works here. May be a box-sizing issue although it should all be set to border-box...
 

@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { Tooltip } from 'antd';
 import { RotateRightOutlined } from '@ant-design/icons';
+import { motion } from 'motion/react';
 import {
   Popover,
   PopoverTrigger,
@@ -9,13 +10,14 @@ import {
 import styled from 'styled-components';
 import { useSelectedPiece } from '../context/SelectedPiece.tsx';
 import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
+import { HorizontalStretchIcon, VerticalStretchIcon } from './SvgIcons.tsx';
 
 const StyledRotateIcon = styled(RotateRightOutlined)`
   font-size: 32px;
   color: hsl(178, 100%, 23%);
 
   @media (max-width: 750px) {
-    font-size: 20px;
+    font-size: 28px;
   }
 `;
 
@@ -23,17 +25,19 @@ const IconButton = styled.button`
   padding: 0px;
   margin: 0px;
   border: none;
-`;
 
-const Icon = styled.img`
-  width: 32px;
+  svg {
+    width: 32px;
+    height: 32px;
 
-  @media (max-width: 750px) {
-    width: 20px;
+    @media (max-width: 750px) {
+      width: 28px;
+      height: 28px;
+    }
   }
 `;
 
-const ActionsToolbar = styled.div`
+const ActionsToolbar = styled(motion.div)`
   background-color: white;
   color: hsl(178, 100%, 23%);
   border-radius: 5px;
@@ -96,18 +100,27 @@ function ActionsToolbarPopover({
       <PopoverSurface id="actions">
         <ActionsToolbar>
           <Tooltip placement="bottom" title="Rotate">
-            <IconButton onClick={() => runRotationAnimation(selectedPiece)}>
+            <IconButton
+              onClick={() => runRotationAnimation(selectedPiece)}
+              aria-label="Rotate"
+            >
               <StyledRotateIcon />
             </IconButton>
           </Tooltip>
           <Tooltip placement="bottom" title="Double Width & Halve Height">
-            <IconButton onClick={handleHorizontalStretch}>
-              <Icon src="./assets/horizontalStretch.svg" />
+            <IconButton
+              onClick={handleHorizontalStretch}
+              aria-label="Double Width & Halve Height"
+            >
+              <HorizontalStretchIcon />
             </IconButton>
           </Tooltip>
           <Tooltip placement="bottom" title="Halve Width & Double Height">
-            <IconButton onClick={handleVerticalStretch}>
-              <Icon src="./assets/verticalStretch.svg" />
+            <IconButton
+              onClick={handleVerticalStretch}
+              aria-label="Halve Width & Double Height"
+            >
+              <VerticalStretchIcon />
             </IconButton>
           </Tooltip>
         </ActionsToolbar>

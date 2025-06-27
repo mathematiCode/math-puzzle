@@ -21,9 +21,10 @@ import {
   CurrentLevelContextType,
 } from '../context/CurrentLevel.tsx';
 
-export const PieceWrapper = styled(motion.button).attrs(props => ({
+export const PieceWrapper = styled.button.attrs(props => ({
   onClick: props.onClick,
   ref: props.ref,
+  $isDragging: props.isDragging,
   animate: props.animate,
   transition: props.transition,
 }))`
@@ -33,10 +34,9 @@ export const PieceWrapper = styled(motion.button).attrs(props => ({
   cursor: ${({ isDragging }) => (isDragging ? 'grab' : 'pointer')};
   visibility: ${({ isDragging }) => (isDragging ? 'hidden' : 'visible')};
   z-index: 2;
-  box-shadow: ${({ isSelected }) =>
-    isSelected
-      ? 'rgba(0, 0, 0, 0.5) 0px 19px 19px, rgba(0, 0, 0, 0.22) 0px 15px 12px'
-      : 'none'};
+  &:active {
+    cursor: grab;
+  }
 `;
 
 function PieceOnBoard({
@@ -52,7 +52,7 @@ function PieceOnBoard({
 }) {
   const { selectedPiece, setSelectedPiece } =
     useContext<SelectedPieceContextType>(SelectedPieceContext);
-  const { piecesInPlay, updateDimensions } =
+  const { piecesInPlay, updateDimensions, movePiece } =
     useContext<PiecesInPlayContextType>(PiecesInPlayContext);
   const { sizeOfEachUnit } =
     useContext<CurrentLevelContextType>(CurrentLevelContext);
@@ -83,6 +83,10 @@ function PieceOnBoard({
       await animate(scope.current, { rotate: 0 }, { duration: 0 });
     } finally {
       setIsRotating(false);
+      const { x, y } = convertLocationToXAndY(selectedPiece.location);
+      let newX = x + Math.ceil(selectedPiece.height / 2) - 1;
+      let newY = y + Math.ceil(selectedPiece.width / 2) - 1;
+      movePiece(pieceIndex, `(${newX},${newY})`);
     }
   }
 
@@ -102,7 +106,6 @@ function PieceOnBoard({
         y={y}
         layout={!isRotating && !isDragging}
         isDragging={isDragging}
-        isSelected={isSelected}
       >
         <Rectangle
           width={piece.width}
