@@ -6,17 +6,21 @@ import {
   TouchSensor,
   KeyboardSensor,
   useSensors,
+  closestCenter,
+  closestCorners,
+  rectIntersection,
 } from '@dnd-kit/core';
 import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core';
 import {
   createSnapModifier,
-  restrictToWindowEdges,
-  snapCenterToCursor,
+  // restrictToWindowEdges,
+  // snapCenterToCursor,
 } from '@dnd-kit/modifiers';
 import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
 import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
 import { Piece } from '../types/piece';
 import { useSelectedPiece } from '../context/SelectedPiece.tsx';
+import { rateDroppability } from '../utilities.ts';
 
 interface DragAndDropAreaProps {
   children: React.ReactNode;
@@ -39,9 +43,63 @@ function DragAndDropArea({
       'DragAndDropArea must be used within a PiecesInPlayProvider'
     );
   }
+
   const { piecesInPlay, movePiece } = context;
 
-  const snapToGrid = useMemo(() => createSnapModifier(sizeOfEachUnit), []);
+  function compareCollisionRects(
+    { data: { value: a } }: { data: { value: number } },
+    { data: { value: b } }: { data: { value: number } }
+  ) {
+    return b - a;
+  }
+
+  function customCollisionDetection(args: any) {
+    const { collisionRect, droppableRects, droppableContainers } = args;
+    // console.log('Collision detection args:', args);
+    // console.log({ collisionRect });
+    // console.log({ droppableRects });
+    // console.log({ droppableContainers });
+    // console.log('left:', args[0]);
+
+    const x = collisionRect.left;
+    const y = collisionRect.top;
+
+    //console.log('rectIntersection', rectIntersection(args));
+    // Still need to return actual collision results
+    // So just use the default rectangle intersection
+    let potentialDroppables: any = rectIntersection(args);
+    if (potentialDroppables[0]) {
+      potentialDroppables.forEach((droppable: any) => {
+        const droppableRect = droppable.data.droppableContainer.rect.current;
+        droppable.data.value = rateDroppability(x, y, droppableRect);
+      });
+      //console.log('Look at this:', potentialDroppables[0].data);
+    }
+    return potentialDroppables.sort(compareCollisionRects);
+  }
+
+  const snapToGrid = useMemo(
+    () => createSnapModifier(sizeOfEachUnit),
+    [sizeOfEachUnit]
+  );
+  // const snapToGrid = createSnapModifier(sizeOfEachUnit);
+  // function snapToGrid(sizeOfEachUnit: number) {
+  //   const { transform } = sizeOfEachUnit;
+
+  //   return {
+  //     ...transform,
+  //     x: Math.ceil(transform.x / sizeOfEachUnit) * sizeOfEachUnit,
+  //     y: Math.ceil(transform.y / sizeOfEachUnit) * sizeOfEachUnit,
+  //   };
+  // }
+
+  // const snapToGrid = function createSnapModifier(gridSize: number): Modifier {
+  //   return ({ transform }) => ({
+  //     ...transform,
+  //     x: Math.ceil(transform.x / gridSize) * gridSize,
+  //     y: Math.ceil(transform.y / gridSize) * gridSize,
+  //   });
+  // }
 
   const activationConstraint = {
     distance: 20,
@@ -81,9 +139,9 @@ function DragAndDropArea({
   return (
     <DndContext
       sensors={sensors}
-      modifiers={[snapCenterToCursor, snapToGrid]}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
+      collisionDetection={customCollisionDetection}
     >
       {children}
     </DndContext>

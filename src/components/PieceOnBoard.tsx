@@ -31,6 +31,7 @@ export const PieceWrapper = styled.button.attrs(props => ({
   position: absolute;
   left: ${({ x }) => `calc(${x} * var(--sizeOfEachUnit))`};
   top: ${({ y }) => `calc(${y} * var(--sizeOfEachUnit))`};
+  cursor: ${({ isDragging }) => (isDragging ? 'grab' : 'pointer')};
   visibility: ${({ isDragging }) => (isDragging ? 'hidden' : 'visible')};
   z-index: 2;
   &:active {
@@ -103,6 +104,7 @@ function PieceOnBoard({
         onClick={handlePieceSelected}
         x={x}
         y={y}
+        layout={!isRotating && !isDragging}
         isDragging={isDragging}
       >
         <Rectangle

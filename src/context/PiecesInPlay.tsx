@@ -24,7 +24,11 @@ export const PiecesInPlayContext =
   createContext<PiecesInPlayContextType | null>(null);
 const initialLocation = null;
 
-function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
+export function PiecesInPlayProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const { initialPieces, boardDimensions, currentLevel } =
     useContext<CurrentLevelContextType>(CurrentLevelContext);
   const [piecesInPlay, setPiecesInPlay] = useState<InitialPiece[] | Piece[]>(
@@ -43,9 +47,9 @@ function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
       const pieceHeight = piecesInPlay[pieceIndex].height;
       const pieceWidth = piecesInPlay[pieceIndex].width;
       if (oldLocation === null) {
-        if (pieceWidth > 1 && x > 0) {
-          correctedX = x - 1; // Temporary fix for pieces shifting one to the right when dragged from initial container
-        }
+        // if (pieceWidth > 1 && x > 0) {
+        //   correctedX = x - 1; // Temporary fix for pieces shifting one to the right when dragged from initial container
+        // }
       }
       if (correctedX + pieceWidth > boardWidth) {
         correctedX = boardWidth - pieceWidth;
@@ -123,5 +127,3 @@ function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
     </PiecesInPlayContext.Provider>
   );
 }
-
-export default PiecesInPlayProvider;
