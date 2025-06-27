@@ -13,9 +13,9 @@ import styled from 'styled-components';
 import { DragOverlay } from '@dnd-kit/core';
 import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
 import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
-import { getInitialPieces } from '../utils/getInitialPieces.ts';
+import { getInitialPieces } from '../hooks/getInitialPieces.ts';
 import { Piece } from '../types/piece.ts';
-import { BoardSquaresContext } from '../context/BoardSquares.tsx';
+//import { BoardSquaresContext } from '../context/BoardSquares.tsx';
 
 function Game() {
   const {
@@ -29,7 +29,7 @@ function Game() {
   const { piecesInPlay, resetPieces, setPiecesForNewLevel } =
     useContext(PiecesInPlayContext);
 
-  const { boardSquares, resetBoardSquares } = useContext(BoardSquaresContext);
+  // const { boardSquares, resetBoardSquares } = useContext(BoardSquaresContext);
   const [isRotating, setIsRotating] = useState(false);
 
   const boardRef = useRef(null);
@@ -40,7 +40,7 @@ function Game() {
     const newPieces = getInitialPieces(currentLevel - 1);
     await setPiecesForNewLevel(newPieces);
     //await setSizeOfEachUnit(currentLevel - 1);
-    resetBoardSquares(currentLevel - 1);
+    //  resetBoardSquares(currentLevel - 1);
   }
 
   async function setToNext() {
@@ -48,16 +48,16 @@ function Game() {
     const newPieces = getInitialPieces(currentLevel + 1);
     await setPiecesForNewLevel(newPieces);
     // await setSizeOfEachUnit(currentLevel + 1);
-    resetBoardSquares(currentLevel + 1);
+    // resetBoardSquares(currentLevel + 1);
   }
 
   function resetLevel() {
     resetPieces();
-    resetBoardSquares(currentLevel);
+    // resetBoardSquares(currentLevel);
     console.log(boardSquares);
     const newPieces = useInitialPieces(currentLevel + 1);
-    await setPiecesForNewLevel(newPieces);
-    await setSizeOfEachUnit(currentLevel + 1);
+    setPiecesForNewLevel(newPieces);
+    setSizeOfEachUnit(currentLevel + 1);
   }
 
   return (
