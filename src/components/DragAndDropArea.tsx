@@ -16,11 +16,11 @@ import {
   // restrictToWindowEdges,
   // snapCenterToCursor,
 } from '@dnd-kit/modifiers';
-import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
-import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
+import { CurrentLevelContext } from '../context/CurrentLevel';
+import { PiecesInPlayContext } from '../context/PiecesInPlay';
 import { Piece } from '../types/piece';
-import { useSelectedPiece } from '../context/SelectedPiece.tsx';
-import { rateDroppability } from '../utilities.ts';
+import { useSelectedPiece } from '../context/SelectedPiece';
+import { rateDroppability } from '../utilities';
 
 interface DragAndDropAreaProps {
   children: React.ReactNode;

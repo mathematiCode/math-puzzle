@@ -54,10 +54,9 @@ function Game() {
   function resetLevel() {
     resetPieces();
     // resetBoardSquares(currentLevel);
-    console.log(boardSquares);
     const newPieces = useInitialPieces(currentLevel + 1);
     setPiecesForNewLevel(newPieces);
-    setSizeOfEachUnit(currentLevel + 1);
+    //setSizeOfEachUnit(currentLevel + 1);
   }
 
   return (

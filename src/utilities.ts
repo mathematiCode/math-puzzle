@@ -26,3 +26,14 @@ export function rateDroppability(x: number, y: number, droppableRect: any) {
   if (xOffsetRatio < 0 && yOffsetRatio < 0) return 0;
   return (xOffsetRatio * yOffsetRatio).toFixed(3);
 }
+
+export function calculateUnitSize(
+  windowWidth: number,
+  windowHeight: number,
+  width: number,
+  height: number
+) {
+  return Math.round(
+    (0.0005 * windowWidth * (windowHeight - 200)) / Math.max(width, height) - 1
+  );
+}

@@ -9,7 +9,7 @@ export type SelectedPieceContextType = {
 export const SelectedPieceContext =
   createContext<SelectedPieceContextType | null>(null);
 
-function SelectedPieceProvider({ children }: { children: ReactNode }) {
+export function SelectedPieceProvider({ children }: { children: ReactNode }) {
   const [selectedPiece, setSelectedPiece] = useState<Piece | null>(null);
 
   return (
@@ -28,5 +28,3 @@ export const useSelectedPiece = () => {
   }
   return context;
 };
-
-export default SelectedPieceProvider;

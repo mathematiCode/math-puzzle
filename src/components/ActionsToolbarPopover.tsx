@@ -8,53 +8,9 @@ import {
   PopoverSurface,
 } from '@fluentui/react-components';
 import styled from 'styled-components';
-import { useSelectedPiece } from '../context/SelectedPiece.tsx';
-import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
-import { HorizontalStretchIcon, VerticalStretchIcon } from './SvgIcons.tsx';
-
-const StyledRotateIcon = styled(RotateRightOutlined)`
-  font-size: 32px;
-  color: hsl(178, 100%, 23%);
-
-  @media (max-width: 750px) {
-    font-size: 28px;
-  }
-`;
-
-const IconButton = styled.button`
-  padding: 0px;
-  margin: 0px;
-  border: none;
-
-  svg {
-    width: 32px;
-    height: 32px;
-
-    @media (max-width: 750px) {
-      width: 28px;
-      height: 28px;
-    }
-  }
-`;
-
-const ActionsToolbar = styled(motion.div)`
-  background-color: white;
-  color: hsl(178, 100%, 23%);
-  border-radius: 5px;
-  margin-top: 0px;
-  top: 0px;
-  padding: 8px;
-  gap: 12px;
-  display: flex;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
-    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-
-  @media (max-width: 750px) {
-    padding: 4px;
-    padding-block: 2px;
-    gap: 6px;
-  }
-`;
+import { useSelectedPiece } from '../context/SelectedPiece';
+import { PiecesInPlayContext } from '../context/PiecesInPlay';
+import { HorizontalStretchIcon, VerticalStretchIcon } from './SvgIcons';
 
 function ActionsToolbarPopover({
   children,
@@ -128,5 +84,49 @@ function ActionsToolbarPopover({
     </Popover>
   );
 }
+
+const StyledRotateIcon = styled(RotateRightOutlined)`
+  font-size: 32px;
+  color: hsl(178, 100%, 23%);
+
+  @media (max-width: 750px) {
+    font-size: 28px;
+  }
+`;
+
+const IconButton = styled.button`
+  padding: 0px;
+  margin: 0px;
+  border: none;
+
+  svg {
+    width: 32px;
+    height: 32px;
+
+    @media (max-width: 750px) {
+      width: 28px;
+      height: 28px;
+    }
+  }
+`;
+
+const ActionsToolbar = styled(motion.div)`
+  background-color: white;
+  color: hsl(178, 100%, 23%);
+  border-radius: 5px;
+  margin-top: 0px;
+  top: 0px;
+  padding: 8px;
+  gap: 12px;
+  display: flex;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+
+  @media (max-width: 750px) {
+    padding: 4px;
+    padding-block: 2px;
+    gap: 6px;
+  }
+`;
 
 export default ActionsToolbarPopover;

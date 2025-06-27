@@ -4,7 +4,8 @@ import { colors } from '../CONSTANTS';
 export const CurrentLevelContext = createContext<CurrentLevelContextType>(
   {} as CurrentLevelContextType
 );
-import { InitialPiece } from '../types/piece.ts';
+import { InitialPiece } from '../types/piece';
+import { calculateUnitSize } from '../utilities';
 
 export interface CurrentLevelContextType {
   currentLevel: number;
@@ -45,7 +46,7 @@ function useInitialPieces(level: number) {
   ];
 }
 
-function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
+export function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
   const [currentLevel, setCurrentLevel] = useState(0);
 
   const boardDimensions = {
@@ -57,10 +58,12 @@ function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
   const windowWidth = window.innerWidth;
   const windowHeight = window.innerHeight;
 
-  const sizeOfEachUnit = Math.round(
-    (0.0005 * windowWidth * (windowHeight - 200)) / Math.max(width, height) - 1
+  const sizeOfEachUnit = calculateUnitSize(
+    windowWidth,
+    windowHeight,
+    width,
+    height
   );
-  console.log(sizeOfEachUnit);
   document.documentElement.style.setProperty(
     '--sizeOfEachUnit',
     `${sizeOfEachUnit}px`
@@ -78,11 +81,15 @@ function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
   const initialPieces = useInitialPieces(currentLevel);
 
   function setSizeOfEachUnit(currentLevel: number) {
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
     const { width, height } = levels[currentLevel].dimensions;
-    const sizeOfEachUnit =
-      Math.round(
-        (0.55 * Math.min(windowWidth, windowHeight)) / Math.max(width, height)
-      ) - 1;
+    const sizeOfEachUnit = calculateUnitSize(
+      windowWidth,
+      windowHeight,
+      width,
+      height
+    );
     document.documentElement.style.setProperty(
       '--sizeOfEachUnit',
       `${sizeOfEachUnit}px`
@@ -125,5 +132,3 @@ function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
     </CurrentLevelContext.Provider>
   );
 }
-
-export default CurrentLevelProvider;

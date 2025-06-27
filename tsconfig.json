@@ -7,15 +7,14 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
-    "allowImportingTsExtensions": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx" // This is the important line for your error
+    "jsx": "react-jsx"
   },
-  "include": ["src", "brainstorm.js"]
+  "include": ["src"]
 }
