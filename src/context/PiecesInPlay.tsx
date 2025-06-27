@@ -24,7 +24,11 @@ export const PiecesInPlayContext =
   createContext<PiecesInPlayContextType | null>(null);
 const initialLocation = null;
 
-function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
+export function PiecesInPlayProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const { initialPieces, boardDimensions, currentLevel } =
     useContext<CurrentLevelContextType>(CurrentLevelContext);
   const [piecesInPlay, setPiecesInPlay] = useState<InitialPiece[] | Piece[]>(
@@ -113,5 +117,3 @@ function PiecesInPlayProvider({ children }: { children: React.ReactNode }) {
     </PiecesInPlayContext.Provider>
   );
 }
-
-export default PiecesInPlayProvider;
