@@ -11,6 +11,7 @@ import styled from 'styled-components';
 import { useSelectedPiece } from '../context/SelectedPiece';
 import { PiecesInPlayContext } from '../context/PiecesInPlay';
 import { HorizontalStretchIcon, VerticalStretchIcon } from './SvgIcons';
+import Hotjar from '@hotjar/browser';
 
 function ActionsToolbarPopover({
   children,
@@ -31,23 +32,37 @@ function ActionsToolbarPopover({
   const { selectedPiece } = useSelectedPiece();
 
   function handleHorizontalStretch() {
+    Hotjar.event('double width attempt');
     if (selectedPiece && Number.isInteger(selectedPiece.height / 2)) {
       const newHeight = selectedPiece.height / 2;
       const newWidth = selectedPiece.width * 2;
       const id = selectedPiece.id;
       const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
       updateDimensions(pieceIndex, newWidth, newHeight);
+      Hotjar.event('double width successfully');
     }
   }
 
   function handleVerticalStretch() {
+    Hotjar.event('double height attempt');
     if (selectedPiece && Number.isInteger(selectedPiece.width / 2)) {
       const newHeight = selectedPiece.height * 2;
       const newWidth = selectedPiece.width / 2;
       const id = selectedPiece.id;
       const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
       updateDimensions(pieceIndex, newWidth, newHeight);
+      Hotjar.event('double height successfully');
     }
+  }
+
+  function handleCombinePieces() {
+    Hotjar.event('combine pieces successfully');
+    Hotjar.event('combine pieces unsuccessfully');
+  }
+
+  function separatePieces() {
+    Hotjar.event('separate pieces successfully');
+    Hotjar.event('separate pieces unsuccessfully');
   }
 
   return (

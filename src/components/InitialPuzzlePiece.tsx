@@ -45,6 +45,7 @@ const InitialPuzzlePiece = ({
     updateDimensions(pieceIndex, selectedPiece?.height, selectedPiece.width);
     await animate(scope.current, { rotate: 0 }, { duration: 0 });
     setIsRotating(false);
+    Hotjar.event('rotation');
   }
 
   const isSelected = selectedPiece?.id === piece.id;
