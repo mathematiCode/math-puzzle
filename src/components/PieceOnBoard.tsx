@@ -20,6 +20,7 @@ import {
   CurrentLevelContext,
   CurrentLevelContextType,
 } from '../context/CurrentLevel.tsx';
+import Hotjar from '@hotjar/browser';
 
 export const PieceWrapper = styled.button.attrs(props => ({
   onClick: props.onClick,
@@ -88,6 +89,7 @@ function PieceOnBoard({
       let newY = y + Math.ceil(selectedPiece.width / 2) - 1;
       movePiece(pieceIndex, `(${newX},${newY})`);
     }
+    Hotjar.event('rotation');
   }
 
   function handlePieceSelected() {

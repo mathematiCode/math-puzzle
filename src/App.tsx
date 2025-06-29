@@ -5,6 +5,7 @@ import Math from './pages/math';
 import Game from './pages/game';
 import Layout from './components/Layout';
 import { createBrowserRouter, RouterProvider } from 'react-router';
+import Hotjar from '@hotjar/browser';
 
 const siteId = 123;
 const hotjarVersion = 6;

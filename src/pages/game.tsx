@@ -15,6 +15,7 @@ import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
 import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
 import { getInitialPieces } from '../hooks/getInitialPieces.ts';
 import { Piece } from '../types/piece.ts';
+import Hotjar from '@hotjar/browser';
 //import { BoardSquaresContext } from '../context/BoardSquares.tsx';
 
 function Game() {

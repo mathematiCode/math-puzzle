@@ -9,6 +9,7 @@ import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
 import { Piece } from '../types/piece.ts';
 import styled from 'styled-components';
 import { mergeRefs } from '@chakra-ui/react';
+import Hotjar from '@hotjar/browser';
 
 const InitialPuzzlePiece = ({
   piece,
