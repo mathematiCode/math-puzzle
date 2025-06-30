@@ -7,7 +7,7 @@ import Layout from './components/Layout';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import Hotjar from '@hotjar/browser';
 
-const siteId = 123;
+const siteId = 6418956;
 const hotjarVersion = 6;
 
 Hotjar.init(siteId, hotjarVersion);
