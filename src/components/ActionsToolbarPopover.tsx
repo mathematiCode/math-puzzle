@@ -52,6 +52,8 @@ function ActionsToolbarPopover({
       const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
       updateDimensions(pieceIndex, newWidth, newHeight);
       Hotjar.event('double height successfully');
+      handleCombinePieces();
+      handleSeparatePieces();
     }
   }
 
@@ -60,7 +62,7 @@ function ActionsToolbarPopover({
     Hotjar.event('combine pieces unsuccessfully');
   }
 
-  function separatePieces() {
+  function handleSeparatePieces() {
     Hotjar.event('separate pieces successfully');
     Hotjar.event('separate pieces unsuccessfully');
   }

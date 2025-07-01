@@ -51,7 +51,7 @@ function Game() {
     // await setSizeOfEachUnit(currentLevel + 1);
     // resetBoardSquares(currentLevel + 1);
     const passedLevel = false;
-    if (passedLevel) {
+    if (!passedLevel) {
       Hotjar.event('Completed Level');
       Hotjar.event('A');
       Hotjar.event('B');
