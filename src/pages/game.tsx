@@ -53,6 +53,9 @@ function Game() {
     const passedLevel = false;
     if (!passedLevel) {
       Hotjar.event('Completed Level');
+      Hotjar.event(`Completed level ${currentLevel}`);
+      Hotjar.event('Skip a level without completing it');
+      Hotjar.event(`Skip level ${currentLevel} without completing it`);
       Hotjar.event('A');
       Hotjar.event('B');
       Hotjar.event('C');
