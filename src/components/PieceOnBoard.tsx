@@ -95,6 +95,9 @@ function PieceOnBoard({
   function handlePieceSelected() {
     const chosenPiece = piecesInPlay.find((piece: Piece) => id === piece.id);
     setSelectedPiece(chosenPiece);
+    Hotjar.event(
+      `board piece selected width:${piece.width} height:${piece.height}`
+    );
   }
 
   return (

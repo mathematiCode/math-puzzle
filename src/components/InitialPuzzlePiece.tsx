@@ -32,6 +32,7 @@ const InitialPuzzlePiece = ({
 
   function handlePieceSelected() {
     setSelectedPiece(piece);
+    Hotjar.event(`piece selected width:${piece.width} height:${piece.height}`);
   }
 
   async function runRotationAnimation(selectedPiece) {

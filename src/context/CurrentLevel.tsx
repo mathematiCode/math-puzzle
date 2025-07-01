@@ -6,6 +6,7 @@ export const CurrentLevelContext = createContext<CurrentLevelContextType>(
 );
 import { InitialPiece } from '../types/piece';
 import { calculateUnitSize } from '../utilities';
+import Hotjar from '@hotjar/browser';
 
 export interface CurrentLevelContextType {
   currentLevel: number;
@@ -98,6 +99,7 @@ export function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
 
   function nextLevel() {
     if (currentLevel === numberOfLevels - 1) {
+      Hotjar.event('click disabled nextLevel button');
       return;
     } else {
       setCurrentLevel(currentLevel + 1);
@@ -106,6 +108,7 @@ export function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
 
   function previousLevel() {
     if (currentLevel === 0) {
+      Hotjar.event('click disabled previousLevel button');
       return;
     } else {
       setCurrentLevel(currentLevel - 1);

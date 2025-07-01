@@ -55,11 +55,37 @@ function Game() {
       Hotjar.event('Completed Level');
       Hotjar.event('A');
       Hotjar.event('B');
+      Hotjar.event('C');
+      Hotjar.event('piece collision on board');
+      Hotjar.event('used all actions');
+      Hotjar.event('used all rotations');
+      Hotjar.event('used all double widths');
+      Hotjar.event('used all double heights');
+      Hotjar.event('used all combine pieces');
+      Hotjar.event('used all separate pieces');
+      Hotjar.event('started onboarding');
+      Hotjar.event('completed onboarding');
+      Hotjar.event('turned on grid mode');
+      Hotjar.event('turned off grid mode');
+      Hotjar.event('made 10 moves');
+      Hotjar.event('made 20 moves');
+      Hotjar.event('made 30 moves');
+      Hotjar.event('made 40 moves');
+      Hotjar.event('made 50 moves');
+      Hotjar.event(
+        'performed 2 non-inverse actions consecutively on one piece'
+      );
+      Hotjar.event("performed an action immediately followed by it's inverse");
+      Hotjar.event('performed 5 actions');
+      Hotjar.event('performed 10 actions');
+      Hotjar.event('turned off action limits');
+      Hotjar.event('turned on action limits');
     }
   }
 
   function resetLevel() {
     resetPieces();
+    Hotjar.event('reset level');
     // resetBoardSquares(currentLevel);
     const newPieces = useInitialPieces(currentLevel + 1);
     setPiecesForNewLevel(newPieces);

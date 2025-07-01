@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { RotateCw, Scissors, PanelRight } from 'lucide-react';
-import { HorizontalStretchIcon } from './SvgIcons.tsx';
+import { HorizontalStretchIcon } from './SvgIcons';
 
 const Container = styled.div`
   max-width: 1200px;

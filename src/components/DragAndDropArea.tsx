@@ -21,6 +21,7 @@ import { PiecesInPlayContext } from '../context/PiecesInPlay';
 import { Piece } from '../types/piece';
 import { useSelectedPiece } from '../context/SelectedPiece';
 import { rateDroppability } from '../utilities';
+import Hotjar from '@hotjar/browser';
 
 interface DragAndDropAreaProps {
   children: React.ReactNode;
@@ -50,6 +51,9 @@ function DragAndDropArea({
     { data: { value: a } }: { data: { value: number } },
     { data: { value: b } }: { data: { value: number } }
   ) {
+    if (Math.abs(b - a) <= 0.2) {
+      Hotjar.event('piece dropped close to two different landing squares');
+    }
     return b - a;
   }
 
@@ -126,6 +130,7 @@ function DragAndDropArea({
       setActivePiece(piecesInPlay[pieceIndex]);
       setSelectedPiece(piecesInPlay[pieceIndex]);
     }
+    Hotjar.event('drag start');
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -135,7 +140,9 @@ function DragAndDropArea({
       const newLocation = event.over.id.toString();
       movePiece(pieceIndex, newLocation);
     } else movePiece(pieceIndex, null);
+    Hotjar.event('drag start');
   };
+
   return (
     <DndContext
       sensors={sensors}
