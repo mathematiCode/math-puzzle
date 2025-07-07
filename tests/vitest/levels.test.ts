@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import levels from '../src/levels.json';
+import levels from '../../src/levels.json' assert { type: 'json' };
 
 function testAreaEquivalence(level) {
   let totalValidArea = 0;

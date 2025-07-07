@@ -92,33 +92,6 @@
     ]
   },
   {
-    "id": 4,
-    "dimensions": { "width": 22, "height": 18 },
-    "boardSections": [
-      [
-        {
-          "x": 0,
-          "y": 0,
-          "width": 6,
-          "height": 9,
-          "valid": false
-        },
-        { "x": 6, "y": 0, "width": 16, "height": 9, "valid": true }
-      ],
-      [{ "x": 0, "y": 9, "width": 22, "height": 9, "valid": true }]
-    ],
-    "pieces": [
-      { "width": 7, "height": 7 },
-      { "width": 6, "height": 8 },
-      { "width": 5, "height": 9 },
-      { "width": 10, "height": 6 },
-      { "width": 5, "height": 2 },
-      { "width": 9, "height": 6 },
-      { "width": 4, "height": 7 },
-      { "width": 12, "height": 4 }
-    ]
-  },
-  {
     "id": 5,
     "dimensions": { "width": 18, "height": 12 },
     "boardSections": [

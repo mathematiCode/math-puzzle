@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@ant-design/icons": "^5.5.2",
@@ -18,11 +20,13 @@
     "@floating-ui/react": "^0.27.4",
     "@fluentui/react-components": "^9.57.0",
     "@hotjar/browser": "^1.0.9",
+    "@playwright/mcp": "^0.0.29",
     "@uidotdev/usehooks": "^2.4.1",
     "antd": "^5.23.2",
     "lodash": "^4.17.21",
     "lucide-react": "^0.471.1",
     "motion": "^11.16.0",
+    "playwright": "^1.53.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-remove-scroll": "^2.6.3",
@@ -32,7 +36,9 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
+    "@playwright/test": "^1.53.2",
     "@types/lodash": "^4.17.15",
+    "@types/node": "^24.0.10",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",

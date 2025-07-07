@@ -1,5 +1,5 @@
 import { ForwardedRef, forwardRef } from 'react';
-import BoardSection from './BoardSection.tsx';
+import BoardSection from './BoardSection';
 import styled from 'styled-components';
 
 interface Dimensions {

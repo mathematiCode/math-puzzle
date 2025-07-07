@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { useContext, useState, useRef } from 'react';
-import levels from '../levels.json';
+import levels from '../levels.json' with { type: 'json' };
 import InitialPuzzlePiece from '../components/InitialPuzzlePiece.tsx';
 import PieceOverlay from '../components/PieceOverlay.tsx';
 import Board from '../components/Board.tsx';
@@ -51,7 +51,7 @@ function Game() {
     // await setSizeOfEachUnit(currentLevel + 1);
     // resetBoardSquares(currentLevel + 1);
     const passedLevel = false;
-    if (!passedLevel) {
+    if (passedLevel) {
       Hotjar.event('Completed Level');
       Hotjar.event(`Completed level ${currentLevel}`);
       Hotjar.event('Skip a level without completing it');

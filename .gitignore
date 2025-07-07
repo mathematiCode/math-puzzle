@@ -24,3 +24,9 @@ dist-ssr
 *.sw?
 brainstorm.js
 sitemap-generator.js
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
