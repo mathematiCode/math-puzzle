@@ -158,7 +158,7 @@ export const Main = styled.main`
   grid-template-columns: 60% 40%;
   grid-template-rows: 1fr 50px;
   align-items: start;
-  gap: calc(var(--sizeOfEachUnit));
+  gap: 70px;
   margin-inline: 30px;
   height: 100%;
 
@@ -167,6 +167,7 @@ export const Main = styled.main`
     grid-template-rows: 55% 40% 5%;
     margin-inline: 10px;
     justify-items: center;
+    gap: 20px;
   }
 `;
 
