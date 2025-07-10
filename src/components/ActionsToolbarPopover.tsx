@@ -1,6 +1,6 @@
+//@ts-no-check
 import { useContext } from 'react';
 import { Tooltip } from 'antd';
-// import { RotateRightOutlined } from '@ant-design/icons';
 import { motion } from 'motion/react';
 import {
   Popover,
@@ -35,6 +35,7 @@ function ActionsToolbarPopover({
   }
   const { updateDimensions } = context;
   const { selectedPiece } = useSelectedPiece();
+  const showTooltips = false;
 
   function handleHorizontalStretch() {
     Hotjar.event('double width attempt');
@@ -77,7 +78,7 @@ function ActionsToolbarPopover({
       <PopoverTrigger {...delegated}>{children}</PopoverTrigger>
       <PopoverSurface id="actions">
         <ActionsToolbar>
-          <Tooltip placement="bottom" title="Rotate">
+          <Tooltip placement="bottom" title={showTooltips && 'Rotate'}>
             <IconButton
               onClick={() => runRotationAnimation(selectedPiece)}
               aria-label="Rotate"
@@ -85,20 +86,57 @@ function ActionsToolbarPopover({
               <AnimatedLottieIcon animationData={rotateToolAnimation} />
             </IconButton>
           </Tooltip>
-          <Tooltip placement="bottom" title="Double Width & Halve Height">
+          <Tooltip
+            placement="bottom"
+            title={
+              !showTooltips
+                ? ''
+                : selectedPiece?.height !== undefined &&
+                  selectedPiece.height % 2 !== 0
+                ? 'Disabled because fractional side lengths are not allowed'
+                : 'Double Width & Halve Height'
+            }
+          >
             <IconButton
               onClick={handleHorizontalStretch}
               aria-label="Double Width & Halve Height"
+              isDisabled={
+                selectedPiece?.height == null || selectedPiece.height % 2 !== 0
+              }
             >
-              <AnimatedLottieIcon animationData={horizontalStretchAnimation} />
+              <AnimatedLottieIcon
+                animationData={horizontalStretchAnimation}
+                isDisabled={
+                  selectedPiece?.height == null ||
+                  selectedPiece.height % 2 !== 0
+                }
+              />
             </IconButton>
           </Tooltip>
-          <Tooltip placement="bottom" title="Halve Width & Double Height">
+          <Tooltip
+            placement="bottom"
+            title={
+              !showTooltips
+                ? ''
+                : selectedPiece?.width !== undefined &&
+                  selectedPiece.width % 2 !== 0
+                ? 'Disabled because fractional side lengths are not allowed'
+                : 'Double Height & Halve Width'
+            }
+          >
             <IconButton
               onClick={handleVerticalStretch}
-              aria-label="Halve Width & Double Height"
+              aria-label="Double Height & Halve Width"
+              isDisabled={
+                selectedPiece?.width == null || selectedPiece.width % 2 !== 0
+              }
             >
-              <AnimatedLottieIcon animationData={verticalStretchAnimation} />
+              <AnimatedLottieIcon
+                animationData={verticalStretchAnimation}
+                isDisabled={
+                  selectedPiece?.width == null || selectedPiece.width % 2 !== 0
+                }
+              />
             </IconButton>
           </Tooltip>
           {/* <Tooltip placement="bottom" title="Cut into two rectangles">
@@ -117,10 +155,13 @@ function ActionsToolbarPopover({
   );
 }
 
-const IconButton = styled.button`
+const IconButton = styled.button<{
+  isDisabled?: boolean;
+}>`
   padding: 0px;
   margin: 0px;
   border: none;
+  cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
 
   svg {
     width: 32px;

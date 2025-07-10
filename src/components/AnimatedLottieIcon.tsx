@@ -6,9 +6,6 @@ interface AnimatedLottieIconProps {
   size?: number | string;
   loop?: boolean;
   className?: string;
-  /**
-   * If true, the icon will appear grayed out and semi-transparent.
-   */
   isDisabled?: boolean;
 }
 
@@ -28,11 +25,13 @@ const AnimatedLottieIcon = ({
         display: 'inline-block',
         width: size,
         height: size,
-        filter: isDisabled ? 'grayscale(1) opacity(0.7)' : 'none',
+        filter: isDisabled ? 'grayscale(1) opacity(0.35)' : 'none',
       }}
       onMouseEnter={() => {
-        playerRef.current.stop();
-        playerRef.current.play();
+        if (!isDisabled) {
+          playerRef.current.stop();
+          playerRef.current.play();
+        }
       }}
     >
       <Player
