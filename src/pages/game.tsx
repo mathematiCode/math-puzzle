@@ -198,6 +198,7 @@ export const ButtonContainer = styled.div`
   position: fixed;
   bottom: 20px;
   grid-column: 1/3;
+  z-index: 3;
 
   @media (max-width: 750px) {
     bottom: 0px;

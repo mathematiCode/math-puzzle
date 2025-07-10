@@ -24,6 +24,7 @@
     "@uidotdev/usehooks": "^2.4.1",
     "antd": "^5.23.2",
     "lodash": "^4.17.21",
+    "lottie-react": "^2.4.1",
     "lucide-react": "^0.471.1",
     "motion": "^11.16.0",
     "playwright": "^1.53.2",

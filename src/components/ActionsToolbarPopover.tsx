@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { Tooltip } from 'antd';
-import { RotateRightOutlined } from '@ant-design/icons';
+// import { RotateRightOutlined } from '@ant-design/icons';
 import { motion } from 'motion/react';
 import {
   Popover,
@@ -10,7 +10,12 @@ import {
 import styled from 'styled-components';
 import { useSelectedPiece } from '../context/SelectedPiece';
 import { PiecesInPlayContext } from '../context/PiecesInPlay';
-import { HorizontalStretchIcon, VerticalStretchIcon } from './SvgIcons';
+import AnimatedLottieIcon from './AnimatedLottieIcon';
+import rotateToolAnimation from '../../public/assets/icons-animation/rotate-tool.json';
+import horizontalStretchAnimation from '../../public/assets/icons-animation/horizontal-stretch-tool.json';
+import verticalStretchAnimation from '../../public/assets/icons-animation/vertical-stretch-tool.json';
+import cutAnimation from '../../public/assets/icons-animation/cut-tool.json';
+import combineAnimation from '../../public/assets/icons-animation/combine-tool.json';
 import Hotjar from '@hotjar/browser';
 
 function ActionsToolbarPopover({
@@ -77,7 +82,7 @@ function ActionsToolbarPopover({
               onClick={() => runRotationAnimation(selectedPiece)}
               aria-label="Rotate"
             >
-              <StyledRotateIcon />
+              <AnimatedLottieIcon animationData={rotateToolAnimation} />
             </IconButton>
           </Tooltip>
           <Tooltip placement="bottom" title="Double Width & Halve Height">
@@ -85,7 +90,7 @@ function ActionsToolbarPopover({
               onClick={handleHorizontalStretch}
               aria-label="Double Width & Halve Height"
             >
-              <HorizontalStretchIcon />
+              <AnimatedLottieIcon animationData={horizontalStretchAnimation} />
             </IconButton>
           </Tooltip>
           <Tooltip placement="bottom" title="Halve Width & Double Height">
@@ -93,23 +98,24 @@ function ActionsToolbarPopover({
               onClick={handleVerticalStretch}
               aria-label="Halve Width & Double Height"
             >
-              <VerticalStretchIcon />
+              <AnimatedLottieIcon animationData={verticalStretchAnimation} />
             </IconButton>
           </Tooltip>
+          {/* <Tooltip placement="bottom" title="Cut into two rectangles">
+            <IconButton aria-label="Cut into two rectangles">
+              <AnimatedLottieIcon animationData={cutAnimation} />
+            </IconButton>
+          </Tooltip>
+          <Tooltip placement="bottom" title="Combine two rectangles">
+            <IconButton aria-label="Combine two rectangles">
+              <AnimatedLottieIcon animationData={combineAnimation} />
+            </IconButton>
+          </Tooltip> */}
         </ActionsToolbar>
       </PopoverSurface>
     </Popover>
   );
 }
-
-const StyledRotateIcon = styled(RotateRightOutlined)`
-  font-size: 32px;
-  color: hsl(178, 100%, 23%);
-
-  @media (max-width: 750px) {
-    font-size: 28px;
-  }
-`;
 
 const IconButton = styled.button`
   padding: 0px;
@@ -134,15 +140,16 @@ const ActionsToolbar = styled(motion.div)`
   margin-top: 0px;
   top: 0px;
   padding: 8px;
-  gap: 12px;
+  gap: 20px;
   display: flex;
+  align-items: center;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 
   @media (max-width: 750px) {
     padding: 4px;
     padding-block: 2px;
-    gap: 6px;
+    gap: 16px;
   }
 `;
 
