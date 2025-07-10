@@ -51,9 +51,6 @@ function DragAndDropArea({
     { data: { value: a } }: { data: { value: number } },
     { data: { value: b } }: { data: { value: number } }
   ) {
-    if (Math.abs(b - a) <= 0.2) {
-      Hotjar.event('piece dropped close to two different landing squares');
-    }
     return b - a;
   }
 
