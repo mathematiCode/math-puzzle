@@ -17,6 +17,42 @@ const AnimatedLottieIcon = ({
   isDisabled = false,
 }: AnimatedLottieIconProps) => {
   const playerRef = useRef<any>(null);
+  const hoverTimeout = useRef<NodeJS.Timeout | null>(null);
+  const isHovering = useRef(false);
+
+  const handleMouseEnter = () => {
+    if (isDisabled) return;
+    isHovering.current = true;
+    hoverTimeout.current = setTimeout(() => {
+      if (isHovering.current && playerRef.current) {
+        playerRef.current.stop();
+        playerRef.current.play();
+      }
+    }, 180); // 150ms delay before playing animation
+  };
+
+  const handleMouseLeave = () => {
+    isHovering.current = false;
+    if (hoverTimeout.current) {
+      clearTimeout(hoverTimeout.current);
+      hoverTimeout.current = null;
+    }
+    if (playerRef.current) {
+      playerRef.current.stop();
+      playerRef.current.goToAndStop(0, true);
+    }
+  };
+
+  const handleClick = () => {
+    if (hoverTimeout.current) {
+      clearTimeout(hoverTimeout.current);
+      hoverTimeout.current = null;
+    }
+    if (playerRef.current) {
+      playerRef.current.stop();
+      playerRef.current.goToAndStop(0, true);
+    }
+  };
 
   return (
     <span
@@ -27,12 +63,9 @@ const AnimatedLottieIcon = ({
         height: size,
         filter: isDisabled ? 'grayscale(1) opacity(0.35)' : 'none',
       }}
-      onMouseEnter={() => {
-        if (!isDisabled) {
-          playerRef.current.stop();
-          playerRef.current.play();
-        }
-      }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
     >
       <Player
         lottieRef={playerRef}
