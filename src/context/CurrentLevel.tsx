@@ -5,7 +5,7 @@ export const CurrentLevelContext = createContext<CurrentLevelContextType>(
   {} as CurrentLevelContextType
 );
 import { InitialPiece } from '../types/piece';
-import { calculateUnitSize } from '../utilities';
+import { calculateUnitSize, findLargestHeight } from '../utilities';
 import Hotjar from '@hotjar/browser';
 
 export interface CurrentLevelContextType {
@@ -58,12 +58,13 @@ export function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
 
   const windowWidth = window.innerWidth;
   const windowHeight = window.innerHeight;
-
+  const largestHeight = findLargestHeight(levels[currentLevel].pieces);
   const sizeOfEachUnit = calculateUnitSize(
     windowWidth,
     windowHeight,
     width,
-    height
+    height,
+    largestHeight
   );
   document.documentElement.style.setProperty(
     '--sizeOfEachUnit',
@@ -85,11 +86,19 @@ export function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
     const { width, height } = levels[currentLevel].dimensions;
+  //  const largestHeight = findLargestHeight(levels[currentLevel].pieces);
+    const largestHeight = findLargestHeight([
+      { "width": 2, "height": 1 },
+      { "width": 3, "height": 3 },
+      { "width": 2, "height": 3 },
+      { "width": 3, "height": 3 }
+    ]);
     const sizeOfEachUnit = calculateUnitSize(
       windowWidth,
       windowHeight,
       width,
-      height
+      height,
+      largestHeight,
     );
     document.documentElement.style.setProperty(
       '--sizeOfEachUnit',

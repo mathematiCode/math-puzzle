@@ -31,9 +31,29 @@ export function calculateUnitSize(
   windowWidth: number,
   windowHeight: number,
   width: number,
-  height: number
+  height: number,
+  largestHeight: number
 ) {
+  if (windowWidth < 500) {
+    return Math.round(
+      (0.00096 * windowWidth * (windowHeight - 200)) /
+        Math.max(width, height, largestHeight * 1.5) -
+        1
+    );
+  }
   return Math.round(
-    (0.0005 * windowWidth * (windowHeight - 200)) / Math.max(width, height) - 1
+    (0.0005 * windowWidth * (windowHeight - 200)) /
+      Math.max(width, height, largestHeight * 1.5) -
+      1
   );
+}
+
+export function findLargestHeight(
+  piecesArray: { width: number; height: number }[]
+): number {
+  let heights: number[] = [];
+  piecesArray.forEach(piece => {
+    heights.push(piece.height);
+  });
+  return Math.max(...heights);
 }
