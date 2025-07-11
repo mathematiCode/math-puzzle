@@ -17,8 +17,7 @@ const ToolsSection = styled.div<{ variant?: 'standalone' | 'embedded' }>`
   background: ${props =>
     props.variant === 'standalone' ? 'white' : 'transparent'};
   padding: ${props => (props.variant === 'embedded' ? '20px 0' : '60px 0')};
-  margin: ${props =>
-    props.variant === 'standalone' ? '40px 0' : '10px -20px'};
+  margin: ${props => (props.variant === 'standalone' ? '40px 0' : '0px')};
   border-radius: ${props => (props.variant === 'standalone' ? '15px' : '0')};
 `;
 
@@ -104,13 +103,18 @@ const ToolCard = styled.div<{ variant?: 'standalone' | 'embedded' }>`
   }
 `;
 
-const Tag = styled.div`
+const Tag = styled.div<{ variant?: 'standalone' | 'embedded' }>`
   position: absolute;
   top: 10px;
-  right: 10px;
+  ${props =>
+    props.variant === 'standalone'
+      ? `
+    right: 10px;
+    `
+      : ''};
   background: hsl(185, 78%, 86%);
   color: black;
-  padding: 4px 8px;
+  padding: ${props => (props.variant === 'embedded' ? '2px 5px' : '4px 8px')};
   border-radius: 12px;
   font-size: 0.7rem;
   font-weight: bold;
@@ -142,7 +146,7 @@ interface MathematicalToolsProps {
   variant?: 'standalone' | 'embedded';
 }
 
-function MathematicalTools({ variant = 'embedded' }: MathematicalToolsProps) {
+function MathematicalTools({ variant = 'standalone' }: MathematicalToolsProps) {
   return (
     <ToolsSection variant={variant}>
       <Container>
@@ -191,7 +195,7 @@ function MathematicalTools({ variant = 'embedded' }: MathematicalToolsProps) {
               <ToolConnection>Distributive Property</ToolConnection>
             )}
             <ToolCard variant={variant}>
-              <Tag>Coming Soon</Tag>
+              <Tag variant={variant}>Coming Soon</Tag>
               <ToolIcon>
                 <AnimatedLottieIcon
                   animationData={cutAnimation}
@@ -211,7 +215,7 @@ function MathematicalTools({ variant = 'embedded' }: MathematicalToolsProps) {
               <ToolConnection>Distributive Property</ToolConnection>
             )}
             <ToolCard variant={variant}>
-              <Tag>Coming Soon</Tag>
+              <Tag variant={variant}>Coming Soon</Tag>
               <ToolIcon>
                 <AnimatedLottieIcon
                   animationData={combineAnimation}
