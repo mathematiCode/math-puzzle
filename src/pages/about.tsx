@@ -56,7 +56,7 @@ function About() {
     <Container>
       <Title>About The Creator</Title>
       <Content>
-        <img src="./assets/headshotCompressed.jpg" alt="Image of Julianna" />
+        <img src="./assets/headshotCompressed.avif" alt="Image of Julianna" />
         <p>
           Hi I'm Julianna, a Front-End Software Engineer and former math
           teacher. I've taught math for 5 years (2019-2024), ranging from 6th

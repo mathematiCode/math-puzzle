@@ -11,11 +11,11 @@ import styled from 'styled-components';
 import { useSelectedPiece } from '../context/SelectedPiece';
 import { PiecesInPlayContext } from '../context/PiecesInPlay';
 import AnimatedLottieIcon from './AnimatedLottieIcon';
-import rotateToolAnimation from '../../public/assets/icons-animation/rotate-tool.json';
-import horizontalStretchAnimation from '../../public/assets/icons-animation/horizontal-stretch-tool.json';
-import verticalStretchAnimation from '../../public/assets/icons-animation/vertical-stretch-tool.json';
-import cutAnimation from '../../public/assets/icons-animation/cut-tool.json';
-import combineAnimation from '../../public/assets/icons-animation/combine-tool.json';
+import rotateToolAnimation from '../assets/icons-animation/rotate-tool.json';
+import horizontalStretchAnimation from '../assets/icons-animation/horizontal-stretch-tool.json';
+import verticalStretchAnimation from '../assets/icons-animation/vertical-stretch-tool.json';
+import cutAnimation from '../assets/icons-animation/cut-tool.json';
+import combineAnimation from '../assets/icons-animation/combine-tool.json';
 import Hotjar from '@hotjar/browser';
 
 function ActionsToolbarPopover({
