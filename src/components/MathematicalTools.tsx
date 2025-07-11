@@ -1,6 +1,12 @@
 import styled from 'styled-components';
 import { RotateCw, Scissors, PanelRight } from 'lucide-react';
 import { HorizontalStretchIcon } from './SvgIcons';
+import AnimatedLottieIcon from './AnimatedLottieIcon';
+import rotateToolAnimation from '../assets/icons-animation/rotate-tool.json';
+import horizontalStretchAnimation from '../assets/icons-animation/horizontal-stretch-tool.json';
+//import verticalStretchAnimation from '../assets/icons-animation/vertical-stretch-tool.json';
+import cutAnimation from '../assets/icons-animation/cut-tool.json';
+import combineAnimation from '../assets/icons-animation/combine-tool.json';
 
 const Container = styled.div`
   max-width: 1200px;
@@ -130,7 +136,10 @@ function MathematicalTools({ variant = 'embedded' }: MathematicalToolsProps) {
             <ToolConnection>Commutative Property</ToolConnection>
             <ToolCard>
               <ToolIcon>
-                <RotateCw size={40} />
+                <AnimatedLottieIcon
+                  animationData={rotateToolAnimation}
+                  size={56}
+                />
               </ToolIcon>
               <ToolTitle>Rotation Tool</ToolTitle>
               <ToolExample>3 × 5 = 5 × 3</ToolExample>
@@ -140,7 +149,10 @@ function MathematicalTools({ variant = 'embedded' }: MathematicalToolsProps) {
             <ToolConnection>Associative Property</ToolConnection>
             <ToolCard>
               <ToolIcon>
-                <HorizontalStretchIcon size={40} />
+                <AnimatedLottieIcon
+                  animationData={horizontalStretchAnimation}
+                  size={56}
+                />
               </ToolIcon>
               <ToolTitle>Double & Halve Tool</ToolTitle>
               <ToolExample>4 × (2 × 3) = (4 × 2) × 3</ToolExample>
@@ -151,7 +163,7 @@ function MathematicalTools({ variant = 'embedded' }: MathematicalToolsProps) {
             <ToolCard>
               <Tag>Coming Soon</Tag>
               <ToolIcon>
-                <Scissors size={40} />
+                <AnimatedLottieIcon animationData={cutAnimation} size={56} />
               </ToolIcon>
               <ToolTitle>Cut Tool</ToolTitle>
               <ToolExample>3(2 + 3) = 3(2) + 3(3)</ToolExample>
@@ -162,7 +174,10 @@ function MathematicalTools({ variant = 'embedded' }: MathematicalToolsProps) {
             <ToolCard>
               <Tag>Coming Soon</Tag>
               <ToolIcon>
-                <PanelRight size={40} />
+                <AnimatedLottieIcon
+                  animationData={combineAnimation}
+                  size={56}
+                />
               </ToolIcon>
               <ToolTitle>Combine Tool</ToolTitle>
               <ToolExample>3(2) + 3(3) = 3(2 + 3)</ToolExample>
