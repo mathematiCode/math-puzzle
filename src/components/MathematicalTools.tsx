@@ -35,9 +35,10 @@ const SectionTitle = styled.h2`
 const ToolsGrid = styled.div<{ variant?: 'standalone' | 'embedded' }>`
   display: flex;
   flex-wrap: ${props => (props.variant === 'embedded' ? 'nowrap' : 'wrap')};
+  flex-grow: 1;
   justify-content: center;
   gap: ${props => (props.variant === 'embedded' ? '5px' : '30px')};
-  width: ${props => (props.variant === 'embedded' ? '100%' : '100%')};
+  width: 100%;
   margin: 0 auto;
 
   @container (max-width: 768px) {
@@ -51,7 +52,7 @@ const ToolWrapper = styled.div<{ variant?: 'standalone' | 'embedded' }>`
   position: relative;
   width: ${props => (props.variant === 'embedded' ? '8vw' : '250px')};
   min-width: ${props => (props.variant === 'embedded' ? '70px' : '120px')};
-  max-width: ${props => (props.variant === 'embedded' ? '120px' : '250px')};
+  max-width: ${props => (props.variant === 'embedded' ? '120px' : '300px')};
   flex: 0 1 auto;
 
   @container (max-width: 1000px) {
@@ -165,7 +166,7 @@ function MathematicalTools({ variant = 'standalone' }: MathematicalToolsProps) {
                   size={variant === 'embedded' ? 45 : 56}
                 />
               </ToolIcon>
-              <ToolTitle variant={variant}>Rotation Tool</ToolTitle>
+              <ToolTitle variant={variant}>Rotate</ToolTitle>
               {variant !== 'embedded' && (
                 <ToolExample variant={variant}>3 × 5 = 5 × 3</ToolExample>
               )}
@@ -202,7 +203,7 @@ function MathematicalTools({ variant = 'standalone' }: MathematicalToolsProps) {
                   size={variant === 'embedded' ? 45 : 56}
                 />
               </ToolIcon>
-              <ToolTitle variant={variant}>Cut Tool</ToolTitle>
+              <ToolTitle variant={variant}>Cut</ToolTitle>
               {variant !== 'embedded' && (
                 <ToolExample variant={variant}>
                   3(2 + 3) = 3(2) + 3(3)
@@ -222,7 +223,7 @@ function MathematicalTools({ variant = 'standalone' }: MathematicalToolsProps) {
                   size={variant === 'embedded' ? 45 : 56}
                 />
               </ToolIcon>
-              <ToolTitle variant={variant}>Combine Tool</ToolTitle>
+              <ToolTitle variant={variant}>Combine</ToolTitle>
               {variant !== 'embedded' && (
                 <ToolExample variant={variant}>
                   3(2) + 3(3) = 3(2 + 3)
