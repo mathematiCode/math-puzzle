@@ -6,17 +6,11 @@ import {
   TouchSensor,
   KeyboardSensor,
   useSensors,
-  closestCenter,
-  closestCorners,
   rectIntersection,
 } from '@dnd-kit/core';
 import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core';
-import {
-  createSnapModifier,
-  // restrictToWindowEdges,
-  // snapCenterToCursor,
-} from '@dnd-kit/modifiers';
-import { CurrentLevelContext } from '../context/CurrentLevel';
+// import { createSnapModifier } from '@dnd-kit/modifiers';
+// import { CurrentLevelContext } from '../context/CurrentLevel';
 import { PiecesInPlayContext } from '../context/PiecesInPlay';
 import { Piece } from '../types/piece';
 import { useSelectedPiece } from '../context/SelectedPiece';
@@ -37,7 +31,7 @@ function DragAndDropArea({
   setIsRotating,
 }: DragAndDropAreaProps) {
   const { setSelectedPiece } = useSelectedPiece();
-  const { sizeOfEachUnit } = useContext(CurrentLevelContext);
+  // const { sizeOfEachUnit } = useContext(CurrentLevelContext);
   const context = useContext(PiecesInPlayContext);
   if (!context) {
     throw new Error(
@@ -55,34 +49,25 @@ function DragAndDropArea({
   }
 
   function customCollisionDetection(args: any) {
-    const { collisionRect, droppableRects, droppableContainers } = args;
-    // console.log('Collision detection args:', args);
-    // console.log({ collisionRect });
-    // console.log({ droppableRects });
-    // console.log({ droppableContainers });
-    // console.log('left:', args[0]);
+    const { collisionRect } = args;
 
     const x = collisionRect.left;
     const y = collisionRect.top;
 
-    //console.log('rectIntersection', rectIntersection(args));
-    // Still need to return actual collision results
-    // So just use the default rectangle intersection
     let potentialDroppables: any = rectIntersection(args);
     if (potentialDroppables[0]) {
       potentialDroppables.forEach((droppable: any) => {
         const droppableRect = droppable.data.droppableContainer.rect.current;
         droppable.data.value = rateDroppability(x, y, droppableRect);
       });
-      //console.log('Look at this:', potentialDroppables[0].data);
     }
     return potentialDroppables.sort(compareCollisionRects);
   }
 
-  const snapToGrid = useMemo(
-    () => createSnapModifier(sizeOfEachUnit),
-    [sizeOfEachUnit]
-  );
+  // const snapToGrid = useMemo(
+  //   () => createSnapModifier(sizeOfEachUnit),
+  //   [sizeOfEachUnit]
+  // );
   // const snapToGrid = createSnapModifier(sizeOfEachUnit);
   // function snapToGrid(sizeOfEachUnit: number) {
   //   const { transform } = sizeOfEachUnit;

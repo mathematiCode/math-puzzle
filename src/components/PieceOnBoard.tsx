@@ -85,8 +85,8 @@ function PieceOnBoard({
     } finally {
       setIsRotating(false);
       const { x, y } = convertLocationToXAndY(selectedPiece.location);
-      let newX = x + Math.ceil(selectedPiece.height / 2) - 1;
-      let newY = y + Math.ceil(selectedPiece.width / 2) - 1;
+      let newX = x + Math.floor(selectedPiece.height / 2) - 1;
+      let newY = y + Math.floor(selectedPiece.width / 2) - 1;
       movePiece(pieceIndex, `(${newX},${newY})`);
     }
     Hotjar.event('rotation');

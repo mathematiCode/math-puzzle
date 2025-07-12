@@ -183,7 +183,6 @@ export const PiecesContainer = styled(motion.div).attrs({
 })<{ $currentLevel: number }>`
   display: flex;
   flex-direction: row;
-  /* width: 700px; */
   flex-wrap: wrap;
   align-items: start;
   justify-content: right;
