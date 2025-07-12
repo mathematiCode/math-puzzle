@@ -30,6 +30,7 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
   const [boardSquares, setBoardSquares] = useState<string[][]>(
     getInitialBoardSquares(currentLevel)
   );
+  console.log('boardSquares is:', boardSquares);
   const boardWidth = levels[currentLevel].dimensions.width;
   const boardHeight = levels[currentLevel].dimensions.height;
   function addPieceToBoard(

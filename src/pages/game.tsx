@@ -13,8 +13,9 @@ import styled from 'styled-components';
 import { DragOverlay } from '@dnd-kit/core';
 import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
 import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
-import { getInitialPieces } from '../getInitialPieces';
+import { getInitialPieces } from '../utils/getInitialPieces';
 import { Piece } from '../types/piece.ts';
+import { BoardSquaresContext } from '../context/BoardSquares';
 
 function Game() {
   const {
@@ -27,6 +28,7 @@ function Game() {
   const [activePiece, setActivePiece] = useState<Piece | null>(null);
   const { piecesInPlay, resetPieces, setPiecesForNewLevel } =
     useContext(PiecesInPlayContext);
+  const { boardSquares, resetBoardSquares } = useContext(BoardSquaresContext);
   const [isRotating, setIsRotating] = useState(false);
 
   const boardRef = useRef(null);

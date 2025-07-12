@@ -93,7 +93,6 @@ export function PiecesInPlayProvider({
       if (oldLocation !== null) {
         Hotjar.event('move off of board');
       }
-      //  removePieceFromBoard(oldX, oldY, pieceWidth, pieceHeight);
     }
     updatedPieces[pieceIndex].location = newValidLocation;
     setPiecesInPlay(updatedPieces);
@@ -148,12 +147,6 @@ export function PiecesInPlayProvider({
     }
   }
 
-  // function rotatePiece(pieceIndex: number) {
-  //   const updatedPieces = [...piecesInPlay];
-  //   // updatedPieces[pieceIndex].isRotated = !updatedPieces[pieceIndex].isRotated;
-
-  //   setPiecesInPlay(updatedPieces);
-  // }
 
   function setPiecesForNewLevel(newPieces?: InitialPiece[]) {
     setPiecesInPlay(newPieces || initialPieces);
