@@ -1,6 +1,10 @@
 import styled from 'styled-components';
-import { RotateCw, Scissors, PanelRight } from 'lucide-react';
-import { HorizontalStretchIcon } from './SvgIcons.tsx';
+import AnimatedLottieIcon from './AnimatedLottieIcon';
+import rotateToolAnimation from '../assets/icons-animation/rotate-tool.json';
+import horizontalStretchAnimation from '../assets/icons-animation/horizontal-stretch-tool.json';
+//import verticalStretchAnimation from '../assets/icons-animation/vertical-stretch-tool.json';
+import cutAnimation from '../assets/icons-animation/cut-tool.json';
+import combineAnimation from '../assets/icons-animation/combine-tool.json';
 
 const Container = styled.div`
   max-width: 1200px;
@@ -10,10 +14,10 @@ const Container = styled.div`
 `;
 
 const ToolsSection = styled.div<{ variant?: 'standalone' | 'embedded' }>`
-  background: #f8f9fa;
-  padding: 60px 0;
-  margin: ${props =>
-    props.variant === 'standalone' ? '40px 0' : '60px -20px'};
+  background: ${props =>
+    props.variant === 'standalone' ? 'white' : 'transparent'};
+  padding: ${props => (props.variant === 'embedded' ? '20px 0' : '60px 0')};
+  margin: ${props => (props.variant === 'standalone' ? '40px 0' : '0px')};
   border-radius: ${props => (props.variant === 'standalone' ? '15px' : '0')};
 `;
 
@@ -28,29 +32,37 @@ const SectionTitle = styled.h2`
   }
 `;
 
-const ToolsGrid = styled.div`
+const ToolsGrid = styled.div<{ variant?: 'standalone' | 'embedded' }>`
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: ${props => (props.variant === 'embedded' ? 'nowrap' : 'wrap')};
+  flex-grow: 1;
   justify-content: center;
-  gap: 30px;
+  gap: ${props => (props.variant === 'embedded' ? '5px' : '30px')};
   width: 100%;
   margin: 0 auto;
 
   @container (max-width: 768px) {
-    gap: 20px;
+    gap: 10px;
+    flex-wrap: wrap;
+    width: 100%;
   }
 `;
 
-const ToolWrapper = styled.div`
+const ToolWrapper = styled.div<{ variant?: 'standalone' | 'embedded' }>`
   position: relative;
-  width: 250px;
+  width: ${props => (props.variant === 'embedded' ? '8vw' : '250px')};
+  min-width: ${props => (props.variant === 'embedded' ? '70px' : '120px')};
+  max-width: ${props => (props.variant === 'embedded' ? '120px' : '300px')};
+  flex: 0 1 auto;
 
   @container (max-width: 1000px) {
     flex: 0 1 40%;
+    width: unset;
   }
 
   @container (max-width: 768px) {
     flex: 0 1 80%;
+    width: unset;
   }
 `;
 
@@ -67,29 +79,43 @@ const ToolConnection = styled.div`
   position: relative;
 `;
 
-const ToolCard = styled.div`
+const ToolCard = styled.div<{ variant?: 'standalone' | 'embedded' }>`
   width: 100%;
+  height: ${props => (props.variant === 'embedded' ? '100%' : '')};
   background: white;
-  padding: 25px;
+  padding: ${props => (props.variant === 'embedded' ? '6px' : '25px')};
   border-radius: 12px;
   text-align: center;
   box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
   position: relative;
   z-index: 2;
-
+  ${props =>
+    props.variant === 'embedded'
+      ? `
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+  `
+      : ''}
   &:hover {
     transform: translateY(-3px);
   }
 `;
 
-const Tag = styled.div`
+const Tag = styled.div<{ variant?: 'standalone' | 'embedded' }>`
   position: absolute;
   top: 10px;
-  right: 10px;
+  ${props =>
+    props.variant === 'standalone'
+      ? `
+    right: 10px;
+    `
+      : ''};
   background: hsl(185, 78%, 86%);
   color: black;
-  padding: 4px 8px;
+  padding: ${props => (props.variant === 'embedded' ? '2px 5px' : '4px 8px')};
   border-radius: 12px;
   font-size: 0.7rem;
   font-weight: bold;
@@ -100,19 +126,20 @@ const Tag = styled.div`
 const ToolIcon = styled.div`
   color: #007571;
   margin-bottom: 1rem;
+  margin-top: 1rem;
   display: flex;
   justify-content: center;
 `;
 
-const ToolTitle = styled.h4`
+const ToolTitle = styled.h4<{ variant?: 'standalone' | 'embedded' }>`
   color: #007571;
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
+  font-size: ${props => (props.variant === 'embedded' ? '0.85rem' : '1.2rem')};
+  margin-bottom: 0.3rem;
 `;
 
-const ToolExample = styled.p`
+const ToolExample = styled.p<{ variant?: 'standalone' | 'embedded' }>`
   color: #888;
-  font-size: 0.85rem;
+  font-size: ${props => (props.variant === 'embedded' ? '0.7rem' : '0.85rem')};
   font-style: italic;
 `;
 
@@ -120,52 +147,88 @@ interface MathematicalToolsProps {
   variant?: 'standalone' | 'embedded';
 }
 
-function MathematicalTools({ variant = 'embedded' }: MathematicalToolsProps) {
+function MathematicalTools({ variant = 'standalone' }: MathematicalToolsProps) {
   return (
     <ToolsSection variant={variant}>
       <Container>
-        <SectionTitle>Mathematical Tools & Connections</SectionTitle>
-        <ToolsGrid>
-          <ToolWrapper>
-            <ToolConnection>Commutative Property</ToolConnection>
-            <ToolCard>
+        {variant !== 'embedded' && (
+          <SectionTitle>Mathematical Tools & Connections</SectionTitle>
+        )}
+        <ToolsGrid variant={variant}>
+          <ToolWrapper variant={variant}>
+            {variant !== 'embedded' && (
+              <ToolConnection>Commutative Property</ToolConnection>
+            )}
+            <ToolCard variant={variant}>
               <ToolIcon>
-                <RotateCw size={40} />
+                <AnimatedLottieIcon
+                  animationData={rotateToolAnimation}
+                  size={variant === 'embedded' ? 45 : 56}
+                />
               </ToolIcon>
-              <ToolTitle>Rotation Tool</ToolTitle>
-              <ToolExample>3 × 5 = 5 × 3</ToolExample>
+              <ToolTitle variant={variant}>Rotate</ToolTitle>
+              {variant !== 'embedded' && (
+                <ToolExample variant={variant}>3 × 5 = 5 × 3</ToolExample>
+              )}
             </ToolCard>
           </ToolWrapper>
-          <ToolWrapper>
-            <ToolConnection>Associative Property</ToolConnection>
-            <ToolCard>
+          <ToolWrapper variant={variant}>
+            {variant !== 'embedded' && (
+              <ToolConnection>Associative Property</ToolConnection>
+            )}
+            <ToolCard variant={variant}>
               <ToolIcon>
-                <HorizontalStretchIcon size={40} />
+                <AnimatedLottieIcon
+                  animationData={horizontalStretchAnimation}
+                  size={variant === 'embedded' ? 45 : 56}
+                />
               </ToolIcon>
-              <ToolTitle>Double & Halve Tool</ToolTitle>
-              <ToolExample>4 × (2 × 3) = (4 × 2) × 3</ToolExample>
+              <ToolTitle variant={variant}>Double & Halve</ToolTitle>
+              {variant !== 'embedded' && (
+                <ToolExample variant={variant}>
+                  4 × (2 × 3) = (4 × 2) × 3
+                </ToolExample>
+              )}
             </ToolCard>
           </ToolWrapper>
-          <ToolWrapper>
-            <ToolConnection>Distributive Property</ToolConnection>
-            <ToolCard>
-              <Tag>Coming Soon</Tag>
+          <ToolWrapper variant={variant}>
+            {variant !== 'embedded' && (
+              <ToolConnection>Distributive Property</ToolConnection>
+            )}
+            <ToolCard variant={variant}>
+              <Tag variant={variant}>Coming Soon</Tag>
               <ToolIcon>
-                <Scissors size={40} />
+                <AnimatedLottieIcon
+                  animationData={cutAnimation}
+                  size={variant === 'embedded' ? 45 : 56}
+                />
               </ToolIcon>
-              <ToolTitle>Cut Tool</ToolTitle>
-              <ToolExample>3(2 + 3) = 3(2) + 3(3)</ToolExample>
+              <ToolTitle variant={variant}>Cut</ToolTitle>
+              {variant !== 'embedded' && (
+                <ToolExample variant={variant}>
+                  3(2 + 3) = 3(2) + 3(3)
+                </ToolExample>
+              )}
             </ToolCard>
           </ToolWrapper>
-          <ToolWrapper>
-            <ToolConnection>Distributive Property</ToolConnection>
-            <ToolCard>
-              <Tag>Coming Soon</Tag>
+          <ToolWrapper variant={variant}>
+            {variant !== 'embedded' && (
+              <ToolConnection>Distributive Property</ToolConnection>
+            )}
+            <ToolCard variant={variant}>
+              <Tag variant={variant}>Coming Soon</Tag>
               <ToolIcon>
-                <PanelRight size={40} />
+                <AnimatedLottieIcon
+                  animationData={combineAnimation}
+                  size={variant === 'embedded' ? 45 : 56}
+                />
               </ToolIcon>
-              <ToolTitle>Combine Tool</ToolTitle>
-              <ToolExample>3(2) + 3(3) = 3(2 + 3)</ToolExample>
+              <ToolTitle variant={variant}>Combine</ToolTitle>
+              {variant !== 'embedded' && (
+                <ToolExample variant={variant}>
+                  3(2) + 3(3) = 3(2 + 3)
+                </ToolExample>
+              )}
             </ToolCard>
           </ToolWrapper>
         </ToolsGrid>

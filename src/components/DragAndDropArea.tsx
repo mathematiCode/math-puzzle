@@ -6,15 +6,17 @@ import {
   TouchSensor,
   KeyboardSensor,
   useSensors,
+  rectIntersection,
 } from '@dnd-kit/core';
 import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core';
-import { createSnapModifier, snapCenterToCursor } from '@dnd-kit/modifiers';
-import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
-import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
+// import { createSnapModifier } from '@dnd-kit/modifiers';
+// import { CurrentLevelContext } from '../context/CurrentLevel';
+import { PiecesInPlayContext } from '../context/PiecesInPlay';
 import { Piece } from '../types/piece';
-import { useSelectedPiece } from '../context/SelectedPiece.tsx';
+import { useSelectedPiece } from '../context/SelectedPiece';
+import { rateDroppability } from '../utils/utilities';
+import Hotjar from '@hotjar/browser';
 //import { BoardSquaresContext } from '../context/BoardSquares.tsx';
-
 interface DragAndDropAreaProps {
   children: React.ReactNode;
   setActivePiece: (piece: Piece) => void;
@@ -29,13 +31,14 @@ function DragAndDropArea({
   setIsRotating,
 }: DragAndDropAreaProps) {
   const { setSelectedPiece } = useSelectedPiece();
-  const { sizeOfEachUnit } = useContext(CurrentLevelContext);
+  // const { sizeOfEachUnit } = useContext(CurrentLevelContext);
   const context = useContext(PiecesInPlayContext);
   if (!context) {
     throw new Error(
       'DragAndDropArea must be used within a PiecesInPlayProvider'
     );
   }
+
   const { piecesInPlay, movePiece } = context;
   // const boardSquaresContext = useContext(BoardSquaresContext);
   // if (!boardSquaresContext) {
@@ -49,7 +52,51 @@ function DragAndDropArea({
   //   removePieceFromBoard,
   // } = boardSquaresContext;
 
-  const snapToGrid = useMemo(() => createSnapModifier(sizeOfEachUnit), []);
+  function compareCollisionRects(
+    { data: { value: a } }: { data: { value: number } },
+    { data: { value: b } }: { data: { value: number } }
+  ) {
+    return b - a;
+  }
+
+  function customCollisionDetection(args: any) {
+    const { collisionRect } = args;
+
+    const x = collisionRect.left;
+    const y = collisionRect.top;
+
+    let potentialDroppables: any = rectIntersection(args);
+    if (potentialDroppables[0]) {
+      potentialDroppables.forEach((droppable: any) => {
+        const droppableRect = droppable.data.droppableContainer.rect.current;
+        droppable.data.value = rateDroppability(x, y, droppableRect);
+      });
+    }
+    return potentialDroppables.sort(compareCollisionRects);
+  }
+
+  // const snapToGrid = useMemo(
+  //   () => createSnapModifier(sizeOfEachUnit),
+  //   [sizeOfEachUnit]
+  // );
+  // const snapToGrid = createSnapModifier(sizeOfEachUnit);
+  // function snapToGrid(sizeOfEachUnit: number) {
+  //   const { transform } = sizeOfEachUnit;
+
+  //   return {
+  //     ...transform,
+  //     x: Math.ceil(transform.x / sizeOfEachUnit) * sizeOfEachUnit,
+  //     y: Math.ceil(transform.y / sizeOfEachUnit) * sizeOfEachUnit,
+  //   };
+  // }
+
+  // const snapToGrid = function createSnapModifier(gridSize: number): Modifier {
+  //   return ({ transform }) => ({
+  //     ...transform,
+  //     x: Math.ceil(transform.x / gridSize) * gridSize,
+  //     y: Math.ceil(transform.y / gridSize) * gridSize,
+  //   });
+  // }
 
   const activationConstraint = {
     distance: 20,
@@ -76,6 +123,7 @@ function DragAndDropArea({
       setActivePiece(piecesInPlay[pieceIndex]);
       setSelectedPiece(piecesInPlay[pieceIndex]);
     }
+    Hotjar.event('drag start');
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -84,16 +132,16 @@ function DragAndDropArea({
     if (event?.over?.id) {
       const newLocation = event.over.id.toString();
       movePiece(pieceIndex, newLocation);
-    } else {
-      movePiece(pieceIndex, null);
-    }
+    } else movePiece(pieceIndex, null);
+    Hotjar.event('drag start');
   };
+
   return (
     <DndContext
       sensors={sensors}
-      modifiers={[snapCenterToCursor, snapToGrid]}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
+      collisionDetection={customCollisionDetection}
     >
       {children}
     </DndContext>

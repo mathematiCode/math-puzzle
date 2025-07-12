@@ -82,3 +82,8 @@ h6 {
 #__next {
   isolation: isolate;
 }
+
+.fui-DialogSurface__backdrop {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+  backdrop-filter: blur(3px) !important;
+}

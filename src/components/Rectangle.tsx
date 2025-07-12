@@ -3,7 +3,7 @@ import { motion } from 'motion/react';
 import { range } from 'lodash';
 import { memo, forwardRef } from 'react';
 import styled from 'styled-components';
-import { Unit, MotionUnit } from './Unit.tsx';
+import { Unit, MotionUnit } from './Unit';
 
 interface RectangleProps {
   width: number;

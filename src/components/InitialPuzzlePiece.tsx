@@ -9,6 +9,7 @@ import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
 import { Piece } from '../types/piece.ts';
 import styled from 'styled-components';
 import { mergeRefs } from '@chakra-ui/react';
+import Hotjar from '@hotjar/browser';
 
 const InitialPuzzlePiece = ({
   piece,
@@ -31,20 +32,27 @@ const InitialPuzzlePiece = ({
 
   function handlePieceSelected() {
     setSelectedPiece(piece);
+    Hotjar.event(
+      `initial piece selected width:${piece.width} height:${piece.height}`
+    );
   }
 
   async function runRotationAnimation(selectedPiece) {
     const id = selectedPiece?.id;
     const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
     setIsRotating(true);
-    await animate(
-      scope.current,
-      { rotate: 90 },
-      { type: 'spring', stiffness: 150, damping: 11 }
-    );
-    updateDimensions(pieceIndex, selectedPiece?.height, selectedPiece.width);
-    await animate(scope.current, { rotate: 0 }, { duration: 0 });
-    setIsRotating(false);
+    try {
+      await animate(
+        scope.current,
+        { rotate: 90 },
+        { type: 'spring', stiffness: 150, damping: 11 }
+      );
+      updateDimensions(pieceIndex, selectedPiece.height, selectedPiece.width);
+      await animate(scope.current, { rotate: 0 }, { duration: 0 });
+    } finally {
+      setIsRotating(false);
+    }
+    Hotjar.event('rotation');
   }
 
   const isSelected = selectedPiece?.id === piece.id;
@@ -57,7 +65,8 @@ const InitialPuzzlePiece = ({
         {...attributes}
         onClick={handlePieceSelected}
         isDragging={isDragging}
-        layoutId={piece.id}
+        layout={!isRotating && !isDragging}
+        {...(!(isRotating && isSelected) ? { layoutId: piece.id } : {})}
       >
         <Rectangle
           width={piece.width}

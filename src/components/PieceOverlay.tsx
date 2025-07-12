@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { motion } from 'motion/react';
 import PropTypes from 'prop-types';
-import Rectangle from './Rectangle.tsx';
+import Rectangle from './Rectangle';
 import { Piece } from '../types/piece';
 
 function PieceOverlay({ piece }: { piece: Piece }) {

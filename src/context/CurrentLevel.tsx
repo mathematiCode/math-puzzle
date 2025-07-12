@@ -1,7 +1,12 @@
 import { createContext, useState, type ReactNode } from 'react';
-import levels from '../levels.json';
+import levels from '../levels.json' with { type: 'json' };
 import { colors } from '../CONSTANTS';
-import { InitialPiece } from '../types/piece.ts';
+export const CurrentLevelContext = createContext<CurrentLevelContextType>(
+  {} as CurrentLevelContextType
+);
+import { InitialPiece } from '../types/piece';
+import { calculateUnitSize, findLargestHeight } from '../utils/utilities';
+import Hotjar from '@hotjar/browser';
 
 export interface CurrentLevelContextType {
   currentLevel: number;
@@ -14,9 +19,9 @@ export interface CurrentLevelContextType {
   setCurrentLevel: (level: number) => void;
 }
 
-export const CurrentLevelContext = createContext<CurrentLevelContextType>(
-  {} as CurrentLevelContextType
-);
+// export const CurrentLevelContext = createContext<CurrentLevelContextType>(
+//   {} as CurrentLevelContextType
+// );
 
 const initialLocation = null;
 const numberOfLevels = levels.length;
@@ -57,12 +62,14 @@ export function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
 
   const windowWidth = window.innerWidth;
   const windowHeight = window.innerHeight;
-
-  const sizeOfEachUnit = Math.round(
-    (0.0005 * windowWidth * (windowHeight - 200)) / Math.max(width, height)
+  const largestHeight = findLargestHeight(levels[currentLevel].pieces);
+  const sizeOfEachUnit = calculateUnitSize(
+    windowWidth,
+    windowHeight,
+    width,
+    height,
+    largestHeight
   );
-  //console.log(sizeOfEachUnit);
-  // use effect here maybe??
   document.documentElement.style.setProperty(
     '--sizeOfEachUnit',
     `${sizeOfEachUnit}px`
@@ -80,10 +87,17 @@ export function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
   const initialPieces = getInitialPieces(currentLevel);
 
   function setSizeOfEachUnit(currentLevel: number) {
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
     const { width, height } = levels[currentLevel].dimensions;
-    // const sizeOfEachUnit = Math.round(
-    //  (0.0005 * windowWidth * (windowHeight - 200)) / Math.max(width, height)
-    //  );
+    const largestHeight = findLargestHeight(levels[currentLevel].pieces);
+    const sizeOfEachUnit = calculateUnitSize(
+      windowWidth,
+      windowHeight,
+      width,
+      height,
+      largestHeight,
+    );
     document.documentElement.style.setProperty(
       '--sizeOfEachUnit',
       `${sizeOfEachUnit}px`
@@ -93,6 +107,7 @@ export function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
 
   function nextLevel() {
     if (currentLevel === numberOfLevels - 1) {
+      Hotjar.event('click disabled nextLevel button');
       return;
     } else {
       setCurrentLevel(currentLevel + 1);
@@ -101,6 +116,7 @@ export function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
 
   function previousLevel() {
     if (currentLevel === 0) {
+      Hotjar.event('click disabled previousLevel button');
       return;
     } else {
       setCurrentLevel(currentLevel - 1);

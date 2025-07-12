@@ -20,6 +20,7 @@ import {
   CurrentLevelContext,
   CurrentLevelContextType,
 } from '../context/CurrentLevel.tsx';
+import Hotjar from '@hotjar/browser';
 
 export const PieceWrapper = styled.button.attrs(props => ({
   onClick: props.onClick,
@@ -31,6 +32,7 @@ export const PieceWrapper = styled.button.attrs(props => ({
   position: absolute;
   left: ${({ x }) => `calc(${x} * var(--sizeOfEachUnit))`};
   top: ${({ y }) => `calc(${y} * var(--sizeOfEachUnit))`};
+  cursor: ${({ isDragging }) => (isDragging ? 'grab' : 'pointer')};
   visibility: ${({ isDragging }) => (isDragging ? 'hidden' : 'visible')};
   z-index: 2;
   &:active {
@@ -83,15 +85,19 @@ function PieceOnBoard({
     } finally {
       setIsRotating(false);
       const { x, y } = convertLocationToXAndY(selectedPiece.location);
-      let newX = x + Math.ceil(selectedPiece.height / 2) - 1;
-      let newY = y + Math.ceil(selectedPiece.width / 2) - 1;
+      let newX = x + Math.floor(selectedPiece.height / 2) - 1;
+      let newY = y + Math.floor(selectedPiece.width / 2) - 1;
       movePiece(pieceIndex, `(${newX},${newY})`);
     }
+    Hotjar.event('rotation');
   }
 
   function handlePieceSelected() {
     const chosenPiece = piecesInPlay.find((piece: Piece) => id === piece.id);
     setSelectedPiece(chosenPiece);
+    Hotjar.event(
+      `board piece selected width:${piece.width} height:${piece.height}`
+    );
   }
 
   return (
@@ -103,7 +109,8 @@ function PieceOnBoard({
         onClick={handlePieceSelected}
         x={x}
         y={y}
-        $isDragging={isDragging}
+        layout={!isRotating && !isDragging}
+        isDragging={isDragging}
       >
         <Rectangle
           width={piece.width}

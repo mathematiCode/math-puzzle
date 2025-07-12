@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { useContext, useState, useRef } from 'react';
-import levels from '../levels.json';
+import levels from '../levels.json' with { type: 'json' };
 import InitialPuzzlePiece from '../components/InitialPuzzlePiece.tsx';
 import PieceOverlay from '../components/PieceOverlay.tsx';
 import Board from '../components/Board.tsx';
@@ -13,9 +13,8 @@ import styled from 'styled-components';
 import { DragOverlay } from '@dnd-kit/core';
 import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
 import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
-import { getInitialPieces } from '../utils/getInitialPieces.ts';
+import { getInitialPieces } from '../getInitialPieces';
 import { Piece } from '../types/piece.ts';
-import { BoardSquaresContext } from '../context/BoardSquares.tsx';
 
 function Game() {
   const {
@@ -28,7 +27,6 @@ function Game() {
   const [activePiece, setActivePiece] = useState<Piece | null>(null);
   const { piecesInPlay, resetPieces, setPiecesForNewLevel } =
     useContext(PiecesInPlayContext);
-  const { boardSquares, resetBoardSquares } = useContext(BoardSquaresContext);
   const [isRotating, setIsRotating] = useState(false);
 
   const boardRef = useRef(null);
@@ -38,7 +36,6 @@ function Game() {
     const newPieces = getInitialPieces(currentLevel - 1);
     await setPiecesForNewLevel(newPieces);
     await setSizeOfEachUnit(currentLevel - 1);
-    resetBoardSquares(currentLevel - 1);
   }
 
   async function setToNext() {
@@ -46,10 +43,9 @@ function Game() {
     const newPieces = getInitialPieces(currentLevel + 1);
     await setPiecesForNewLevel(newPieces);
     await setSizeOfEachUnit(currentLevel + 1);
-    resetBoardSquares(currentLevel + 1);
   }
 
-  function resetLevel() {
+    function resetLevel() {
     resetPieces();
     resetBoardSquares(currentLevel);
     console.log(boardSquares);
@@ -118,7 +114,7 @@ export const Main = styled.main`
   grid-template-columns: 60% 40%;
   grid-template-rows: 1fr 50px;
   align-items: start;
-  gap: calc(var(--sizeOfEachUnit) - 1px);
+  gap: 70px;
   margin-inline: 30px;
   height: 100%;
 
@@ -127,6 +123,7 @@ export const Main = styled.main`
     grid-template-rows: 55% 40% 5%;
     margin-inline: 10px;
     justify-items: center;
+    gap: 20px;
   }
 `;
 
@@ -142,7 +139,6 @@ export const PiecesContainer = styled(motion.div).attrs({
 })<{ $currentLevel: number }>`
   display: flex;
   flex-direction: row;
-  /* width: 700px; */
   flex-wrap: wrap;
   align-items: start;
   justify-content: right;
@@ -158,6 +154,7 @@ export const ButtonContainer = styled.div`
   position: fixed;
   bottom: 20px;
   grid-column: 1/3;
+  z-index: 3;
 
   @media (max-width: 750px) {
     bottom: 0px;

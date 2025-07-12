@@ -15,6 +15,13 @@ import styled from 'styled-components';
 import Button from './Button.tsx';
 import InitialPuzzlePiece from './InitialPuzzlePiece.tsx';
 import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
+import AnimatedLottieIcon from './AnimatedLottieIcon.js';
+import rotateToolAnimation from '../assets/icons-animation/rotate-tool.json';
+import horizontalStretchAnimation from '../assets/icons-animation/horizontal-stretch-tool.json';
+import verticalStretchAnimation from '../assets/icons-animation/vertical-stretch-tool.json';
+import cutAnimation from '../assets/icons-animation/cut-tool.json';
+import combineAnimation from '../assets/icons-animation/combine-tool.json';
+import MathematicalTools from './MathematicalTools.js';
 
 // Instructions on how to use Griffel/ makeStyles here: https://learn.microsoft.com/en-us/shows/fluent-ui-insights/fluent-ui-trainings-styling-components-theming#time=20m55s
 const useClasses = makeStyles({
@@ -40,6 +47,15 @@ const useClasses = makeStyles({
       paddingInline: '10px',
       fontSize: '0.9rem',
     },
+  },
+  Overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Dark overlay with 50% opacity
+    position: 'fixed',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    zIndex: 0, // Ensure it's behind the dialog
   },
   Title: {
     fontSize: '1.6rem',
@@ -128,13 +144,20 @@ const InstructionsModal = ({
                 </ul>
 
                 <h2 className={classes.h2}>The Tools</h2>
-                <ul>
-                  <li>Rotate</li>
+                {/* <ul>
+                  <li>
+                    Rotate{' '}
+                    <AnimatedLottieIcon
+                      animationData={rotateToolAnimation}
+                      size={35}
+                    />
+                  </li>
                   <li>Double the width and halve the height</li>
                   <li>Double the height and halve the width</li>
                   <li>Break one piece into two (coming soon!)</li>
                   <li>Merge two pieces into one (coming soon!)</li>
-                </ul>
+                </ul> */}
+                <MathematicalTools variant="embedded" />
                 <h2 className={classes.h2}>Try clicking the piece below. </h2>
                 <div className={classes.div}>
                   <InitialPuzzlePiece
