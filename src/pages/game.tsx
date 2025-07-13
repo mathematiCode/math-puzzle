@@ -38,6 +38,7 @@ function Game() {
     const newPieces = getInitialPieces(currentLevel - 1);
     await setPiecesForNewLevel(newPieces);
     await setSizeOfEachUnit(currentLevel - 1);
+    await resetBoardSquares(currentLevel - 1)
   }
 
   async function setToNext() {
@@ -45,6 +46,7 @@ function Game() {
     const newPieces = getInitialPieces(currentLevel + 1);
     await setPiecesForNewLevel(newPieces);
     await setSizeOfEachUnit(currentLevel + 1);
+    await resetBoardSquares(currentLevel + 1)
   }
 
     function resetLevel() {

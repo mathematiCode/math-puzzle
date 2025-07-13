@@ -39,6 +39,14 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
     width: number,
     height: number
   ) {
+    console.log('adding a piece', {
+      x,
+      y,
+      width,
+      height,
+      boardWidth,
+      boardHeight,
+    });
     if (x < 0) {
       console.error('adding a piece to the board with a negative x.');
       x = 0;
@@ -49,8 +57,14 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
     }
     let newBoardSquares = boardSquares;
     for (let row = y; row < Math.min(y + height, boardHeight); row++) {
+      if (!newBoardSquares[row]) {
+        console.warn(`Row index ${row} is out of bounds for boardSquares.`);
+        continue;
+      }
       for (let col = x; col < Math.min(x + width, boardWidth); col++) {
-        if (boardSquares[row][col] == 'invalid') {
+        if (typeof newBoardSquares[row][col] === 'undefined') {
+          console.warn(`Column index ${col} is out of bounds for row ${row}.`);
+        } else if (boardSquares[row][col] == 'invalid') {
           console.error('Piece was placed on invalid squares.');
         } else {
           newBoardSquares[row][col] = 'full';
@@ -66,10 +80,27 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
     width: number,
     height: number
   ) {
-    let newBoardSquares = boardSquares;
-    for (let row = y; row < y + height; row++) {
-      for (let col = x; col < x + width; col++) {
-        newBoardSquares[row][col] = 'empty';
+    console.log('removing a piece', {
+      x,
+      y,
+      width,
+      height,
+      boardWidth,
+      boardHeight,
+    });
+    let newBoardSquares = [...boardSquares];
+    for (let row = y; row < y + height && row < boardHeight; row++) {
+      if (!newBoardSquares[row]) {
+        console.warn(`Row index ${row} is out of bounds.`);
+        continue;
+      }
+      for (let col = x; col < x + width && col < boardWidth; col++) {
+        if (typeof newBoardSquares[row][col] === 'undefined') {
+          console.warn(`Column index ${col} is out of bounds.`);
+          continue;
+        } else if (newBoardSquares[row][col] === 'full') {
+          newBoardSquares[row][col] = 'empty';
+        }
       }
     }
     setBoardSquares(newBoardSquares);

@@ -1,3 +1,5 @@
+// Not currently in use
+
 import { useState, useEffect } from 'react';
 
 export function useElementPosition(elementRef: React.RefObject<HTMLElement>) {
