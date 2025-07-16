@@ -22,13 +22,16 @@ import {
 } from '../context/CurrentLevel.tsx';
 import Hotjar from '@hotjar/browser';
 
-export const PieceWrapper = styled.button.attrs(props => ({
-  onClick: props.onClick,
-  ref: props.ref,
-  isDragging: props.isDragging,
-  animate: props.animate,
-  transition: props.transition,
-}))`
+export const PieceWrapper = styled(motion.button)
+  .withConfig({
+    shouldForwardProp: prop => prop !== 'isDragging',
+  })
+  .attrs(props => ({
+    onClick: props.onClick,
+    ref: props.ref,
+    animate: props.animate,
+    transition: props.transition,
+  }))`
   position: absolute;
   left: ${({ x }) => `calc(${x} * var(--sizeOfEachUnit))`};
   top: ${({ y }) => `calc(${y} * var(--sizeOfEachUnit))`};

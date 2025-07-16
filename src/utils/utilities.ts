@@ -121,7 +121,7 @@ export function countOverlappingSquares(
         ) {
           innerOverlaps++;
         } else {
-          console.log({ x, col, pieceWidth, y, row, pieceHeight });
+          // console.log({ x, col, pieceWidth, y, row, pieceHeight });
           outerOverlaps++;
         }
       }

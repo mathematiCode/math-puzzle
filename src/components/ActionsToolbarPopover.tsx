@@ -17,6 +17,8 @@ import verticalStretchAnimation from '../assets/icons-animation/vertical-stretch
 import cutAnimation from '../assets/icons-animation/cut-tool.json';
 import combineAnimation from '../assets/icons-animation/combine-tool.json';
 import Hotjar from '@hotjar/browser';
+import { countOverlappingSquares } from '../utils/utilities';
+import { BoardSquaresContext } from '../context/BoardSquares';
 
 function ActionsToolbarPopover({
   children,
@@ -36,12 +38,32 @@ function ActionsToolbarPopover({
   const { updateDimensions } = context;
   const { selectedPiece } = useSelectedPiece();
   const showTooltips = false;
+  const boardSquaresContext = useContext(BoardSquaresContext);
+  if (!boardSquaresContext) {
+    throw new Error(
+      'ActionsToolbarPopover must be used within a BoardSquaresProvider'
+    );
+  }
+  const { boardSquares } = boardSquaresContext;
 
   function handleHorizontalStretch() {
     Hotjar.event('double width attempt');
     if (selectedPiece && Number.isInteger(selectedPiece.height / 2)) {
       const newHeight = selectedPiece.height / 2;
       const newWidth = selectedPiece.width * 2;
+      if (selectedPiece.location != null) {
+        const { innerOverlaps, outerOverlaps } = countOverlappingSquares(
+          selectedPiece.location,
+          newWidth,
+          newHeight,
+          boardSquares
+        );
+        if (innerOverlaps + outerOverlaps > 0) {
+          Hotjar.event('double width unsuccessfully');
+          console.log('Unable to double width due to potential collision');
+          return;
+        }
+      }
       const id = selectedPiece.id;
       const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
       updateDimensions(pieceIndex, newWidth, newHeight);
@@ -155,7 +177,9 @@ function ActionsToolbarPopover({
   );
 }
 
-const IconButton = styled.button<{
+const IconButton = styled.button.withConfig({
+  shouldForwardProp: prop => prop !== 'isDisabled',
+})<{
   isDisabled?: boolean;
 }>`
   padding: 0px;
@@ -174,7 +198,9 @@ const IconButton = styled.button<{
   }
 `;
 
-const ActionsToolbar = styled(motion.div)`
+const ActionsToolbar = styled(motion.div).withConfig({
+  shouldForwardProp: prop => prop !== 'layout',
+})`
   background-color: white;
   color: hsl(178, 100%, 23%);
   border-radius: 5px;

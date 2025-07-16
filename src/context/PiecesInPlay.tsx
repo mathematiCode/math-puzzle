@@ -8,7 +8,7 @@ import {
 import { BoardSquaresContext } from './BoardSquares.tsx';
 import { colors } from '../CONSTANTS';
 import { InitialPiece, Piece } from '../types/piece.ts';
-import { convertLocationToXAndY } from '../utils/utilities.ts';
+import { convertLocationToXAndY, countOverlappingSquares } from '../utils/utilities.ts';
 import { useAnimate } from 'motion/dist/react';
 import levels from '../levels.json' with { type: 'json' };
 import Hotjar from '@hotjar/browser';
@@ -57,24 +57,21 @@ export function PiecesInPlayProvider({
     if (oldLocation != null) {
       removePieceFromBoard(oldX, oldY, pieceWidth, pieceHeight);
     }
+    // if moving from off the board to a valid spot on the board
+    //  if moving from on the board to another valid spot on the board
+    // if moving from off the board to an invalid spot on the board
+    // if moving from on the board to an invalid spot on the board
+
     if (newLocation != null) {
       const { x, y } = convertLocationToXAndY(newValidLocation);
       let correctedX = x;
       let correctedY = y;
       const pieceHeight = piecesInPlay[pieceIndex].height;
       const pieceWidth = piecesInPlay[pieceIndex].width;
-      if (oldLocation === null) {
-        Hotjar.event('move from initial onto board');
-      } else {
-        Hotjar.event('move piece already on board to new location');
-      }
       // if (oldLocation === null) {
-      // if (pieceWidth > 1 && x > 0) {
-      //   correctedX = x - 1; // Temporary fix for pieces shifting one to the right when dragged from initial container
-      // }
-      // if (pieceHeight > 1 && y > 0) {
-      //   correctedY = y - 1;
-      // }
+      //   Hotjar.event('move from initial onto board');
+      // } else {
+      //   Hotjar.event('move piece already on board to new location');
       // }
       if (correctedX + pieceWidth > boardWidth) {
         correctedX = boardWidth - pieceWidth;
@@ -86,16 +83,33 @@ export function PiecesInPlayProvider({
         Hotjar.event('piece placed partially off board on the y axis');
       }
       newValidLocation = `(${correctedX},${correctedY})`;
-      updatedPieces[pieceIndex].id = `inPlay-${pieceIndex}`;
-      addPieceToBoard(correctedX, correctedY, pieceWidth, pieceHeight);
-    } else {
+      const { outerOverlaps, innerOverlaps } = countOverlappingSquares(
+        newValidLocation,
+        pieceWidth,
+        pieceHeight,
+        boardSquares
+      );
+      if (outerOverlaps + innerOverlaps === 0) {
+        updatedPieces[pieceIndex].location = newValidLocation;
+        updatedPieces[pieceIndex].id = `inPlay-${pieceIndex}`;
+        addPieceToBoard(correctedX, correctedY, pieceWidth, pieceHeight);
+        setPiecesInPlay(updatedPieces);
+      } else {
+        console.log('You have some overlaps.');
+        Hotjar.event('Piece placed partially overlapping another piece.');
+        if (oldLocation != null) {
+            console.log("adding piece back to where it came from.")
+            addPieceToBoard(oldX, oldY, pieceWidth, pieceHeight);
+        } else console.log({ oldLocation})
+      } 
+    } else if (newLocation === null) {
+      updatedPieces[pieceIndex].location = newValidLocation;
       updatedPieces[pieceIndex].id = `initial-${pieceIndex}`;
+      setPiecesInPlay(updatedPieces);
       if (oldLocation !== null) {
         Hotjar.event('move off of board');
       }
     }
-    updatedPieces[pieceIndex].location = newValidLocation;
-    setPiecesInPlay(updatedPieces);
   }
 
   function updateDimensions(pieceIndex: number, width: number, height: number) {
