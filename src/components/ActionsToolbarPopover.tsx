@@ -103,6 +103,9 @@ function ActionsToolbarPopover({
               isDisabled={
                 selectedPiece?.height == null || selectedPiece.height % 2 !== 0
               }
+              disabled={
+                selectedPiece?.height == null || selectedPiece.height % 2 !== 0
+              }
             >
               <AnimatedLottieIcon
                 animationData={horizontalStretchAnimation}
@@ -128,6 +131,9 @@ function ActionsToolbarPopover({
               onClick={handleVerticalStretch}
               aria-label="Double Height & Halve Width"
               isDisabled={
+                selectedPiece?.width == null || selectedPiece.width % 2 !== 0
+              }
+              disabled={
                 selectedPiece?.width == null || selectedPiece.width % 2 !== 0
               }
             >
