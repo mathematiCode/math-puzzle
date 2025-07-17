@@ -111,6 +111,7 @@ function PieceOnBoard({
         y={y}
         layout={!isRotating && !isDragging}
         isDragging={isDragging}
+        data-testid="piece-on-board"
       >
         <Rectangle
           width={piece.width}

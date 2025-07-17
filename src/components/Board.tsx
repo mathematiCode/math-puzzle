@@ -33,6 +33,7 @@ const Board = forwardRef(
           gridColumn: 1 / 2,
           gridRow: 1 / 2,
         }}
+        data-testid="board"
       >
         {boardSections.map((row: BoardSectionData[], index: number) => {
           if (row.length === 1) {

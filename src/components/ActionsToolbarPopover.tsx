@@ -98,6 +98,9 @@ function ActionsToolbarPopover({
             }
           >
             <IconButton
+              disabled={
+                selectedPiece?.height == null || selectedPiece.height % 2 !== 0
+              }
               onClick={handleHorizontalStretch}
               aria-label="Double Width & Halve Height"
               isDisabled={

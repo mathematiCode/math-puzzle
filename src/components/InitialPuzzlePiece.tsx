@@ -63,6 +63,8 @@ const InitialPuzzlePiece = ({
         onClick={handlePieceSelected}
         isDragging={isDragging}
         layoutId={piece.id}
+        id={piece.id}
+        data-testid="initial-piece"
       >
         <Rectangle
           width={piece.width}
