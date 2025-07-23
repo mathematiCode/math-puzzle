@@ -15,10 +15,9 @@ Here are some other items on my to do list for this project:
 Priority Fixes and Features
 
 - Make the shift after a rotation that causes a piece to be un-aligned with the grid more graceful/animated.
-- Make the original piece disappear as soon as it's being dragged in the air.
 - Handle case where a rotation causes a piece to go partly off the board.
 - Handle UX for a piece that is too tall or too long to fit on the board
-- Detect and prevent/handle collisions between pieces.
+- Detect and prevent/handle collisions between pieces by adding slight vibration when pieces are overlapping to show instability.
 
 Features to Add Later
 
