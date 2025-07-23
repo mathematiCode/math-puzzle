@@ -37,7 +37,7 @@ export const PieceWrapper = styled(motion.button)
   top: ${({ y }) => `calc(${y} * var(--sizeOfEachUnit))`};
   cursor: ${({ isDragging }) => (isDragging ? 'grab' : 'pointer')};
   visibility: ${({ isDragging }) => (isDragging ? 'hidden' : 'visible')};
-  z-index: 2;
+  z-index: ${({ isStable }) => (isStable ? 2 : 6)};
   &:active {
     cursor: grab;
   }
@@ -48,11 +48,13 @@ function PieceOnBoard({
   id,
   isRotating,
   setIsRotating,
+  isStable = true,
 }: {
   piece: Piece;
   id: string;
   isRotating: boolean;
   setIsRotating: (isRotating: boolean) => void;
+  isStable: boolean;
 }) {
   const { selectedPiece, setSelectedPiece } =
     useContext<SelectedPieceContextType>(SelectedPieceContext);
@@ -114,6 +116,17 @@ function PieceOnBoard({
         y={y}
         layout={!isRotating && !isDragging}
         isDragging={isDragging}
+        isStable={isStable}
+        animate={
+          isStable
+            ? { x: 0, y: 0 }
+            : { x: [0, -1, 1, -1, 1, 0], y: [0, 1, -1, 1, -1, 0] }
+        }
+        transition={
+          isStable
+            ? { duration: 0.1 } // or 0 for instant snap
+            : { duration: 0.2, repeat: Infinity, ease: 'linear' }
+        }
       >
         <Rectangle
           width={piece.width}

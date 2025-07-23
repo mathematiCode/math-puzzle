@@ -3,9 +3,10 @@ import { createContext, useContext, useState, ReactNode } from 'react';
 import levels from '../levels.json';
 import { getInitialBoardSquares } from '../utils/getInitialBoardSquares';
 import { CurrentLevelContext } from './CurrentLevel.tsx';
+import { convertLocationToXAndY } from '../utils/utilities';
 
 export type BoardSquaresContextType = {
-  boardSquares: string[][];
+  boardSquares: number[][];
   setBoardSquares: (boardSquares: [][]) => void;
   addPieceToBoard: (
     x: number,
@@ -20,6 +21,12 @@ export type BoardSquaresContextType = {
     height: number
   ) => void;
   resetBoardSquares: (level: number) => void;
+  countOverlappingSquares: (
+    location: string,
+    pieceWidth: number,
+    pieceHeight: number,
+    boardSquares: string[][]
+  ) => { outerOverlaps: number; innerOverlaps: number };
 };
 
 export const BoardSquaresContext =
@@ -62,12 +69,12 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
         continue;
       }
       for (let col = x; col < Math.min(x + width, boardWidth); col++) {
-        if (typeof newBoardSquares[row][col] === 'undefined') {
+        if (typeof newBoardSquares[row][col] == undefined) {
           console.warn(`Column index ${col} is out of bounds for row ${row}.`);
-        } else if (boardSquares[row][col] == 'invalid') {
+        } else if (boardSquares[row][col] == -1) {
           console.error('Piece was placed on invalid squares.');
         } else {
-          newBoardSquares[row][col] = 'full';
+          newBoardSquares[row][col] = newBoardSquares[row][col] + 1;
         }
       }
     }
@@ -95,11 +102,11 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
         continue;
       }
       for (let col = x; col < x + width && col < boardWidth; col++) {
-        if (typeof newBoardSquares[row][col] === 'undefined') {
+        if (typeof newBoardSquares[row][col] == undefined) {
           console.warn(`Column index ${col} is out of bounds.`);
           continue;
-        } else if (newBoardSquares[row][col] === 'full') {
-          newBoardSquares[row][col] = 'empty';
+        } else if (newBoardSquares[row][col] > 0) {
+          newBoardSquares[row][col] = newBoardSquares[row][col] - 1;
         }
       }
     }
@@ -112,6 +119,44 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
     setBoardSquares(getInitialBoardSquares(level));
   }
 
+  function countOverlappingSquares(
+    location: string,
+    pieceWidth: number,
+    pieceHeight: number,
+    boardSquares: string[][]
+  ) {
+    let outerOverlaps = 0;
+    let innerOverlaps = 0;
+    let squaresOutsideBoard = 0;
+    const { x, y } = convertLocationToXAndY(location);
+    console.log({ x, y, pieceWidth, pieceHeight, boardSquares });
+    removePieceFromBoard(x, y, pieceWidth, pieceHeight);
+    for (let col = x; col < x + pieceWidth; col++) {
+      for (let row = y; row < y + pieceHeight; row++) {
+        if (boardSquares[row] == undefined) {
+          squaresOutsideBoard++;
+        }
+        // console.log({ row, col, boardSquare: boardSquares[row] });
+        //console.log(boardSquares);
+        if (boardSquares?.[row]?.[col] > 0) {
+          if (
+            col > x &&
+            col < x + pieceWidth - 1 &&
+            row > y &&
+            row < y + pieceHeight - 1
+          ) {
+            innerOverlaps++;
+          } else {
+            // console.log({ x, col, pieceWidth, y, row, pieceHeight });
+            outerOverlaps++;
+          }
+        }
+      }
+    }
+    addPieceToBoard(x, y, pieceWidth, pieceHeight, boardSquares);
+    return { outerOverlaps, innerOverlaps };
+  }
+
   return (
     <BoardSquaresContext.Provider
       value={{
@@ -120,6 +165,7 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
         addPieceToBoard,
         removePieceFromBoard,
         resetBoardSquares,
+        countOverlappingSquares,
       }}
     >
       {children}

@@ -38,6 +38,7 @@ function getInitialPieces(level: number) {
     color: 'hsl(0, 61%, 66%)',
     id: 'sample-0',
     isRotated: false,
+    isStable: true,
   };
   return [
     instructionsPiece,

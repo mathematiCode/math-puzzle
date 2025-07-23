@@ -17,7 +17,7 @@ import verticalStretchAnimation from '../assets/icons-animation/vertical-stretch
 import cutAnimation from '../assets/icons-animation/cut-tool.json';
 import combineAnimation from '../assets/icons-animation/combine-tool.json';
 import Hotjar from '@hotjar/browser';
-import { countOverlappingSquares } from '../utils/utilities';
+import { convertLocationToXAndY } from '../utils/utilities';
 import { BoardSquaresContext } from '../context/BoardSquares';
 
 function ActionsToolbarPopover({
@@ -35,7 +35,7 @@ function ActionsToolbarPopover({
       'ActionsToolbarPopover must be used within a PiecesInPlayProvider'
     );
   }
-  const { updateDimensions } = context;
+  const { updateDimensions, movePiece } = context;
   const { selectedPiece } = useSelectedPiece();
   const showTooltips = false;
   const boardSquaresContext = useContext(BoardSquaresContext);
@@ -44,8 +44,9 @@ function ActionsToolbarPopover({
       'ActionsToolbarPopover must be used within a BoardSquaresProvider'
     );
   }
-  const { boardSquares } = boardSquaresContext;
-
+  const { boardSquares, countOverlappingSquares } = boardSquaresContext;
+  const boardWidth = boardSquares[0].length;
+  const boardHeight = boardSquares.length;
   function handleHorizontalStretch() {
     Hotjar.event('double width attempt');
     if (selectedPiece && Number.isInteger(selectedPiece.height / 2)) {
@@ -60,8 +61,7 @@ function ActionsToolbarPopover({
         );
         if (innerOverlaps + outerOverlaps > 0) {
           Hotjar.event('double width unsuccessfully');
-          console.log('Unable to double width due to potential collision');
-          return;
+          console.log('Collision alert');
         }
       }
       const id = selectedPiece.id;
@@ -76,8 +76,31 @@ function ActionsToolbarPopover({
     if (selectedPiece && Number.isInteger(selectedPiece.width / 2)) {
       const newHeight = selectedPiece.height * 2;
       const newWidth = selectedPiece.width / 2;
+      console.log({
+        selectedPieceLocation: selectedPiece.location,
+        newWidth,
+        newHeight,
+        boardSquares,
+      });
       const id = selectedPiece.id;
       const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
+      if (selectedPiece.location != null) {
+        let { x, y } = convertLocationToXAndY(selectedPiece.location);
+        if (y + newHeight > boardSquares.length) {
+          y = boardSquares.length - newHeight;
+        }
+        movePiece(pieceIndex, `(${x}, ${y})`);
+        const { innerOverlaps, outerOverlaps } = countOverlappingSquares(
+          selectedPiece.location,
+          newWidth,
+          newHeight,
+          boardSquares
+        );
+        if (innerOverlaps + outerOverlaps > 0) {
+          Hotjar.event('double height unsuccessfully');
+          console.log('Collision alert');
+        }
+      }
       updateDimensions(pieceIndex, newWidth, newHeight);
       Hotjar.event('double height successfully');
       handleCombinePieces();
@@ -95,6 +118,11 @@ function ActionsToolbarPopover({
     Hotjar.event('separate pieces unsuccessfully');
   }
 
+  const horizontalStretchDisabled =
+    selectedPiece?.height == null || selectedPiece.height % 2 !== 0;
+  const verticalStretchDisabled =
+    selectedPiece?.width == null || selectedPiece.width % 2 !== 0;
+  const rotateDisabled = selectedPiece == null;
   return (
     <Popover withArrow trapFocus size="small" positioning="below">
       <PopoverTrigger {...delegated}>{children}</PopoverTrigger>
@@ -104,34 +132,12 @@ function ActionsToolbarPopover({
             <IconButton
               onClick={() => runRotationAnimation(selectedPiece)}
               aria-label="Rotate"
-            >
-              <AnimatedLottieIcon animationData={rotateToolAnimation} />
-            </IconButton>
-          </Tooltip>
-          <Tooltip
-            placement="bottom"
-            title={
-              !showTooltips
-                ? ''
-                : selectedPiece?.height !== undefined &&
-                  selectedPiece.height % 2 !== 0
-                ? 'Disabled because fractional side lengths are not allowed'
-                : 'Double Width & Halve Height'
-            }
-          >
-            <IconButton
-              onClick={handleHorizontalStretch}
-              aria-label="Double Width & Halve Height"
-              isDisabled={
-                selectedPiece?.height == null || selectedPiece.height % 2 !== 0
-              }
+              isDisabled={rotateDisabled}
+              disabled={rotateDisabled}
             >
               <AnimatedLottieIcon
-                animationData={horizontalStretchAnimation}
-                isDisabled={
-                  selectedPiece?.height == null ||
-                  selectedPiece.height % 2 !== 0
-                }
+                animationData={rotateToolAnimation}
+                isDisabled={rotateDisabled}
               />
             </IconButton>
           </Tooltip>
@@ -140,8 +146,29 @@ function ActionsToolbarPopover({
             title={
               !showTooltips
                 ? ''
-                : selectedPiece?.width !== undefined &&
-                  selectedPiece.width % 2 !== 0
+                : horizontalStretchDisabled
+                ? 'Disabled because fractional side lengths are not allowed'
+                : 'Double Width & Halve Height'
+            }
+          >
+            <IconButton
+              onClick={handleHorizontalStretch}
+              aria-label="Double Width & Halve Height"
+              isDisabled={horizontalStretchDisabled}
+              disabled={horizontalStretchDisabled}
+            >
+              <AnimatedLottieIcon
+                animationData={horizontalStretchAnimation}
+                isDisabled={horizontalStretchDisabled}
+              />
+            </IconButton>
+          </Tooltip>
+          <Tooltip
+            placement="bottom"
+            title={
+              !showTooltips
+                ? ''
+                : verticalStretchDisabled
                 ? 'Disabled because fractional side lengths are not allowed'
                 : 'Double Height & Halve Width'
             }
@@ -149,15 +176,12 @@ function ActionsToolbarPopover({
             <IconButton
               onClick={handleVerticalStretch}
               aria-label="Double Height & Halve Width"
-              isDisabled={
-                selectedPiece?.width == null || selectedPiece.width % 2 !== 0
-              }
+              isDisabled={verticalStretchDisabled}
+              disabled={verticalStretchDisabled}
             >
               <AnimatedLottieIcon
                 animationData={verticalStretchAnimation}
-                isDisabled={
-                  selectedPiece?.width == null || selectedPiece.width % 2 !== 0
-                }
+                isDisabled={verticalStretchDisabled}
               />
             </IconButton>
           </Tooltip>

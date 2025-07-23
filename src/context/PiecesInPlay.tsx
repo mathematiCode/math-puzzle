@@ -8,7 +8,7 @@ import {
 import { BoardSquaresContext } from './BoardSquares.tsx';
 import { colors } from '../CONSTANTS';
 import { InitialPiece, Piece } from '../types/piece.ts';
-import { convertLocationToXAndY, countOverlappingSquares } from '../utils/utilities.ts';
+import { convertLocationToXAndY } from '../utils/utilities.ts';
 import { useAnimate } from 'motion/dist/react';
 import levels from '../levels.json' with { type: 'json' };
 import Hotjar from '@hotjar/browser';
@@ -41,6 +41,7 @@ export function PiecesInPlayProvider({
     addPieceToBoard,
     removePieceFromBoard,
     resetBoardSquares,
+    countOverlappingSquares,
   } = useContext(BoardSquaresContext);
   const [piecesInPlay, setPiecesInPlay] = useState<InitialPiece[] | Piece[]>(
     initialPieces
@@ -89,19 +90,19 @@ export function PiecesInPlayProvider({
         pieceHeight,
         boardSquares
       );
-      if (outerOverlaps + innerOverlaps === 0) {
-        updatedPieces[pieceIndex].location = newValidLocation;
-        updatedPieces[pieceIndex].id = `inPlay-${pieceIndex}`;
-        addPieceToBoard(correctedX, correctedY, pieceWidth, pieceHeight);
+      updatedPieces[pieceIndex].location = newValidLocation;
+      updatedPieces[pieceIndex].id = `inPlay-${pieceIndex}`;
+      addPieceToBoard(correctedX, correctedY, pieceWidth, pieceHeight);
+      setPiecesInPlay(updatedPieces);
+      if (outerOverlaps + innerOverlaps > 0) {
+        updatedPieces[pieceIndex].isStable = false;
         setPiecesInPlay(updatedPieces);
+        Hotjar.event('piece placed partially overlapping another piece');
+        console.log('piece placed partially overlapping another piece');
       } else {
-        console.log('You have some overlaps.');
-        Hotjar.event('Piece placed partially overlapping another piece.');
-        if (oldLocation != null) {
-            console.log("adding piece back to where it came from.")
-            addPieceToBoard(oldX, oldY, pieceWidth, pieceHeight);
-        } else console.log({ oldLocation})
-      } 
+        updatedPieces[pieceIndex].isStable = true;
+        console.log('piece placed without overlapping another piece');
+      }
     } else if (newLocation === null) {
       updatedPieces[pieceIndex].location = newValidLocation;
       updatedPieces[pieceIndex].id = `initial-${pieceIndex}`;
@@ -127,6 +128,11 @@ export function PiecesInPlayProvider({
     }
     updatedPieces[pieceIndex].width = width;
     updatedPieces[pieceIndex].height = height;
+    if (width > boardWidth || height > boardHeight) {
+      updatedPieces[pieceIndex].isStable = false;
+    } else {
+      updatedPieces[pieceIndex].isStable = true;
+    }
     try {
       addPieceToBoard(x, y, width, height);
     } catch {

@@ -5,6 +5,7 @@ export interface Piece {
   location: string | null;
   isRotated?: boolean;
   color?: string;
+  isStable?: boolean;
 }
 
 export interface InitialPiece {
@@ -14,4 +15,5 @@ export interface InitialPiece {
   location: string | null;
   isRotated: boolean;
   color: string;
+  isStable?: boolean;
 }
