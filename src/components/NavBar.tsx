@@ -11,8 +11,9 @@ const NavContainer = styled.nav`
   right: 0;
   background-color: #007571;
   z-index: 1000;
-  padding: 0 20px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 0 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+  letter-spacing: 0.2em;
 
   @media (max-width: 768px) {
     padding: 0 15px;
@@ -25,7 +26,7 @@ const NavContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 70px;
+  height: 60px;
 
   @media (max-width: 768px) {
     height: 60px;
@@ -58,10 +59,11 @@ const NavLink = styled.button<{ $isActive?: boolean }>`
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
-  padding: 8px 16px;
+  padding: 8px 10px;
   border-radius: 6px;
   transition: all 0.3s ease;
   position: relative;
+  letter-spacing: 0.13em;
 
   ${props =>
     props.$isActive &&

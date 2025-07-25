@@ -178,6 +178,10 @@ export const BoardWrapper = styled.div`
   display: grid;
   grid-area: 1fr;
   width: min-content;
+  position: fixed;
+  top: 50%;
+  left: 80%;
+  transform: translate(-50%, -50%);
 `;
 
 export const PiecesContainer = styled(motion.div).attrs({

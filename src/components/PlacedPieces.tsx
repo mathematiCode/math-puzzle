@@ -1,7 +1,15 @@
-import PieceOnBoard from './PieceOnBoard.tsx';
+import PieceOnBoard from './PieceOnBoard';
 import { Piece } from '../types/piece';
 import styled from 'styled-components';
-function PlacedPieces({ piecesInPlay, isRotating, setIsRotating }: { piecesInPlay: Piece[], isRotating: boolean, setIsRotating: (isRotating: boolean) => void }) {
+function PlacedPieces({
+  piecesInPlay,
+  isRotating,
+  setIsRotating,
+}: {
+  piecesInPlay: Piece[];
+  isRotating: boolean;
+  setIsRotating: (isRotating: boolean) => void;
+}) {
   return (
     <PlacedPiecesWrapper>
       {piecesInPlay.map((piece, index) =>
