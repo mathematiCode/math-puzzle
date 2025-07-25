@@ -6,19 +6,21 @@ import { CurrentLevelContext } from './CurrentLevel.tsx';
 import { convertLocationToXAndY } from '../utils/utilities';
 
 export type BoardSquaresContextType = {
-  boardSquares: number[][];
+  boardSquares: string[][];
   setBoardSquares: (boardSquares: [][]) => void;
   addPieceToBoard: (
     x: number,
     y: number,
     width: number,
-    height: number
+    height: number,
+    id: string
   ) => void;
   removePieceFromBoard: (
     x: number,
     y: number,
     width: number,
-    height: number
+    height: number,
+    id: string
   ) => void;
   resetBoardSquares: (level: number) => void;
   countOverlappingSquares: (
@@ -44,7 +46,8 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
     x: number,
     y: number,
     width: number,
-    height: number
+    height: number,
+    id: string
   ) {
     // console.log('adding a piece', {
     //   x,
@@ -71,10 +74,12 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
       for (let col = x; col < Math.min(x + width, boardWidth); col++) {
         if (typeof newBoardSquares[row][col] == undefined) {
           console.warn(`Column index ${col} is out of bounds for row ${row}.`);
-        } else if (boardSquares[row][col] == -1) {
+        } else if (boardSquares[row][col] == 'invalid') {
           console.error('Piece was placed on invalid squares.');
         } else {
-          newBoardSquares[row][col] = newBoardSquares[row][col] + 1;
+          newBoardSquares[row][col] = newBoardSquares[row][col]
+            ? `${newBoardSquares[row][col]}, ${id}`
+            : `${id}`;
         }
       }
     }
@@ -85,7 +90,8 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
     x: number,
     y: number,
     width: number,
-    height: number
+    height: number,
+    id: string
   ) {
     // console.log('removing a piece', {
     //   x,
@@ -105,8 +111,16 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
         if (typeof newBoardSquares[row][col] == undefined) {
           console.warn(`Column index ${col} is out of bounds.`);
           continue;
-        } else if (newBoardSquares[row][col] > 0) {
-          newBoardSquares[row][col] = boardSquares[row][col] - 1;
+        } else if (
+          newBoardSquares[row][col] &&
+          newBoardSquares[row][col].length > 0
+        ) {
+          // remove the id from the string
+          const currentIds = newBoardSquares[row][col].split(', ');
+          const filteredIds = currentIds.filter(
+            currentId => currentId.trim() !== id
+          );
+          newBoardSquares[row][col] = filteredIds.join(', ');
         }
       }
     }
@@ -138,7 +152,7 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
         }
         // console.log({ row, col, boardSquare: boardSquares[row] });
         //console.log(boardSquares);
-        if (boardSquares?.[row]?.[col] > 0) {
+        if (boardSquares?.[row]?.[col].length > 0) {
           if (
             col > x &&
             col < x + pieceWidth - 1 &&

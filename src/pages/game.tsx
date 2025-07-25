@@ -11,7 +11,7 @@ import InstructionsModal from '../components/InstructionsModal.tsx';
 import { motion } from 'motion/react';
 import styled from 'styled-components';
 import { DragOverlay } from '@dnd-kit/core';
-import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
+import { PiecesInPlayContext } from '../context/PiecesInPlay';
 import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
 import { getInitialPieces } from '../utils/getInitialPieces';
 import { Piece } from '../types/piece.ts';

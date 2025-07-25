@@ -15,7 +15,7 @@ import {
 import {
   PiecesInPlayContext,
   PiecesInPlayContextType,
-} from '../context/PiecesInPlay.tsx';
+} from '../context/PiecesInPlay';
 import {
   CurrentLevelContext,
   CurrentLevelContextType,

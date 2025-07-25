@@ -5,7 +5,7 @@ import {
   CurrentLevelContext,
   CurrentLevelContextType,
 } from './CurrentLevel.tsx';
-import { BoardSquaresContext } from './BoardSquares.tsx';
+import { BoardSquaresContext } from './BoardSquares';
 import { colors } from '../CONSTANTS';
 import { InitialPiece, Piece } from '../types/piece.ts';
 import { convertLocationToXAndY } from '../utils/utilities.ts';
@@ -56,7 +56,7 @@ export function PiecesInPlayProvider({
     const pieceHeight = piecesInPlay[pieceIndex].height;
     const pieceWidth = piecesInPlay[pieceIndex].width;
     if (oldLocation != null) {
-      removePieceFromBoard(oldX, oldY, pieceWidth, pieceHeight);
+      removePieceFromBoard(oldX, oldY, pieceWidth, pieceHeight, updatedPieces[pieceIndex].id);
     }
     // if moving from off the board to a valid spot on the board
     //  if moving from on the board to another valid spot on the board
@@ -92,7 +92,7 @@ export function PiecesInPlayProvider({
       );
       updatedPieces[pieceIndex].location = newValidLocation;
       updatedPieces[pieceIndex].id = `inPlay-${pieceIndex}`;
-      addPieceToBoard(correctedX, correctedY, pieceWidth, pieceHeight);
+      addPieceToBoard(correctedX, correctedY, pieceWidth, pieceHeight, updatedPieces[pieceIndex].id);
       setPiecesInPlay(updatedPieces);
       if (outerOverlaps + innerOverlaps > 0) {
         updatedPieces[pieceIndex].isStable = false;
@@ -123,7 +123,7 @@ export function PiecesInPlayProvider({
     const { x, y } = convertLocationToXAndY(location);
     debugger;
     try {
-      removePieceFromBoard(x, y, oldWidth, oldHeight);
+      removePieceFromBoard(x, y, oldWidth, oldHeight, updatedPieces[pieceIndex].id);
     } catch {
       console.log('Unable to remove piece from board');
     }
@@ -134,10 +134,10 @@ export function PiecesInPlayProvider({
       debugger;
     } else {
       updatedPieces[pieceIndex].isStable = true;
-      console.log("THIS:",width, boardWidth, height, boardHeight);
+      console.log({ width, boardWidth, height, boardHeight });
     }
     try {
-      addPieceToBoard(x, y, width, height);
+      addPieceToBoard(x, y, width, height, updatedPieces[pieceIndex].id);
       debugger;
     } catch {
       console.log('Unable to add piece to board');

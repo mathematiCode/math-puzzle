@@ -7,11 +7,11 @@ export function getInitialBoardSquares(level: number) {
   for (let i = 0; i < boardSections.length; i++) {
     let height = boardSections[i][0].height;
     for (let um = 0; um < height; um++) {
-      let row: number[] = [];
+      let row: string[] = [];
       boardSections[i].forEach(section => {
         const { width, valid } = section;
         for (let j = 0; j < width; j++) {
-          row.push(valid ? 0 : -1);
+          row.push(valid ? '' : 'invalid');
         }
       });
       boardSquares.push(row);
