@@ -4,3 +4,6 @@ export const colors = [
   'hsl(185, 78%, 80%)',
   'hsl(38, 87%, 66%)',
 ];
+
+// const green = 'hsl(100, 59 %, 86 %)';
+// const teal = 'hsl(180, 89.10%, 21.60%)';

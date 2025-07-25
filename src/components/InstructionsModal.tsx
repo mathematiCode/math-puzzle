@@ -9,7 +9,7 @@ import {
   DialogContent,
   makeStyles,
 } from '@fluentui/react-components';
-import { X } from 'lucide-react';
+import { X, HelpCircle } from 'lucide-react';
 import { RemoveScroll } from 'react-remove-scroll';
 import styled from 'styled-components';
 import Button from './Button.tsx';
@@ -132,7 +132,9 @@ const InstructionsModal = ({
   return (
     <Dialog modalType="modal" onOpenChange={closeModal}>
       <DialogTrigger disableButtonEnhancement>
-        <Button>How to Play</Button>
+        <Button color="hsl(38, 87%, 70%)" textColor="black">
+          <HelpCircle /> How to Play
+        </Button>
       </DialogTrigger>
       <RemoveScroll enabled={true}>
         <DialogSurface className={classes.Surface}>
