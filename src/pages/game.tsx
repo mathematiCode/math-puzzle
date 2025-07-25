@@ -111,9 +111,11 @@ function Game() {
             return (
               <InitialPuzzlePiece
                 piece={piece}
+                isActive={activePiece?.id === piece.id}
                 isRotating={isRotating}
                 setIsRotating={setIsRotating}
                 key={pieceIndex}
+                setActivePiece={setActivePiece}
               />
             );
           })}
@@ -158,7 +160,7 @@ function Game() {
 
 export const Main = styled.main`
   display: grid;
-  grid-template-columns: 60% 40%;
+  grid-template-columns: 50% 50%;
   grid-template-rows: 1fr 90px;
   align-items: start;
   gap: 70px;

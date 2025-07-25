@@ -20,6 +20,7 @@ interface RectangleProps {
 // Transform3d was appearing in my styles mysteriously and messing up the layout so setting it to 0px always fixes it for now.
 const Container = styled(motion.div)<{
   $width: number;
+  unitSize: number;
   color: string;
   isSelected?: boolean;
   isExample?: boolean;
@@ -42,6 +43,7 @@ function Rectangle(
   {
     width,
     height,
+    unitSize,
     color,
     isMotion,
     isSelected,
@@ -57,6 +59,7 @@ function Rectangle(
     <Container
       ref={ref}
       $width={width}
+      unitSize={unitSize}
       color={color}
       layout={layout}
       isSelected={isSelected}
@@ -67,11 +70,12 @@ function Rectangle(
           <MotionUnit
             key={unit}
             color={color}
+            unitSize={unitSize}
             layout={layout}
             isExample={isExample}
           />
         ) : (
-          <Unit key={unit} isExample={isExample} />
+          <Unit key={unit} unitSize={unitSize} isExample={isExample} />
         )
       )}
     </Container>

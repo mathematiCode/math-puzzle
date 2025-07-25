@@ -16,11 +16,15 @@ const InitialPuzzlePiece = ({
   isRotating,
   setIsRotating,
   isExample = false,
+  isActive = false,
+  setActivePiece,
 }: {
   piece: Piece;
   isRotating: boolean;
   setIsRotating: (isRotating: boolean) => void;
   isExample?: boolean;
+  isActive?: boolean;
+  setActivePiece: (piece: Piece) => void;
 }) => {
   const { selectedPiece, setSelectedPiece } = useSelectedPiece();
   const [scope, animate] = useAnimate();
@@ -32,6 +36,7 @@ const InitialPuzzlePiece = ({
 
   function handlePieceSelected() {
     setSelectedPiece(piece);
+    setActivePiece(piece);
     Hotjar.event(
       `initial piece selected width:${piece.width} height:${piece.height}`
     );
@@ -71,6 +76,7 @@ const InitialPuzzlePiece = ({
         <Rectangle
           width={piece.width}
           height={piece.height}
+          unitSize={isActive || isDragging ? 1 : 0.7}
           color={piece.color}
           isMotion={true}
           layout={!isRotating}
