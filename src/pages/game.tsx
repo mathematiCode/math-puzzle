@@ -138,10 +138,10 @@ function Game() {
       </DragAndDropArea>
       <ButtonContainer>
         <Button color='hsl(178, 30.00%, 56.10%)' textColor='black' disabled={levelPosition == 'first'} onClick={setToPrevious}>
-         <ChevronLeft />Previous Level 
+        <ChevronLeft />Previous Level 
         </Button>
         <Button color='hsl(178, 100%, 23%)' textColor='white' disabled={levelPosition == 'last'} onClick={setToNext}>
-          Next Level <ChevronRight />
+        Next Level <ChevronRight />
         </Button>
         <Button color='hsla(0, 78.00%, 75.10%, 0.88)' textColor='black' onClick={resetLevel}>
          <RotateCcw/> Reset Game 
@@ -202,7 +202,7 @@ export const ButtonContainer = styled.div`
   bottom: 20px;
   grid-column: 1/3;
   z-index: 3;
-  background-color: hsl(100, 50%, 90%);
+  background-color: hsl(107, 100.00%, 93.70%);
   border-radius: 10px;
   border: 3px solid hsl(180, 89.10%, 21.60%);
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);

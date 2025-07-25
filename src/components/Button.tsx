@@ -42,11 +42,12 @@ export const StyledButton = styled.button.attrs(props => ({
   gap: 5px;
   font-size: 1.3rem;
   font-weight: 600;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
 
   svg {
     width: 24px;
     height: 24px;
-    flex-shrink: 0;
+    padding: 0px;
   }
 
   &:focus,
