@@ -19,7 +19,7 @@ function PieceOverlay({ piece }: { piece: Piece }) {
       <Rectangle
         width={piece.width}
         height={piece.height}
-        color={piece.color}
+        color={piece.color || 'transparent'}
       />
     </motion.div>
   );

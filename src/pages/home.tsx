@@ -29,6 +29,7 @@ const Title = styled.h1`
   margin-bottom: 1rem;
   color: white;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.15em;
 
   @media (max-width: 768px) {
     font-size: 2.5rem;

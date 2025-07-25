@@ -16,6 +16,9 @@ import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
 import { getInitialPieces } from '../utils/getInitialPieces';
 import { Piece } from '../types/piece.ts';
 import { BoardSquaresContext } from '../context/BoardSquares';
+import Hotjar from '@hotjar/browser';
+import { ChevronLeft, ChevronRight, RotateCcw, HelpCircle } from 'lucide-react';
+//import { BoardSquaresContext } from '../context/BoardSquares.tsx';
 
 function Game() {
   const {
@@ -96,13 +99,15 @@ function Game() {
         ) : null}
       </DragAndDropArea>
       <ButtonContainer>
-        <Button disabled={levelPosition == 'first'} onClick={setToPrevious}>
-          Previous Level
+        <Button color='hsl(178, 30.00%, 56.10%)' textColor='black' disabled={levelPosition == 'first'} onClick={setToPrevious}>
+        <ChevronLeft />Previous Level 
         </Button>
-        <Button disabled={levelPosition == 'last'} onClick={setToNext}>
-          Next Level
+        <Button color='hsl(178, 100%, 23%)' textColor='white' disabled={levelPosition == 'last'} onClick={setToNext}>
+        Next Level <ChevronRight />
         </Button>
-        <Button onClick={resetLevel}>Reset Game</Button>
+        <Button color='hsla(0, 78.00%, 75.10%, 0.88)' textColor='black' onClick={resetLevel}>
+         <RotateCcw/> Reset Game 
+        </Button>
         <InstructionsModal
           isRotating={isRotating}
           setIsRotating={setIsRotating}
@@ -135,6 +140,10 @@ export const BoardWrapper = styled.div`
   display: grid;
   grid-area: 1fr;
   width: min-content;
+  position: fixed;
+  top: 50%;
+  left: 80%;
+  transform: translate(-50%, -50%);
 `;
 
 export const PiecesContainer = styled(motion.div).attrs({
@@ -159,6 +168,10 @@ export const ButtonContainer = styled.div`
   bottom: 20px;
   grid-column: 1/3;
   z-index: 3;
+  background-color: hsl(107, 100.00%, 93.70%);
+  border-radius: 10px;
+  border: 3px solid hsl(180, 89.10%, 21.60%);
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
 
   @media (max-width: 750px) {
     bottom: 0px;

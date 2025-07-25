@@ -9,7 +9,7 @@ import {
   DialogContent,
   makeStyles,
 } from '@fluentui/react-components';
-import { X } from 'lucide-react';
+import { X, HelpCircle } from 'lucide-react';
 import { RemoveScroll } from 'react-remove-scroll';
 import styled from 'styled-components';
 import Button from './Button.tsx';
@@ -36,7 +36,7 @@ const useClasses = makeStyles({
     border: '1px solid hsl(0, 0.00%, 0.00%)',
     boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.7) !important',
     inline: 0,
-    marginTop: '50px',
+    marginTop: '30px',
     zIndex: 1,
     fontSize: '1.2rem',
     fontWeight: 600,
@@ -58,22 +58,17 @@ const useClasses = makeStyles({
     zIndex: 0, // Ensure it's behind the dialog
   },
   Title: {
-    fontSize: '1.6rem',
-
-    '@media screen and (max-width: 768px)': {
-      fontSize: '1.3rem',
-    },
-  },
-  h2: {
     fontSize: '1.4rem',
-    marginTop: '15px',
+    marginBottom: '-10px',
+    alignContent: 'center',
+    textAlign: 'center',
 
     '@media screen and (max-width: 768px)': {
-      fontSize: '1.1rem',
+      fontSize: '1.2rem',
     },
   },
   div: {
-    padding: '30px',
+    padding: '20px',
     width: '90px',
   },
   X: {
@@ -83,12 +78,32 @@ const useClasses = makeStyles({
     color: 'black',
     cursor: 'pointer',
   },
-  li: {
-    '@media screen and (max-width: 768px)': {
-      marginLeft: '-20px',
-    },
-  },
 });
+
+// Styled-components for h2 and li
+const StyledH2 = styled.h2`
+  font-size: 1.1rem;
+  margin-top: 15px;
+
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
+  }
+`;
+
+const StyledLi = styled.li`
+  font-size: 1rem;
+
+  @media screen and (max-width: 768px) {
+    margin-left: -20px;
+  }
+`;
+const StyledParagraph = styled.p`
+  font-size: 1rem;
+
+  @media screen and (max-width: 768px) {
+    margin-left: -20px;
+  }
+`;
 
 const InstructionsModal = ({
   isRotating,
@@ -117,7 +132,9 @@ const InstructionsModal = ({
   return (
     <Dialog modalType="modal" onOpenChange={closeModal}>
       <DialogTrigger disableButtonEnhancement>
-        <Button>How to Play</Button>
+        <Button color="hsl(38, 87%, 70%)" textColor="black">
+          <HelpCircle /> How to Play
+        </Button>
       </DialogTrigger>
       <RemoveScroll enabled={true}>
         <DialogSurface className={classes.Surface}>
@@ -128,37 +145,30 @@ const InstructionsModal = ({
             </DialogTrigger>
             <DialogContent>
               <div>
-                <h2 className={classes.h2}>The Goal</h2>
-                <p>
-                  Fill the board with pieces so that it's completely covered.
-                </p>
-
-                <h2 className={classes.h2}>The Rules</h2>
+                <StyledH2>The Goal</StyledH2>
+                <StyledParagraph>
+                  Fill the board with pieces so that it's completely covered
+                  with no overlapping pieces. All pieces will be used.
+                </StyledParagraph>
+                <StyledH2>The Rules</StyledH2>
                 <ul>
-                  <li>Puzzle pieces cannot overlap.</li>
-                  <li>Puzzle pieces must be fully on the board.</li>
-                  <li>
+                  <StyledLi>Puzzle pieces cannot overlap.</StyledLi>
+                  <StyledLi>Puzzle pieces must be fully on the board.</StyledLi>
+                  <StyledLi>
                     You can use any of the tools below to transform the pieces
                     as needed.
-                  </li>
+                  </StyledLi>
+                  <StyledLi>
+                    Fractional side lengths are not supported so sometimes the
+                    tools will be disabled if halving is not possible.
+                  </StyledLi>
                 </ul>
 
-                <h2 className={classes.h2}>The Tools</h2>
-                {/* <ul>
-                  <li>
-                    Rotate{' '}
-                    <AnimatedLottieIcon
-                      animationData={rotateToolAnimation}
-                      size={35}
-                    />
-                  </li>
-                  <li>Double the width and halve the height</li>
-                  <li>Double the height and halve the width</li>
-                  <li>Break one piece into two (coming soon!)</li>
-                  <li>Merge two pieces into one (coming soon!)</li>
-                </ul> */}
+                <StyledH2>The Tools</StyledH2>
                 <MathematicalTools variant="embedded" />
-                <h2 className={classes.h2}>Try clicking the piece below. </h2>
+                <StyledH2>
+                  Try out the tools by clicking the piece below.{' '}
+                </StyledH2>
                 <div className={classes.div}>
                   <InitialPuzzlePiece
                     piece={piecesInPlay[0]}
