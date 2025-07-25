@@ -159,11 +159,12 @@ function Game() {
 export const Main = styled.main`
   display: grid;
   grid-template-columns: 60% 40%;
-  grid-template-rows: 1fr 50px;
+  grid-template-rows: 1fr 90px;
   align-items: start;
   gap: 70px;
   margin-inline: 30px;
   height: 100%;
+  overflow-y: auto;
 
   @media (max-width: 750px) {
     grid-template-columns: 1fr;
@@ -172,6 +173,7 @@ export const Main = styled.main`
     justify-items: center;
     gap: 20px;
   }
+ 
 `;
 
 export const BoardWrapper = styled.div`
@@ -194,6 +196,14 @@ export const PiecesContainer = styled(motion.div).attrs({
   align-items: start;
   justify-content: right;
   gap: var(--sizeOfEachUnit);
+  overflow-y: scroll;
+  max-height:  70vh;
+  height: 65vh;
+
+  @media (max-width: 750px) {
+    max-height: 50vh;
+    height: 45vh;
+  }
 `;
 // Not sure why subtracting 2 from the sizeOfEachUnit works here. May be a box-sizing issue although it should all be set to border-box...
 
