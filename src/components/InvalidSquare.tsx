@@ -7,6 +7,7 @@ function InvalidSquare({ id }: { id: string }) {
       id={id}
       color="transparent"
       style={{ border: '1px solid transparent' }}
+      unitSize={1}
     />
   );
 }
