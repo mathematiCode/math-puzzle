@@ -114,7 +114,7 @@ function PieceOnBoard({
         onClick={handlePieceSelected}
         x={x}
         y={y}
-        layout={!isRotating && !isDragging}
+        layout={!isRotating && !isDragging && !isStable}
         isDragging={isDragging}
         isStable={isStable}
         animate={

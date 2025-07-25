@@ -46,7 +46,7 @@ function getInitialPieces(level: number) {
       ...piece,
       location: initialLocation,
       color: colors[index % colors.length],
-      id: `initial-${index + 1}`,
+      id: `i-${index + 1}`,
       isRotated: false,
     })),
   ];

@@ -16,8 +16,8 @@ function PlacedPieces({
         piece.location != null && piece.location != 'instructions' ? (
           <PieceOnBoard
             piece={piece}
-            id={`inPlay-${index}`}
-            key={`inPlay-${index}`}
+            id={`b-${index}`}
+            key={`b-${index}`}
             isRotating={isRotating}
             setIsRotating={setIsRotating}
             isStable={piece.isStable}

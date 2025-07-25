@@ -55,9 +55,9 @@ export function PiecesInPlayProvider({
     let newValidLocation = newLocation;
     const pieceHeight = piecesInPlay[pieceIndex].height;
     const pieceWidth = piecesInPlay[pieceIndex].width;
-    if (oldLocation != null) {
-      removePieceFromBoard(oldX, oldY, pieceWidth, pieceHeight, updatedPieces[pieceIndex].id);
-    }
+    // if (oldLocation != null) {
+    //   removePieceFromBoard(oldX, oldY, pieceWidth, pieceHeight, updatedPieces[pieceIndex].id);
+    // }
     // if moving from off the board to a valid spot on the board
     //  if moving from on the board to another valid spot on the board
     // if moving from off the board to an invalid spot on the board
@@ -76,25 +76,28 @@ export function PiecesInPlayProvider({
       // }
       if (correctedX + pieceWidth > boardWidth) {
         correctedX = boardWidth - pieceWidth;
+        correctedX = Math.max(correctedX, 0);
+        console.log({ correctedX })
         Hotjar.event('piece placed partially off board on the x axis');
       }
       // I have no idea why adding 1 works here to correct pieces placed below the bottom of the board
       if (y + pieceHeight + 1 > boardHeight) {
         correctedY = boardHeight - pieceHeight;
+        correctedY = Math.max(correctedY, 0);
         Hotjar.event('piece placed partially off board on the y axis');
       }
       newValidLocation = `(${correctedX},${correctedY})`;
-      const { outerOverlaps, innerOverlaps } = countOverlappingSquares(
+      const { outerOverlaps, innerOverlaps, squaresOutsideBoard } = countOverlappingSquares(
         newValidLocation,
         pieceWidth,
         pieceHeight,
         boardSquares
       );
       updatedPieces[pieceIndex].location = newValidLocation;
-      updatedPieces[pieceIndex].id = `inPlay-${pieceIndex}`;
-      addPieceToBoard(correctedX, correctedY, pieceWidth, pieceHeight, updatedPieces[pieceIndex].id);
+      updatedPieces[pieceIndex].id = `b-${pieceIndex}`;
+     // addPieceToBoard(correctedX, correctedY, pieceWidth, pieceHeight, updatedPieces[pieceIndex].id);
       setPiecesInPlay(updatedPieces);
-      if (outerOverlaps + innerOverlaps > 0) {
+      if (outerOverlaps + innerOverlaps + squaresOutsideBoard > 0) {
         updatedPieces[pieceIndex].isStable = false;
         setPiecesInPlay(updatedPieces);
         Hotjar.event('piece placed partially overlapping another piece');
@@ -105,7 +108,7 @@ export function PiecesInPlayProvider({
       }
     } else if (newLocation === null) {
       updatedPieces[pieceIndex].location = newValidLocation;
-      updatedPieces[pieceIndex].id = `initial-${pieceIndex}`;
+      updatedPieces[pieceIndex].id = `i-${pieceIndex}`;
       setPiecesInPlay(updatedPieces);
       if (oldLocation !== null) {
         Hotjar.event('move off of board');
@@ -121,12 +124,13 @@ export function PiecesInPlayProvider({
       height: oldHeight,
     } = piecesInPlay[pieceIndex];
     const { x, y } = convertLocationToXAndY(location);
-    debugger;
-    try {
-      removePieceFromBoard(x, y, oldWidth, oldHeight, updatedPieces[pieceIndex].id);
-    } catch {
-      console.log('Unable to remove piece from board');
-    }
+    // debugger;
+    // try {
+    //   removePieceFromBoard(x, y, oldWidth, oldHeight, updatedPieces[pieceIndex].id);
+    // } catch {
+    //   console.log('Unable to remove piece from board');
+    // }
+    // removePieceFromBoard(x, y, oldWidth, oldHeight, updatedPieces[pieceIndex].id);
     updatedPieces[pieceIndex].width = width;
     updatedPieces[pieceIndex].height = height;
     if (width > boardWidth || height > boardHeight) {
@@ -136,12 +140,14 @@ export function PiecesInPlayProvider({
       updatedPieces[pieceIndex].isStable = true;
       console.log({ width, boardWidth, height, boardHeight });
     }
-    try {
-      addPieceToBoard(x, y, width, height, updatedPieces[pieceIndex].id);
-      debugger;
-    } catch {
-      console.log('Unable to add piece to board');
-    }
+    movePiece(pieceIndex, location);
+   // addPieceToBoard(x, y, width, height, updatedPieces[pieceIndex].id);
+    // try {
+      
+    //   debugger;
+    // } catch {`
+    //   console.log('Unable to add piece to board');
+    // }
     setPiecesInPlay(updatedPieces);
   }
 
@@ -161,7 +167,7 @@ export function PiecesInPlayProvider({
           ...piece,
           location: initialLocation,
           color: colors[index % colors.length],
-          id: `initial-${index + 1}`,
+          id: `i-${index + 1}`,
           isRotated: false,
         })),
       ];

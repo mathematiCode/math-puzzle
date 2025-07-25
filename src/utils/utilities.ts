@@ -1,3 +1,5 @@
+import { Piece } from '../types/piece';
+
 export function updatePiecesInPlay() {
   /**  check if puzzle piece was already placed on the board 
          - if it was update it's new location in the array of pieces placed on the board
@@ -99,3 +101,7 @@ export function findLargestHeight(
 
 //   return updatedLocation;
 // }
+
+export function findPieceById(piecesInPlay: Piece[], id: string) {
+  return piecesInPlay.find(piece => piece.id === id);
+}

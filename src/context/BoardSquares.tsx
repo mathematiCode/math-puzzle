@@ -28,7 +28,11 @@ export type BoardSquaresContextType = {
     pieceWidth: number,
     pieceHeight: number,
     boardSquares: string[][]
-  ) => { outerOverlaps: number; innerOverlaps: number };
+  ) => {
+    outerOverlaps: number;
+    innerOverlaps: number;
+    squaresOutsideBoard: number;
+  };
 };
 
 export const BoardSquaresContext =
@@ -152,7 +156,7 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
         }
         // console.log({ row, col, boardSquare: boardSquares[row] });
         //console.log(boardSquares);
-        if (boardSquares?.[row]?.[col].length > 0) {
+        if (boardSquares?.[row]?.[col]?.length > 0) {
           if (
             col > x &&
             col < x + pieceWidth - 1 &&
@@ -168,7 +172,7 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
       }
     }
     // addPieceToBoard(x, y, pieceWidth, pieceHeight, boardSquares);
-    return { outerOverlaps, innerOverlaps };
+    return { outerOverlaps, innerOverlaps, squaresOutsideBoard };
   }
 
   return (

@@ -6,11 +6,11 @@ export function getInitialBoardSquares(level: number) {
   let boardSquares = [];
   for (let i = 0; i < boardSections.length; i++) {
     let height = boardSections[i][0].height;
-    for (let um = 0; um < height; um++) {
+    for (let j = 0; j < height; j++) {
       let row: string[] = [];
       boardSections[i].forEach(section => {
         const { width, valid } = section;
-        for (let j = 0; j < width; j++) {
+        for (let k = 0; k < width; k++) {
           row.push(valid ? '' : 'invalid');
         }
       });
