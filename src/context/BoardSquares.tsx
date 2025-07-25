@@ -37,7 +37,7 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
   const [boardSquares, setBoardSquares] = useState<string[][]>(
     getInitialBoardSquares(currentLevel)
   );
-  console.log('boardSquares is:', boardSquares);
+  //console.log('boardSquares is:', boardSquares);
   const boardWidth = levels[currentLevel].dimensions.width;
   const boardHeight = levels[currentLevel].dimensions.height;
   function addPieceToBoard(
@@ -46,14 +46,14 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
     width: number,
     height: number
   ) {
-    console.log('adding a piece', {
-      x,
-      y,
-      width,
-      height,
-      boardWidth,
-      boardHeight,
-    });
+    // console.log('adding a piece', {
+    //   x,
+    //   y,
+    //   width,
+    //   height,
+    //   boardWidth,
+    //   boardHeight,
+    // });
     if (x < 0) {
       console.error('adding a piece to the board with a negative x.');
       x = 0;
@@ -87,14 +87,14 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
     width: number,
     height: number
   ) {
-    console.log('removing a piece', {
-      x,
-      y,
-      width,
-      height,
-      boardWidth,
-      boardHeight,
-    });
+    // console.log('removing a piece', {
+    //   x,
+    //   y,
+    //   width,
+    //   height,
+    //   boardWidth,
+    //   boardHeight,
+    // });
     let newBoardSquares = [...boardSquares];
     for (let row = y; row < y + height && row < boardHeight; row++) {
       if (!newBoardSquares[row]) {
@@ -106,7 +106,7 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
           console.warn(`Column index ${col} is out of bounds.`);
           continue;
         } else if (newBoardSquares[row][col] > 0) {
-          newBoardSquares[row][col] = newBoardSquares[row][col] - 1;
+          newBoardSquares[row][col] = boardSquares[row][col] - 1;
         }
       }
     }
@@ -130,7 +130,7 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
     let squaresOutsideBoard = 0;
     const { x, y } = convertLocationToXAndY(location);
     console.log({ x, y, pieceWidth, pieceHeight, boardSquares });
-    removePieceFromBoard(x, y, pieceWidth, pieceHeight);
+    // removePieceFromBoard(x, y, pieceWidth, pieceHeight);
     for (let col = x; col < x + pieceWidth; col++) {
       for (let row = y; row < y + pieceHeight; row++) {
         if (boardSquares[row] == undefined) {
@@ -153,7 +153,7 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
         }
       }
     }
-    addPieceToBoard(x, y, pieceWidth, pieceHeight, boardSquares);
+    // addPieceToBoard(x, y, pieceWidth, pieceHeight, boardSquares);
     return { outerOverlaps, innerOverlaps };
   }
 

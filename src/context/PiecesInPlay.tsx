@@ -121,6 +121,7 @@ export function PiecesInPlayProvider({
       height: oldHeight,
     } = piecesInPlay[pieceIndex];
     const { x, y } = convertLocationToXAndY(location);
+    debugger;
     try {
       removePieceFromBoard(x, y, oldWidth, oldHeight);
     } catch {
@@ -130,11 +131,14 @@ export function PiecesInPlayProvider({
     updatedPieces[pieceIndex].height = height;
     if (width > boardWidth || height > boardHeight) {
       updatedPieces[pieceIndex].isStable = false;
+      debugger;
     } else {
       updatedPieces[pieceIndex].isStable = true;
+      console.log("THIS:",width, boardWidth, height, boardHeight);
     }
     try {
       addPieceToBoard(x, y, width, height);
+      debugger;
     } catch {
       console.log('Unable to add piece to board');
     }

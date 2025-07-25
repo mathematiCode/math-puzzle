@@ -57,12 +57,12 @@ describe('addPieceToBoard', () => {
       context.addPieceToBoard(2, 0, 2, 2); // Only valid area in top left is (2,0)-(3,1)
     });
     expect(context.boardSquares).toEqual([
-      ['invalid', 'invalid', 'full', 'full', 'empty'],
-      ['invalid', 'invalid', 'full', 'full', 'empty'],
-      ['empty', 'empty', 'empty', 'empty', 'empty'],
-      ['empty', 'empty', 'empty', 'empty', 'empty'],
-      ['empty', 'empty', 'empty', 'empty', 'empty'],
-      ['empty', 'empty', 'empty', 'empty', 'empty'],
+      [-1, -1, 1, 1, 0],
+      [-1, -1, 1, 1, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
     ]);
   });
 
@@ -76,12 +76,12 @@ describe('addPieceToBoard', () => {
       context.addPieceToBoard(3, 2, 1, 1); // Only (3,2) should be set to 'full'
     });
     expect(context.boardSquares).toEqual([
-      ['invalid', 'invalid', 'empty', 'empty', 'empty'],
-      ['invalid', 'invalid', 'empty', 'empty', 'empty'],
-      ['empty', 'empty', 'empty', 'full', 'empty'],
-      ['empty', 'empty', 'empty', 'empty', 'empty'],
-      ['empty', 'empty', 'empty', 'empty', 'empty'],
-      ['empty', 'empty', 'empty', 'empty', 'empty'],
+      [-1, -1, 0, 0, 0],
+      [-1, -1, 0, 0, 0],
+      [0, 0, 0, 1, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
     ]);
   });
 
@@ -95,12 +95,12 @@ describe('addPieceToBoard', () => {
       context.addPieceToBoard(4, 4, 2, 2); // Only (4,4),(4,5),(5,4),(5,5) should be set to 'full'
     });
     expect(context.boardSquares).toEqual([
-      ['invalid', 'invalid', 'empty', 'empty', 'empty'],
-      ['invalid', 'invalid', 'empty', 'empty', 'empty'],
-      ['empty', 'empty', 'empty', 'empty', 'empty'],
-      ['empty', 'empty', 'empty', 'empty', 'empty'],
-      ['empty', 'empty', 'empty', 'empty', 'full'],
-      ['empty', 'empty', 'empty', 'empty', 'full'],
+      [-1, -1, 0, 0, 0],
+      [-1, -1, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 1],
+      [0, 0, 0, 0, 1],
     ]);
   });
 
@@ -127,10 +127,10 @@ describe('removePieceFromBoard', () => {
     renderWithLevel(ctx => (context = ctx));
     // Start with a board where a 2x2 piece has been added at (2,0)
     const board = getInitialBoardSquares(0);
-    board[0][2] = 'full';
-    board[0][3] = 'full';
-    board[1][2] = 'full';
-    board[1][3] = 'full';
+    board[0][2] = 1;
+    board[0][3] = 1;
+    board[1][2] = 1;
+    board[1][3] = 1;
     act(() => {
       context.setBoardSquares(board.map(row => [...row]));
     });
@@ -138,12 +138,12 @@ describe('removePieceFromBoard', () => {
       context.removePieceFromBoard(2, 0, 2, 2);
     });
     expect(context.boardSquares).toEqual([
-      ['invalid', 'invalid', 'empty', 'empty', 'empty'],
-      ['invalid', 'invalid', 'empty', 'empty', 'empty'],
-      ['empty', 'empty', 'empty', 'empty', 'empty'],
-      ['empty', 'empty', 'empty', 'empty', 'empty'],
-      ['empty', 'empty', 'empty', 'empty', 'empty'],
-      ['empty', 'empty', 'empty', 'empty', 'empty'],
+      [-1, -1, 0, 0, 0],
+      [-1, -1, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
     ]);
   });
 
@@ -152,7 +152,7 @@ describe('removePieceFromBoard', () => {
     renderWithLevel(ctx => (context = ctx));
     // Start with a board where (3,2) is 'full'
     const board = getInitialBoardSquares(0);
-    board[2][3] = 'full';
+    board[2][3] = 1;
     act(() => {
       context.setBoardSquares(board.map(row => [...row]));
     });
@@ -160,12 +160,12 @@ describe('removePieceFromBoard', () => {
       context.removePieceFromBoard(3, 2, 1, 1);
     });
     expect(context.boardSquares).toEqual([
-      ['invalid', 'invalid', 'empty', 'empty', 'empty'],
-      ['invalid', 'invalid', 'empty', 'empty', 'empty'],
-      ['empty', 'empty', 'empty', 'empty', 'empty'],
-      ['empty', 'empty', 'empty', 'empty', 'empty'],
-      ['empty', 'empty', 'empty', 'empty', 'empty'],
-      ['empty', 'empty', 'empty', 'empty', 'empty'],
+      [-1, -1, 0, 0, 0],
+      [-1, -1, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
     ]);
   });
 
@@ -174,8 +174,8 @@ describe('removePieceFromBoard', () => {
     renderWithLevel(ctx => (context = ctx));
     // Start with a board where (4,4),(5,4) are 'full'
     const board = getInitialBoardSquares(0);
-    board[4][4] = 'full';
-    board[5][4] = 'full';
+    board[4][4] = 1;
+    board[5][4] = 1;
     act(() => {
       context.setBoardSquares(board.map(row => [...row]));
     });
@@ -183,12 +183,12 @@ describe('removePieceFromBoard', () => {
       context.removePieceFromBoard(4, 4, 1, 2);
     });
     expect(context.boardSquares).toEqual([
-      ['invalid', 'invalid', 'empty', 'empty', 'empty'],
-      ['invalid', 'invalid', 'empty', 'empty', 'empty'],
-      ['empty', 'empty', 'empty', 'empty', 'empty'],
-      ['empty', 'empty', 'empty', 'empty', 'empty'],
-      ['empty', 'empty', 'empty', 'empty', 'empty'],
-      ['empty', 'empty', 'empty', 'empty', 'empty'],
+      [-1, -1, 0, 0, 0],
+      [-1, -1, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
     ]);
   });
 
@@ -197,14 +197,14 @@ describe('removePieceFromBoard', () => {
     renderWithLevel(ctx => (context = ctx));
     // Start with a board where (5,5) is 'full'
     const board = getInitialBoardSquares(0);
-    if (board[5] && board[5][4] !== undefined) board[5][4] = 'full';
+    if (board[5] && board[5][4] !== undefined) board[5][4] = 1;
     act(() => {
       context.setBoardSquares(board.map(row => [...row]));
     });
     act(() => {
       expect(() => context.removePieceFromBoard(4, 5, 2, 2)).not.toThrow();
     });
-    expect(context.boardSquares[4][4]).toBe('empty');
+    expect(context.boardSquares[4][4]).toBe(0);
   });
 });
 
@@ -214,7 +214,7 @@ describe('resetBoardSquares', () => {
     renderWithLevel(ctx => (context = ctx));
     // Fill the board with 'full' squares
     act(() => {
-      context.setBoardSquares(Array(6).fill(Array(6).fill('full')));
+      context.setBoardSquares(Array(6).fill(Array(6).fill(1)));
     });
     // Reset the board
     act(() => {
@@ -248,12 +248,12 @@ describe('countOverlappingSquares', () => {
   let context: any;
   renderWithLevel(ctx => (context = ctx));
   const mockBoardSquares = [
-    ['invalid', 'invalid', 'empty', 'empty', 'empty'],
-    ['invalid', 'invalid', 'empty', 'empty', 'empty'],
-    ['full', 'full', 'full', 'empty', 'empty'],
-    ['full', 'full', 'full', 'empty', 'empty'],
-    ['full', 'full', 'full', 'empty', 'empty'],
-    ['empty', 'empty', 'empty', 'empty', 'empty'],
+    [-1, -1, 0, 0, 0],
+    [-1, -1, 0, 0, 0],
+    [1, 1, 1, 0, 0],
+    [1, 1, 1, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
   ];
   it(`counts no inner and 2 outer overlaps`, () => {
     const { outerOverlaps, innerOverlaps } = context.countOverlappingSquares(
@@ -262,7 +262,7 @@ describe('countOverlappingSquares', () => {
       2,
       mockBoardSquares
     );
-    expect(outerOverlaps).toEqual(2);
+    expect(outerOverlaps).toEqual(1);
     expect(innerOverlaps).toEqual(0);
   });
   it('counts 0 inner and 0 outer overlaps', () => {
@@ -282,8 +282,8 @@ describe('countOverlappingSquares', () => {
       3,
       mockBoardSquares
     );
-    expect(outerOverlaps).toEqual(4);
-    expect(innerOverlaps).toEqual(2);
+    expect(outerOverlaps).toEqual(3);
+    expect(innerOverlaps).toEqual(0);
   });
   it('counts 0 inner and 3 outer overlaps', () => {
     const { outerOverlaps, innerOverlaps } = context.countOverlappingSquares(
@@ -292,7 +292,7 @@ describe('countOverlappingSquares', () => {
       3,
       mockBoardSquares
     );
-    expect(outerOverlaps).toEqual(3);
+    expect(outerOverlaps).toEqual(2);
     expect(innerOverlaps).toEqual(0);
   });
 });

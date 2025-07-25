@@ -49,6 +49,7 @@ function ActionsToolbarPopover({
   const boardHeight = boardSquares.length;
   function handleHorizontalStretch() {
     Hotjar.event('double width attempt');
+    console.log(selectedPiece.isStable);
     if (selectedPiece && Number.isInteger(selectedPiece.height / 2)) {
       const newHeight = selectedPiece.height / 2;
       const newWidth = selectedPiece.width * 2;
@@ -68,6 +69,7 @@ function ActionsToolbarPopover({
       const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
       updateDimensions(pieceIndex, newWidth, newHeight);
       Hotjar.event('double width successfully');
+      console.log(selectedPiece.isStable);
     }
   }
 
@@ -84,8 +86,8 @@ function ActionsToolbarPopover({
       });
       const id = selectedPiece.id;
       const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
+      let { x, y } = convertLocationToXAndY(selectedPiece.location);
       if (selectedPiece.location != null) {
-        let { x, y } = convertLocationToXAndY(selectedPiece.location);
         if (y + newHeight > boardSquares.length) {
           y = boardSquares.length - newHeight;
         }
@@ -96,12 +98,22 @@ function ActionsToolbarPopover({
           newHeight,
           boardSquares
         );
+        if (x < 0 && newWidth < boardWidth) {
+          x = 0;
+        }
+        if (y < 0 && newHeight < boardHeight) {
+          y = 0;
+        }
+        console.log(`x: ${x}, y: ${y}`);
+        // movePiece(pieceIndex, `(${x}, ${y})`);
+        console.log('moving piece to', `(${x}, ${y})`);
         if (innerOverlaps + outerOverlaps > 0) {
           Hotjar.event('double height unsuccessfully');
           console.log('Collision alert');
         }
       }
       updateDimensions(pieceIndex, newWidth, newHeight);
+      //movePiece(pieceIndex, `(${x}, ${y})`);
       Hotjar.event('double height successfully');
       handleCombinePieces();
       handleSeparatePieces();
