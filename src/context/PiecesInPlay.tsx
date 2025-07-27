@@ -58,9 +58,7 @@ export function PiecesInPlayProvider({
     let newValidLocation = newLocation;
     if (newLocation != null) {
       const { x, y } = convertLocationToXAndY(newLocation);
-      console.log(`x: ${x} y: ${y}`);
       const { correctedX, correctedY } = getNewValidLocation(x, y, pieceWidth, pieceHeight, boardWidth, boardHeight);
-      console.log(`correctedX: ${correctedX} correctedY: ${correctedY}`);
       newValidLocation = `(${correctedX},${correctedY})`;
       const { outerOverlaps, innerOverlaps, squaresOutsideBoard } = countOverlappingSquares(
         newValidLocation,
@@ -76,14 +74,10 @@ export function PiecesInPlayProvider({
         updatedPieces[pieceIndex].isStable = false;
         setPiecesInPlay(updatedPieces);
         Hotjar.event('piece placed partially overlapping another piece');
-        console.log('piece placed partially overlapping another piece');
-        console.log(boardSquares);
       } else if (squaresOutsideBoard > 0) {
         updatedPieces[pieceIndex].isStable = false;
         setPiecesInPlay(updatedPieces);
         Hotjar.event('piece placed partially off board');
-        console.log('piece placed partially off board');
-        console.log(boardSquares);
       } else {
         updatedPieces[pieceIndex].isStable = true;
       }
@@ -104,7 +98,6 @@ export function PiecesInPlayProvider({
       width: oldWidth,
       height: oldHeight,
     } = piecesInPlay[pieceIndex];
-    //const { x, y } = convertLocationToXAndY(location);
     updatedPieces[pieceIndex].width = width;
     updatedPieces[pieceIndex].height = height;
     if (width > boardWidth || height > boardHeight) {
