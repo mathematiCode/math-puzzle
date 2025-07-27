@@ -25,6 +25,7 @@ import { ChevronLeft, ChevronRight, RotateCcw, HelpCircle } from 'lucide-react';
 function Game() {
   const {
     currentLevel,
+    levelId,
     levelPosition,
     previousLevel,
     nextLevel,
@@ -125,7 +126,7 @@ function Game() {
         />
       </ButtonContainer>
       <LevelCompleteModal 
-        level={currentLevel} 
+        level={levelId} 
         completed={checkIfPassedLevel()} 
         levelCompletedShown={levelCompletedShown}
         onClose={handleCloseModal}

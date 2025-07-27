@@ -92,6 +92,7 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
         setLevelCompleted(currentLevel);
       } else {
         console.log('Level not completed!');
+        console.log(boardSquares);
       }
     }, 0);
   }

@@ -51,7 +51,7 @@ const useClasses = makeStyles({
     zIndex: 0, // Ensure it's behind the dialog
   },
   Title: {
-    fontSize: '2.5rem',
+    fontSize: '2rem',
     marginBottom: '-10px',
     alignContent: 'center',
     textAlign: 'center',
@@ -106,7 +106,7 @@ const LevelCompleteModal = ({
         <DialogSurface className={classes.Surface}>
           <DialogBody className={classes.DialogBody}>
             <DialogTitle className={classes.Title}>
-              Level {level + 1} Complete!
+              Level {level} Complete!
             </DialogTitle>
             <img
               src={`/assets/foxes.png`}

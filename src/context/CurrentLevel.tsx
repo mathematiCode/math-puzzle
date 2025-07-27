@@ -13,6 +13,7 @@ export interface CurrentLevelContextType {
   initialPieces: InitialPiece[];
   boardDimensions: { boardWidth: number; boardHeight: number };
   levelPosition: 'first' | 'middle' | 'last';
+  levelId: number;
   sizeOfEachUnit: number;
   nextLevel: () => void;
   previousLevel: () => void;
@@ -60,6 +61,7 @@ export function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
     boardHeight: levels[currentLevel].dimensions.height,
   };
   const { width, height } = levels[currentLevel].dimensions;
+  const levelId = levels[currentLevel].id;
 
   const windowWidth = window.innerWidth;
   const windowHeight = window.innerHeight;
@@ -131,6 +133,7 @@ export function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
           currentLevel,
           initialPieces,
           levelPosition,
+          levelId,
           boardDimensions,
           sizeOfEachUnit,
           setSizeOfEachUnit,

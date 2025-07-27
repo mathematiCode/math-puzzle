@@ -1,6 +1,6 @@
 [
   {
-    "id": 0,
+    "id": 1,
     "dimensions": { "width": 5, "height": 6 },
     "boardSections": [
       [
@@ -23,7 +23,7 @@
     ]
   },
   {
-    "id": 1,
+    "id": 2,
     "dimensions": { "width": 7, "height": 8 },
     "boardSections": [
       [{ "x": 0, "y": 0, "width": 7, "height": 8, "valid": true }]
@@ -40,7 +40,7 @@
     ]
   },
   {
-    "id": 2,
+    "id": 3,
     "dimensions": { "width": 15, "height": 14 },
     "boardSections": [
       [
@@ -67,7 +67,7 @@
     ]
   },
   {
-    "id": 3,
+    "id": 4,
     "dimensions": { "width": 10, "height": 11 },
     "boardSections": [
       [
