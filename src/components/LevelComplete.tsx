@@ -7,6 +7,7 @@ import {
   DialogTrigger,
   DialogBody,
   makeStyles,
+  Button,
 } from '@fluentui/react-components';
 import { X } from 'lucide-react';
 import { RemoveScroll } from 'react-remove-scroll';
@@ -112,9 +113,13 @@ const LevelCompleteModal = ({
               alt={`Two foxes cheering`}
               className={classes.Foxes}
             />
-            <DialogTrigger disableButtonEnhancement>
-              <X className={classes.X} />
-            </DialogTrigger>
+            <Button
+              appearance="transparent"
+              icon={<X />}
+              onClick={onClose}
+              className={classes.X}
+              aria-label="Close dialog"
+            />
           </DialogBody>
         </DialogSurface>
       </RemoveScroll>

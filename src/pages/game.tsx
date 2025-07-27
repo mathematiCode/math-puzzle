@@ -116,7 +116,7 @@ function Game() {
         <Button color='hsl(178, 100%, 23%)' textColor='white' disabled={levelPosition == 'last'} onClick={setToNext}>
         Next Level <ChevronRight />
         </Button>
-        <Button color='hsla(0, 76.10%, 78.60%, 0.88)' textColor='black' onClick={resetLevel}>
+        <Button color='hsla(0, 75.40%, 74.90%, 0.88)' textColor='black' onClick={resetLevel}>
          <RotateCcw/> Reset Game 
         </Button>
         <InstructionsModal
