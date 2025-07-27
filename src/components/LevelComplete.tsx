@@ -10,7 +10,6 @@ import {
 } from '@fluentui/react-components';
 import { X } from 'lucide-react';
 import { RemoveScroll } from 'react-remove-scroll';
-import foxes from '../assets/images/foxes.png';
 
 const useClasses = makeStyles({
   Surface: {
