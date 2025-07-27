@@ -8,13 +8,16 @@ import PlacedPieces from '../components/PlacedPieces.tsx';
 import DragAndDropArea from '../components/DragAndDropArea.tsx';
 import Button from '../components/Button.tsx';
 import InstructionsModal from '../components/InstructionsModal.tsx';
+import LevelCompleteModal from '../components/LevelComplete.tsx';
 import { motion } from 'motion/react';
 import styled from 'styled-components';
 import { DragOverlay } from '@dnd-kit/core';
-import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
+import { PiecesInPlayContext } from '../context/PiecesInPlay';
 import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
-import { getInitialPieces } from '../hooks/getInitialPieces.ts';
+import { getInitialPieces } from '../utils/getInitialPieces';
+import { LevelProgressContext } from '../context/LevelProgress.tsx';
 import { Piece } from '../types/piece.ts';
+import { BoardSquaresContext } from '../context/BoardSquares';
 import Hotjar from '@hotjar/browser';
 import { ChevronLeft, ChevronRight, RotateCcw, HelpCircle } from 'lucide-react';
 //import { BoardSquaresContext } from '../context/BoardSquares.tsx';
@@ -22,78 +25,48 @@ import { ChevronLeft, ChevronRight, RotateCcw, HelpCircle } from 'lucide-react';
 function Game() {
   const {
     currentLevel,
+    levelId,
     levelPosition,
     previousLevel,
     nextLevel,
     setSizeOfEachUnit,
   } = useContext(CurrentLevelContext);
   const [activePiece, setActivePiece] = useState<Piece | null>(null);
-  const { piecesInPlay, resetPieces, setPiecesForNewLevel } =
+  const { isLevelCompleted } = useContext(LevelProgressContext);
+  const { boardSquares, resetBoardSquares, checkIfPassedLevel } = useContext(BoardSquaresContext);
+    const { piecesInPlay, resetPieces, setPiecesForNewLevel } =
     useContext(PiecesInPlayContext);
-
-  // const { boardSquares, resetBoardSquares } = useContext(BoardSquaresContext);
   const [isRotating, setIsRotating] = useState(false);
-
+  const [levelCompletedShown, setLevelCompletedShown] = useState(false);
   const boardRef = useRef(null);
+
+  const handleCloseModal = () => {
+    setLevelCompletedShown(true); // Prevent modal from showing again for this level
+  };
 
   async function setToPrevious() {
     await previousLevel();
-
     const newPieces = getInitialPieces(currentLevel - 1);
     await setPiecesForNewLevel(newPieces);
-    //await setSizeOfEachUnit(currentLevel - 1);
-    //  resetBoardSquares(currentLevel - 1);
+    await setSizeOfEachUnit(currentLevel - 1);
+    await resetBoardSquares(currentLevel - 1);
+    setLevelCompletedShown(false); // Reset modal state for new level
   }
 
   async function setToNext() {
     await nextLevel();
     const newPieces = getInitialPieces(currentLevel + 1);
     await setPiecesForNewLevel(newPieces);
-    // await setSizeOfEachUnit(currentLevel + 1);
-    // resetBoardSquares(currentLevel + 1);
-    const passedLevel = false;
-    if (passedLevel) {
-      Hotjar.event('Completed Level');
-      Hotjar.event(`Completed level ${currentLevel}`);
-      Hotjar.event('Skip a level without completing it');
-      Hotjar.event(`Skip level ${currentLevel} without completing it`);
-      Hotjar.event('A');
-      Hotjar.event('B');
-      Hotjar.event('C');
-      Hotjar.event('piece collision on board');
-      Hotjar.event('used all actions');
-      Hotjar.event('used all rotations');
-      Hotjar.event('used all double widths');
-      Hotjar.event('used all double heights');
-      Hotjar.event('used all combine pieces');
-      Hotjar.event('used all separate pieces');
-      Hotjar.event('started onboarding');
-      Hotjar.event('completed onboarding');
-      Hotjar.event('turned on grid mode');
-      Hotjar.event('turned off grid mode');
-      Hotjar.event('made 10 moves');
-      Hotjar.event('made 20 moves');
-      Hotjar.event('made 30 moves');
-      Hotjar.event('made 40 moves');
-      Hotjar.event('made 50 moves');
-      Hotjar.event(
-        'performed 2 non-inverse actions consecutively on one piece'
-      );
-      Hotjar.event("performed an action immediately followed by it's inverse");
-      Hotjar.event('performed 5 actions');
-      Hotjar.event('performed 10 actions');
-      Hotjar.event('turned off action limits');
-      Hotjar.event('turned on action limits');
-    }
+    await setSizeOfEachUnit(currentLevel + 1);
+    await resetBoardSquares(currentLevel + 1);
+    setLevelCompletedShown(false); // Reset modal state for new level
   }
 
-  function resetLevel() {
+    function resetLevel() {
     resetPieces();
-    Hotjar.event('reset level');
-    // resetBoardSquares(currentLevel);
-    const newPieces = useInitialPieces(currentLevel + 1);
-    setPiecesForNewLevel(newPieces);
-    //setSizeOfEachUnit(currentLevel + 1);
+    resetBoardSquares(currentLevel);
+    setLevelCompletedShown(false); // Reset modal state when resetting level
+   // console.log(boardSquares);
   }
 
   return (
@@ -143,7 +116,7 @@ function Game() {
         <Button color='hsl(178, 100%, 23%)' textColor='white' disabled={levelPosition == 'last'} onClick={setToNext}>
         Next Level <ChevronRight />
         </Button>
-        <Button color='hsla(0, 78.00%, 75.10%, 0.88)' textColor='black' onClick={resetLevel}>
+        <Button color='hsla(0, 75.40%, 74.90%, 0.88)' textColor='black' onClick={resetLevel}>
          <RotateCcw/> Reset Game 
         </Button>
         <InstructionsModal
@@ -152,6 +125,12 @@ function Game() {
           piecesInPlay={piecesInPlay}
         />
       </ButtonContainer>
+      <LevelCompleteModal 
+        level={levelId} 
+        completed={checkIfPassedLevel()} 
+        levelCompletedShown={levelCompletedShown}
+        onClose={handleCloseModal}
+      />
     </Main>
   );
 }
@@ -182,6 +161,10 @@ export const BoardWrapper = styled.div`
   top: 50%;
   left: 80%;
   transform: translate(-50%, -50%);
+
+  @media (max-width: 750px) {
+    left: 50%;
+  }
 `;
 
 export const PiecesContainer = styled(motion.div).attrs({

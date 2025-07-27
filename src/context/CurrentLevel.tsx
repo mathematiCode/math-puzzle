@@ -5,7 +5,7 @@ export const CurrentLevelContext = createContext<CurrentLevelContextType>(
   {} as CurrentLevelContextType
 );
 import { InitialPiece } from '../types/piece';
-import { calculateUnitSize, findLargestHeight } from '../utilities';
+import { calculateUnitSize, findLargestHeight } from '../utils/utilities';
 import Hotjar from '@hotjar/browser';
 
 export interface CurrentLevelContextType {
@@ -13,11 +13,16 @@ export interface CurrentLevelContextType {
   initialPieces: InitialPiece[];
   boardDimensions: { boardWidth: number; boardHeight: number };
   levelPosition: 'first' | 'middle' | 'last';
+  levelId: number;
   sizeOfEachUnit: number;
   nextLevel: () => void;
   previousLevel: () => void;
   setCurrentLevel: (level: number) => void;
 }
+
+// export const CurrentLevelContext = createContext<CurrentLevelContextType>(
+//   {} as CurrentLevelContextType
+// );
 
 const initialLocation = null;
 const numberOfLevels = levels.length;
@@ -26,7 +31,7 @@ interface CurrentLevelProviderProps {
   children: ReactNode;
 }
 
-function useInitialPieces(level: number) {
+function getInitialPieces(level: number) {
   const instructionsPiece = {
     width: 3,
     height: 2,
@@ -34,6 +39,7 @@ function useInitialPieces(level: number) {
     color: 'hsl(0, 61%, 66%)',
     id: 'sample-0',
     isRotated: false,
+    isStable: true,
   };
   return [
     instructionsPiece,
@@ -41,7 +47,7 @@ function useInitialPieces(level: number) {
       ...piece,
       location: initialLocation,
       color: colors[index % colors.length],
-      id: `initial-${index + 1}`,
+      id: `i-${index + 1}`,
       isRotated: false,
     })),
   ];
@@ -55,6 +61,7 @@ export function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
     boardHeight: levels[currentLevel].dimensions.height,
   };
   const { width, height } = levels[currentLevel].dimensions;
+  const levelId = levels[currentLevel].id;
 
   const windowWidth = window.innerWidth;
   const windowHeight = window.innerHeight;
@@ -80,19 +87,13 @@ export function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
     levelPosition = 'middle';
   }
 
-  const initialPieces = useInitialPieces(currentLevel);
+  const initialPieces = getInitialPieces(currentLevel);
 
   function setSizeOfEachUnit(currentLevel: number) {
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
     const { width, height } = levels[currentLevel].dimensions;
-  //  const largestHeight = findLargestHeight(levels[currentLevel].pieces);
-    const largestHeight = findLargestHeight([
-      { "width": 2, "height": 1 },
-      { "width": 3, "height": 3 },
-      { "width": 2, "height": 3 },
-      { "width": 3, "height": 3 }
-    ]);
+    const largestHeight = findLargestHeight(levels[currentLevel].pieces);
     const sizeOfEachUnit = calculateUnitSize(
       windowWidth,
       windowHeight,
@@ -104,6 +105,7 @@ export function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
       '--sizeOfEachUnit',
       `${sizeOfEachUnit}px`
     );
+    // Need to investigate if this is the right approach to keep all the sizeOfEachUnit states consistent across the app.
   }
 
   function nextLevel() {
@@ -131,6 +133,7 @@ export function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
           currentLevel,
           initialPieces,
           levelPosition,
+          levelId,
           boardDimensions,
           sizeOfEachUnit,
           setSizeOfEachUnit,

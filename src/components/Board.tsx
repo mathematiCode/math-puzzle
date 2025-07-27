@@ -27,6 +27,7 @@ const Board = forwardRef(
 
     return (
       <div
+        className="board"
         style={{
           display: 'grid',
           gridTemplateRows: '1fr',
