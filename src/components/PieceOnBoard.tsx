@@ -33,14 +33,15 @@ export const PieceWrapper = styled(motion.button)
     transition: props.transition,
   }))`
   position: absolute;
-  left: ${({ x }) => `calc(${x} * var(--sizeOfEachUnit))`};
-  top: ${({ y }) => `calc(${y} * var(--sizeOfEachUnit))`};
+  left: ${({ x }) => `calc(${x} * var(--sizeOfEachUnit) - 2px)`};
+  top: ${({ y }) => `calc(${y} * var(--sizeOfEachUnit) - 2px)`};
   cursor: ${({ isDragging }) => (isDragging ? 'grab' : 'pointer')};
   visibility: ${({ isDragging }) => (isDragging ? 'hidden' : 'visible')};
   z-index: ${({ isStable }) => (isStable ? 2 : 6)};
   &:active {
     cursor: grab;
   }
+  border: 2px solid black;
 `;
 
 function PieceOnBoard({

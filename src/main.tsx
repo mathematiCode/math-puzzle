@@ -6,10 +6,12 @@ import { PiecesInPlayProvider } from './context/PiecesInPlay';
 import { SelectedPieceProvider } from './context/SelectedPiece';
 import { CurrentLevelProvider } from './context/CurrentLevel';
 import { BoardSquaresProvider } from './context/BoardSquares';
+import { LevelProgressProvider } from './context/LevelProgress';
 
 createRoot(document.getElementById('root') as HTMLElement).render(
-  <StrictMode>
-    <CurrentLevelProvider>
+  //<StrictMode>
+  <CurrentLevelProvider>
+    <LevelProgressProvider>
       <BoardSquaresProvider>
         <PiecesInPlayProvider>
           <SelectedPieceProvider>
@@ -17,6 +19,7 @@ createRoot(document.getElementById('root') as HTMLElement).render(
           </SelectedPieceProvider>
         </PiecesInPlayProvider>
       </BoardSquaresProvider>
-    </CurrentLevelProvider>
-  </StrictMode>
+    </LevelProgressProvider>
+  </CurrentLevelProvider>
+  // </StrictMode>
 );

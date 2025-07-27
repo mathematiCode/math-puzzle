@@ -115,7 +115,6 @@ const InstructionsModal = ({
   piecesInPlay: Piece[];
 }) => {
   const classes = useClasses();
-  const [instructionsShown, setInstructionsShown] = useState(false);
   const context = useContext(PiecesInPlayContext);
   if (!context) {
     throw new Error(
@@ -126,7 +125,6 @@ const InstructionsModal = ({
 
   const closeModal = () => {
     updateDimensions(0, 3, 2); // Resetting the example piece to it's original dimensions
-    setInstructionsShown(false);
   };
 
   return (

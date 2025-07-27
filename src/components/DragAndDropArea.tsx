@@ -16,7 +16,7 @@ import { Piece } from '../types/piece';
 import { useSelectedPiece } from '../context/SelectedPiece';
 import { convertLocationToXAndY, rateDroppability } from '../utils/utilities';
 import Hotjar from '@hotjar/browser';
-import { BoardSquaresContext } from '../context/BoardSquares.tsx';
+import { BoardSquaresContext } from '../context/BoardSquares';
 interface DragAndDropAreaProps {
   children: React.ReactNode;
   setActivePiece: (piece: Piece) => void;
@@ -46,8 +46,12 @@ function DragAndDropArea({
       'DragAndDropArea must be used within a BoardSquaresProvider'
     );
   }
-  const { boardSquares, addPieceToBoard, removePieceFromBoard } =
-    boardSquaresContext;
+  const {
+    boardSquares,
+    addPieceToBoard,
+    removePieceFromBoard,
+    getUnstablePieces,
+  } = boardSquaresContext;
 
   function compareCollisionRects(
     { data: { value: a } }: { data: { value: number } },
@@ -148,6 +152,14 @@ function DragAndDropArea({
         piecesInPlay[pieceIndex].id ?? ''
       );
     } else movePiece(pieceIndex, null);
+    const unstablePieces = getUnstablePieces();
+    piecesInPlay.forEach(piece => {
+      if (unstablePieces.includes(piece.id)) {
+        piece.isStable = false;
+      } else {
+        piece.isStable = true;
+      }
+    });
     Hotjar.event('drag end');
   };
 

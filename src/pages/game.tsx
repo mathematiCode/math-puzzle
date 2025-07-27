@@ -8,12 +8,14 @@ import PlacedPieces from '../components/PlacedPieces.tsx';
 import DragAndDropArea from '../components/DragAndDropArea.tsx';
 import Button from '../components/Button.tsx';
 import InstructionsModal from '../components/InstructionsModal.tsx';
+import LevelCompleteModal from '../components/LevelComplete.tsx';
 import { motion } from 'motion/react';
 import styled from 'styled-components';
 import { DragOverlay } from '@dnd-kit/core';
 import { PiecesInPlayContext } from '../context/PiecesInPlay';
 import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
 import { getInitialPieces } from '../utils/getInitialPieces';
+import { LevelProgressContext } from '../context/LevelProgress.tsx';
 import { Piece } from '../types/piece.ts';
 import { BoardSquaresContext } from '../context/BoardSquares';
 import Hotjar from '@hotjar/browser';
@@ -31,17 +33,23 @@ function Game() {
   const [activePiece, setActivePiece] = useState<Piece | null>(null);
   const { piecesInPlay, resetPieces, setPiecesForNewLevel } =
     useContext(PiecesInPlayContext);
-  const { boardSquares, resetBoardSquares } = useContext(BoardSquaresContext);
+  const { boardSquares, resetBoardSquares, checkIfPassedLevel } = useContext(BoardSquaresContext);
   const [isRotating, setIsRotating] = useState(false);
-
+  const [levelCompletedShown, setLevelCompletedShown] = useState(false);
+  const { isLevelCompleted } = useContext(LevelProgressContext);
   const boardRef = useRef(null);
+
+  const handleCloseModal = () => {
+    setLevelCompletedShown(true); // Prevent modal from showing again for this level
+  };
 
   async function setToPrevious() {
     await previousLevel();
     const newPieces = getInitialPieces(currentLevel - 1);
     await setPiecesForNewLevel(newPieces);
     await setSizeOfEachUnit(currentLevel - 1);
-    await resetBoardSquares(currentLevel - 1)
+    await resetBoardSquares(currentLevel - 1);
+    setLevelCompletedShown(false); // Reset modal state for new level
   }
 
   async function setToNext() {
@@ -49,13 +57,15 @@ function Game() {
     const newPieces = getInitialPieces(currentLevel + 1);
     await setPiecesForNewLevel(newPieces);
     await setSizeOfEachUnit(currentLevel + 1);
-    await resetBoardSquares(currentLevel + 1)
+    await resetBoardSquares(currentLevel + 1);
+    setLevelCompletedShown(false); // Reset modal state for new level
   }
 
     function resetLevel() {
     resetPieces();
     resetBoardSquares(currentLevel);
-    console.log(boardSquares);
+    setLevelCompletedShown(false); // Reset modal state when resetting level
+   // console.log(boardSquares);
   }
 
   return (
@@ -114,6 +124,12 @@ function Game() {
           piecesInPlay={piecesInPlay}
         />
       </ButtonContainer>
+      <LevelCompleteModal 
+        level={currentLevel} 
+        completed={checkIfPassedLevel()} 
+        levelCompletedShown={levelCompletedShown}
+        onClose={handleCloseModal}
+      />
     </Main>
   );
 }
@@ -144,6 +160,10 @@ export const BoardWrapper = styled.div`
   top: 50%;
   left: 80%;
   transform: translate(-50%, -50%);
+
+  @media (max-width: 750px) {
+    left: 50%;
+  }
 `;
 
 export const PiecesContainer = styled(motion.div).attrs({

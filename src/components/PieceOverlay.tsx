@@ -10,6 +10,7 @@ function PieceOverlay({ piece }: { piece: Piece }) {
       className="unit-container"
       style={{
         cursor: 'grab',
+        border: '2px solid black',
       }}
       animate={{
         rotate: piece.isRotated ? 90 : 0,

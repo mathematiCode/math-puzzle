@@ -102,6 +102,7 @@ export function PiecesInPlayProvider({
         setPiecesInPlay(updatedPieces);
         Hotjar.event('piece placed partially overlapping another piece');
         console.log('piece placed partially overlapping another piece');
+        console.log(boardSquares);
       } else {
         updatedPieces[pieceIndex].isStable = true;
         console.log('piece placed without overlapping another piece');
@@ -124,30 +125,13 @@ export function PiecesInPlayProvider({
       height: oldHeight,
     } = piecesInPlay[pieceIndex];
     const { x, y } = convertLocationToXAndY(location);
-    // debugger;
-    // try {
-    //   removePieceFromBoard(x, y, oldWidth, oldHeight, updatedPieces[pieceIndex].id);
-    // } catch {
-    //   console.log('Unable to remove piece from board');
-    // }
-    // removePieceFromBoard(x, y, oldWidth, oldHeight, updatedPieces[pieceIndex].id);
     updatedPieces[pieceIndex].width = width;
     updatedPieces[pieceIndex].height = height;
     if (width > boardWidth || height > boardHeight) {
       updatedPieces[pieceIndex].isStable = false;
-      debugger;
     } else {
       updatedPieces[pieceIndex].isStable = true;
-      console.log({ width, boardWidth, height, boardHeight });
     }
-    movePiece(pieceIndex, location);
-   // addPieceToBoard(x, y, width, height, updatedPieces[pieceIndex].id);
-    // try {
-      
-    //   debugger;
-    // } catch {`
-    //   console.log('Unable to add piece to board');
-    // }
     setPiecesInPlay(updatedPieces);
   }
 

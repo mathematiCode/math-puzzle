@@ -52,6 +52,7 @@ function ActionsToolbarPopover({
   } = boardSquaresContext;
   const boardWidth = boardSquares[0].length;
   const boardHeight = boardSquares.length;
+
   function handleHorizontalStretch() {
     Hotjar.event('double width attempt');
     console.log(selectedPiece?.isStable);
@@ -81,7 +82,7 @@ function ActionsToolbarPopover({
       const id = selectedPiece.id;
       const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
       updateDimensions(pieceIndex, newWidth, newHeight);
-      // movePiece(pieceIndex, `(${x}, ${y})`);
+
       Hotjar.event('double width successfully');
       console.log(selectedPiece.isStable);
     }
@@ -92,23 +93,10 @@ function ActionsToolbarPopover({
     if (selectedPiece && Number.isInteger(selectedPiece.width / 2)) {
       const newHeight = selectedPiece.height * 2;
       const newWidth = selectedPiece.width / 2;
-      console.log({
-        selectedPieceLocation: selectedPiece.location,
-        newWidth,
-        newHeight,
-        boardSquares,
-      });
       const id = selectedPiece.id;
       const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
       let { x, y } = convertLocationToXAndY(selectedPiece.location);
       if (selectedPiece.location != null) {
-        // if (y + newHeight > boardSquares.length) {
-        //   y = Math.max(boardSquares.length - newHeight, 0);
-        // }
-        // if (x + newWidth > boardWidth) {
-        //   x = Math.max(boardWidth - newWidth, 0);
-        // }
-        // movePiece(pieceIndex, `(${x}, ${y})`);
         const { innerOverlaps, outerOverlaps, squaresOutsideBoard } =
           countOverlappingSquares(
             selectedPiece.location,
@@ -129,21 +117,13 @@ function ActionsToolbarPopover({
         if (y < 0 && newHeight < boardHeight) {
           y = 0;
         }
-        console.log(`x: ${x}, y: ${y}`);
-        // movePiece(pieceIndex, `(${x}, ${y})`);
         console.log('moving piece to', `(${x}, ${y})`);
-        // if (innerOverlaps + outerOverlaps + squaresOutsideBoard > 0) {
-        //   Hotjar.event('double height unsuccessfully');
-        //   console.log('Collision alert');
-        // }
       }
       updateDimensions(pieceIndex, newWidth, newHeight);
-      // movePiece(pieceIndex, selectedPiece.location);
-      addPieceToBoard(x, y, newWidth, newHeight, selectedPiece.id);
-      //movePiece(pieceIndex, `(${x}, ${y})`);
+      if (selectedPiece.location != null && selectedPiece.id != null) {
+        addPieceToBoard(x, y, newWidth, newHeight, selectedPiece.id);
+      }
       Hotjar.event('double height successfully');
-      handleCombinePieces();
-      handleSeparatePieces();
     }
   }
 
