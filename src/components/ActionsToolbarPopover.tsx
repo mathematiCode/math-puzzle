@@ -56,7 +56,6 @@ function ActionsToolbarPopover({
 
   function handleHorizontalStretch() {
     Hotjar.event('double width attempt');
-    console.log(selectedPiece?.isStable);
     const id = selectedPiece?.id;
     const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
     let { x, y } = convertLocationToXAndY(selectedPiece?.location);
@@ -85,9 +84,9 @@ function ActionsToolbarPopover({
             boardSquares
           );
         if (innerOverlaps + outerOverlaps > 0) {
-          console.log('Collision alert');
+          Hotjar.event('Collision alert');
         } else if (squaresOutsideBoard > 0) {
-          console.log('Piece placed partially off board');
+          Hotjar.event('Piece placed partially off board');
           const { correctedX, correctedY } = getNewValidLocation(
             x,
             y,
@@ -97,7 +96,7 @@ function ActionsToolbarPopover({
             boardHeight
           );
           movePiece(pieceIndex, `(${correctedX},${correctedY})`);
-          console.log(`${x}, ${y} -> ${correctedX}, ${correctedY}`);
+          //console.log(`${x}, ${y} -> ${correctedX}, ${correctedY}`);
           x = correctedX;
           y = correctedY;
         }
@@ -107,7 +106,6 @@ function ActionsToolbarPopover({
         addPieceToBoard(x, y, newWidth, newHeight, selectedPiece.id);
       }
       Hotjar.event('double width successfully');
-      console.log(selectedPiece.isStable);
     }
   }
 
@@ -128,9 +126,9 @@ function ActionsToolbarPopover({
             boardSquares
           );
         if (innerOverlaps + outerOverlaps > 0) {
-          console.log('Collision alert');
+          Hotjar.event('Collision alert');
         } else if (squaresOutsideBoard > 0) {
-          console.log('Piece placed partially off board');
+          Hotjar.event('Piece placed partially off board');
           const { correctedX, correctedY } = getNewValidLocation(
             x,
             y,
@@ -139,7 +137,7 @@ function ActionsToolbarPopover({
             boardWidth,
             boardHeight
           );
-          console.log(`${x}, ${y} -> ${correctedX}, ${correctedY}`);
+          // console.log(`${x}, ${y} -> ${correctedX}, ${correctedY}`);
           movePiece(pieceIndex, `(${correctedX},${correctedY})`);
           x = correctedX;
           y = correctedY;
@@ -159,7 +157,7 @@ function ActionsToolbarPopover({
           boardWidth,
           boardHeight
         );
-        console.log(`${x}, ${y} -> ${correctedX}, ${correctedY}`);
+        //console.log(`${x}, ${y} -> ${correctedX}, ${correctedY}`);
         movePiece(pieceIndex, `(${correctedX},${correctedY})`);
         x = correctedX;
         y = correctedY;

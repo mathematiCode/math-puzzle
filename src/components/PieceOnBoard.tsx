@@ -108,11 +108,9 @@ function PieceOnBoard({
       await animate(scope.current, { rotate: 0 }, { duration: 0 });
     } finally {
       setIsRotating(false);
-      console.log(`oldWidth: ${oldWidth} oldHeight: ${oldHeight}`);
 
       let newX = x + Math.floor((oldWidth - newWidth) / 2);
       let newY = y + Math.floor((oldHeight - newHeight) / 2);
-      console.log(`newX: ${newX} newY: ${newY}`);
 
       const { correctedX, correctedY } = getNewValidLocation(
         newX,
@@ -123,7 +121,6 @@ function PieceOnBoard({
         boardHeight
       );
 
-      console.log(`corrected: ${correctedX}, ${correctedY}`);
       movePiece(pieceIndex, `(${correctedX},${correctedY})`);
       addPieceToBoard(correctedX, correctedY, newWidth, newHeight, id);
     }

@@ -5,6 +5,7 @@ import { getInitialBoardSquares } from '../utils/getInitialBoardSquares';
 import { CurrentLevelContext } from './CurrentLevel.tsx';
 import { convertLocationToXAndY } from '../utils/utilities';
 import { LevelProgressContext } from './LevelProgress.tsx';
+import Hotjar from '@hotjar/browser';
 
 export type BoardSquaresContextType = {
   boardSquares: string[][];
@@ -56,7 +57,6 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
     height: number,
     id: string
   ) {
-    console.log(`adding piece ${id} to board at (${x}, ${y})`);
     if (x < 0) {
       console.error('adding a piece to the board with a negative x.');
       x = 0;
@@ -84,15 +84,11 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
       }
     }
     setBoardSquares(newBoardSquares);
-    // console.log('after addition', newBoardSquares);
 
     setTimeout(() => {
       if (checkIfPassedLevel()) {
-        console.log('Level completed!');
+        Hotjar.event('Level completed!');
         setLevelCompleted(currentLevel);
-      } else {
-        console.log('Level not completed!');
-        console.log(boardSquares);
       }
     }, 0);
   }
@@ -127,11 +123,9 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
       }
     }
     setBoardSquares(newBoardSquares);
-    // console.log('after removal', newBoardSquares);
   }
 
   function resetBoardSquares(level: number) {
-    console.log('resetting squares for level', level);
     setBoardSquares(getInitialBoardSquares(level));
   }
 
