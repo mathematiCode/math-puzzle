@@ -1,3 +1,5 @@
+// Not currently in use YET
+
 import { useEffect } from 'react';
 function useClickAway(callback: () => void) {
   useEffect(() => {

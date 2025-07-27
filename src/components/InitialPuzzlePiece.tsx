@@ -86,6 +86,7 @@ export const InitialPieceWrapper = styled(motion.button)`
   visibility: ${({ isDragging }) => (isDragging ? 'hidden' : 'visible')};
   border: none;
   z-index: 2;
+  border: 2px solid black;
   &:active {
     cursor: grab;
   }

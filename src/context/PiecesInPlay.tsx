@@ -5,21 +5,25 @@ import {
   CurrentLevelContext,
   CurrentLevelContextType,
 } from './CurrentLevel.tsx';
+import { BoardSquaresContext } from './BoardSquares';
 import { colors } from '../CONSTANTS';
 import { InitialPiece, Piece } from '../types/piece.ts';
-import { convertLocationToXAndY } from '../utilities.ts';
+import { convertLocationToXAndY } from '../utils/utilities.ts';
 import { useAnimate } from 'motion/dist/react';
 import levels from '../levels.json' with { type: 'json' };
 import Hotjar from '@hotjar/browser';
+import Board from '../components/Board.tsx';
+import { remove } from 'lodash';
+import { X } from 'lucide-react';
 
-export type PiecesInPlayContextType = {
+export interface PiecesInPlayContextType {
   piecesInPlay: Piece[];
   movePiece: (pieceIndex: number, newLocation: string | null) => void;
   updateDimensions: (pieceIndex: number, width: number, height: number) => void;
   rotatePiece: (pieceIndex: number) => void;
   resetPieces: () => void;
   setPiecesForNewLevel: (newPieces?: InitialPiece[]) => void;
-};
+}
 
 export const PiecesInPlayContext =
   createContext<PiecesInPlayContextType | null>(null);
@@ -32,6 +36,13 @@ export function PiecesInPlayProvider({
 }) {
   const { initialPieces, boardDimensions, currentLevel } =
     useContext<CurrentLevelContextType>(CurrentLevelContext);
+  const {
+    boardSquares,
+    addPieceToBoard,
+    removePieceFromBoard,
+    resetBoardSquares,
+    countOverlappingSquares,
+  } = useContext(BoardSquaresContext);
   const [piecesInPlay, setPiecesInPlay] = useState<InitialPiece[] | Piece[]>(
     initialPieces
   );
@@ -39,46 +50,88 @@ export function PiecesInPlayProvider({
 
   function movePiece(pieceIndex: number, newLocation: string | null) {
     const updatedPieces = [...piecesInPlay];
-    const oldLocation = updatedPieces[pieceIndex].location;
+    const oldLocation = piecesInPlay[pieceIndex].location;
+    const { x: oldX, y: oldY } = convertLocationToXAndY(oldLocation);
     let newValidLocation = newLocation;
-    if (newValidLocation != null) {
+    const pieceHeight = piecesInPlay[pieceIndex].height;
+    const pieceWidth = piecesInPlay[pieceIndex].width;
+    // if (oldLocation != null) {
+    //   removePieceFromBoard(oldX, oldY, pieceWidth, pieceHeight, updatedPieces[pieceIndex].id);
+    // }
+    // if moving from off the board to a valid spot on the board
+    //  if moving from on the board to another valid spot on the board
+    // if moving from off the board to an invalid spot on the board
+    // if moving from on the board to an invalid spot on the board
+
+    if (newLocation != null) {
       const { x, y } = convertLocationToXAndY(newValidLocation);
       let correctedX = x;
       let correctedY = y;
       const pieceHeight = piecesInPlay[pieceIndex].height;
       const pieceWidth = piecesInPlay[pieceIndex].width;
-      if (oldLocation === null) {
-        Hotjar.event('move from initial onto board');
-      } else {
-        Hotjar.event('move piece already on board to new location');
-      }
+      // if (oldLocation === null) {
+      //   Hotjar.event('move from initial onto board');
+      // } else {
+      //   Hotjar.event('move piece already on board to new location');
+      // }
       if (correctedX + pieceWidth > boardWidth) {
         correctedX = boardWidth - pieceWidth;
+        correctedX = Math.max(correctedX, 0);
+        console.log({ correctedX })
         Hotjar.event('piece placed partially off board on the x axis');
       }
       // I have no idea why adding 1 works here to correct pieces placed below the bottom of the board
       if (y + pieceHeight + 1 > boardHeight) {
         correctedY = boardHeight - pieceHeight;
+        correctedY = Math.max(correctedY, 0);
         Hotjar.event('piece placed partially off board on the y axis');
       }
       newValidLocation = `(${correctedX},${correctedY})`;
-    }
-    updatedPieces[pieceIndex].location = newValidLocation;
-    if (newValidLocation != null) {
-      updatedPieces[pieceIndex].id = `inPlay-${pieceIndex}`;
-    } else {
-      updatedPieces[pieceIndex].id = `initial-${pieceIndex}`;
+      const { outerOverlaps, innerOverlaps, squaresOutsideBoard } = countOverlappingSquares(
+        newValidLocation,
+        pieceWidth,
+        pieceHeight,
+        boardSquares
+      );
+      updatedPieces[pieceIndex].location = newValidLocation;
+      updatedPieces[pieceIndex].id = `b-${pieceIndex}`;
+     // addPieceToBoard(correctedX, correctedY, pieceWidth, pieceHeight, updatedPieces[pieceIndex].id);
+      setPiecesInPlay(updatedPieces);
+      if (outerOverlaps + innerOverlaps + squaresOutsideBoard > 0) {
+        updatedPieces[pieceIndex].isStable = false;
+        setPiecesInPlay(updatedPieces);
+        Hotjar.event('piece placed partially overlapping another piece');
+        console.log('piece placed partially overlapping another piece');
+        console.log(boardSquares);
+      } else {
+        updatedPieces[pieceIndex].isStable = true;
+        console.log('piece placed without overlapping another piece');
+      }
+    } else if (newLocation === null) {
+      updatedPieces[pieceIndex].location = newValidLocation;
+      updatedPieces[pieceIndex].id = `i-${pieceIndex}`;
+      setPiecesInPlay(updatedPieces);
       if (oldLocation !== null) {
         Hotjar.event('move off of board');
       }
     }
-    setPiecesInPlay(updatedPieces);
   }
 
   function updateDimensions(pieceIndex: number, width: number, height: number) {
     const updatedPieces = [...piecesInPlay];
+    const {
+      location,
+      width: oldWidth,
+      height: oldHeight,
+    } = piecesInPlay[pieceIndex];
+    const { x, y } = convertLocationToXAndY(location);
     updatedPieces[pieceIndex].width = width;
     updatedPieces[pieceIndex].height = height;
+    if (width > boardWidth || height > boardHeight) {
+      updatedPieces[pieceIndex].isStable = false;
+    } else {
+      updatedPieces[pieceIndex].isStable = true;
+    }
     setPiecesInPlay(updatedPieces);
   }
 
@@ -98,7 +151,7 @@ export function PiecesInPlayProvider({
           ...piece,
           location: initialLocation,
           color: colors[index % colors.length],
-          id: `initial-${index + 1}`,
+          id: `i-${index + 1}`,
           isRotated: false,
         })),
       ];
@@ -108,12 +161,6 @@ export function PiecesInPlayProvider({
     }
   }
 
-  function rotatePiece(pieceIndex: number) {
-    const updatedPieces = [...piecesInPlay];
-    // updatedPieces[pieceIndex].isRotated = !updatedPieces[pieceIndex].isRotated;
-
-    setPiecesInPlay(updatedPieces);
-  }
 
   function setPiecesForNewLevel(newPieces?: InitialPiece[]) {
     setPiecesInPlay(newPieces || initialPieces);
@@ -124,7 +171,6 @@ export function PiecesInPlayProvider({
         piecesInPlay,
         movePiece,
         updateDimensions,
-        rotatePiece,
         resetPieces,
         setPiecesForNewLevel,
       }}

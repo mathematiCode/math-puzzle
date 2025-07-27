@@ -59,6 +59,7 @@ export const StyledButton = styled.button.attrs(props => ({
   &:disabled.hover {
     background-color: lightgrey;
     color: rgb(89, 88, 88);
+    cursor: not-allowed;
   }
 `;
 

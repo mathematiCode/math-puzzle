@@ -8,7 +8,7 @@ import { Unit, MotionUnit } from './Unit';
 interface RectangleProps {
   width: number;
   height: number;
-  color: string;
+  color: string | undefined;
   isRotated?: boolean;
   isSelected?: boolean;
   isMotion?: boolean;
@@ -20,7 +20,7 @@ interface RectangleProps {
 // Transform3d was appearing in my styles mysteriously and messing up the layout so setting it to 0px always fixes it for now.
 const Container = styled(motion.div)<{
   $width: number;
-  color: string;
+  color: string | undefined;
   isSelected?: boolean;
   isExample?: boolean;
 }>`
@@ -34,8 +34,8 @@ const Container = styled(motion.div)<{
   padding: 0px;
   touch-action: none;
   background-color: ${props => props.color};
-  box-shadow: ${props =>
-    props.isSelected ? 'rgba(0, 0, 0, 0.35) 0px 5px 15px' : 'none'};
+  /* border: 3px solid rgba(0, 0, 0, 1); */
+  box-shadow: rgba(0, 0, 0, 0.83) 0px 5px 10px;
 `;
 
 function Rectangle(
@@ -52,10 +52,8 @@ function Rectangle(
   ref: React.Ref<HTMLDivElement>
 ) {
   const total = width * height;
-
   return (
     <Container
-      ref={ref}
       $width={width}
       color={color}
       layout={layout}
@@ -66,7 +64,7 @@ function Rectangle(
         isMotion ? (
           <MotionUnit
             key={unit}
-            color={color}
+            color={'transparent'}
             layout={layout}
             isExample={isExample}
           />

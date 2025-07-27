@@ -6,7 +6,7 @@ import ActionsToolbarPopover from './ActionsToolbarPopover.tsx';
 import { useState, memo, useContext } from 'react';
 import { motion, useAnimate } from 'motion/react';
 import styled from 'styled-components';
-import { convertLocationToXAndY } from '../utilities.ts';
+import { convertLocationToXAndY } from '../utils/utilities.ts';
 import { Piece } from '../types/piece.ts';
 import {
   SelectedPieceContext,
@@ -15,29 +15,33 @@ import {
 import {
   PiecesInPlayContext,
   PiecesInPlayContextType,
-} from '../context/PiecesInPlay.tsx';
+} from '../context/PiecesInPlay';
 import {
   CurrentLevelContext,
   CurrentLevelContextType,
 } from '../context/CurrentLevel.tsx';
 import Hotjar from '@hotjar/browser';
 
-export const PieceWrapper = styled.button.attrs(props => ({
-  onClick: props.onClick,
-  ref: props.ref,
-  $isDragging: props.isDragging,
-  animate: props.animate,
-  transition: props.transition,
-}))`
+export const PieceWrapper = styled(motion.button)
+  .withConfig({
+    shouldForwardProp: prop => prop !== 'isDragging',
+  })
+  .attrs(props => ({
+    onClick: props.onClick,
+    ref: props.ref,
+    animate: props.animate,
+    transition: props.transition,
+  }))`
   position: absolute;
-  left: ${({ x }) => `calc(${x} * var(--sizeOfEachUnit))`};
-  top: ${({ y }) => `calc(${y} * var(--sizeOfEachUnit))`};
+  left: ${({ x }) => `calc(${x} * var(--sizeOfEachUnit) - 2px)`};
+  top: ${({ y }) => `calc(${y} * var(--sizeOfEachUnit) - 2px)`};
   cursor: ${({ isDragging }) => (isDragging ? 'grab' : 'pointer')};
   visibility: ${({ isDragging }) => (isDragging ? 'hidden' : 'visible')};
-  z-index: 2;
+  z-index: ${({ isStable }) => (isStable ? 2 : 6)};
   &:active {
     cursor: grab;
   }
+  border: 2px solid black;
 `;
 
 function PieceOnBoard({
@@ -45,11 +49,13 @@ function PieceOnBoard({
   id,
   isRotating,
   setIsRotating,
+  isStable = true,
 }: {
   piece: Piece;
   id: string;
   isRotating: boolean;
   setIsRotating: (isRotating: boolean) => void;
+  isStable: boolean;
 }) {
   const { selectedPiece, setSelectedPiece } =
     useContext<SelectedPieceContextType>(SelectedPieceContext);
@@ -109,8 +115,19 @@ function PieceOnBoard({
         onClick={handlePieceSelected}
         x={x}
         y={y}
-        layout={!isRotating && !isDragging}
+        layout={!isRotating && !isDragging && !isStable}
         isDragging={isDragging}
+        isStable={isStable}
+        animate={
+          isStable
+            ? { x: 0, y: 0 }
+            : { x: [0, -1, 1, -1, 1, 0], y: [0, 1, -1, 1, -1, 0] }
+        }
+        transition={
+          isStable
+            ? { duration: 0.1 } // or 0 for instant snap
+            : { duration: 0.2, repeat: Infinity, ease: 'linear' }
+        }
       >
         <Rectangle
           width={piece.width}

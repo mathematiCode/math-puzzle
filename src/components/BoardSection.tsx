@@ -23,6 +23,7 @@ export const ValidSection = styled.div<{ $width: number; $color: string }>`
   touch-action: none;
   grid-template-columns: repeat(${props => props.$width}, 1fr);
   background-color: ${props => props.$color};
+  box-sizing: content-box;
 
   &::before {
     content: '';
