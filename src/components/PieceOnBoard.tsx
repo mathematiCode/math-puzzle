@@ -21,6 +21,11 @@ import {
   CurrentLevelContextType,
 } from '../context/CurrentLevel.tsx';
 import Hotjar from '@hotjar/browser';
+import {
+  BoardSquaresContext,
+  BoardSquaresContextType,
+} from '../context/BoardSquares.tsx';
+import { getNewValidLocation } from '../utils/getNewValidLocation';
 
 export const PieceWrapper = styled(motion.button)
   .withConfig({
@@ -61,8 +66,10 @@ function PieceOnBoard({
     useContext<SelectedPieceContextType>(SelectedPieceContext);
   const { piecesInPlay, updateDimensions, movePiece } =
     useContext<PiecesInPlayContextType>(PiecesInPlayContext);
-  const { sizeOfEachUnit } =
+  const { sizeOfEachUnit, boardDimensions } =
     useContext<CurrentLevelContextType>(CurrentLevelContext);
+  const { addPieceToBoard, removePieceFromBoard } =
+    useContext<BoardSquaresContextType>(BoardSquaresContext);
   const [scope, animate] = useAnimate();
 
   const { x, y } = convertLocationToXAndY(piece.location);
@@ -74,11 +81,22 @@ function PieceOnBoard({
   const refs = mergeRefs(scope, setNodeRef);
   const isSelected = selectedPiece?.id === id;
 
+  /* This function lives here instead of ActionsToolbar for three reasons
+  1. It needs to be access to the scope ref that's attached to the PieceWrapper and that would require ref forwarding to put it in the ActionsToolbarPopover
+  2. It needs access to setIsRotating 
+  3. The rotation logic is different for PieceOnBoard than it is for InitialPuzzlePiece
+  */
   async function runRotationAnimation(selectedPiece) {
-    let xOffset = Math.round(selectedPiece.height / 2) * sizeOfEachUnit;
-    let yOffset = Math.round(selectedPiece.width / 2) * sizeOfEachUnit;
     const id = selectedPiece?.id;
     const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
+    const { x, y } = convertLocationToXAndY(selectedPiece.location);
+    const oldWidth = selectedPiece.width;
+    const oldHeight = selectedPiece.height;
+    const newWidth = oldHeight;
+    const newHeight = oldWidth;
+    const { boardWidth, boardHeight } = boardDimensions;
+    removePieceFromBoard(x, y, oldWidth, oldHeight, id);
+
     setIsRotating(true);
     try {
       await animate(
@@ -86,14 +104,28 @@ function PieceOnBoard({
         { rotate: 90 },
         { type: 'spring', stiffness: 150, damping: 11 }
       );
-      updateDimensions(pieceIndex, selectedPiece.height, selectedPiece.width);
+      updateDimensions(pieceIndex, newWidth, newHeight);
       await animate(scope.current, { rotate: 0 }, { duration: 0 });
     } finally {
       setIsRotating(false);
-      const { x, y } = convertLocationToXAndY(selectedPiece.location);
-      let newX = x + Math.floor(selectedPiece.height / 2) - 1;
-      let newY = y + Math.floor(selectedPiece.width / 2) - 1;
-      movePiece(pieceIndex, `(${newX},${newY})`);
+      console.log(`oldWidth: ${oldWidth} oldHeight: ${oldHeight}`);
+
+      let newX = x + Math.floor((oldWidth - newWidth) / 2);
+      let newY = y + Math.floor((oldHeight - newHeight) / 2);
+      console.log(`newX: ${newX} newY: ${newY}`);
+
+      const { correctedX, correctedY } = getNewValidLocation(
+        newX,
+        newY,
+        newWidth,
+        newHeight,
+        boardWidth,
+        boardHeight
+      );
+
+      console.log(`corrected: ${correctedX}, ${correctedY}`);
+      movePiece(pieceIndex, `(${correctedX},${correctedY})`);
+      addPieceToBoard(correctedX, correctedY, newWidth, newHeight, id);
     }
     Hotjar.event('rotation');
   }

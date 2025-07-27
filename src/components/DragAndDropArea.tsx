@@ -17,6 +17,7 @@ import { useSelectedPiece } from '../context/SelectedPiece';
 import { convertLocationToXAndY, rateDroppability } from '../utils/utilities';
 import Hotjar from '@hotjar/browser';
 import { BoardSquaresContext } from '../context/BoardSquares';
+import { getNewValidLocation } from '../utils/getNewValidLocation';
 interface DragAndDropAreaProps {
   children: React.ReactNode;
   setActivePiece: (piece: Piece) => void;
@@ -142,11 +143,21 @@ function DragAndDropArea({
     }
     if (event?.over?.id) {
       const newLocation = event.over.id.toString();
-      movePiece(pieceIndex, newLocation);
       const { x, y } = convertLocationToXAndY(newLocation);
-      addPieceToBoard(
+      const boardWidth = boardSquares[0].length;
+      const boardHeight = boardSquares.length;
+      const { correctedX, correctedY } = getNewValidLocation(
         x,
         y,
+        piecesInPlay[pieceIndex].width,
+        piecesInPlay[pieceIndex].height,
+        boardWidth,
+        boardHeight
+      );
+      movePiece(pieceIndex, `(${correctedX},${correctedY})`);
+      addPieceToBoard(
+        correctedX,
+        correctedY,
         piecesInPlay[pieceIndex].width,
         piecesInPlay[pieceIndex].height,
         piecesInPlay[pieceIndex].id ?? ''

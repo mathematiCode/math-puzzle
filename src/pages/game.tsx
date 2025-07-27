@@ -32,12 +32,12 @@ function Game() {
     setSizeOfEachUnit,
   } = useContext(CurrentLevelContext);
   const [activePiece, setActivePiece] = useState<Piece | null>(null);
-  const { piecesInPlay, resetPieces, setPiecesForNewLevel } =
-    useContext(PiecesInPlayContext);
+  const { isLevelCompleted } = useContext(LevelProgressContext);
   const { boardSquares, resetBoardSquares, checkIfPassedLevel } = useContext(BoardSquaresContext);
+    const { piecesInPlay, resetPieces, setPiecesForNewLevel } =
+    useContext(PiecesInPlayContext);
   const [isRotating, setIsRotating] = useState(false);
   const [levelCompletedShown, setLevelCompletedShown] = useState(false);
-  const { isLevelCompleted } = useContext(LevelProgressContext);
   const boardRef = useRef(null);
 
   const handleCloseModal = () => {

@@ -26,10 +26,10 @@ export const StyledButton = styled.button.attrs(props => ({
   disabled: props.disabled,
 }))<{
   color: string;
-  textColor?: string;
+  $textColor?: string;
 }>`
   background-color: ${props => props.color};
-  color: ${props => props.textColor || 'white'};
+  color: ${props => props.$textColor || 'white'};
   border-radius: 5px;
   padding: 12px;
   margin: 20px;
@@ -75,7 +75,7 @@ function Button({
       onClick={onClick}
       disabled={disabled}
       color={color}
-      textColor={textColor}
+      $textColor={textColor}
     >
       {children}
     </StyledButton>

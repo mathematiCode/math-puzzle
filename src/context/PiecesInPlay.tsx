@@ -9,6 +9,7 @@ import { BoardSquaresContext } from './BoardSquares';
 import { colors } from '../CONSTANTS';
 import { InitialPiece, Piece } from '../types/piece.ts';
 import { convertLocationToXAndY } from '../utils/utilities.ts';
+import { getNewValidLocation } from '../utils/getNewValidLocation.ts';
 import { useAnimate } from 'motion/dist/react';
 import levels from '../levels.json' with { type: 'json' };
 import Hotjar from '@hotjar/browser';
@@ -52,40 +53,14 @@ export function PiecesInPlayProvider({
     const updatedPieces = [...piecesInPlay];
     const oldLocation = piecesInPlay[pieceIndex].location;
     const { x: oldX, y: oldY } = convertLocationToXAndY(oldLocation);
-    let newValidLocation = newLocation;
     const pieceHeight = piecesInPlay[pieceIndex].height;
     const pieceWidth = piecesInPlay[pieceIndex].width;
-    // if (oldLocation != null) {
-    //   removePieceFromBoard(oldX, oldY, pieceWidth, pieceHeight, updatedPieces[pieceIndex].id);
-    // }
-    // if moving from off the board to a valid spot on the board
-    //  if moving from on the board to another valid spot on the board
-    // if moving from off the board to an invalid spot on the board
-    // if moving from on the board to an invalid spot on the board
-
+    let newValidLocation = newLocation;
     if (newLocation != null) {
-      const { x, y } = convertLocationToXAndY(newValidLocation);
-      let correctedX = x;
-      let correctedY = y;
-      const pieceHeight = piecesInPlay[pieceIndex].height;
-      const pieceWidth = piecesInPlay[pieceIndex].width;
-      // if (oldLocation === null) {
-      //   Hotjar.event('move from initial onto board');
-      // } else {
-      //   Hotjar.event('move piece already on board to new location');
-      // }
-      if (correctedX + pieceWidth > boardWidth) {
-        correctedX = boardWidth - pieceWidth;
-        correctedX = Math.max(correctedX, 0);
-        console.log({ correctedX })
-        Hotjar.event('piece placed partially off board on the x axis');
-      }
-      // I have no idea why adding 1 works here to correct pieces placed below the bottom of the board
-      if (y + pieceHeight + 1 > boardHeight) {
-        correctedY = boardHeight - pieceHeight;
-        correctedY = Math.max(correctedY, 0);
-        Hotjar.event('piece placed partially off board on the y axis');
-      }
+      const { x, y } = convertLocationToXAndY(newLocation);
+      console.log(`x: ${x} y: ${y}`);
+      const { correctedX, correctedY } = getNewValidLocation(x, y, pieceWidth, pieceHeight, boardWidth, boardHeight);
+      console.log(`correctedX: ${correctedX} correctedY: ${correctedY}`);
       newValidLocation = `(${correctedX},${correctedY})`;
       const { outerOverlaps, innerOverlaps, squaresOutsideBoard } = countOverlappingSquares(
         newValidLocation,
@@ -95,20 +70,25 @@ export function PiecesInPlayProvider({
       );
       updatedPieces[pieceIndex].location = newValidLocation;
       updatedPieces[pieceIndex].id = `b-${pieceIndex}`;
-     // addPieceToBoard(correctedX, correctedY, pieceWidth, pieceHeight, updatedPieces[pieceIndex].id);
+   
       setPiecesInPlay(updatedPieces);
-      if (outerOverlaps + innerOverlaps + squaresOutsideBoard > 0) {
+      if (outerOverlaps + innerOverlaps > 0) {
         updatedPieces[pieceIndex].isStable = false;
         setPiecesInPlay(updatedPieces);
         Hotjar.event('piece placed partially overlapping another piece');
         console.log('piece placed partially overlapping another piece');
         console.log(boardSquares);
+      } else if (squaresOutsideBoard > 0) {
+        updatedPieces[pieceIndex].isStable = false;
+        setPiecesInPlay(updatedPieces);
+        Hotjar.event('piece placed partially off board');
+        console.log('piece placed partially off board');
+        console.log(boardSquares);
       } else {
         updatedPieces[pieceIndex].isStable = true;
-        console.log('piece placed without overlapping another piece');
       }
     } else if (newLocation === null) {
-      updatedPieces[pieceIndex].location = newValidLocation;
+      updatedPieces[pieceIndex].location = null;
       updatedPieces[pieceIndex].id = `i-${pieceIndex}`;
       setPiecesInPlay(updatedPieces);
       if (oldLocation !== null) {
@@ -124,7 +104,7 @@ export function PiecesInPlayProvider({
       width: oldWidth,
       height: oldHeight,
     } = piecesInPlay[pieceIndex];
-    const { x, y } = convertLocationToXAndY(location);
+    //const { x, y } = convertLocationToXAndY(location);
     updatedPieces[pieceIndex].width = width;
     updatedPieces[pieceIndex].height = height;
     if (width > boardWidth || height > boardHeight) {

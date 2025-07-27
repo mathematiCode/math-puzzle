@@ -19,6 +19,7 @@ import combineAnimation from '../assets/icons-animation/combine-tool.json';
 import Hotjar from '@hotjar/browser';
 import { convertLocationToXAndY } from '../utils/utilities';
 import { BoardSquaresContext } from '../context/BoardSquares';
+import { getNewValidLocation } from '../utils/getNewValidLocation';
 
 function ActionsToolbarPopover({
   children,
@@ -56,10 +57,12 @@ function ActionsToolbarPopover({
   function handleHorizontalStretch() {
     Hotjar.event('double width attempt');
     console.log(selectedPiece?.isStable);
+    const id = selectedPiece?.id;
+    const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
+    let { x, y } = convertLocationToXAndY(selectedPiece?.location);
     if (selectedPiece && Number.isInteger(selectedPiece.height / 2)) {
       const newHeight = selectedPiece.height / 2;
       const newWidth = selectedPiece.width * 2;
-      let { x, y } = convertLocationToXAndY(selectedPiece.location);
       if (selectedPiece.location != null) {
         if (x < 0 && newWidth < boardWidth) {
           x = 0;
@@ -67,6 +70,13 @@ function ActionsToolbarPopover({
         if (y < 0 && newHeight < boardHeight) {
           y = 0;
         }
+        removePieceFromBoard(
+          x,
+          y,
+          selectedPiece.width,
+          selectedPiece.height,
+          selectedPiece.id ?? ''
+        );
         const { innerOverlaps, outerOverlaps, squaresOutsideBoard } =
           countOverlappingSquares(
             selectedPiece.location,
@@ -74,15 +84,28 @@ function ActionsToolbarPopover({
             newHeight,
             boardSquares
           );
-        if (innerOverlaps + outerOverlaps + squaresOutsideBoard > 0) {
-          Hotjar.event('double width unsuccessfully');
+        if (innerOverlaps + outerOverlaps > 0) {
           console.log('Collision alert');
+        } else if (squaresOutsideBoard > 0) {
+          console.log('Piece placed partially off board');
+          const { correctedX, correctedY } = getNewValidLocation(
+            x,
+            y,
+            newWidth,
+            newHeight,
+            boardWidth,
+            boardHeight
+          );
+          movePiece(pieceIndex, `(${correctedX},${correctedY})`);
+          console.log(`${x}, ${y} -> ${correctedX}, ${correctedY}`);
+          x = correctedX;
+          y = correctedY;
         }
       }
-      const id = selectedPiece.id;
-      const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
       updateDimensions(pieceIndex, newWidth, newHeight);
-
+      if (selectedPiece.location != null && selectedPiece.id != null) {
+        addPieceToBoard(x, y, newWidth, newHeight, selectedPiece.id);
+      }
       Hotjar.event('double width successfully');
       console.log(selectedPiece.isStable);
     }
@@ -104,20 +127,42 @@ function ActionsToolbarPopover({
             newHeight,
             boardSquares
           );
+        if (innerOverlaps + outerOverlaps > 0) {
+          console.log('Collision alert');
+        } else if (squaresOutsideBoard > 0) {
+          console.log('Piece placed partially off board');
+          const { correctedX, correctedY } = getNewValidLocation(
+            x,
+            y,
+            newWidth,
+            newHeight,
+            boardWidth,
+            boardHeight
+          );
+          console.log(`${x}, ${y} -> ${correctedX}, ${correctedY}`);
+          movePiece(pieceIndex, `(${correctedX},${correctedY})`);
+          x = correctedX;
+          y = correctedY;
+        }
         removePieceFromBoard(
           x,
           y,
           selectedPiece.width,
           selectedPiece.height,
-          selectedPiece.id
+          selectedPiece.id ?? ''
         );
-        if (x < 0 && newWidth < boardWidth) {
-          x = 0;
-        }
-        if (y < 0 && newHeight < boardHeight) {
-          y = 0;
-        }
-        console.log('moving piece to', `(${x}, ${y})`);
+        const { correctedX, correctedY } = getNewValidLocation(
+          x,
+          y,
+          newWidth,
+          newHeight,
+          boardWidth,
+          boardHeight
+        );
+        console.log(`${x}, ${y} -> ${correctedX}, ${correctedY}`);
+        movePiece(pieceIndex, `(${correctedX},${correctedY})`);
+        x = correctedX;
+        y = correctedY;
       }
       updateDimensions(pieceIndex, newWidth, newHeight);
       if (selectedPiece.location != null && selectedPiece.id != null) {
