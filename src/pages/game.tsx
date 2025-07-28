@@ -145,6 +145,7 @@ export const Main = styled.main`
   gap: 70px;
   margin-inline: 30px;
   margin-top: 70px;
+  margin-bottom: 60px;
   height: 100%;
   max-width: 100%;
   overflow-y: hidden;
