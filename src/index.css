@@ -35,7 +35,6 @@ body {
   /* 4. Improve text rendering */
   -webkit-font-smoothing: antialiased;
   height: 100%;
-  overflow: clip;
 }
 
 /* 5. Improve media defaults */

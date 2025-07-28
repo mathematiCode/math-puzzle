@@ -22,7 +22,7 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <>
       <NavBar currentPath={location.pathname} />
-      <PageContainer>{children}</PageContainer>
+      <PageContainer id="page-container">{children}</PageContainer>
       <GlobalStyles />
     </>
   );

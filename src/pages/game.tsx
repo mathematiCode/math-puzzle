@@ -148,6 +148,7 @@ export const Main = styled.main`
   height: 100%;
   max-width: 100%;
   overflow-y: clip;
+  position: fixed;
 
   @media (max-width: 750px) {
     grid-template-columns: 1fr;
