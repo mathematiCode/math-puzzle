@@ -141,15 +141,15 @@ function Game() {
 
 export const Main = styled.main`
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 60% 40%;
   grid-template-rows: 1fr 90px;
   align-items: start;
   gap: 70px;
-  margin-inline: 30px;
+  margin-inline: 40px;
   margin-bottom: 60px;
   height: 100%;
   width: 100cqw;
-  max-width: 100%;
+  max-width: 100cqw;
   overflow-y: clip;
   position: fixed;
 
@@ -220,13 +220,12 @@ export const ButtonContainer = styled.div`
 
   @media (max-width: 750px) {
     bottom: 0px;
-    margin-inline: 0px;
-    width: 100%;
   }
 
   @media (max-width: 450px) {
     left: 0;
     right: 0;
+    width: 100%;
   }
 `;
 
