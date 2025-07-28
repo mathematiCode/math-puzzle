@@ -63,9 +63,9 @@ export const StyledButton = styled.button.attrs(props => ({
   }
 
   @media (max-width: 768px) {
-    font-size: 1rem;
+    font-size: 0.9rem;
     margin: 10px;
-    padding: 6px;
+    padding: 3px;
   }
 `;
 

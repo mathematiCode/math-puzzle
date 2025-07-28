@@ -213,7 +213,7 @@ export const ButtonContainer = styled.div`
   @media (max-width: 750px) {
     bottom: 0px;
     grid-column: 1/2;
-    margin-inline: auto;
+    margin-inline: 0px;
 
     button {
       font-size: 0.9rem;
