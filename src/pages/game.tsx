@@ -70,8 +70,8 @@ function Game() {
   }
 
   return (
-    <Main>
-      <DragAndDropArea
+    <Main id='main'>
+      <DragAndDropArea id='drag-and-drop-area'
         setActivePiece={setActivePiece}
         boardRef={boardRef}
         key={currentLevel}
@@ -187,8 +187,8 @@ export const PiecesContainer = styled(motion.div).attrs({
   gap: calc(var(--sizeOfEachUnit) / 2);
   overflow-y: auto;
   max-height:  70vh;
-  height: 65vh;
-  padding-top: 35px;
+  height: fit-content;
+  padding-top: 10px;
   z-index: 1;
   line-height: 0;
 
