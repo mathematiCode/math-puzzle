@@ -171,7 +171,7 @@ export const BoardWrapper = styled.div`
 
   @media (max-width: 750px) {
     left: 50%;
-    top: 70%;
+    top: 65%;
   }
 `;
 
