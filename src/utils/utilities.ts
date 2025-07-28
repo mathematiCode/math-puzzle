@@ -38,7 +38,7 @@ export function calculateUnitSize(
 ) {
   if (windowWidth < 500) {
     return Math.round(
-      ((0.0015 * windowWidth * (windowHeight - 200)) /
+      ((0.0018 * windowWidth * (windowHeight - 200)) /
         Math.max(width, height, largestHeight * 1.5)) *
         0.8 -
         1

@@ -150,7 +150,7 @@ export const Main = styled.main`
 
   @media (max-width: 750px) {
     grid-template-columns: 1fr;
-    grid-template-rows: 40% 55% 5%;
+    grid-template-rows: 35% 60% 5%;
     margin-inline: 10px;
     justify-items: center;
     gap: 20px;
