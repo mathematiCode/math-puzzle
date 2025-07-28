@@ -77,7 +77,7 @@ const InitialPuzzlePiece = ({
           width={piece.width}
           height={piece.height}
           unitSize={
-            window.innerWidth <= 750 && (isActive || isDragging) ? 0.7 : 1
+            window.innerWidth >= 750 || isActive || isDragging ? 1 : 0.7
           }
           color={piece.color}
           isMotion={true}
