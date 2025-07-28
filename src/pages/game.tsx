@@ -206,7 +206,6 @@ export const ButtonContainer = styled.div`
   justify-content: center;
   position: fixed;
   bottom: 20px;
-  grid-column: 1/3;
   z-index: 3;
   background-color: hsl(107, 100.00%, 93.70%);
   border-radius: 10px;
@@ -215,8 +214,8 @@ export const ButtonContainer = styled.div`
 
   @media (max-width: 750px) {
     bottom: 0px;
-    grid-column: 1/2;
     margin-inline: 0px;
+    width: 100%;
 
     button {
       font-size: 0.9rem;
