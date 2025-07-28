@@ -105,7 +105,7 @@ const LevelCompleteModal = ({
               Level {level} Complete!
             </DialogTitle>
             <img
-              src={`/assets/foxes.png`}
+              src={`/assets/foxes.svg`}
               alt={`Two foxes cheering`}
               className={classes.Foxes}
             />
