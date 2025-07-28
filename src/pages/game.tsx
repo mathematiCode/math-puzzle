@@ -196,7 +196,7 @@ export const PiecesContainer = styled(motion.div).attrs({
     max-height: 40vh;
     height: 40vh;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
     margin-inline: 0px;
   }
 `;
