@@ -184,12 +184,13 @@ export const PiecesContainer = styled(motion.div).attrs({
   flex-wrap: wrap;
   align-items: start;
   justify-content: right;
-  gap: var(--sizeOfEachUnit);
+  gap: calc(var(--sizeOfEachUnit) / 2);
   overflow-y: auto;
   max-height:  70vh;
   height: 65vh;
   padding-top: 35px;
   z-index: 1;
+  line-height: 0;
 
   @media (max-width: 750px) {
     max-height: 40vh;

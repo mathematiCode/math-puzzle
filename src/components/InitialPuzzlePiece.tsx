@@ -95,6 +95,7 @@ export const InitialPieceWrapper = styled(motion.button)`
   border: none;
   z-index: 2;
   border: 2px solid black;
+  margin: 0;
   &:active {
     cursor: grab;
   }
