@@ -192,6 +192,9 @@ export const PiecesContainer = styled(motion.div).attrs({
   @media (max-width: 750px) {
     max-height: 40vh;
     height: 40vh;
+    align-items: center;
+    justify-content: center;
+    margin-inline: 0px;
   }
 `;
 // Not sure why subtracting 2 from the sizeOfEachUnit works here. May be a box-sizing issue although it should all be set to border-box...
