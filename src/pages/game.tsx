@@ -194,7 +194,7 @@ export const PiecesContainer = styled(motion.div).attrs({
 
   @media (max-width: 750px) {
     max-height: 40vh;
-    height: 40vh;
+    height: fit-content;
     align-items: center;
     justify-content: space-around;
     margin-inline: 0px;
