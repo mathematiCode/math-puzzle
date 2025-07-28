@@ -8,7 +8,8 @@ import { Unit, MotionUnit } from './Unit';
 interface RectangleProps {
   width: number;
   height: number;
-  color: string | undefined;
+  unitSize: number;
+  color: string;
   isRotated?: boolean;
   isSelected?: boolean;
   isMotion?: boolean;
