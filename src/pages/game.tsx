@@ -155,6 +155,7 @@ export const Main = styled.main`
     grid-template-rows: 35% 60% 5%;
     margin-inline: 10px;
     justify-items: center;
+    align-items: center;
     gap: 20px;
   }
  
@@ -211,18 +212,18 @@ export const ButtonContainer = styled.div`
   border-radius: 10px;
   border: 3px solid hsl(180, 89.10%, 21.60%);
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+  left: auto;
+  right: auto;
 
   @media (max-width: 750px) {
     bottom: 0px;
     margin-inline: 0px;
     width: 100%;
+  }
 
-    button {
-      font-size: 0.9rem;
-      margin: 5px;
-      padding-inline: 4px;
-      padding: 4px;
-    }
+  @media (max-width: 450px) {
+    left: 0;
+    right: 0;
   }
 `;
 
