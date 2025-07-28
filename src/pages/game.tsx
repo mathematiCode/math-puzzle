@@ -144,17 +144,15 @@ export const Main = styled.main`
   align-items: start;
   gap: 70px;
   margin-inline: 30px;
-  margin-top: 70px;
   margin-bottom: 60px;
   height: 100%;
   max-width: 100%;
-  overflow-y: hidden;
+  overflow-y: clip;
 
   @media (max-width: 750px) {
     grid-template-columns: 1fr;
     grid-template-rows: 35% 60% 5%;
     margin-inline: 10px;
-    margin-top: 90px;
     justify-items: center;
     align-items: center;
     gap: 20px;
@@ -190,6 +188,8 @@ export const PiecesContainer = styled(motion.div).attrs({
   overflow-y: auto;
   max-height:  70vh;
   height: 65vh;
+  padding-top: 35px;
+  z-index: 1;
 
   @media (max-width: 750px) {
     max-height: 40vh;
