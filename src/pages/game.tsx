@@ -154,6 +154,7 @@ export const Main = styled.main`
     grid-template-columns: 1fr;
     grid-template-rows: 35% 60% 5%;
     margin-inline: 10px;
+    margin-top: 90px;
     justify-items: center;
     align-items: center;
     gap: 20px;
