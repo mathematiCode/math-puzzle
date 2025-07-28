@@ -29,14 +29,10 @@ const useClasses = makeStyles({
     zIndex: 1,
     fontSize: '1.2rem',
     fontWeight: 600,
-    //     display: 'flex',
-    //     flexDirection: 'column',
-    //     alignItems: 'center',
-    //     justifyContent: 'center',
 
     '@media screen and (max-width: 768px)': {
       width: '96%',
-      marginTop: '20px',
+      marginBlock: 'auto',
       paddingInline: '10px',
       fontSize: '0.9rem',
     },

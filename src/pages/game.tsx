@@ -168,6 +168,7 @@ export const BoardWrapper = styled.div`
 
   @media (max-width: 750px) {
     left: 50%;
+    top: 70%;
   }
 `;
 
@@ -208,6 +209,8 @@ export const ButtonContainer = styled.div`
 
   @media (max-width: 750px) {
     bottom: 0px;
+    grid-column: 1/2;
+    margin-inline: auto;
 
     button {
       font-size: 0.9rem;
