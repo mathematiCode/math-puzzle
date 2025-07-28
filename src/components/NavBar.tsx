@@ -27,10 +27,6 @@ const NavContent = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 60px;
-
-  @media (max-width: 768px) {
-    height: 60px;
-  }
 `;
 
 const Logo = styled.div`

@@ -144,6 +144,7 @@ export const Main = styled.main`
   align-items: start;
   gap: 70px;
   margin-inline: 30px;
+  margin-top: 70px;
   height: 100%;
   max-width: 100%;
   overflow-y: hidden;
