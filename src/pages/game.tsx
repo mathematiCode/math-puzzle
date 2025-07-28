@@ -70,6 +70,7 @@ function Game() {
   }
 
   return (
+    <>
     <Main id='main'>
       <DragAndDropArea id='drag-and-drop-area'
         setActivePiece={setActivePiece}
@@ -111,6 +112,7 @@ function Game() {
           </DragOverlay>
         ) : null}
       </DragAndDropArea>
+       </Main>
       <ButtonContainer id='button-container'>
         <Button color='hsl(178, 30.00%, 56.10%)' textColor='black' disabled={levelPosition == 'first'} onClick={setToPrevious}>
         <ChevronLeft />Previous Level 
@@ -133,7 +135,7 @@ function Game() {
         levelCompletedShown={levelCompletedShown}
         onClose={handleCloseModal}
       />
-    </Main>
+    </>
   );
 }
 
@@ -146,6 +148,7 @@ export const Main = styled.main`
   margin-inline: 30px;
   margin-bottom: 60px;
   height: 100%;
+  width: 100cqw;
   max-width: 100%;
   overflow-y: clip;
   position: fixed;
@@ -206,7 +209,6 @@ export const PiecesContainer = styled(motion.div).attrs({
 export const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-self: center;
   justify-content: center;
   position: fixed;
   bottom: 20px;
@@ -215,8 +217,6 @@ export const ButtonContainer = styled.div`
   border-radius: 10px;
   border: 3px solid hsl(180, 89.10%, 21.60%);
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
-  left: auto;
-  right: auto;
 
   @media (max-width: 750px) {
     bottom: 0px;

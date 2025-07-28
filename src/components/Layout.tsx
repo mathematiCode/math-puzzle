@@ -7,6 +7,10 @@ import GlobalStyles from './GlobalStyles';
 const PageContainer = styled.div`
   margin-top: 90px;
   height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   @media (max-width: 768px) {
     margin-top: 10px;
   }
