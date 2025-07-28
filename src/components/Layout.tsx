@@ -8,7 +8,7 @@ const PageContainer = styled.div`
   margin-top: 90px;
   height: 100%;
   @media (max-width: 768px) {
-    margin-top: 80px;
+    margin-top: 10px;
   }
 `;
 
@@ -22,7 +22,7 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <>
       <NavBar currentPath={location.pathname} />
-      <PageContainer>{children}</PageContainer>
+      <PageContainer id="page-container">{children}</PageContainer>
       <GlobalStyles />
     </>
   );

@@ -12,6 +12,7 @@ interface UnitProps extends ComponentProps<'div'> {
   key?: number | string;
   isExample?: boolean;
   layout?: boolean;
+  unitSize?: number;
 }
 
 export const BasicUnit = styled.div<{
@@ -19,20 +20,33 @@ export const BasicUnit = styled.div<{
   $isExample?: boolean;
   $sizeOfEachUnit: number;
   layout?: boolean;
+  unitSize?: number;
 }>`
-  width: ${props => (props.$isExample ? '30px' : 'var(--sizeOfEachUnit)')};
-  height: ${props => (props.$isExample ? '30px' : 'var(--sizeOfEachUnit)')};
+  width: ${props =>
+    props.$isExample
+      ? '30px'
+      : `calc(${props.$unitSize} * var(--sizeOfEachUnit))`};
+  height: ${props =>
+    props.$isExample
+      ? '30px'
+      : `calc(${props.$unitSize} * var(--sizeOfEachUnit))`};
   border: 1px solid black;
   border-radius: 0px;
   background-color: ${props => props.$color || 'transparent'};
   @media screen and (max-width: 768px) {
-    width: ${props => (props.$isExample ? '20px' : 'var(--sizeOfEachUnit)')};
-    height: ${props => (props.$isExample ? '20px' : 'var(--sizeOfEachUnit)')};
+    width: ${props =>
+      props.$isExample
+        ? '20px'
+        : `calc(${props.$unitSize} * var(--sizeOfEachUnit))`};
+    height: ${props =>
+      props.$isExample
+        ? '20px'
+        : `calc(${props.$unitSize} * var(--sizeOfEachUnit))`};
   }
 `;
 
 export const Unit = forwardRef<HTMLDivElement, UnitProps>(
-  ({ color, isExample, ...delegated }, ref) => {
+  ({ color, isExample, unitSize, ...delegated }, ref) => {
     const { sizeOfEachUnit } = useContext(CurrentLevelContext);
     return (
       <BasicUnit
@@ -40,6 +54,7 @@ export const Unit = forwardRef<HTMLDivElement, UnitProps>(
         ref={ref}
         $isExample={isExample}
         $sizeOfEachUnit={sizeOfEachUnit}
+        $unitSize={unitSize}
       />
     );
   }
@@ -49,11 +64,13 @@ export const StyledMotionUnit = styled(BasicUnit).attrs({ as: motion.div })``;
 export const MotionUnit = ({
   color,
   layout = true,
+  unitSize,
   isExample,
   ref,
 }: {
   color?: string;
   layout?: boolean;
+  unitSize?: number;
   isExample?: boolean;
   ref?: HTMLElement;
 }) => {
@@ -64,6 +81,7 @@ export const MotionUnit = ({
       $color={color || 'transparent'}
       $isExample={isExample}
       $sizeOfEachUnit={sizeOfEachUnit}
+      $unitSize={unitSize}
     />
   );
 };

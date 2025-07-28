@@ -161,6 +161,7 @@ function PieceOnBoard({
         <Rectangle
           width={piece.width}
           height={piece.height}
+          unitSize={1}
           color={piece.color}
           layout={!isRotating}
           isMotion={true}

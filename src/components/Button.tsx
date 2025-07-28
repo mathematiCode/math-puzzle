@@ -61,6 +61,17 @@ export const StyledButton = styled.button.attrs(props => ({
     color: rgb(89, 88, 88);
     cursor: not-allowed;
   }
+
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+    margin: 5px;
+    padding: 3px;
+    line-height: 1.1;
+
+    svg {
+      display: none;
+    }
+  }
 `;
 
 function Button({

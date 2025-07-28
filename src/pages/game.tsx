@@ -70,28 +70,30 @@ function Game() {
   }
 
   return (
-    <Main>
-      <DragAndDropArea
+    <Main id='main'>
+      <DragAndDropArea id='drag-and-drop-area'
         setActivePiece={setActivePiece}
         boardRef={boardRef}
         key={currentLevel}
         isRotating={isRotating}
         setIsRotating={setIsRotating}
       >
-        <PiecesContainer $currentLevel={currentLevel}>
+        <PiecesContainer id='pieces-container' $currentLevel={currentLevel}>
           {piecesInPlay.map((piece: Piece, pieceIndex: number) => {
             if (piece.location != null) return null;
             return (
               <InitialPuzzlePiece
                 piece={piece}
+                isActive={activePiece?.id === piece.id}
                 isRotating={isRotating}
                 setIsRotating={setIsRotating}
                 key={pieceIndex}
+                setActivePiece={setActivePiece}
               />
             );
           })}
         </PiecesContainer>
-        <BoardWrapper>
+        <BoardWrapper id='board-wrapper'>
           <Board
             ref={boardRef}
             dimensions={levels[currentLevel].dimensions}
@@ -109,14 +111,14 @@ function Game() {
           </DragOverlay>
         ) : null}
       </DragAndDropArea>
-      <ButtonContainer>
+      <ButtonContainer id='button-container'>
         <Button color='hsl(178, 30.00%, 56.10%)' textColor='black' disabled={levelPosition == 'first'} onClick={setToPrevious}>
         <ChevronLeft />Previous Level 
         </Button>
         <Button color='hsl(178, 100%, 23%)' textColor='white' disabled={levelPosition == 'last'} onClick={setToNext}>
         Next Level <ChevronRight />
         </Button>
-        <Button color='hsla(0, 75.40%, 74.90%, 0.88)' textColor='black' onClick={resetLevel}>
+        <Button color='hsla(0, 58.70%, 70.60%, 0.88)' textColor='black' onClick={resetLevel}>
          <RotateCcw/> Reset Game 
         </Button>
         <InstructionsModal
@@ -137,20 +139,26 @@ function Game() {
 
 export const Main = styled.main`
   display: grid;
-  grid-template-columns: 60% 40%;
-  grid-template-rows: 1fr 50px;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 1fr 90px;
   align-items: start;
   gap: 70px;
   margin-inline: 30px;
+  margin-bottom: 60px;
   height: 100%;
+  max-width: 100%;
+  overflow-y: clip;
+  position: fixed;
 
   @media (max-width: 750px) {
     grid-template-columns: 1fr;
-    grid-template-rows: 55% 40% 5%;
+    grid-template-rows: 35% 60% 5%;
     margin-inline: 10px;
     justify-items: center;
+    align-items: center;
     gap: 20px;
   }
+ 
 `;
 
 export const BoardWrapper = styled.div`
@@ -164,6 +172,7 @@ export const BoardWrapper = styled.div`
 
   @media (max-width: 750px) {
     left: 50%;
+    top: 65%;
   }
 `;
 
@@ -176,7 +185,21 @@ export const PiecesContainer = styled(motion.div).attrs({
   flex-wrap: wrap;
   align-items: start;
   justify-content: right;
-  gap: var(--sizeOfEachUnit);
+  gap: calc(var(--sizeOfEachUnit) / 2);
+  overflow-y: auto;
+  max-height:  70vh;
+  height: fit-content;
+  padding-top: 10px;
+  z-index: 1;
+  line-height: 0;
+
+  @media (max-width: 750px) {
+    max-height: 40vh;
+    height: fit-content;
+    align-items: center;
+    justify-content: space-around;
+    margin-inline: 0px;
+  }
 `;
 // Not sure why subtracting 2 from the sizeOfEachUnit works here. May be a box-sizing issue although it should all be set to border-box...
 
@@ -187,22 +210,23 @@ export const ButtonContainer = styled.div`
   justify-content: center;
   position: fixed;
   bottom: 20px;
-  grid-column: 1/3;
   z-index: 3;
   background-color: hsl(107, 100.00%, 93.70%);
   border-radius: 10px;
   border: 3px solid hsl(180, 89.10%, 21.60%);
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+  left: auto;
+  right: auto;
 
   @media (max-width: 750px) {
     bottom: 0px;
+    margin-inline: 0px;
+    width: 100%;
+  }
 
-    button {
-      font-size: 0.9rem;
-      margin: 5px;
-      padding-inline: 4px;
-      padding: 4px;
-    }
+  @media (max-width: 450px) {
+    left: 0;
+    right: 0;
   }
 `;
 

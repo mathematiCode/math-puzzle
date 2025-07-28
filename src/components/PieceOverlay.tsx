@@ -4,6 +4,11 @@ import PropTypes from 'prop-types';
 import Rectangle from './Rectangle';
 import { Piece } from '../types/piece';
 
+// Simple touch device detection
+const isTouchDevice = () => {
+  return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+};
+
 function PieceOverlay({ piece }: { piece: Piece }) {
   return (
     <motion.div
@@ -11,6 +16,9 @@ function PieceOverlay({ piece }: { piece: Piece }) {
       style={{
         cursor: 'grab',
         border: '2px solid black',
+        position: 'relative',
+        left: isTouchDevice() ? 20 : 0, // offset only visually
+        top: isTouchDevice() ? -40 : 0,
       }}
       animate={{
         rotate: piece.isRotated ? 90 : 0,
@@ -20,6 +28,7 @@ function PieceOverlay({ piece }: { piece: Piece }) {
       <Rectangle
         width={piece.width}
         height={piece.height}
+        unitSize={1}
         color={piece.color || 'transparent'}
       />
     </motion.div>
