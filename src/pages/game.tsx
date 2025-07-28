@@ -78,7 +78,7 @@ function Game() {
         isRotating={isRotating}
         setIsRotating={setIsRotating}
       >
-        <PiecesContainer $currentLevel={currentLevel}>
+        <PiecesContainer id='pieces-container' $currentLevel={currentLevel}>
           {piecesInPlay.map((piece: Piece, pieceIndex: number) => {
             if (piece.location != null) return null;
             return (
@@ -93,7 +93,7 @@ function Game() {
             );
           })}
         </PiecesContainer>
-        <BoardWrapper>
+        <BoardWrapper id='board-wrapper'>
           <Board
             ref={boardRef}
             dimensions={levels[currentLevel].dimensions}
@@ -111,7 +111,7 @@ function Game() {
           </DragOverlay>
         ) : null}
       </DragAndDropArea>
-      <ButtonContainer>
+      <ButtonContainer id='button-container'>
         <Button color='hsl(178, 30.00%, 56.10%)' textColor='black' disabled={levelPosition == 'first'} onClick={setToPrevious}>
         <ChevronLeft />Previous Level 
         </Button>
@@ -145,11 +145,12 @@ export const Main = styled.main`
   gap: 70px;
   margin-inline: 30px;
   height: 100%;
-  overflow-y: auto;
+  max-width: 100%;
+  overflow-y: hidden;
 
   @media (max-width: 750px) {
     grid-template-columns: 1fr;
-    grid-template-rows: 55% 40% 5%;
+    grid-template-rows: 40% 55% 5%;
     margin-inline: 10px;
     justify-items: center;
     gap: 20px;
@@ -182,13 +183,13 @@ export const PiecesContainer = styled(motion.div).attrs({
   align-items: start;
   justify-content: right;
   gap: var(--sizeOfEachUnit);
-  overflow-y: scroll;
+  overflow-y: auto;
   max-height:  70vh;
   height: 65vh;
 
   @media (max-width: 750px) {
-    max-height: 50vh;
-    height: 45vh;
+    max-height: 40vh;
+    height: 40vh;
   }
 `;
 // Not sure why subtracting 2 from the sizeOfEachUnit works here. May be a box-sizing issue although it should all be set to border-box...

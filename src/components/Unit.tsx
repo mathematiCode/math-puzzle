@@ -34,8 +34,14 @@ export const BasicUnit = styled.div<{
   border-radius: 0px;
   background-color: ${props => props.$color || 'transparent'};
   @media screen and (max-width: 768px) {
-    width: ${props => (props.$isExample ? '20px' : 'var(--sizeOfEachUnit)')};
-    height: ${props => (props.$isExample ? '20px' : 'var(--sizeOfEachUnit)')};
+    width: ${props =>
+      props.$isExample
+        ? '20px'
+        : `calc(${props.$unitSize} * var(--sizeOfEachUnit))`};
+    height: ${props =>
+      props.$isExample
+        ? '20px'
+        : `calc(${props.$unitSize} * var(--sizeOfEachUnit))`};
   }
 `;
 
