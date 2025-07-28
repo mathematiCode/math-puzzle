@@ -77,6 +77,23 @@ function DragAndDropArea({
     return potentialDroppables.sort(compareCollisionRects);
   }
 
+  // Simple touch device detection
+  const isTouchDevice = () => {
+    return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  };
+
+  const offsetTouch = (args: any) => {
+    const { transform } = args;
+    if (isTouchDevice() && transform) {
+      return {
+        ...transform,
+        x: transform.x + 20, // move slightly to the right
+        y: transform.y - 40, // move upward away from thumb
+      };
+    }
+    return transform;
+  };
+
   // const snapToGrid = useMemo(
   //   () => createSnapModifier(sizeOfEachUnit),
   //   [sizeOfEachUnit]
@@ -180,6 +197,7 @@ function DragAndDropArea({
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       collisionDetection={customCollisionDetection}
+      modifiers={[offsetTouch]}
     >
       {children}
     </DndContext>
