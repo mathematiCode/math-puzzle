@@ -17,6 +17,9 @@ import verticalStretchAnimation from '../assets/icons-animation/vertical-stretch
 import cutAnimation from '../assets/icons-animation/cut-tool.json';
 import combineAnimation from '../assets/icons-animation/combine-tool.json';
 import Hotjar from '@hotjar/browser';
+import { convertLocationToXAndY } from '../utils/utilities';
+import { BoardSquaresContext } from '../context/BoardSquares';
+import { getNewValidLocation } from '../utils/getNewValidLocation';
 
 function ActionsToolbarPopover({
   children,
@@ -33,18 +36,75 @@ function ActionsToolbarPopover({
       'ActionsToolbarPopover must be used within a PiecesInPlayProvider'
     );
   }
-  const { updateDimensions } = context;
+  const { updateDimensions, movePiece } = context;
   const { selectedPiece } = useSelectedPiece();
   const showTooltips = false;
+  const boardSquaresContext = useContext(BoardSquaresContext);
+  if (!boardSquaresContext) {
+    throw new Error(
+      'ActionsToolbarPopover must be used within a BoardSquaresProvider'
+    );
+  }
+  const {
+    boardSquares,
+    countOverlappingSquares,
+    removePieceFromBoard,
+    addPieceToBoard,
+  } = boardSquaresContext;
+  const boardWidth = boardSquares[0].length;
+  const boardHeight = boardSquares.length;
 
   function handleHorizontalStretch() {
     Hotjar.event('double width attempt');
+    const id = selectedPiece?.id;
+    const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
+    let { x, y } = convertLocationToXAndY(selectedPiece?.location);
     if (selectedPiece && Number.isInteger(selectedPiece.height / 2)) {
       const newHeight = selectedPiece.height / 2;
       const newWidth = selectedPiece.width * 2;
-      const id = selectedPiece.id;
-      const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
+      if (selectedPiece.location != null) {
+        if (x < 0 && newWidth < boardWidth) {
+          x = 0;
+        }
+        if (y < 0 && newHeight < boardHeight) {
+          y = 0;
+        }
+        removePieceFromBoard(
+          x,
+          y,
+          selectedPiece.width,
+          selectedPiece.height,
+          selectedPiece.id ?? ''
+        );
+        const { innerOverlaps, outerOverlaps, squaresOutsideBoard } =
+          countOverlappingSquares(
+            selectedPiece.location,
+            newWidth,
+            newHeight,
+            boardSquares
+          );
+        if (innerOverlaps + outerOverlaps > 0) {
+          Hotjar.event('Collision alert');
+        } else if (squaresOutsideBoard > 0) {
+          Hotjar.event('Piece placed partially off board');
+          const { correctedX, correctedY } = getNewValidLocation(
+            x,
+            y,
+            newWidth,
+            newHeight,
+            boardWidth,
+            boardHeight
+          );
+          movePiece(pieceIndex, `(${correctedX},${correctedY})`);
+          //console.log(`${x}, ${y} -> ${correctedX}, ${correctedY}`);
+          x = correctedX;
+          y = correctedY;
+        }
+      }
       updateDimensions(pieceIndex, newWidth, newHeight);
+      if (selectedPiece.location != null && selectedPiece.id != null) {
+        addPieceToBoard(x, y, newWidth, newHeight, selectedPiece.id);
+      }
       Hotjar.event('double width successfully');
     }
   }
@@ -56,10 +116,57 @@ function ActionsToolbarPopover({
       const newWidth = selectedPiece.width / 2;
       const id = selectedPiece.id;
       const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
+      let { x, y } = convertLocationToXAndY(selectedPiece.location);
+      if (selectedPiece.location != null) {
+        const { innerOverlaps, outerOverlaps, squaresOutsideBoard } =
+          countOverlappingSquares(
+            selectedPiece.location,
+            newWidth,
+            newHeight,
+            boardSquares
+          );
+        if (innerOverlaps + outerOverlaps > 0) {
+          Hotjar.event('Collision alert');
+        } else if (squaresOutsideBoard > 0) {
+          Hotjar.event('Piece placed partially off board');
+          const { correctedX, correctedY } = getNewValidLocation(
+            x,
+            y,
+            newWidth,
+            newHeight,
+            boardWidth,
+            boardHeight
+          );
+          // console.log(`${x}, ${y} -> ${correctedX}, ${correctedY}`);
+          movePiece(pieceIndex, `(${correctedX},${correctedY})`);
+          x = correctedX;
+          y = correctedY;
+        }
+        removePieceFromBoard(
+          x,
+          y,
+          selectedPiece.width,
+          selectedPiece.height,
+          selectedPiece.id ?? ''
+        );
+        const { correctedX, correctedY } = getNewValidLocation(
+          x,
+          y,
+          newWidth,
+          newHeight,
+          boardWidth,
+          boardHeight
+        );
+        //console.log(`${x}, ${y} -> ${correctedX}, ${correctedY}`);
+        movePiece(pieceIndex, `(${correctedX},${correctedY})`);
+        x = correctedX;
+        y = correctedY;
+      }
       updateDimensions(pieceIndex, newWidth, newHeight);
+      if (selectedPiece.location != null && selectedPiece.id != null) {
+        addPieceToBoard(x, y, newWidth, newHeight, selectedPiece.id);
+      }
       Hotjar.event('double height successfully');
-      handleCombinePieces();
-      handleSeparatePieces();
     }
   }
 
@@ -73,6 +180,11 @@ function ActionsToolbarPopover({
     Hotjar.event('separate pieces unsuccessfully');
   }
 
+  const horizontalStretchDisabled =
+    selectedPiece?.height == null || selectedPiece.height % 2 !== 0;
+  const verticalStretchDisabled =
+    selectedPiece?.width == null || selectedPiece.width % 2 !== 0;
+  const rotateDisabled = selectedPiece == null;
   return (
     <Popover withArrow trapFocus size="small" positioning="below">
       <PopoverTrigger {...delegated}>{children}</PopoverTrigger>
@@ -82,37 +194,12 @@ function ActionsToolbarPopover({
             <IconButton
               onClick={() => runRotationAnimation(selectedPiece)}
               aria-label="Rotate"
-            >
-              <AnimatedLottieIcon animationData={rotateToolAnimation} />
-            </IconButton>
-          </Tooltip>
-          <Tooltip
-            placement="bottom"
-            title={
-              !showTooltips
-                ? ''
-                : selectedPiece?.height !== undefined &&
-                  selectedPiece.height % 2 !== 0
-                ? 'Disabled because fractional side lengths are not allowed'
-                : 'Double Width & Halve Height'
-            }
-          >
-            <IconButton
-              onClick={handleHorizontalStretch}
-              aria-label="Double Width & Halve Height"
-              isDisabled={
-                selectedPiece?.height == null || selectedPiece.height % 2 !== 0
-              }
-              disabled={
-                selectedPiece?.height == null || selectedPiece.height % 2 !== 0
-              }
+              isDisabled={rotateDisabled}
+              disabled={rotateDisabled}
             >
               <AnimatedLottieIcon
-                animationData={horizontalStretchAnimation}
-                isDisabled={
-                  selectedPiece?.height == null ||
-                  selectedPiece.height % 2 !== 0
-                }
+                animationData={rotateToolAnimation}
+                isDisabled={rotateDisabled}
               />
             </IconButton>
           </Tooltip>
@@ -121,8 +208,29 @@ function ActionsToolbarPopover({
             title={
               !showTooltips
                 ? ''
-                : selectedPiece?.width !== undefined &&
-                  selectedPiece.width % 2 !== 0
+                : horizontalStretchDisabled
+                ? 'Disabled because fractional side lengths are not allowed'
+                : 'Double Width & Halve Height'
+            }
+          >
+            <IconButton
+              onClick={handleHorizontalStretch}
+              aria-label="Double Width & Halve Height"
+              isDisabled={horizontalStretchDisabled}
+              disabled={horizontalStretchDisabled}
+            >
+              <AnimatedLottieIcon
+                animationData={horizontalStretchAnimation}
+                isDisabled={horizontalStretchDisabled}
+              />
+            </IconButton>
+          </Tooltip>
+          <Tooltip
+            placement="bottom"
+            title={
+              !showTooltips
+                ? ''
+                : verticalStretchDisabled
                 ? 'Disabled because fractional side lengths are not allowed'
                 : 'Double Height & Halve Width'
             }
@@ -130,18 +238,12 @@ function ActionsToolbarPopover({
             <IconButton
               onClick={handleVerticalStretch}
               aria-label="Double Height & Halve Width"
-              isDisabled={
-                selectedPiece?.width == null || selectedPiece.width % 2 !== 0
-              }
-              disabled={
-                selectedPiece?.width == null || selectedPiece.width % 2 !== 0
-              }
+              isDisabled={verticalStretchDisabled}
+              disabled={verticalStretchDisabled}
             >
               <AnimatedLottieIcon
                 animationData={verticalStretchAnimation}
-                isDisabled={
-                  selectedPiece?.width == null || selectedPiece.width % 2 !== 0
-                }
+                isDisabled={verticalStretchDisabled}
               />
             </IconButton>
           </Tooltip>
@@ -161,7 +263,9 @@ function ActionsToolbarPopover({
   );
 }
 
-const IconButton = styled.button<{
+const IconButton = styled.button.withConfig({
+  shouldForwardProp: prop => prop !== 'isDisabled',
+})<{
   isDisabled?: boolean;
 }>`
   padding: 0px;
@@ -180,7 +284,9 @@ const IconButton = styled.button<{
   }
 `;
 
-const ActionsToolbar = styled(motion.div)`
+const ActionsToolbar = styled(motion.div).withConfig({
+  shouldForwardProp: prop => prop !== 'layout',
+})`
   background-color: white;
   color: hsl(178, 100%, 23%);
   border-radius: 5px;

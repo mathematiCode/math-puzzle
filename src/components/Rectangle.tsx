@@ -8,7 +8,7 @@ import { Unit, MotionUnit } from './Unit';
 interface RectangleProps {
   width: number;
   height: number;
-  color: string;
+  color: string | undefined;
   isRotated?: boolean;
   isSelected?: boolean;
   isMotion?: boolean;
@@ -35,8 +35,8 @@ const Container = styled(motion.div)<{
   padding: 0px;
   touch-action: none;
   background-color: ${props => props.color};
-  box-shadow: ${props =>
-    props.isSelected ? 'rgba(0, 0, 0, 0.35) 0px 5px 15px' : 'none'};
+  /* border: 3px solid rgba(0, 0, 0, 1); */
+  box-shadow: rgba(0, 0, 0, 0.83) 0px 5px 10px;
 `;
 
 function Rectangle(
@@ -54,10 +54,8 @@ function Rectangle(
   ref: React.Ref<HTMLDivElement>
 ) {
   const total = width * height;
-
   return (
     <Container
-      ref={ref}
       $width={width}
       unitSize={unitSize}
       color={color}

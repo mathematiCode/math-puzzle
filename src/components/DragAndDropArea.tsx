@@ -14,9 +14,10 @@ import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core';
 import { PiecesInPlayContext } from '../context/PiecesInPlay';
 import { Piece } from '../types/piece';
 import { useSelectedPiece } from '../context/SelectedPiece';
-import { rateDroppability } from '../utilities';
+import { convertLocationToXAndY, rateDroppability } from '../utils/utilities';
 import Hotjar from '@hotjar/browser';
-
+import { BoardSquaresContext } from '../context/BoardSquares';
+import { getNewValidLocation } from '../utils/getNewValidLocation';
 interface DragAndDropAreaProps {
   children: React.ReactNode;
   setActivePiece: (piece: Piece) => void;
@@ -40,6 +41,18 @@ function DragAndDropArea({
   }
 
   const { piecesInPlay, movePiece } = context;
+  const boardSquaresContext = useContext(BoardSquaresContext);
+  if (!boardSquaresContext) {
+    throw new Error(
+      'DragAndDropArea must be used within a BoardSquaresProvider'
+    );
+  }
+  const {
+    boardSquares,
+    addPieceToBoard,
+    removePieceFromBoard,
+    getUnstablePieces,
+  } = boardSquaresContext;
 
   function compareCollisionRects(
     { data: { value: a } }: { data: { value: number } },
@@ -118,11 +131,47 @@ function DragAndDropArea({
   const handleDragEnd = (event: DragEndEvent) => {
     const id = event.active.id as string;
     const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
+    const { x, y } = convertLocationToXAndY(piecesInPlay[pieceIndex].location);
+    if (piecesInPlay[pieceIndex].location != null) {
+      removePieceFromBoard(
+        x,
+        y,
+        piecesInPlay[pieceIndex].width,
+        piecesInPlay[pieceIndex].height,
+        piecesInPlay[pieceIndex].id ?? ''
+      );
+    }
     if (event?.over?.id) {
       const newLocation = event.over.id.toString();
-      movePiece(pieceIndex, newLocation);
+      const { x, y } = convertLocationToXAndY(newLocation);
+      const boardWidth = boardSquares[0].length;
+      const boardHeight = boardSquares.length;
+      const { correctedX, correctedY } = getNewValidLocation(
+        x,
+        y,
+        piecesInPlay[pieceIndex].width,
+        piecesInPlay[pieceIndex].height,
+        boardWidth,
+        boardHeight
+      );
+      movePiece(pieceIndex, `(${correctedX},${correctedY})`);
+      addPieceToBoard(
+        correctedX,
+        correctedY,
+        piecesInPlay[pieceIndex].width,
+        piecesInPlay[pieceIndex].height,
+        piecesInPlay[pieceIndex].id ?? ''
+      );
     } else movePiece(pieceIndex, null);
-    Hotjar.event('drag start');
+    const unstablePieces = getUnstablePieces();
+    piecesInPlay.forEach(piece => {
+      if (unstablePieces.includes(piece.id)) {
+        piece.isStable = false;
+      } else {
+        piece.isStable = true;
+      }
+    });
+    Hotjar.event('drag end');
   };
 
   return (

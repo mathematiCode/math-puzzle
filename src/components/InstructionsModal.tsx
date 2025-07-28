@@ -115,7 +115,6 @@ const InstructionsModal = ({
   piecesInPlay: Piece[];
 }) => {
   const classes = useClasses();
-  const [instructionsShown, setInstructionsShown] = useState(false);
   const context = useContext(PiecesInPlayContext);
   if (!context) {
     throw new Error(
@@ -126,7 +125,6 @@ const InstructionsModal = ({
 
   const closeModal = () => {
     updateDimensions(0, 3, 2); // Resetting the example piece to it's original dimensions
-    setInstructionsShown(false);
   };
 
   return (
@@ -166,6 +164,11 @@ const InstructionsModal = ({
 
                 <StyledH2>The Tools</StyledH2>
                 <MathematicalTools variant="embedded" />
+                <StyledParagraph>
+                  Although some tools are not available yet, it is still
+                  possible to pass all levels. Most if not all of them have
+                  several different solutions.
+                </StyledParagraph>
                 <StyledH2>
                   Try out the tools by clicking the piece below.{' '}
                 </StyledH2>

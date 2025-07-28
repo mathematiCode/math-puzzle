@@ -5,15 +5,21 @@ import App from './App';
 import { PiecesInPlayProvider } from './context/PiecesInPlay';
 import { SelectedPieceProvider } from './context/SelectedPiece';
 import { CurrentLevelProvider } from './context/CurrentLevel';
+import { BoardSquaresProvider } from './context/BoardSquares';
+import { LevelProgressProvider } from './context/LevelProgress';
 
 createRoot(document.getElementById('root') as HTMLElement).render(
-  <StrictMode>
-    <CurrentLevelProvider>
-      <PiecesInPlayProvider>
-        <SelectedPieceProvider>
-          <App />
-        </SelectedPieceProvider>
-      </PiecesInPlayProvider>
-    </CurrentLevelProvider>
-  </StrictMode>
+  //<StrictMode>
+  <CurrentLevelProvider>
+    <LevelProgressProvider>
+      <BoardSquaresProvider>
+        <PiecesInPlayProvider>
+          <SelectedPieceProvider>
+            <App />
+          </SelectedPieceProvider>
+        </PiecesInPlayProvider>
+      </BoardSquaresProvider>
+    </LevelProgressProvider>
+  </CurrentLevelProvider>
+  // </StrictMode>
 );

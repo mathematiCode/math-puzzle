@@ -20,6 +20,10 @@
   box-sizing: border-box;
 }
 
+.board {
+  box-sizing: content-box;
+}
+
 /* 2. Remove default margin */
 * {
   margin: 0;
