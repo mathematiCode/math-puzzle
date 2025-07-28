@@ -45,7 +45,7 @@ export function calculateUnitSize(
     );
   }
   return Math.round(
-    (0.0006 * windowWidth * (windowHeight - 200)) /
+    (0.0005 * windowWidth * (windowHeight - 200)) /
       Math.max(width, height, largestHeight * 1.5) -
       1
   );

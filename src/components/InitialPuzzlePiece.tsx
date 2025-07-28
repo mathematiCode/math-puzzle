@@ -76,7 +76,9 @@ const InitialPuzzlePiece = ({
         <Rectangle
           width={piece.width}
           height={piece.height}
-          unitSize={isActive || isDragging ? 1 : 0.7}
+          unitSize={
+            window.innerWidth <= 750 && (isActive || isDragging) ? 0.7 : 1
+          }
           color={piece.color}
           isMotion={true}
           layout={!isRotating}
