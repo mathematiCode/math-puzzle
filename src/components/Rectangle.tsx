@@ -29,14 +29,12 @@ const Container = styled(motion.div)<{
   transform: translate3d(0px, 0px, 0px) !important;
   display: grid;
   grid-template-columns: repeat(${props => props.$width}, 1fr);
-  background-color: transparent;
   width: fit-content;
   height: min-content;
   gap: 0px;
   padding: 0px;
   touch-action: none;
   background-color: ${props => props.color};
-  /* border: 3px solid rgba(0, 0, 0, 1); */
   box-shadow: rgba(0, 0, 0, 0.83) 0px 5px 10px;
 `;
 
