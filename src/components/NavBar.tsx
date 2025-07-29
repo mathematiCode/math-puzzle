@@ -4,6 +4,26 @@ import styled from 'styled-components';
 import { Menu, X } from 'lucide-react';
 import { useNavigate } from 'react-router';
 
+const NavContainer = styled.nav<{ $isMobileMenuOpen?: boolean }>`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #007571;
+  z-index: 1000;
+  padding: 0 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+  letter-spacing: 0.2em;
+
+  @media (max-width: 768px) {
+    padding: 0 15px;
+    background-color: ${props =>
+      props.$isMobileMenuOpen ? '#007571' : 'transparent'};
+    z-index: ${props => (props.$isMobileMenuOpen ? '1000' : '-1')};
+    box-shadow: none;
+  }
+`;
+
 const NavContent = styled.div`
   max-width: 1200px;
   margin: 0 auto;
@@ -17,12 +37,23 @@ const NavContent = styled.div`
   }
 `;
 
-const DesktopNav = styled.div<{ $isMobileMenuOpen?: boolean }>`
+const Logo = styled.div<{ $isMobileMenuOpen?: boolean }>`
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+
+  @media (max-width: 768px) {
+    display: ${props => (props.$isMobileMenuOpen ? 'block' : 'none')};
+  }
+`;
+
+const DesktopNav = styled.div`
   display: flex;
   gap: 40px;
 
   @media (max-width: 768px) {
     display: none;
+    z-index: -1;
   }
 `;
 
@@ -79,8 +110,8 @@ const MobileMenuButton = styled.button`
 const MobileMenu = styled(motion.div)`
   position: absolute;
   top: 100%;
-  right: 0;
   left: 0;
+  right: 0;
   background-color: #007571;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding: 20px;
@@ -123,35 +154,6 @@ const NavBar = ({ currentPath }: NavBarProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
-  const NavContainer = styled.nav`
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background-color: #007571;
-    z-index: 1000;
-    padding: 0 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
-    letter-spacing: 0.2em;
-
-    @media (max-width: 768px) {
-      padding: 0 15px;
-      background-color: ${isMobileMenuOpen ? '#007571' : 'transparent'};
-      z-index: ${isMobileMenuOpen ? '1000' : '-1'};
-      box-shadow: none;
-    }
-  `;
-
-  const Logo = styled.div<{ $isMobileMenuOpen?: boolean }>`
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: white;
-
-    @media (max-width: 768px) {
-      display: ${props => (props.$isMobileMenuOpen ? 'block' : 'none')};
-    }
-  `;
-
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -175,7 +177,7 @@ const NavBar = ({ currentPath }: NavBarProps) => {
   ];
 
   return (
-    <NavContainer>
+    <NavContainer $isMobileMenuOpen={isMobileMenuOpen}>
       <NavContent>
         <Logo
           onClick={handleLogoClick}
@@ -185,7 +187,7 @@ const NavBar = ({ currentPath }: NavBarProps) => {
           Frectangles
         </Logo>
 
-        <DesktopNav $isMobileMenuOpen={isMobileMenuOpen}>
+        <DesktopNav>
           {navItems.map(item => (
             <NavLink
               key={item.path}

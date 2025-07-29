@@ -109,10 +109,12 @@ const InstructionsModal = ({
   isRotating,
   setIsRotating,
   piecesInPlay,
+  setActivePiece,
 }: {
   isRotating: boolean;
   setIsRotating: (isRotating: boolean) => void;
   piecesInPlay: Piece[];
+  setActivePiece: (piece: Piece) => void;
 }) => {
   const classes = useClasses();
   const context = useContext(PiecesInPlayContext);
@@ -178,6 +180,7 @@ const InstructionsModal = ({
                     isRotating={isRotating}
                     setIsRotating={setIsRotating}
                     isExample={true}
+                    setActivePiece={setActivePiece}
                   />
                 </div>
               </div>

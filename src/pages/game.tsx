@@ -127,6 +127,7 @@ function Game() {
           isRotating={isRotating}
           setIsRotating={setIsRotating}
           piecesInPlay={piecesInPlay}
+          setActivePiece={setActivePiece}
         />
       </ButtonContainer>
       <LevelCompleteModal 
@@ -155,13 +156,16 @@ export const Main = styled.main`
 
   @media (max-width: 750px) {
     grid-template-columns: 1fr;
-    grid-template-rows: 35% 60% 5%;
+    grid-template-rows: 30% 60% 10%;
     margin-inline: 10px;
     justify-items: center;
     align-items: center;
     gap: 20px;
   }
- 
+
+  @media (min-width: 1400px) {
+    max-width: 1200px;
+}
 `;
 
 export const BoardWrapper = styled.div`
@@ -169,6 +173,10 @@ export const BoardWrapper = styled.div`
   grid-area: 1fr;
   width: min-content;
   padding-top: 15px;
+
+  @media (max-width: 750px) {
+    padding-top: 0px;
+  }
 `;
   //position: fixed;
   // top: 50%;
