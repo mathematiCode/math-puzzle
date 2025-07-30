@@ -17,6 +17,7 @@ function PieceOverlay({ piece }: { piece: Piece }) {
         cursor: 'grab',
         border: '2px solid black',
         position: 'relative',
+        isolation: 'isolate',
         left: isTouchDevice() ? 20 : 0, // offset only visually
         top: isTouchDevice() ? -40 : 0,
       }}
