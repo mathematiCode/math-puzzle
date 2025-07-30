@@ -172,6 +172,7 @@ export const BoardWrapper = styled.div`
   padding-top: 15px;
   position: relative;
   z-index: 1;
+  isolation: isolate;
 `;
 
 export const PiecesContainer = styled(motion.div).attrs({
