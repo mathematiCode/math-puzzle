@@ -72,7 +72,12 @@ function Rectangle(
             isExample={isExample}
           />
         ) : (
-          <Unit key={unit} unitSize={unitSize} isExample={isExample} />
+          <Unit
+            key={unit}
+            color={color || 'transparent'}
+            unitSize={unitSize}
+            isExample={isExample}
+          />
         )
       )}
     </Container>
