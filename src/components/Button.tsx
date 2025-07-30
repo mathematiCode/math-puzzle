@@ -62,7 +62,7 @@ export const StyledButton = styled.button.attrs(props => ({
     cursor: not-allowed;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 850px) {
     font-size: 0.9rem;
     margin: 5px;
     padding: 3px;

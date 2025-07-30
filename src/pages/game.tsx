@@ -20,6 +20,7 @@ import { Piece } from '../types/piece.ts';
 import { BoardSquaresContext } from '../context/BoardSquares';
 import Hotjar from '@hotjar/browser';
 import { ChevronLeft, ChevronRight, RotateCcw, HelpCircle } from 'lucide-react';
+import { findLargestHeight } from '../utils/utilities.ts';
 //import { BoardSquaresContext } from '../context/BoardSquares.tsx';
 
 function Game() {
@@ -38,11 +39,13 @@ function Game() {
     useContext(PiecesInPlayContext);
   const [isRotating, setIsRotating] = useState(false);
   const [levelCompletedShown, setLevelCompletedShown] = useState(false);
+  const [unitSize, setUnitSize] = useState(25);
   const boardRef = useRef(null);
 
   const handleCloseModal = () => {
-    setLevelCompletedShown(true); // Prevent modal from showing again for this level
+    setLevelCompletedShown(true);
   };
+
 
   async function setToPrevious() {
     await previousLevel();
@@ -50,7 +53,7 @@ function Game() {
     await setPiecesForNewLevel(newPieces);
     await setSizeOfEachUnit(currentLevel - 1);
     await resetBoardSquares(currentLevel - 1);
-    setLevelCompletedShown(false); // Reset modal state for new level
+    setLevelCompletedShown(false);
   }
 
   async function setToNext() {
@@ -59,15 +62,25 @@ function Game() {
     await setPiecesForNewLevel(newPieces);
     await setSizeOfEachUnit(currentLevel + 1);
     await resetBoardSquares(currentLevel + 1);
-    setLevelCompletedShown(false); // Reset modal state for new level
+    setLevelCompletedShown(false);
   }
 
     function resetLevel() {
     resetPieces();
     resetBoardSquares(currentLevel);
-    setLevelCompletedShown(false); // Reset modal state when resetting level
-   // console.log(boardSquares);
+    setLevelCompletedShown(false); 
+      console.log(`${window.innerWidth} x ${window.innerHeight} board: ${levels[currentLevel].dimensions.width} x ${levels[currentLevel].dimensions.height} highest piece: ${findLargestHeight(levels[currentLevel].pieces)} ideal: ${unitSize} level: ${currentLevel}`);
   }
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.value) {
+      setUnitSize(event.target.value);
+      document.documentElement.style.setProperty(
+        '--sizeOfEachUnit',
+        `${event.target.value}px`
+      );
+    }
+  };
 
   return (
     <>
@@ -112,7 +125,8 @@ function Game() {
           </DragOverlay>
         ) : null}
       </DragAndDropArea>
-       </Main>
+      </Main>
+      <UnitSizeSlider id="unit-size" type="number" min="5" max="100" value={unitSize} onChange={handleInputChange} />
       <ButtonContainer id='button-container'>
         <Button color='hsl(178, 30.00%, 56.10%)' textColor='black' disabled={levelPosition == 'first'} onClick={setToPrevious}>
         <ChevronLeft />Previous Level 
@@ -154,17 +168,19 @@ export const Main = styled.main`
   overflow-y: clip;
   position: fixed;
 
-  @media (max-width: 750px) {
+  @media (max-width: 850px) {
     grid-template-columns: 1fr;
     grid-template-rows: 30% 60% 10%;
-    margin-inline: 10px;
+    margin-inline: 30px;
+    padding-inline: 30px;
     justify-items: center;
     align-items: center;
     gap: 20px;
   }
 
+
   @media (min-width: 1400px) {
-    max-width: 1200px;
+    max-width: 1500px;
 }
 `;
 
@@ -228,7 +244,7 @@ export const ButtonContainer = styled.div`
   border: 3px solid hsl(180, 89.10%, 21.60%);
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
 
-  @media (max-width: 750px) {
+  @media (max-width: 850px) {
     bottom: 0px;
   }
 
@@ -237,6 +253,14 @@ export const ButtonContainer = styled.div`
     right: 0;
     width: 100%;
   }
+`;
+
+export const UnitSizeSlider = styled.input`
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  z-index: 6;
+  color: white;
 `;
 
 export default Game;

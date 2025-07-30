@@ -101,10 +101,10 @@ export function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
       height,
       largestHeight,
     );
-    document.documentElement.style.setProperty(
-      '--sizeOfEachUnit',
-      `${sizeOfEachUnit}px`
-    );
+    // document.documentElement.style.setProperty(
+    //   '--sizeOfEachUnit',
+    //   `${sizeOfEachUnit}px`
+    // );
     // Need to investigate if this is the right approach to keep all the sizeOfEachUnit states consistent across the app.
   }
 
