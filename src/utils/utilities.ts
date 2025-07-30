@@ -122,3 +122,5 @@ export function findLargestHeight(
 export function findPieceById(piecesInPlay: Piece[], id: string) {
   return piecesInPlay.find(piece => piece.id === id);
 }
+
+// Testing
