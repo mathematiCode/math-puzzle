@@ -42,7 +42,7 @@ export const PieceWrapper = styled(motion.button)
   top: ${({ y }) => `calc(${y} * var(--sizeOfEachUnit) - 2px)`};
   cursor: ${({ isDragging }) => (isDragging ? 'grab' : 'pointer')};
   visibility: ${({ isDragging }) => (isDragging ? 'hidden' : 'visible')};
-  z-index: ${({ isStable }) => (isStable ? 2 : 6)};
+  z-index: 2;
   &:active {
     cursor: grab;
   }

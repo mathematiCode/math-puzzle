@@ -152,6 +152,7 @@ export const Main = styled.main`
   max-width: 1600px;
   overflow-y: clip;
   position: fixed;
+  padding-bottom: 60px;
 
   @media (max-width: 750px) {
     grid-template-columns: 1fr;
