@@ -52,6 +52,7 @@ export const Unit = forwardRef<HTMLDivElement, UnitProps>(
       <BasicUnit
         {...delegated}
         ref={ref}
+        $color={color}
         $isExample={isExample}
         $sizeOfEachUnit={sizeOfEachUnit}
         $unitSize={unitSize}

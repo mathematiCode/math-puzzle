@@ -6,8 +6,16 @@ function LandingSquare({ id, color }: { id: string; color: string }) {
     id: id,
   });
 
-  color = isOver ? 'white' : 'hsl(100, 65%, 92%)';
-  return <Unit key={id} color={color} ref={setNodeRef} id={id} unitSize={1} />;
+  // color = isOver ? 'white' : 'hsl(100, 65%, 92%)';
+  return (
+    <Unit
+      key={id}
+      color={'transparent'}
+      ref={setNodeRef}
+      id={id}
+      unitSize={1}
+    />
+  );
 }
 
 export default LandingSquare;

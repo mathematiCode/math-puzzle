@@ -79,6 +79,7 @@ const InitialPuzzlePiece = ({
           unitSize={
             window.innerWidth >= 750 || isActive || isDragging ? 1 : 0.7
           }
+          // unitSize={1}
           color={piece.color}
           isMotion={true}
           layout={!isRotating}
