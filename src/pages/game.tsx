@@ -169,8 +169,8 @@ export const BoardWrapper = styled.div`
   grid-area: 1fr;
   width: min-content;
   padding-top: 15px;
-  position: fixed;
-
+  position: relative;
+  z-index: 1;
 `;
 
 export const PiecesContainer = styled(motion.div).attrs({
