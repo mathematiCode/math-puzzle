@@ -169,6 +169,7 @@ export const BoardWrapper = styled.div`
   grid-area: 1fr;
   width: min-content;
   padding-top: 15px;
+  position: fixed;
 
 `;
 
