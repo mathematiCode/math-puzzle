@@ -181,13 +181,13 @@ function DragAndDropArea({
       );
     } else movePiece(pieceIndex, null);
     const unstablePieces = getUnstablePieces();
-    piecesInPlay.forEach(piece => {
-      if (unstablePieces.includes(piece.id)) {
-        piece.isStable = false;
-      } else {
-        piece.isStable = true;
-      }
-    });
+    // piecesInPlay.forEach(piece => {
+    //   if (unstablePieces.includes(piece.id ?? '')) {
+    //     piece.isStable = false;
+    //   } else {
+    //     piece.isStable = true;
+    //   }
+    // });
     Hotjar.event('drag end');
   };
 
