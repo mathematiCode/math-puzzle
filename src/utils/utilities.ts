@@ -38,34 +38,48 @@ export function calculateUnitSize(
 ) {
   if (windowWidth < 500) {
     return Math.round(
-      ((0.002 * windowWidth * (windowHeight - 200)) /
-        Math.max(width, height, largestHeight * 1.5)) *
-        0.8 -
-        1
-    );
-  } else if (windowWidth < 800) {
-    return Math.round(
-      ((0.0015 * windowWidth * (windowHeight - 200)) /
-        Math.max(width, height, largestHeight * 1.5)) *
-        0.8 -
-        1
-    );
-  } else if (windowWidth < 1600) {
-    return Math.round(
-      ((0.4 * Math.max(windowWidth, windowHeight - 200)) /
-        Math.max(width, height, largestHeight * 1.5)) *
-        0.8 -
-        1
-    );
-  } else {
-    return Math.round(
-      ((0.7 * Math.min(windowWidth, windowHeight - 200, 2000)) /
+      ((0.0018 * windowWidth * (windowHeight - 200)) /
         Math.max(width, height, largestHeight * 1.5)) *
         0.8 -
         1
     );
   }
+  return Math.round(
+    (0.0006 * windowWidth * (windowHeight - 200)) /
+      Math.max(width, height, largestHeight * 1.5) -
+      1
+  );
 }
+
+// if (windowWidth < 500) {
+//   return Math.round(
+//     ((0.002 * windowWidth * (windowHeight - 200)) /
+//       Math.max(width, height, largestHeight * 1.5)) *
+//       0.8 -
+//       1
+//   );
+// } else if (windowWidth < 800) {
+//   return Math.round(
+//     ((0.0015 * windowWidth * (windowHeight - 200)) /
+//       Math.max(width, height, largestHeight * 1.5)) *
+//       0.8 -
+//       1
+//   );
+// } else if (windowWidth < 1600) {
+//   return Math.round(
+//     ((0.4 * Math.max(windowWidth, windowHeight - 200)) /
+//       Math.max(width, height, largestHeight * 1.5)) *
+//       0.8 -
+//       1
+//   );
+// } else {
+//   return Math.round(
+//     ((0.7 * Math.min(windowWidth, windowHeight - 200, 2000)) /
+//       Math.max(width, height, largestHeight * 1.5)) *
+//       0.8 -
+//       1
+//   );
+// }
 
 export function findLargestHeight(
   piecesArray: { width: number; height: number }[]
