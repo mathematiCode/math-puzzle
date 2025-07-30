@@ -149,7 +149,7 @@ export const Main = styled.main`
   margin-bottom: 60px;
   height: 100%;
   width: 100cqw;
-  max-width: 100cqw;
+  max-width: 1600px;
   overflow-y: clip;
   position: fixed;
 
@@ -168,15 +168,8 @@ export const BoardWrapper = styled.div`
   display: grid;
   grid-area: 1fr;
   width: min-content;
-  position: fixed;
-  top: 50%;
-  left: 80%;
-  transform: translate(-50%, -50%);
+  padding-top: 15px;
 
-  @media (max-width: 750px) {
-    left: 50%;
-    top: 65%;
-  }
 `;
 
 export const PiecesContainer = styled(motion.div).attrs({
