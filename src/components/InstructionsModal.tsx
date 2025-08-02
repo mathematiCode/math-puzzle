@@ -73,7 +73,7 @@ const useClasses = makeStyles({
     width: '90px',
 
     '@media screen and (max-width: 768px)': {
-      marginBottom: '50px',
+      marginBottom: '90px',
     },
   },
   X: {
