@@ -182,7 +182,7 @@ function DragAndDropArea({
     } else movePiece(pieceIndex, null);
     const unstablePieces = getUnstablePieces();
     piecesInPlay.forEach(piece => {
-      if (unstablePieces.includes(piece.id)) {
+      if (unstablePieces.includes(piece.id ?? '')) {
         piece.isStable = false;
       } else {
         piece.isStable = true;

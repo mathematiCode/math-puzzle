@@ -43,9 +43,10 @@ const useClasses = makeStyles({
 
     '@media screen and (max-width: 768px)': {
       width: '96%',
-      marginTop: '20px',
+      marginTop: '5px',
       paddingInline: '10px',
       fontSize: '0.9rem',
+      paddingBottom: '50px',
     },
   },
   Overlay: {
@@ -64,12 +65,16 @@ const useClasses = makeStyles({
     textAlign: 'center',
 
     '@media screen and (max-width: 768px)': {
-      fontSize: '1.2rem',
+      fontSize: '1.1rem',
     },
   },
   div: {
     padding: '20px',
     width: '90px',
+
+    '@media screen and (max-width: 768px)': {
+      marginBottom: '90px',
+    },
   },
   X: {
     position: 'absolute',
@@ -86,7 +91,7 @@ const StyledH2 = styled.h2`
   margin-top: 15px;
 
   @media screen and (max-width: 768px) {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 `;
 
@@ -94,14 +99,14 @@ const StyledLi = styled.li`
   font-size: 1rem;
 
   @media screen and (max-width: 768px) {
-    margin-left: -20px;
+    font-size: 0.9rem;
   }
 `;
 const StyledParagraph = styled.p`
   font-size: 1rem;
 
   @media screen and (max-width: 768px) {
-    margin-left: -20px;
+    font-size: 0.9rem;
   }
 `;
 
@@ -179,6 +184,7 @@ const InstructionsModal = ({
                     piece={piecesInPlay[0]}
                     isRotating={isRotating}
                     setIsRotating={setIsRotating}
+                    setActivePiece={setActivePiece}
                     isExample={true}
                     setActivePiece={setActivePiece}
                   />

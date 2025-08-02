@@ -128,6 +128,7 @@ function Game() {
           setIsRotating={setIsRotating}
           piecesInPlay={piecesInPlay}
           setActivePiece={setActivePiece}
+          setActivePiece={setActivePiece}
         />
       </ButtonContainer>
       <LevelCompleteModal 
@@ -153,6 +154,7 @@ export const Main = styled.main`
   max-width: 1600px;
   overflow-y: clip;
   position: fixed;
+  padding-bottom: 60px;
 
   @media (max-width: 750px) {
     grid-template-columns: 1fr;
@@ -173,21 +175,9 @@ export const BoardWrapper = styled.div`
   grid-area: 1fr;
   width: min-content;
   padding-top: 15px;
-
-  @media (max-width: 750px) {
-    padding-top: 0px;
-  }
+  position: relative;
+  isolation: isolate;
 `;
-  //position: fixed;
-  // top: 50%;
-  // left: 80%;
-  // transform: translate(-50%, -50%);
-
-  // @media (max-width: 750px) {
-  //   left: 50%;
-  //   top: 65%;
-  // }
-//`;
 
 export const PiecesContainer = styled(motion.div).attrs({
   layout: true,
@@ -203,7 +193,6 @@ export const PiecesContainer = styled(motion.div).attrs({
   max-height:  70vh;
   height: fit-content;
   padding-top: 10px;
-  z-index: 1;
   line-height: 0;
 
   @media (max-width: 750px) {
