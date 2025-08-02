@@ -186,6 +186,7 @@ const InstructionsModal = ({
                     setIsRotating={setIsRotating}
                     setActivePiece={setActivePiece}
                     isExample={true}
+                    setActivePiece={setActivePiece}
                   />
                 </div>
               </div>
