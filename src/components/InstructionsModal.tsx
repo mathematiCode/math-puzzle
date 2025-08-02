@@ -41,12 +41,11 @@ const useClasses = makeStyles({
     zIndex: 1,
     fontSize: '1.2rem',
     fontWeight: 600,
-    overflow: 'scroll',
 
     '@media screen and (max-width: 768px)': {
       width: '96%',
       marginTop: '5px',
-      maxHeight: 'calc(100dvh - 40px)',
+      maxHeight: 'calc(100dvh - 10px)',
       paddingInline: '10px',
       fontSize: '0.9rem',
       paddingBottom: '25px',
@@ -113,10 +112,12 @@ const InstructionsModal = ({
   isRotating,
   setIsRotating,
   piecesInPlay,
+  setActivePiece,
 }: {
   isRotating: boolean;
   setIsRotating: (isRotating: boolean) => void;
   piecesInPlay: Piece[];
+  setActivePiece: (piece: Piece) => void;
 }) => {
   const classes = useClasses();
   const context = useContext(PiecesInPlayContext);
@@ -181,6 +182,7 @@ const InstructionsModal = ({
                     piece={piecesInPlay[0]}
                     isRotating={isRotating}
                     setIsRotating={setIsRotating}
+                    setActivePiece={setActivePiece}
                     isExample={true}
                   />
                 </div>

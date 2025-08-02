@@ -127,6 +127,7 @@ function Game() {
           isRotating={isRotating}
           setIsRotating={setIsRotating}
           piecesInPlay={piecesInPlay}
+          setActivePiece={setActivePiece}
         />
       </ButtonContainer>
       <LevelCompleteModal 
