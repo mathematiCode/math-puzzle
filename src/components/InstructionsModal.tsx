@@ -71,6 +71,10 @@ const useClasses = makeStyles({
   div: {
     padding: '20px',
     width: '90px',
+
+    '@media screen and (max-width: 768px)': {
+      marginBottom: '50px',
+    },
   },
   X: {
     position: 'absolute',
