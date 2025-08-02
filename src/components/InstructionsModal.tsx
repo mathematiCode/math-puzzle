@@ -29,7 +29,6 @@ const useClasses = makeStyles({
     backgroundColor: 'hsl(100, 65%, 89%)',
     color: 'black',
     width: '70%',
-    height: '100dvh',
     paddingBottom: '3px',
     paddingInline: '20px',
     position: 'fixed',
@@ -45,10 +44,9 @@ const useClasses = makeStyles({
     '@media screen and (max-width: 768px)': {
       width: '96%',
       marginTop: '5px',
-      maxHeight: 'calc(100dvh - 10px)',
       paddingInline: '10px',
       fontSize: '0.9rem',
-      paddingBottom: '25px',
+      paddingBottom: '50px',
     },
   },
   Overlay: {
