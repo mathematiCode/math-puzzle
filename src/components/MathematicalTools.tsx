@@ -8,6 +8,7 @@ import combineAnimation from '../assets/icons-animation/combine-tool.json';
 
 const Container = styled.div`
   max-width: 1200px;
+  height: fit-content;
   margin: 0 auto;
   padding: 0 20px;
   container-type: inline-size;
@@ -163,7 +164,7 @@ function MathematicalTools({ variant = 'standalone' }: MathematicalToolsProps) {
               <ToolIcon>
                 <AnimatedLottieIcon
                   animationData={rotateToolAnimation}
-                  size={variant === 'embedded' ? 45 : 56}
+                  size={variant === 'embedded' ? 35 : 56}
                 />
               </ToolIcon>
               <ToolTitle $variant={variant}>Rotate</ToolTitle>
@@ -180,7 +181,7 @@ function MathematicalTools({ variant = 'standalone' }: MathematicalToolsProps) {
               <ToolIcon>
                 <AnimatedLottieIcon
                   animationData={horizontalStretchAnimation}
-                  size={variant === 'embedded' ? 45 : 56}
+                  size={variant === 'embedded' ? 35 : 56}
                 />
               </ToolIcon>
               <ToolTitle $variant={variant}>Double & Halve</ToolTitle>
@@ -200,7 +201,7 @@ function MathematicalTools({ variant = 'standalone' }: MathematicalToolsProps) {
               <ToolIcon>
                 <AnimatedLottieIcon
                   animationData={cutAnimation}
-                  size={variant === 'embedded' ? 45 : 56}
+                  size={variant === 'embedded' ? 35 : 56}
                 />
               </ToolIcon>
               <ToolTitle $variant={variant}>Cut</ToolTitle>
@@ -220,7 +221,7 @@ function MathematicalTools({ variant = 'standalone' }: MathematicalToolsProps) {
               <ToolIcon>
                 <AnimatedLottieIcon
                   animationData={combineAnimation}
-                  size={variant === 'embedded' ? 45 : 56}
+                  size={variant === 'embedded' ? 35 : 56}
                 />
               </ToolIcon>
               <ToolTitle $variant={variant}>Combine</ToolTitle>

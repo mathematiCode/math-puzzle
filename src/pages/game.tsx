@@ -171,7 +171,6 @@ export const BoardWrapper = styled.div`
   width: min-content;
   padding-top: 15px;
   position: relative;
-  z-index: 1;
   isolation: isolate;
 `;
 
@@ -189,7 +188,6 @@ export const PiecesContainer = styled(motion.div).attrs({
   max-height:  70vh;
   height: fit-content;
   padding-top: 10px;
-  z-index: 1;
   line-height: 0;
 
   @media (max-width: 750px) {

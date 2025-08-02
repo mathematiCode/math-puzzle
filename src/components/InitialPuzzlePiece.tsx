@@ -69,7 +69,7 @@ const InitialPuzzlePiece = ({
         {...listeners}
         {...attributes}
         onClick={handlePieceSelected}
-        isDragging={isDragging}
+        isDragging={isDragging && isSelected}
         layout={!isRotating && !isDragging}
         {...(!(isRotating && isSelected) ? { layoutId: piece.id } : {})}
       >

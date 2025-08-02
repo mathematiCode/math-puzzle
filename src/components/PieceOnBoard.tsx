@@ -29,7 +29,7 @@ import { getNewValidLocation } from '../utils/getNewValidLocation';
 
 export const PieceWrapper = styled(motion.button)
   .withConfig({
-    shouldForwardProp: prop => prop !== 'isDragging',
+    shouldForwardProp: prop => prop !== 'isDragging' && prop !== 'isSelected',
   })
   .attrs(props => ({
     onClick: props.onClick,
@@ -41,7 +41,8 @@ export const PieceWrapper = styled(motion.button)
   left: ${({ x }) => `calc(${x} * var(--sizeOfEachUnit) - 2px)`};
   top: ${({ y }) => `calc(${y} * var(--sizeOfEachUnit) - 2px)`};
   cursor: ${({ isDragging }) => (isDragging ? 'grab' : 'pointer')};
-  visibility: ${({ isDragging }) => (isDragging ? 'hidden' : 'visible')};
+  visibility: ${({ isDragging, isSelected }) =>
+    isDragging && isSelected ? 'hidden' : 'visible'}; 
   z-index: 6;
   &:active {
     cursor: grab;
@@ -146,6 +147,7 @@ function PieceOnBoard({
         y={y}
         layout={!isRotating && !isDragging && !isStable}
         isDragging={isDragging}
+        isSelected={isSelected}
         isStable={isStable}
         animate={
           isStable

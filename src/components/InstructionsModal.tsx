@@ -29,6 +29,7 @@ const useClasses = makeStyles({
     backgroundColor: 'hsl(100, 65%, 89%)',
     color: 'black',
     width: '70%',
+    height: 'fit-content',
     paddingBottom: '3px',
     paddingInline: '20px',
     position: 'fixed',
@@ -40,12 +41,14 @@ const useClasses = makeStyles({
     zIndex: 1,
     fontSize: '1.2rem',
     fontWeight: 600,
+    overflow: 'scroll',
 
     '@media screen and (max-width: 768px)': {
       width: '96%',
       marginTop: '20px',
       paddingInline: '10px',
       fontSize: '0.9rem',
+      paddingBottom: '25px',
     },
   },
   Overlay: {
@@ -64,7 +67,7 @@ const useClasses = makeStyles({
     textAlign: 'center',
 
     '@media screen and (max-width: 768px)': {
-      fontSize: '1.2rem',
+      fontSize: '1.1rem',
     },
   },
   div: {
@@ -86,7 +89,7 @@ const StyledH2 = styled.h2`
   margin-top: 15px;
 
   @media screen and (max-width: 768px) {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 `;
 
@@ -94,14 +97,14 @@ const StyledLi = styled.li`
   font-size: 1rem;
 
   @media screen and (max-width: 768px) {
-    margin-left: -20px;
+    font-size: 0.9rem;
   }
 `;
 const StyledParagraph = styled.p`
   font-size: 1rem;
 
   @media screen and (max-width: 768px) {
-    margin-left: -20px;
+    font-size: 0.9rem;
   }
 `;
 
