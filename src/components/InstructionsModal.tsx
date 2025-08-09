@@ -21,7 +21,7 @@ import horizontalStretchAnimation from '../assets/icons-animation/horizontal-str
 import verticalStretchAnimation from '../assets/icons-animation/vertical-stretch-tool.json';
 import cutAnimation from '../assets/icons-animation/cut-tool.json';
 import combineAnimation from '../assets/icons-animation/combine-tool.json';
-import MathematicalTools from './MathematicalTools.js';
+import MathematicalToolsRow from './MathematicalToolsRow';
 
 // Instructions on how to use Griffel/ makeStyles here: https://learn.microsoft.com/en-us/shows/fluent-ui-insights/fluent-ui-trainings-styling-components-theming#time=20m55s
 const useClasses = makeStyles({
@@ -170,7 +170,7 @@ const InstructionsModal = ({
                 </ul>
 
                 <StyledH2>The Tools</StyledH2>
-                <MathematicalTools variant="embedded" />
+                <MathematicalToolsRow />
                 <StyledParagraph>
                   Although some tools are not available yet, it is still
                   possible to pass all levels. Most if not all of them have
