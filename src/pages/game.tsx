@@ -74,7 +74,7 @@ function Game() {
     <Main id='main'>
       <DragAndDropArea id='drag-and-drop-area'
         setActivePiece={setActivePiece}
-        boardRef={boardRef}
+       // boardRef={boardRef}
         key={currentLevel}
         isRotating={isRotating}
         setIsRotating={setIsRotating}
@@ -96,7 +96,7 @@ function Game() {
         </PiecesContainer>
         <BoardWrapper id='board-wrapper'>
           <Board
-            ref={boardRef}
+          //  ref={boardRef}
             dimensions={levels[currentLevel].dimensions}
             boardSections={levels[currentLevel].boardSections}
           />
