@@ -5,6 +5,72 @@ import horizontalStretchAnimation from '../assets/icons-animation/horizontal-str
 import cutAnimation from '../assets/icons-animation/cut-tool.json';
 import combineAnimation from '../assets/icons-animation/combine-tool.json';
 
+function MathematicalToolsGrid() {
+  return (
+    <ToolsSection>
+      <Container>
+        <SectionTitle>Mathematical Tools & Connections</SectionTitle>
+        <ToolsGrid>
+          <ToolWrapper>
+            <ToolConnection>Commutative Property</ToolConnection>
+            <ToolCard>
+              <ToolIcon>
+                <AnimatedLottieIcon
+                  animationData={rotateToolAnimation}
+                  size={56}
+                />
+              </ToolIcon>
+              <ToolTitle>Rotate</ToolTitle>
+              <ToolExample>3 × 5 = 5 × 3</ToolExample>
+            </ToolCard>
+          </ToolWrapper>
+
+          <ToolWrapper>
+            <ToolConnection>Associative Property</ToolConnection>
+            <ToolCard>
+              <ToolIcon>
+                <AnimatedLottieIcon
+                  animationData={horizontalStretchAnimation}
+                  size={56}
+                />
+              </ToolIcon>
+              <ToolTitle>Double & Halve</ToolTitle>
+              <ToolExample>4 × (2 × 3) = (4 × 2) × 3</ToolExample>
+            </ToolCard>
+          </ToolWrapper>
+
+          <ToolWrapper>
+            <ToolConnection>Distributive Property</ToolConnection>
+            <ToolCard>
+              <Tag>Coming Soon</Tag>
+              <ToolIcon>
+                <AnimatedLottieIcon animationData={cutAnimation} size={56} />
+              </ToolIcon>
+              <ToolTitle>Cut</ToolTitle>
+              <ToolExample>3(2 + 3) = 3(2) + 3(3)</ToolExample>
+            </ToolCard>
+          </ToolWrapper>
+
+          <ToolWrapper>
+            <ToolConnection>Distributive Property</ToolConnection>
+            <ToolCard>
+              <Tag>Coming Soon</Tag>
+              <ToolIcon>
+                <AnimatedLottieIcon
+                  animationData={combineAnimation}
+                  size={56}
+                />
+              </ToolIcon>
+              <ToolTitle>Combine</ToolTitle>
+              <ToolExample>3(2) + 3(3) = 3(2 + 3)</ToolExample>
+            </ToolCard>
+          </ToolWrapper>
+        </ToolsGrid>
+      </Container>
+    </ToolsSection>
+  );
+}
+
 const Container = styled.div`
   max-width: 1200px;
   height: fit-content;
@@ -127,71 +193,5 @@ const ToolExample = styled.p`
   font-size: 0.85rem;
   font-style: italic;
 `;
-
-function MathematicalToolsGrid() {
-  return (
-    <ToolsSection>
-      <Container>
-        <SectionTitle>Mathematical Tools & Connections</SectionTitle>
-        <ToolsGrid>
-          <ToolWrapper>
-            <ToolConnection>Commutative Property</ToolConnection>
-            <ToolCard>
-              <ToolIcon>
-                <AnimatedLottieIcon
-                  animationData={rotateToolAnimation}
-                  size={56}
-                />
-              </ToolIcon>
-              <ToolTitle>Rotate</ToolTitle>
-              <ToolExample>3 × 5 = 5 × 3</ToolExample>
-            </ToolCard>
-          </ToolWrapper>
-
-          <ToolWrapper>
-            <ToolConnection>Associative Property</ToolConnection>
-            <ToolCard>
-              <ToolIcon>
-                <AnimatedLottieIcon
-                  animationData={horizontalStretchAnimation}
-                  size={56}
-                />
-              </ToolIcon>
-              <ToolTitle>Double & Halve</ToolTitle>
-              <ToolExample>4 × (2 × 3) = (4 × 2) × 3</ToolExample>
-            </ToolCard>
-          </ToolWrapper>
-
-          <ToolWrapper>
-            <ToolConnection>Distributive Property</ToolConnection>
-            <ToolCard>
-              <Tag>Coming Soon</Tag>
-              <ToolIcon>
-                <AnimatedLottieIcon animationData={cutAnimation} size={56} />
-              </ToolIcon>
-              <ToolTitle>Cut</ToolTitle>
-              <ToolExample>3(2 + 3) = 3(2) + 3(3)</ToolExample>
-            </ToolCard>
-          </ToolWrapper>
-
-          <ToolWrapper>
-            <ToolConnection>Distributive Property</ToolConnection>
-            <ToolCard>
-              <Tag>Coming Soon</Tag>
-              <ToolIcon>
-                <AnimatedLottieIcon
-                  animationData={combineAnimation}
-                  size={56}
-                />
-              </ToolIcon>
-              <ToolTitle>Combine</ToolTitle>
-              <ToolExample>3(2) + 3(3) = 3(2 + 3)</ToolExample>
-            </ToolCard>
-          </ToolWrapper>
-        </ToolsGrid>
-      </Container>
-    </ToolsSection>
-  );
-}
 
 export default MathematicalToolsGrid;

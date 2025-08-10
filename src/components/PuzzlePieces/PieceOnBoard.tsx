@@ -1,31 +1,31 @@
 // @ts-nocheck
 import { useDraggable } from '@dnd-kit/core';
 import { mergeRefs } from '@chakra-ui/react';
-import Rectangle from './Rectangle.tsx';
-import ActionsToolbarPopover from './ActionsToolbarPopover.tsx';
+import Rectangle from '../Rectangle.js';
+import ActionsToolbarPopover from '../ActionsToolbar/ActionsToolbarPopover.js';
 import { useState, memo, useContext } from 'react';
 import { motion, useAnimate } from 'motion/react';
 import styled from 'styled-components';
-import { convertLocationToXAndY } from '../utils/utilities.ts';
-import { Piece } from '../types/piece.ts';
+import { convertLocationToXAndY } from '../../utils/utilities.js';
+import { Piece } from '../../types/piece.js';
 import {
   SelectedPieceContext,
   SelectedPieceContextType,
-} from '../context/SelectedPiece.tsx';
+} from '../../context/SelectedPiece.js';
 import {
   PiecesInPlayContext,
   PiecesInPlayContextType,
-} from '../context/PiecesInPlay';
+} from '../../context/PiecesInPlay.js';
 import {
   CurrentLevelContext,
   CurrentLevelContextType,
-} from '../context/CurrentLevel.tsx';
+} from '../../context/CurrentLevel.js';
 import Hotjar from '@hotjar/browser';
 import {
   BoardSquaresContext,
   BoardSquaresContextType,
-} from '../context/BoardSquares.tsx';
-import { getNewValidLocation } from '../utils/getNewValidLocation';
+} from '../../context/BoardSquares.js';
+import { getNewValidLocation } from '../../utils/getNewValidLocation.js';
 
 export const PieceWrapper = styled(motion.button)
   .withConfig({

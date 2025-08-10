@@ -5,6 +5,60 @@ import horizontalStretchAnimation from '../assets/icons-animation/horizontal-str
 import cutAnimation from '../assets/icons-animation/cut-tool.json';
 import combineAnimation from '../assets/icons-animation/combine-tool.json';
 
+function MathematicalToolsRow() {
+  return (
+    <ToolsSection>
+      <Container>
+        <ToolsGrid>
+          <ToolWrapper>
+            <ToolCard>
+              <ToolIcon>
+                <AnimatedLottieIcon
+                  animationData={rotateToolAnimation}
+                  size={45}
+                />
+              </ToolIcon>
+              <ToolTitle>Rotate</ToolTitle>
+            </ToolCard>
+          </ToolWrapper>
+          <ToolWrapper>
+            <ToolCard>
+              <ToolIcon>
+                <AnimatedLottieIcon
+                  animationData={horizontalStretchAnimation}
+                  size={45}
+                />
+              </ToolIcon>
+              <ToolTitle>Double & Halve</ToolTitle>
+            </ToolCard>
+          </ToolWrapper>
+          <ToolWrapper>
+            <ToolCard>
+              <Tag>Coming Soon</Tag>
+              <ToolIcon>
+                <AnimatedLottieIcon animationData={cutAnimation} size={45} />
+              </ToolIcon>
+              <ToolTitle>Cut</ToolTitle>
+            </ToolCard>
+          </ToolWrapper>
+          <ToolWrapper>
+            <ToolCard>
+              <Tag>Coming Soon</Tag>
+              <ToolIcon>
+                <AnimatedLottieIcon
+                  animationData={combineAnimation}
+                  size={45}
+                />
+              </ToolIcon>
+              <ToolTitle>Combine</ToolTitle>
+            </ToolCard>
+          </ToolWrapper>
+        </ToolsGrid>
+      </Container>
+    </ToolsSection>
+  );
+}
+
 const Container = styled.div`
   max-width: 1200px;
   height: fit-content;
@@ -100,59 +154,5 @@ const Tag = styled.p`
   font-weight: bold;
   text-transform: uppercase;
 `;
-
-function MathematicalToolsRow() {
-  return (
-    <ToolsSection>
-      <Container>
-        <ToolsGrid>
-          <ToolWrapper>
-            <ToolCard>
-              <ToolIcon>
-                <AnimatedLottieIcon
-                  animationData={rotateToolAnimation}
-                  size={45}
-                />
-              </ToolIcon>
-              <ToolTitle>Rotate</ToolTitle>
-            </ToolCard>
-          </ToolWrapper>
-          <ToolWrapper>
-            <ToolCard>
-              <ToolIcon>
-                <AnimatedLottieIcon
-                  animationData={horizontalStretchAnimation}
-                  size={45}
-                />
-              </ToolIcon>
-              <ToolTitle>Double & Halve</ToolTitle>
-            </ToolCard>
-          </ToolWrapper>
-          <ToolWrapper>
-            <ToolCard>
-              <Tag>Coming Soon</Tag>
-              <ToolIcon>
-                <AnimatedLottieIcon animationData={cutAnimation} size={45} />
-              </ToolIcon>
-              <ToolTitle>Cut</ToolTitle>
-            </ToolCard>
-          </ToolWrapper>
-          <ToolWrapper>
-            <ToolCard>
-              <Tag>Coming Soon</Tag>
-              <ToolIcon>
-                <AnimatedLottieIcon
-                  animationData={combineAnimation}
-                  size={45}
-                />
-              </ToolIcon>
-              <ToolTitle>Combine</ToolTitle>
-            </ToolCard>
-          </ToolWrapper>
-        </ToolsGrid>
-      </Container>
-    </ToolsSection>
-  );
-}
 
 export default MathematicalToolsRow;

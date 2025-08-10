@@ -1,12 +1,12 @@
 // @ts-nocheck
 import { useContext, useState } from 'react';
 import { useDraggable } from '@dnd-kit/core';
-import Rectangle from './Rectangle.tsx';
-import ActionsToolbarPopover from './ActionsToolbarPopover.tsx';
+import Rectangle from '../Rectangle.js';
+import ActionsToolbarPopover from '../ActionsToolbar/ActionsToolbarPopover.js';
 import { motion, useAnimate } from 'motion/react';
-import { useSelectedPiece } from '../context/SelectedPiece.tsx';
-import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
-import { Piece } from '../types/piece.ts';
+import { useSelectedPiece } from '../../context/SelectedPiece.js';
+import { PiecesInPlayContext } from '../../context/PiecesInPlay.js';
+import { Piece } from '../../types/piece.js';
 import styled from 'styled-components';
 import { mergeRefs } from '@chakra-ui/react';
 import Hotjar from '@hotjar/browser';

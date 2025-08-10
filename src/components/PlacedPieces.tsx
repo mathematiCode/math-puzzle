@@ -1,4 +1,4 @@
-import PieceOnBoard from './PieceOnBoard';
+import PieceOnBoard from './PuzzlePieces/PieceOnBoard';
 import { Piece } from '../types/piece';
 import styled from 'styled-components';
 function PlacedPieces({
@@ -20,7 +20,7 @@ function PlacedPieces({
             key={`b-${index}`}
             isRotating={isRotating}
             setIsRotating={setIsRotating}
-            isStable={piece.isStable}
+            isStable={piece.isStable ?? true}
           />
         ) : null
       )}

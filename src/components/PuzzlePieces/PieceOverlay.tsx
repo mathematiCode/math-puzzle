@@ -1,8 +1,8 @@
 import { memo } from 'react';
 import { motion } from 'motion/react';
 import PropTypes from 'prop-types';
-import Rectangle from './Rectangle';
-import { Piece } from '../types/piece';
+import Rectangle from '../Rectangle.js';
+import { Piece } from '../../types/piece.js';
 
 // Simple touch device detection
 const isTouchDevice = () => {

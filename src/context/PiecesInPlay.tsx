@@ -13,7 +13,7 @@ import { getNewValidLocation } from '../utils/getNewValidLocation.ts';
 import { useAnimate } from 'motion/dist/react';
 import levels from '../levels.json' with { type: 'json' };
 import Hotjar from '@hotjar/browser';
-import Board from '../components/Board.tsx';
+import Board from '../components/Board/Board.js';
 import { remove } from 'lodash';
 import { X } from 'lucide-react';
 

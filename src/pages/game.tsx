@@ -1,13 +1,13 @@
 // @ts-nocheck
 import { useContext, useState, useRef } from 'react';
 import levels from '../levels.json' with { type: 'json' };
-import InitialPuzzlePiece from '../components/InitialPuzzlePiece.tsx';
+import InitialPuzzlePiece from '../components/PuzzlePieces/InitialPuzzlePiece';
 import PieceOverlay from '../components/PieceOverlay.tsx';
-import Board from '../components/Board.tsx';
+import Board from '../components/Board/Board';
 import PlacedPieces from '../components/PlacedPieces.tsx';
 import DragAndDropArea from '../components/DragAndDropArea.tsx';
 import Button from '../components/Button.tsx';
-import InstructionsModal from '../components/InstructionsModal.tsx';
+import InstructionsModal from '../components/Instructions/InstructionsModal';
 import LevelCompleteModal from '../components/LevelComplete.tsx';
 import { motion } from 'motion/react';
 import styled from 'styled-components';
@@ -127,7 +127,6 @@ function Game() {
           isRotating={isRotating}
           setIsRotating={setIsRotating}
           piecesInPlay={piecesInPlay}
-          setActivePiece={setActivePiece}
           setActivePiece={setActivePiece}
         />
       </ButtonContainer>

@@ -12,16 +12,16 @@ import {
 import { X, HelpCircle } from 'lucide-react';
 import { RemoveScroll } from 'react-remove-scroll';
 import styled from 'styled-components';
-import Button from './Button.tsx';
-import InitialPuzzlePiece from './InitialPuzzlePiece.tsx';
-import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
-import AnimatedLottieIcon from './AnimatedLottieIcon.js';
-import rotateToolAnimation from '../assets/icons-animation/rotate-tool.json';
-import horizontalStretchAnimation from '../assets/icons-animation/horizontal-stretch-tool.json';
-import verticalStretchAnimation from '../assets/icons-animation/vertical-stretch-tool.json';
-import cutAnimation from '../assets/icons-animation/cut-tool.json';
-import combineAnimation from '../assets/icons-animation/combine-tool.json';
-import MathematicalToolsRow from './MathematicalToolsRow';
+import Button from '../Button.js';
+import InitialPuzzlePiece from '../PuzzlePieces/InitialPuzzlePiece.js';
+import { PiecesInPlayContext } from '../../context/PiecesInPlay.js';
+import AnimatedLottieIcon from '../AnimatedLottieIcon.js';
+import rotateToolAnimation from '../../assets/icons-animation/rotate-tool.json';
+import horizontalStretchAnimation from '../../assets/icons-animation/horizontal-stretch-tool.json';
+import verticalStretchAnimation from '../../assets/icons-animation/vertical-stretch-tool.json';
+import cutAnimation from '../../assets/icons-animation/cut-tool.json';
+import combineAnimation from '../../assets/icons-animation/combine-tool.json';
+import MathematicalToolsRow from './MathematicalToolsRow.tsx';
 
 // Instructions on how to use Griffel/ makeStyles here: https://learn.microsoft.com/en-us/shows/fluent-ui-insights/fluent-ui-trainings-styling-components-theming#time=20m55s
 const useClasses = makeStyles({

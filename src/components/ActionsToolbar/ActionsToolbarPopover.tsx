@@ -8,18 +8,18 @@ import {
   PopoverSurface,
 } from '@fluentui/react-components';
 import styled from 'styled-components';
-import { useSelectedPiece } from '../context/SelectedPiece';
-import { PiecesInPlayContext } from '../context/PiecesInPlay';
-import AnimatedLottieIcon from './AnimatedLottieIcon';
-import rotateToolAnimation from '../assets/icons-animation/rotate-tool.json';
-import horizontalStretchAnimation from '../assets/icons-animation/horizontal-stretch-tool.json';
-import verticalStretchAnimation from '../assets/icons-animation/vertical-stretch-tool.json';
-import cutAnimation from '../assets/icons-animation/cut-tool.json';
-import combineAnimation from '../assets/icons-animation/combine-tool.json';
+import { useSelectedPiece } from '../../context/SelectedPiece';
+import { PiecesInPlayContext } from '../../context/PiecesInPlay';
+import AnimatedLottieIcon from '../AnimatedLottieIcon';
+import rotateToolAnimation from '../../assets/icons-animation/rotate-tool.json';
+import horizontalStretchAnimation from '../../assets/icons-animation/horizontal-stretch-tool.json';
+import verticalStretchAnimation from '../../assets/icons-animation/vertical-stretch-tool.json';
+import cutAnimation from '../../assets/icons-animation/cut-tool.json';
+import combineAnimation from '../../assets/icons-animation/combine-tool.json';
 import Hotjar from '@hotjar/browser';
-import { convertLocationToXAndY } from '../utils/utilities';
-import { BoardSquaresContext } from '../context/BoardSquares';
-import { getNewValidLocation } from '../utils/getNewValidLocation';
+import { convertLocationToXAndY } from '../../utils/utilities';
+import { BoardSquaresContext } from '../../context/BoardSquares';
+import { getNewValidLocation } from '../../utils/getNewValidLocation';
 
 function ActionsToolbarPopover({
   children,
@@ -58,7 +58,7 @@ function ActionsToolbarPopover({
     Hotjar.event('double width attempt');
     const id = selectedPiece?.id;
     const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
-    let { x, y } = convertLocationToXAndY(selectedPiece?.location);
+    let { x, y } = convertLocationToXAndY(selectedPiece?.location ?? '');
     if (selectedPiece && Number.isInteger(selectedPiece.height / 2)) {
       const newHeight = selectedPiece.height / 2;
       const newWidth = selectedPiece.width * 2;
