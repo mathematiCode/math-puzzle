@@ -2,7 +2,7 @@
 import { useContext, useState, useRef } from 'react';
 import levels from '../levels.json' with { type: 'json' };
 import InitialPuzzlePiece from '../components/PuzzlePieces/InitialPuzzlePiece';
-import PieceOverlay from '../components/PieceOverlay.tsx';
+import PieceOverlay from '../components/PuzzlePieces/PieceOverlay';
 import Board from '../components/Board/Board';
 import PlacedPieces from '../components/PlacedPieces.tsx';
 import DragAndDropArea from '../components/DragAndDropArea.tsx';
