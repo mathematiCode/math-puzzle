@@ -8,12 +8,12 @@ import {
 import { BoardSquaresContext } from './BoardSquares';
 import { colors } from '../CONSTANTS';
 import { InitialPiece, Piece } from '../types/piece.ts';
-import { convertLocationToXAndY } from '../utils/utilities.ts';
-import { getNewValidLocation } from '../utils/getNewValidLocation.ts';
+import { convertLocationToXAndY } from '../Game/utils/utilities.ts';
+import { getNewValidLocation } from '../Game/utils/getNewValidLocation.ts';
 import { useAnimate } from 'motion/dist/react';
-import levels from '../levels.json' with { type: 'json' };
+import levels from '../Game/levels.json' with { type: 'json' };
 import Hotjar from '@hotjar/browser';
-import Board from '../components/Board/Board.js';
+import Board from '../components/Board/Board';
 import { remove } from 'lodash';
 import { X } from 'lucide-react';
 

@@ -1,9 +1,9 @@
 //@ts-nocheck
 import { createContext, useContext, useState, ReactNode } from 'react';
-import levels from '../levels.json';
-import { getInitialBoardSquares } from '../utils/getInitialBoardSquares';
+import levels from '../Game/levels.json';
+import { getInitialBoardSquares } from '../Game/utils/getInitialBoardSquares';
 import { CurrentLevelContext } from './CurrentLevel.tsx';
-import { convertLocationToXAndY } from '../utils/utilities';
+import { convertLocationToXAndY } from '../Game/utils/utilities';
 import { LevelProgressContext } from './LevelProgress.tsx';
 import Hotjar from '@hotjar/browser';
 

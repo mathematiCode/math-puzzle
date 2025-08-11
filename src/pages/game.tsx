@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { useContext, useState, useRef } from 'react';
-import levels from '../levels.json' with { type: 'json' };
+import levels from '../Game/levels.json' with { type: 'json' };
 import InitialPuzzlePiece from '../Game/PuzzlePieces/InitialPuzzlePiece';
 import PieceOverlay from '../Game/PuzzlePieces/PieceOverlay';
 import Board from '../Game/Board/Board';
@@ -14,19 +14,13 @@ import styled from 'styled-components';
 import { DragOverlay } from '@dnd-kit/core';
 import { PiecesInPlayContext } from '../context/PiecesInPlay';
 import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
-import { getInitialPieces } from '../utils/getInitialPieces';
+import { getInitialPieces } from '../Game/utils/getInitialPieces';
 import { LevelProgressContext } from '../context/LevelProgress.tsx';
 import { Piece } from '../types/piece.ts';
 import { BoardSquaresContext } from '../context/BoardSquares';
 import Hotjar from '@hotjar/browser';
 import { ChevronLeft, ChevronRight, RotateCcw, HelpCircle } from 'lucide-react';
 import ErrorBoundary from '../components/ErrorBoundary';
-//import { BoardSquaresContext } from '../context/BoardSquares.tsx';
-
-// Temporary test component that throws an error
-const TestErrorComponent = () => {
-  throw new Error('This is a test error to demonstrate the Error Boundary!');
-};
 
 function Game() {
   const {
@@ -44,7 +38,7 @@ function Game() {
     useContext(PiecesInPlayContext);
   const [isRotating, setIsRotating] = useState(false);
   const [levelCompletedShown, setLevelCompletedShown] = useState(false);
-  const boardRef = useRef(null);
+ // const boardRef = useRef(null);
 
   const handleCloseModal = () => {
     setLevelCompletedShown(true); // Prevent modal from showing again for this level

@@ -6,26 +6,26 @@ import ActionsToolbarPopover from '../ActionsToolbar/ActionsToolbarPopover.js';
 import { useState, memo, useContext } from 'react';
 import { motion, useAnimate } from 'motion/react';
 import styled from 'styled-components';
-import { convertLocationToXAndY } from '../../utils/utilities.js';
-import { Piece } from '../../types/piece.js';
+import { convertLocationToXAndY } from '../utils/utilities';
+import { Piece } from '../../types/piece';
 import {
   SelectedPieceContext,
   SelectedPieceContextType,
-} from '../../context/SelectedPiece.js';
+} from '../../context/SelectedPiece';
 import {
   PiecesInPlayContext,
   PiecesInPlayContextType,
-} from '../../context/PiecesInPlay.js';
+} from '../../context/PiecesInPlay';
 import {
   CurrentLevelContext,
   CurrentLevelContextType,
-} from '../../context/CurrentLevel.js';
+} from '../../context/CurrentLevel';
 import Hotjar from '@hotjar/browser';
 import {
   BoardSquaresContext,
   BoardSquaresContextType,
-} from '../../context/BoardSquares.js';
-import { getNewValidLocation } from '../../utils/getNewValidLocation.js';
+} from '../../context/BoardSquares';
+import { getNewValidLocation } from '../utils/getNewValidLocation';
 
 export const PieceWrapper = styled(motion.button)
   .withConfig({

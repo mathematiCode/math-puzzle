@@ -17,9 +17,9 @@ import verticalStretchAnimation from '../../assets/icons-animation/vertical-stre
 import cutAnimation from '../../assets/icons-animation/cut-tool.json';
 import combineAnimation from '../../assets/icons-animation/combine-tool.json';
 import Hotjar from '@hotjar/browser';
-import { convertLocationToXAndY } from '../../utils/utilities';
+import { convertLocationToXAndY } from '../utils/utilities';
 import { BoardSquaresContext } from '../../context/BoardSquares';
-import { getNewValidLocation } from '../../utils/getNewValidLocation';
+import { getNewValidLocation } from '../utils/getNewValidLocation';
 
 function ActionsToolbarPopover({
   children,

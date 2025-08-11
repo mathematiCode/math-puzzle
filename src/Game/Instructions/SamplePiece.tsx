@@ -69,6 +69,7 @@ const SamplePiece = ({
           isMotion={true}
           isSelected={isSelected}
           isExample={true}
+          layout={!isRotating}
         />
       </SamplePieceWrapper>
     </ActionsToolbarPopover>
@@ -80,6 +81,8 @@ export const SamplePieceWrapper = styled(motion.button)`
   z-index: 2;
   border: 2px solid black;
   margin: 0;
+  margin-bottom: 30px;
+  margin-top: 10px;
   &:active {
     cursor: grab;
   }
