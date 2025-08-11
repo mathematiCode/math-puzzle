@@ -10,7 +10,7 @@ import {
 import styled from 'styled-components';
 import { useSelectedPiece } from '../../context/SelectedPiece';
 import { PiecesInPlayContext } from '../../context/PiecesInPlay';
-import AnimatedLottieIcon from '../AnimatedLottieIcon';
+import AnimatedLottieIcon from '../../components/AnimatedLottieIcon';
 import rotateToolAnimation from '../../assets/icons-animation/rotate-tool.json';
 import horizontalStretchAnimation from '../../assets/icons-animation/horizontal-stretch-tool.json';
 import verticalStretchAnimation from '../../assets/icons-animation/vertical-stretch-tool.json';

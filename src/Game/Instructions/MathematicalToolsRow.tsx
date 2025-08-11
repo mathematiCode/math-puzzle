@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import AnimatedLottieIcon from '../AnimatedLottieIcon';
+import AnimatedLottieIcon from '../../components/AnimatedLottieIcon';
 import rotateToolAnimation from '../../assets/icons-animation/rotate-tool.json';
 import horizontalStretchAnimation from '../../assets/icons-animation/horizontal-stretch-tool.json';
 import cutAnimation from '../../assets/icons-animation/cut-tool.json';

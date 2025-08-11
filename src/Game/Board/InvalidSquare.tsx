@@ -1,4 +1,4 @@
-import { Unit } from '../Unit';
+import { Unit } from '../../Game/Unit';
 
 function InvalidSquare({ id }: { id: string }) {
   return (

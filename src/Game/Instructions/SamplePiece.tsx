@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useContext, useState } from 'react';
 import { useDraggable } from '@dnd-kit/core';
-import Rectangle from '../Rectangle.js';
+import Rectangle from '../Rectangle';
 import ActionsToolbarPopover from '../ActionsToolbar/ActionsToolbarPopover.js';
 import { motion, useAnimate } from 'motion/react';
 import { useSelectedPiece } from '../../context/SelectedPiece.js';
@@ -15,14 +15,12 @@ const SamplePiece = ({
   piece,
   isRotating,
   setIsRotating,
-  isExample = false,
   isActive = false,
   setActivePiece,
 }: {
   piece: Piece;
   isRotating: boolean;
   setIsRotating: (isRotating: boolean) => void;
-  isExample?: boolean;
   isActive?: boolean;
   setActivePiece: (piece: Piece) => void;
 }) => {
@@ -70,7 +68,7 @@ const SamplePiece = ({
           color={'hsla(0, 61%, 66%, 1)'}
           isMotion={true}
           isSelected={isSelected}
-          isExample={isExample}
+          isExample={true}
         />
       </SamplePieceWrapper>
     </ActionsToolbarPopover>

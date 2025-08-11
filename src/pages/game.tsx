@@ -1,14 +1,14 @@
 // @ts-nocheck
 import { useContext, useState, useRef } from 'react';
 import levels from '../levels.json' with { type: 'json' };
-import InitialPuzzlePiece from '../components/PuzzlePieces/InitialPuzzlePiece';
-import PieceOverlay from '../components/PuzzlePieces/PieceOverlay';
-import Board from '../components/Board/Board';
-import PlacedPieces from '../components/PlacedPieces.tsx';
-import DragAndDropArea from '../components/DragAndDropArea.tsx';
+import InitialPuzzlePiece from '../Game/PuzzlePieces/InitialPuzzlePiece';
+import PieceOverlay from '../Game/PuzzlePieces/PieceOverlay';
+import Board from '../Game/Board/Board';
+import PlacedPieces from '../Game/PlacedPieces.tsx';
+import DragAndDropArea from '../Game/DragAndDropArea';
 import Button from '../components/Button.tsx';
-import InstructionsModal from '../components/Instructions/InstructionsModal';
-import LevelCompleteModal from '../components/LevelComplete.tsx';
+import InstructionsModal from '../Game/Instructions/InstructionsModal';
+import LevelCompleteModal from '../Game/LevelComplete';
 import { motion } from 'motion/react';
 import styled from 'styled-components';
 import { DragOverlay } from '@dnd-kit/core';
@@ -20,7 +20,13 @@ import { Piece } from '../types/piece.ts';
 import { BoardSquaresContext } from '../context/BoardSquares';
 import Hotjar from '@hotjar/browser';
 import { ChevronLeft, ChevronRight, RotateCcw, HelpCircle } from 'lucide-react';
+import ErrorBoundary from '../components/ErrorBoundary';
 //import { BoardSquaresContext } from '../context/BoardSquares.tsx';
+
+// Temporary test component that throws an error
+const TestErrorComponent = () => {
+  throw new Error('This is a test error to demonstrate the Error Boundary!');
+};
 
 function Game() {
   const {
@@ -66,19 +72,19 @@ function Game() {
     resetPieces();
     resetBoardSquares(currentLevel);
     setLevelCompletedShown(false); // Reset modal state when resetting level
-   // console.log(boardSquares);
   }
 
   return (
     <>
-    <Main id='main'>
+      <Main id='main'>
+        <ErrorBoundary>
       <DragAndDropArea id='drag-and-drop-area'
         setActivePiece={setActivePiece}
        // boardRef={boardRef}
         key={currentLevel}
         isRotating={isRotating}
         setIsRotating={setIsRotating}
-      >
+          >
         <PiecesContainer id='pieces-container' $currentLevel={currentLevel}>
           {piecesInPlay.map((piece: Piece, pieceIndex: number) => {
             if (piece.location != null) return null;
@@ -93,7 +99,7 @@ function Game() {
               />
             );
           })}
-        </PiecesContainer>
+              </PiecesContainer>
         <BoardWrapper id='board-wrapper'>
           <Board
           //  ref={boardRef}
@@ -105,13 +111,14 @@ function Game() {
             isRotating={isRotating}
             setIsRotating={setIsRotating}
           />
-        </BoardWrapper>
+              </BoardWrapper>
         {activePiece && !isRotating ? (
           <DragOverlay>
             <PieceOverlay piece={activePiece} />
           </DragOverlay>
-        ) : null}
-      </DragAndDropArea>
+              ) : null}
+          </DragAndDropArea>
+              </ErrorBoundary>
        </Main>
       <ButtonContainer id='button-container'>
         <Button color='hsl(178, 30.00%, 56.10%)' textColor='black' disabled={levelPosition == 'first'} onClick={setToPrevious}>
