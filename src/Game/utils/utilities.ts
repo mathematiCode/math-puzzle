@@ -52,7 +52,7 @@ export function calculateUnitSize(
     );
   } else if (windowWidth < 1600) {
     return Math.round(
-      ((0.4 * Math.max(windowWidth, windowHeight - 200)) /
+      ((0.35 * Math.max(windowWidth, windowHeight - 200)) /
         Math.max(width, height, largestHeight * 1.5)) *
         0.8 -
         1
