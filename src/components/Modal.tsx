@@ -138,14 +138,18 @@ function Modal({
     </RemoveScroll>
   );
 
-  return (
+  const dialogWithTrigger = trigger ? (
     <Dialog modalType={modalType} open={open} onOpenChange={handleOpenChange}>
-      {trigger && (
-        <DialogTrigger disableButtonEnhancement>{trigger}</DialogTrigger>
-      )}
+      <DialogTrigger disableButtonEnhancement>{trigger}</DialogTrigger>
+      {dialogContent}
+    </Dialog>
+  ) : (
+    <Dialog modalType={modalType} open={open} onOpenChange={handleOpenChange}>
       {dialogContent}
     </Dialog>
   );
+
+  return dialogWithTrigger;
 }
 
 export default Modal;

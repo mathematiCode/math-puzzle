@@ -1,5 +1,4 @@
 // @ts-nocheck
-<<<<<<< Updated upstream
 import { useContext, useState, useRef } from 'react';
 import levels from '../Game/levels.json' with { type: 'json' };
 import InitialPuzzlePiece from '../Game/PuzzlePieces/InitialPuzzlePiece';
