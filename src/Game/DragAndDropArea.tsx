@@ -147,16 +147,10 @@ function DragAndDropArea({
 
   const handleDragEnd = (event: DragEndEvent) => {
     const id = event.active.id as string;
-    const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
-    const { x, y } = convertLocationToXAndY(piecesInPlay[pieceIndex].location);
-    if (piecesInPlay[pieceIndex].location != null) {
-      removePieceFromBoard(
-        x,
-        y,
-        piecesInPlay[pieceIndex].width,
-        piecesInPlay[pieceIndex].height,
-        piecesInPlay[pieceIndex].id ?? ''
-      );
+    const piece = piecesInPlay.find(piece => piece.id === id);
+    if (piece?.location != null) {
+      const { x, y } = convertLocationToXAndY(piece.location);
+      removePieceFromBoard(x, y, piece?.width, piece?.height, piece?.id ?? '');
     }
     if (event?.over?.id) {
       const newLocation = event.over.id.toString();
@@ -166,20 +160,20 @@ function DragAndDropArea({
       const { correctedX, correctedY } = getNewValidLocation(
         x,
         y,
-        piecesInPlay[pieceIndex].width,
-        piecesInPlay[pieceIndex].height,
+        piece?.width,
+        piece?.height,
         boardWidth,
         boardHeight
       );
-      movePiece(pieceIndex, `(${correctedX},${correctedY})`);
+      movePiece(id, `(${correctedX},${correctedY})`);
       addPieceToBoard(
         correctedX,
         correctedY,
-        piecesInPlay[pieceIndex].width,
-        piecesInPlay[pieceIndex].height,
-        piecesInPlay[pieceIndex].id ?? ''
+        piece?.width,
+        piece?.height,
+        piece?.id ?? ''
       );
-    } else movePiece(pieceIndex, null);
+    } else movePiece(id, null);
     const unstablePieces = getUnstablePieces();
     piecesInPlay.forEach(piece => {
       if (unstablePieces.includes(piece.id ?? '')) {

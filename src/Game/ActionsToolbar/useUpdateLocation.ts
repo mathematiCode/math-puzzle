@@ -23,8 +23,7 @@ export function useUpdateLocation() {
     selectedPiece: Piece,
     newWidth: number,
     newHeight: number,
-    movePiece: (pieceIndex: number, newLocation: string | null) => void,
-    pieceIndex: number
+    movePiece: (pieceId: string, newLocation: string | null) => void
   ) => {
     const boardWidth = boardSquares[0].length;
     const boardHeight = boardSquares.length;
@@ -47,7 +46,10 @@ export function useUpdateLocation() {
         boardWidth,
         boardHeight
       );
-      movePiece(pieceIndex, `(${correctedX},${correctedY})`);
+      movePiece(
+        selectedPiece.id ?? 'invalidId',
+        `(${correctedX},${correctedY})`
+      );
       x = correctedX;
       y = correctedY;
     }
@@ -66,7 +68,7 @@ export function useUpdateLocation() {
       boardWidth,
       boardHeight
     );
-    movePiece(pieceIndex, `(${correctedX},${correctedY})`);
+    movePiece(selectedPiece.id ?? 'invalidId', `(${correctedX},${correctedY})`);
     x = correctedX;
     y = correctedY;
     addPieceToBoard(x, y, newWidth, newHeight, selectedPiece.id ?? '');

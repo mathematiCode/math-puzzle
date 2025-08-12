@@ -1,6 +1,5 @@
 // @ts-nocheck
-<<<<<<< Updated upstream
-import { useContext, useState, useRef } from 'react';
+import { useContext, useState } from 'react';
 import levels from '../Game/levels.json' with { type: 'json' };
 import InitialPuzzlePiece from '../Game/PuzzlePieces/InitialPuzzlePiece';
 import PieceOverlay from '../Game/PuzzlePieces/PieceOverlay';
@@ -39,7 +38,6 @@ function Game() {
     useContext(PiecesInPlayContext);
   const [isRotating, setIsRotating] = useState(false);
   const [levelCompletedShown, setLevelCompletedShown] = useState(false);
- // const boardRef = useRef(null);
 
   const handleCloseModal = () => {
     setLevelCompletedShown(true); // Prevent modal from showing again for this level
@@ -88,7 +86,7 @@ function Game() {
                 isActive={activePiece?.id === piece.id}
                 isRotating={isRotating}
                 setIsRotating={setIsRotating}
-                key={pieceIndex}
+                key={piece.id}
                 setActivePiece={setActivePiece}
               />
             );

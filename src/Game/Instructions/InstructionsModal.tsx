@@ -7,11 +7,13 @@ import SamplePiece from './SamplePiece';
 import { PiecesInPlayContext } from '../../context/PiecesInPlay';
 import MathematicalToolsRow from './MathematicalToolsRow';
 import ErrorBoundary from '../../components/ErrorBoundary';
+import { Piece } from '../../types/piece';
 
 const StyledDiv = styled.div`
   padding: '20px';
   width: '90px';
   margin-bottom: '90px';
+  margin-inline: '0px';
 
   @media screen and (max-width: 768px) {
     margin-bottom: '90px';
@@ -62,7 +64,7 @@ const InstructionsModal = ({
   const { updateDimensions } = context;
 
   const closeModal = () => {
-    updateDimensions(0, 3, 2); // Resetting the example piece to it's original dimensions
+    updateDimensions('sample-0', 3, 2); // Resetting the example piece to it's original dimensions
   };
 
   return (
@@ -103,7 +105,7 @@ const InstructionsModal = ({
           solutions.
         </StyledParagraph>
         <StyledH2>Try out the tools by clicking the piece below. </StyledH2>
-        <StyledDiv>
+        <StyledDiv data-testid="sample-piece-container">
           <ErrorBoundary>
             <SamplePiece
               piece={piecesInPlay[0]}

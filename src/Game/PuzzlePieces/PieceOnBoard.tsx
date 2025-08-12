@@ -103,7 +103,7 @@ function PieceOnBoard({
         { rotate: 90 },
         { type: 'spring', stiffness: 150, damping: 11 }
       );
-      updateDimensions(pieceIndex, newWidth, newHeight);
+      updateDimensions(piece.id, newWidth, newHeight);
       await animate(scope.current, { rotate: 0 }, { duration: 0 });
     } finally {
       setIsRotating(false);
@@ -120,7 +120,7 @@ function PieceOnBoard({
         boardHeight
       );
 
-      movePiece(pieceIndex, `(${correctedX},${correctedY})`);
+      movePiece(piece.id, `(${correctedX},${correctedY})`);
       addPieceToBoard(
         correctedX,
         correctedY,

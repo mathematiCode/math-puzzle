@@ -49,7 +49,8 @@ export function PiecesInPlayProvider({
   );
   const { boardWidth, boardHeight } = boardDimensions;
 
-  function movePiece(pieceIndex: number, newLocation: string | null) {
+  function movePiece(pieceId, newLocation: string | null) {
+    const pieceIndex = piecesInPlay.findIndex(piece => piece.id === pieceId);
     const updatedPieces = [...piecesInPlay];
     const oldLocation = piecesInPlay[pieceIndex].location;
     const { x: oldX, y: oldY } = convertLocationToXAndY(oldLocation);
@@ -90,7 +91,12 @@ export function PiecesInPlayProvider({
     }
   }
 
-  function updateDimensions(pieceIndex: number, width: number, height: number) {
+  function updateDimensions(pieceId: number, width: number, height: number) {
+    const pieceIndex = piecesInPlay.findIndex(piece => piece.id === pieceId);
+    if (pieceIndex === -1) {
+      console.error('Piece not found');
+      return;
+    }
     const updatedPieces = [...piecesInPlay];
     const {
       location,
