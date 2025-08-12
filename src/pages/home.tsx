@@ -2,7 +2,7 @@
 
 import styled from 'styled-components';
 import { useNavigate } from 'react-router';
-import MathematicalTools from '../components/MathematicalTools';
+import MathematicalToolsGrid from '../components/MathematicalToolsGrid';
 
 const Container = styled.div`
   max-width: 1200px;
@@ -192,7 +192,7 @@ function Home() {
         </Section>
       </Container>
 
-      <MathematicalTools variant="standalone" />
+      <MathematicalToolsGrid />
 
       <CallToAction>
         <Container>

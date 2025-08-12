@@ -8,22 +8,23 @@ import {
   PopoverSurface,
 } from '@fluentui/react-components';
 import styled from 'styled-components';
-import { useSelectedPiece } from '../context/SelectedPiece';
-import { PiecesInPlayContext } from '../context/PiecesInPlay';
-import AnimatedLottieIcon from './AnimatedLottieIcon';
-import rotateToolAnimation from '../assets/icons-animation/rotate-tool.json';
-import horizontalStretchAnimation from '../assets/icons-animation/horizontal-stretch-tool.json';
-import verticalStretchAnimation from '../assets/icons-animation/vertical-stretch-tool.json';
-import cutAnimation from '../assets/icons-animation/cut-tool.json';
-import combineAnimation from '../assets/icons-animation/combine-tool.json';
+import { useSelectedPiece } from '../../context/SelectedPiece';
+import { PiecesInPlayContext } from '../../context/PiecesInPlay';
+import AnimatedLottieIcon from '../../components/AnimatedLottieIcon';
+import rotateToolAnimation from '../../assets/icons-animation/rotate-tool.json';
+import horizontalStretchAnimation from '../../assets/icons-animation/horizontal-stretch-tool.json';
+import verticalStretchAnimation from '../../assets/icons-animation/vertical-stretch-tool.json';
+import cutAnimation from '../../assets/icons-animation/cut-tool.json';
+import combineAnimation from '../../assets/icons-animation/combine-tool.json';
 import Hotjar from '@hotjar/browser';
 import { convertLocationToXAndY } from '../utils/utilities';
-import { BoardSquaresContext } from '../context/BoardSquares';
+import { BoardSquaresContext } from '../../context/BoardSquares';
 import { getNewValidLocation } from '../utils/getNewValidLocation';
+import { useUpdateLocation } from './useUpdateLocation';
 
 function ActionsToolbarPopover({
   children,
-  runRotationAnimation, // lives in InitialPuzzlePiece
+  runRotationAnimation, // lives in PuzzlePiece components
   ...delegated
 }: {
   children: React.ReactElement;
@@ -39,71 +40,30 @@ function ActionsToolbarPopover({
   const { updateDimensions, movePiece } = context;
   const { selectedPiece } = useSelectedPiece();
   const showTooltips = false;
-  const boardSquaresContext = useContext(BoardSquaresContext);
-  if (!boardSquaresContext) {
-    throw new Error(
-      'ActionsToolbarPopover must be used within a BoardSquaresProvider'
-    );
-  }
-  const {
-    boardSquares,
-    countOverlappingSquares,
-    removePieceFromBoard,
-    addPieceToBoard,
-  } = boardSquaresContext;
-  const boardWidth = boardSquares[0].length;
-  const boardHeight = boardSquares.length;
+  const { updateLocationAndBoardSquares } = useUpdateLocation();
 
   function handleHorizontalStretch() {
     Hotjar.event('double width attempt');
     const id = selectedPiece?.id;
     const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
-    let { x, y } = convertLocationToXAndY(selectedPiece?.location);
-    if (selectedPiece && Number.isInteger(selectedPiece.height / 2)) {
+    const stretchIsPossible =
+      selectedPiece != null && Number.isInteger(selectedPiece.height / 2);
+    if (stretchIsPossible) {
       const newHeight = selectedPiece.height / 2;
       const newWidth = selectedPiece.width * 2;
-      if (selectedPiece.location != null) {
-        if (x < 0 && newWidth < boardWidth) {
-          x = 0;
-        }
-        if (y < 0 && newHeight < boardHeight) {
-          y = 0;
-        }
-        removePieceFromBoard(
-          x,
-          y,
-          selectedPiece.width,
-          selectedPiece.height,
-          selectedPiece.id ?? ''
-        );
-        const { innerOverlaps, outerOverlaps, squaresOutsideBoard } =
-          countOverlappingSquares(
-            selectedPiece.location,
-            newWidth,
-            newHeight,
-            boardSquares
-          );
-        if (innerOverlaps + outerOverlaps > 0) {
-          Hotjar.event('Collision alert');
-        } else if (squaresOutsideBoard > 0) {
-          Hotjar.event('Piece placed partially off board');
-          const { correctedX, correctedY } = getNewValidLocation(
-            x,
-            y,
-            newWidth,
-            newHeight,
-            boardWidth,
-            boardHeight
-          );
-          movePiece(pieceIndex, `(${correctedX},${correctedY})`);
-          //console.log(`${x}, ${y} -> ${correctedX}, ${correctedY}`);
-          x = correctedX;
-          y = correctedY;
-        }
-      }
       updateDimensions(pieceIndex, newWidth, newHeight);
-      if (selectedPiece.location != null && selectedPiece.id != null) {
-        addPieceToBoard(x, y, newWidth, newHeight, selectedPiece.id);
+      if (
+        selectedPiece.location != null &&
+        selectedPiece.location != 'instructions' &&
+        selectedPiece.id != null
+      ) {
+        updateLocationAndBoardSquares(
+          selectedPiece,
+          newWidth,
+          newHeight,
+          movePiece,
+          pieceIndex
+        );
       }
       Hotjar.event('double width successfully');
     }
@@ -116,56 +76,20 @@ function ActionsToolbarPopover({
       const newWidth = selectedPiece.width / 2;
       const id = selectedPiece.id;
       const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
-      let { x, y } = convertLocationToXAndY(selectedPiece.location);
-      if (selectedPiece.location != null) {
-        const { innerOverlaps, outerOverlaps, squaresOutsideBoard } =
-          countOverlappingSquares(
-            selectedPiece.location,
-            newWidth,
-            newHeight,
-            boardSquares
-          );
-        if (innerOverlaps + outerOverlaps > 0) {
-          Hotjar.event('Collision alert');
-        } else if (squaresOutsideBoard > 0) {
-          Hotjar.event('Piece placed partially off board');
-          const { correctedX, correctedY } = getNewValidLocation(
-            x,
-            y,
-            newWidth,
-            newHeight,
-            boardWidth,
-            boardHeight
-          );
-          // console.log(`${x}, ${y} -> ${correctedX}, ${correctedY}`);
-          movePiece(pieceIndex, `(${correctedX},${correctedY})`);
-          x = correctedX;
-          y = correctedY;
-        }
-        removePieceFromBoard(
-          x,
-          y,
-          selectedPiece.width,
-          selectedPiece.height,
-          selectedPiece.id ?? ''
-        );
-        const { correctedX, correctedY } = getNewValidLocation(
-          x,
-          y,
+      const isOnBoard =
+        selectedPiece.location &&
+        selectedPiece.location.match(/^\(\d+,\d+\)$/) &&
+        selectedPiece.id?.startsWith('b-');
+      if (isOnBoard) {
+        updateLocationAndBoardSquares(
+          selectedPiece,
           newWidth,
           newHeight,
-          boardWidth,
-          boardHeight
+          movePiece,
+          pieceIndex
         );
-        //console.log(`${x}, ${y} -> ${correctedX}, ${correctedY}`);
-        movePiece(pieceIndex, `(${correctedX},${correctedY})`);
-        x = correctedX;
-        y = correctedY;
       }
       updateDimensions(pieceIndex, newWidth, newHeight);
-      if (selectedPiece.location != null && selectedPiece.id != null) {
-        addPieceToBoard(x, y, newWidth, newHeight, selectedPiece.id);
-      }
       Hotjar.event('double height successfully');
     }
   }

@@ -14,10 +14,10 @@ import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core';
 import { PiecesInPlayContext } from '../context/PiecesInPlay';
 import { Piece } from '../types/piece';
 import { useSelectedPiece } from '../context/SelectedPiece';
-import { convertLocationToXAndY, rateDroppability } from '../utils/utilities';
+import { convertLocationToXAndY, rateDroppability } from './utils/utilities';
 import Hotjar from '@hotjar/browser';
 import { BoardSquaresContext } from '../context/BoardSquares';
-import { getNewValidLocation } from '../utils/getNewValidLocation';
+import { getNewValidLocation } from './utils/getNewValidLocation';
 interface DragAndDropAreaProps {
   children: React.ReactNode;
   setActivePiece: (piece: Piece) => void;

@@ -1,4 +1,4 @@
-import PieceOnBoard from './PieceOnBoard';
+import PieceOnBoard from './PuzzlePieces/PieceOnBoard';
 import { Piece } from '../types/piece';
 import styled from 'styled-components';
 function PlacedPieces({
@@ -13,14 +13,16 @@ function PlacedPieces({
   return (
     <PlacedPiecesWrapper>
       {piecesInPlay.map((piece, index) =>
-        piece.location != null && piece.location != 'instructions' ? (
+        piece.location != null &&
+        piece.location != 'instructions' &&
+        piece.id != 'sample-0' ? (
           <PieceOnBoard
             piece={piece}
             id={`b-${index}`}
             key={`b-${index}`}
             isRotating={isRotating}
             setIsRotating={setIsRotating}
-            isStable={piece.isStable}
+            isStable={piece.isStable ?? true}
           />
         ) : null
       )}

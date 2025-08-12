@@ -1,6 +1,6 @@
-import { InitialPiece } from '../types/piece';
+import { InitialPiece } from '../../types/piece';
 import levels from '../levels.json' assert { type: 'json' };
-import { colors } from '../CONSTANTS';
+import { colors } from '../../CONSTANTS';
 
 const initialLocation = null;
 

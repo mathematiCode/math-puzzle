@@ -1,26 +1,26 @@
 // @ts-nocheck
 import { useContext, useState, useRef } from 'react';
-import levels from '../levels.json' with { type: 'json' };
-import InitialPuzzlePiece from '../components/InitialPuzzlePiece.tsx';
-import PieceOverlay from '../components/PieceOverlay.tsx';
-import Board from '../components/Board.tsx';
-import PlacedPieces from '../components/PlacedPieces.tsx';
-import DragAndDropArea from '../components/DragAndDropArea.tsx';
+import levels from '../Game/levels.json' with { type: 'json' };
+import InitialPuzzlePiece from '../Game/PuzzlePieces/InitialPuzzlePiece';
+import PieceOverlay from '../Game/PuzzlePieces/PieceOverlay';
+import Board from '../Game/Board/Board';
+import PlacedPieces from '../Game/PlacedPieces.tsx';
+import DragAndDropArea from '../Game/DragAndDropArea';
 import Button from '../components/Button.tsx';
-import InstructionsModal from '../components/InstructionsModal.tsx';
-import LevelCompleteModal from '../components/LevelComplete.tsx';
+import InstructionsModal from '../Game/Instructions/InstructionsModal';
+import LevelCompleteModal from '../Game/LevelComplete';
 import { motion } from 'motion/react';
 import styled from 'styled-components';
 import { DragOverlay } from '@dnd-kit/core';
 import { PiecesInPlayContext } from '../context/PiecesInPlay';
 import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
-import { getInitialPieces } from '../utils/getInitialPieces';
+import { getInitialPieces } from '../Game/utils/getInitialPieces';
 import { LevelProgressContext } from '../context/LevelProgress.tsx';
 import { Piece } from '../types/piece.ts';
 import { BoardSquaresContext } from '../context/BoardSquares';
 import Hotjar from '@hotjar/browser';
 import { ChevronLeft, ChevronRight, RotateCcw, HelpCircle } from 'lucide-react';
-//import { BoardSquaresContext } from '../context/BoardSquares.tsx';
+import ErrorBoundary from '../components/ErrorBoundary';
 
 function Game() {
   const {
@@ -38,7 +38,7 @@ function Game() {
     useContext(PiecesInPlayContext);
   const [isRotating, setIsRotating] = useState(false);
   const [levelCompletedShown, setLevelCompletedShown] = useState(false);
-  const boardRef = useRef(null);
+ // const boardRef = useRef(null);
 
   const handleCloseModal = () => {
     setLevelCompletedShown(true); // Prevent modal from showing again for this level
@@ -66,19 +66,19 @@ function Game() {
     resetPieces();
     resetBoardSquares(currentLevel);
     setLevelCompletedShown(false); // Reset modal state when resetting level
-   // console.log(boardSquares);
   }
 
   return (
     <>
-    <Main id='main'>
+      <Main id='main'>
+        <ErrorBoundary>
       <DragAndDropArea id='drag-and-drop-area'
         setActivePiece={setActivePiece}
        // boardRef={boardRef}
         key={currentLevel}
         isRotating={isRotating}
         setIsRotating={setIsRotating}
-      >
+          >
         <PiecesContainer id='pieces-container' $currentLevel={currentLevel}>
           {piecesInPlay.map((piece: Piece, pieceIndex: number) => {
             if (piece.location != null) return null;
@@ -93,7 +93,7 @@ function Game() {
               />
             );
           })}
-        </PiecesContainer>
+              </PiecesContainer>
         <BoardWrapper id='board-wrapper'>
           <Board
           //  ref={boardRef}
@@ -105,13 +105,14 @@ function Game() {
             isRotating={isRotating}
             setIsRotating={setIsRotating}
           />
-        </BoardWrapper>
+              </BoardWrapper>
         {activePiece && !isRotating ? (
           <DragOverlay>
             <PieceOverlay piece={activePiece} />
           </DragOverlay>
-        ) : null}
-      </DragAndDropArea>
+              ) : null}
+          </DragAndDropArea>
+              </ErrorBoundary>
        </Main>
       <ButtonContainer id='button-container'>
         <Button color='hsl(178, 30.00%, 56.10%)' textColor='black' disabled={levelPosition == 'first'} onClick={setToPrevious}>
@@ -127,7 +128,6 @@ function Game() {
           isRotating={isRotating}
           setIsRotating={setIsRotating}
           piecesInPlay={piecesInPlay}
-          setActivePiece={setActivePiece}
           setActivePiece={setActivePiece}
         />
       </ButtonContainer>

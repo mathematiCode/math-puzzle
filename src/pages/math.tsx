@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import MathematicalTools from '../components/MathematicalTools';
+import MathematicalToolsGrid from '../components/MathematicalToolsGrid';
 
 const Container = styled.div`
   max-width: 900px;
@@ -102,7 +102,7 @@ function Math() {
             build on these experiences formally and algebraically with a
             teacher.
           </p>
-          <MathematicalTools variant="standalone" />
+          <MathematicalToolsGrid />
         </Section>
 
         <Section>

@@ -1,5 +1,5 @@
 import { useDroppable } from '@dnd-kit/core';
-import { Unit } from './Unit';
+import { Unit } from '../../Game/Unit';
 
 function LandingSquare({ id, color }: { id: string; color: string }) {
   const { isOver, setNodeRef } = useDroppable({

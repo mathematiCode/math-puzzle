@@ -1,9 +1,9 @@
 //@ts-nocheck
 import { createContext, useContext, useState, ReactNode } from 'react';
-import levels from '../levels.json';
-import { getInitialBoardSquares } from '../utils/getInitialBoardSquares';
+import levels from '../Game/levels.json';
+import { getInitialBoardSquares } from '../Game/utils/getInitialBoardSquares';
 import { CurrentLevelContext } from './CurrentLevel.tsx';
-import { convertLocationToXAndY } from '../utils/utilities';
+import { convertLocationToXAndY } from '../Game/utils/utilities';
 import { LevelProgressContext } from './LevelProgress.tsx';
 import Hotjar from '@hotjar/browser';
 
@@ -28,8 +28,7 @@ export type BoardSquaresContextType = {
   countOverlappingSquares: (
     location: string,
     pieceWidth: number,
-    pieceHeight: number,
-    boardSquares: string[][]
+    pieceHeight: number
   ) => {
     outerOverlaps: number;
     innerOverlaps: number;
@@ -132,8 +131,7 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
   function countOverlappingSquares(
     location: string,
     pieceWidth: number,
-    pieceHeight: number,
-    boardSquares: string[][]
+    pieceHeight: number
   ) {
     let outerOverlaps = 0;
     let innerOverlaps = 0;
