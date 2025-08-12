@@ -13,7 +13,9 @@ function PlacedPieces({
   return (
     <PlacedPiecesWrapper>
       {piecesInPlay.map((piece, index) =>
-        piece.location != null && piece.location != 'instructions' ? (
+        piece.location != null &&
+        piece.location != 'instructions' &&
+        piece.id != 'sample-0' ? (
           <PieceOnBoard
             piece={piece}
             id={`b-${index}`}

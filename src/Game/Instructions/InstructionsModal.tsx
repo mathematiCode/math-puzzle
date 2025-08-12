@@ -2,9 +2,9 @@ import { useContext } from 'react';
 import { HelpCircle } from 'lucide-react';
 import Modal from '../../components/Modal';
 import styled from 'styled-components';
-import Button from '../../components/Button.js';
+import Button from '../../components/Button';
 import SamplePiece from './SamplePiece';
-import { PiecesInPlayContext } from '../../context/PiecesInPlay.js';
+import { PiecesInPlayContext } from '../../context/PiecesInPlay';
 import MathematicalToolsRow from './MathematicalToolsRow';
 import ErrorBoundary from '../../components/ErrorBoundary';
 

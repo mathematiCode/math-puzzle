@@ -5,7 +5,7 @@ import React from 'react';
 import { render, act } from '@testing-library/react';
 import { BoardSquaresProvider, BoardSquaresContext } from './BoardSquares';
 import { CurrentLevelContext } from './CurrentLevel';
-import { getInitialBoardSquares } from '../utils/getInitialBoardSquares';
+import { getInitialBoardSquares } from '../Game/utils/getInitialBoardSquares';
 
 function TestConsumer({ callback }: { callback: (ctx: any) => void }) {
   const ctx = React.useContext(BoardSquaresContext);
@@ -261,8 +261,7 @@ describe('countOverlappingSquares', () => {
     const { outerOverlaps, innerOverlaps } = context.countOverlappingSquares(
       '(2,3)',
       2,
-      2,
-      mockBoardSquares
+      2
     );
     expect(outerOverlaps).toEqual(1);
     expect(innerOverlaps).toEqual(0);
@@ -271,8 +270,7 @@ describe('countOverlappingSquares', () => {
     const { outerOverlaps, innerOverlaps } = context.countOverlappingSquares(
       '(3,3)',
       2,
-      2,
-      mockBoardSquares
+      2
     );
     expect(outerOverlaps).toEqual(0);
     expect(innerOverlaps).toEqual(0);
@@ -281,8 +279,7 @@ describe('countOverlappingSquares', () => {
     const { outerOverlaps, innerOverlaps } = context.countOverlappingSquares(
       '(0,3)',
       4,
-      3,
-      mockBoardSquares
+      3
     );
     expect(outerOverlaps).toEqual(3);
     expect(innerOverlaps).toEqual(0);
@@ -291,8 +288,7 @@ describe('countOverlappingSquares', () => {
     const { outerOverlaps, innerOverlaps } = context.countOverlappingSquares(
       '(0,2)',
       1,
-      3,
-      mockBoardSquares
+      3
     );
     expect(outerOverlaps).toEqual(2);
     expect(innerOverlaps).toEqual(0);

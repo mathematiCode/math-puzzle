@@ -28,8 +28,7 @@ export type BoardSquaresContextType = {
   countOverlappingSquares: (
     location: string,
     pieceWidth: number,
-    pieceHeight: number,
-    boardSquares: string[][]
+    pieceHeight: number
   ) => {
     outerOverlaps: number;
     innerOverlaps: number;
@@ -132,8 +131,7 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
   function countOverlappingSquares(
     location: string,
     pieceWidth: number,
-    pieceHeight: number,
-    boardSquares: string[][]
+    pieceHeight: number
   ) {
     let outerOverlaps = 0;
     let innerOverlaps = 0;

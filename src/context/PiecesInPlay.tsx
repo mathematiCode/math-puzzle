@@ -63,8 +63,7 @@ export function PiecesInPlayProvider({
       const { outerOverlaps, innerOverlaps, squaresOutsideBoard } = countOverlappingSquares(
         newValidLocation,
         pieceWidth,
-        pieceHeight,
-        boardSquares
+        pieceHeight
       );
       updatedPieces[pieceIndex].location = newValidLocation;
       updatedPieces[pieceIndex].id = `b-${pieceIndex}`;

@@ -1,8 +1,8 @@
 // @ts-nocheck
 import { useDraggable } from '@dnd-kit/core';
 import { mergeRefs } from '@chakra-ui/react';
-import Rectangle from '../Rectangle.js';
-import ActionsToolbarPopover from '../ActionsToolbar/ActionsToolbarPopover.js';
+import Rectangle from '../Rectangle';
+import ActionsToolbarPopover from '../ActionsToolbar/ActionsToolbarPopover';
 import { useState, memo, useContext } from 'react';
 import { motion, useAnimate } from 'motion/react';
 import styled from 'styled-components';
@@ -52,13 +52,11 @@ export const PieceWrapper = styled(motion.button)
 
 function PieceOnBoard({
   piece,
-  id,
   isRotating,
   setIsRotating,
   isStable = true,
 }: {
   piece: Piece;
-  id: string;
   isRotating: boolean;
   setIsRotating: (isRotating: boolean) => void;
   isStable: boolean;
@@ -77,15 +75,15 @@ function PieceOnBoard({
 
   const { attributes, isDragging, listeners, setNodeRef, transform } =
     useDraggable({
-      id: id,
+      id: piece.id,
     });
   const refs = mergeRefs(scope, setNodeRef);
-  const isSelected = selectedPiece?.id === id;
+  const isSelected = selectedPiece?.id === piece.id;
 
   /* This function lives here instead of ActionsToolbar for three reasons
   1. It needs to be access to the scope ref that's attached to the PieceWrapper and that would require ref forwarding to put it in the ActionsToolbarPopover
   2. It needs access to setIsRotating 
-  3. The rotation logic is different for PieceOnBoard than it is for InitialPuzzlePiece
+  3. There is additional logic for PieceOnBoard rotations to adjust the piece location after the rotation to make it appear to rotate around the center. 
   */
   async function runRotationAnimation(selectedPiece) {
     const id = selectedPiece?.id;
@@ -96,7 +94,7 @@ function PieceOnBoard({
     const newWidth = oldHeight;
     const newHeight = oldWidth;
     const { boardWidth, boardHeight } = boardDimensions;
-    removePieceFromBoard(x, y, oldWidth, oldHeight, id);
+    removePieceFromBoard(x, y, oldWidth, oldHeight, selectedPiece.id);
 
     setIsRotating(true);
     try {
@@ -123,13 +121,21 @@ function PieceOnBoard({
       );
 
       movePiece(pieceIndex, `(${correctedX},${correctedY})`);
-      addPieceToBoard(correctedX, correctedY, newWidth, newHeight, id);
+      addPieceToBoard(
+        correctedX,
+        correctedY,
+        newWidth,
+        newHeight,
+        selectedPiece.id
+      );
     }
     Hotjar.event('rotation');
   }
 
   function handlePieceSelected() {
-    const chosenPiece = piecesInPlay.find((piece: Piece) => id === piece.id);
+    const chosenPiece = piecesInPlay.find(
+      (pieceInList: Piece) => piece.id === pieceInList.id
+    );
     setSelectedPiece(chosenPiece);
     Hotjar.event(
       `board piece selected width:${piece.width} height:${piece.height}`
@@ -143,6 +149,7 @@ function PieceOnBoard({
         {...listeners}
         {...attributes}
         onClick={handlePieceSelected}
+        data-testid={piece.id}
         x={x}
         y={y}
         layout={!isRotating && !isDragging && !isStable}
