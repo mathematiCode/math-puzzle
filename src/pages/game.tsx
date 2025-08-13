@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { useContext, useState } from 'react';
+import { useContext, useState} from 'react';
 import levels from '../Game/levels.json' with { type: 'json' };
 import InitialPuzzlePiece from '../Game/PuzzlePieces/InitialPuzzlePiece';
 import PieceOverlay from '../Game/PuzzlePieces/PieceOverlay';
@@ -184,15 +184,12 @@ export const PiecesContainer = styled(motion.div).attrs({
   flex-direction: row;
   flex-wrap: wrap;
   align-items: start;
-  justify-content: space-between; 
   gap: calc(var(--sizeOfEachUnit) / 2);
   overflow-y: auto;
   max-height:  65vh;
   height: fit-content;
   padding-top: 10px;
   line-height: 0;
-  background-color: hsl(100, 65%, 89%);
-  border: 8px solid hsl(178, 100%, 23%);
   margin-inline: 10px;
   padding: 18px;
 

@@ -13,6 +13,7 @@ export function getInitialPieces(level: number): InitialPiece[] {
       color: 'hsl(0, 61%, 66%)',
       id: 'sample-0',
       isRotated: false,
+      isStable: true,
     },
     ...levels[level].pieces.map((piece, index) => ({
       ...piece,
@@ -20,6 +21,7 @@ export function getInitialPieces(level: number): InitialPiece[] {
       color: colors[index % colors.length],
       id: `i-${index + 1}`,
       isRotated: false,
+      isStable: true,
     })),
   ];
 }

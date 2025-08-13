@@ -54,13 +54,14 @@ function PieceOnBoard({
   piece,
   isRotating,
   setIsRotating,
-  isStable = true,
-}: {
+}: // isStable = true,
+{
   piece: Piece;
   isRotating: boolean;
   setIsRotating: (isRotating: boolean) => void;
-  isStable: boolean;
+  // isStable: boolean;
 }) {
+  const isStable = piece.isStable;
   const { selectedPiece, setSelectedPiece } =
     useContext<SelectedPieceContextType>(SelectedPieceContext);
   const { piecesInPlay, updateDimensions, movePiece } =
@@ -80,9 +81,8 @@ function PieceOnBoard({
   const refs = mergeRefs(scope, setNodeRef);
   const isSelected = selectedPiece?.id === piece.id;
 
-  /* This function lives here instead of ActionsToolbar for three reasons
-  1. It needs to be access to the scope ref that's attached to the PieceWrapper and that would require ref forwarding to put it in the ActionsToolbarPopover
-  2. It needs access to setIsRotating 
+  /* This function lives here instead of ActionsToolbar for two reasons
+  1. It needs to be access to the scope ref that's attached to the PieceWrapper and that would be very complicated to pass to ActionsToolbarPopover. I would need to pass the ref upward to it's parent and I can't create the ref in ActionsToolbar and then pass it down through {children}. And since I'm using mergeRefs to attach two different refs to the PieceWrapper, I can't use a callback Ref. 
   3. There is additional logic for PieceOnBoard rotations to adjust the piece location after the rotation to make it appear to rotate around the center. 
   */
   async function runRotationAnimation(selectedPiece) {
