@@ -1,10 +1,12 @@
-//@ts-nocheck
 import { createContext, useContext, useState, ReactNode } from 'react';
 import levels from '../Game/levels.json';
 import { getInitialBoardSquares } from '../Game/utils/getInitialBoardSquares';
-import { CurrentLevelContext } from './CurrentLevel.tsx';
+import { CurrentLevelContext } from './CurrentLevel';
 import { convertLocationToXAndY } from '../Game/utils/utilities';
-import { LevelProgressContext } from './LevelProgress.tsx';
+import {
+  LevelProgressContext,
+  LevelProgressContextType,
+} from './LevelProgress';
 import Hotjar from '@hotjar/browser';
 
 export type BoardSquaresContextType = {
@@ -43,7 +45,13 @@ export const BoardSquaresContext =
 
 export function BoardSquaresProvider({ children }: { children: ReactNode }) {
   const { currentLevel } = useContext(CurrentLevelContext);
-  const { setLevelCompleted } = useContext(LevelProgressContext);
+  const levelProgressContext = useContext(LevelProgressContext);
+  if (!levelProgressContext) {
+    throw new Error(
+      'LevelProgressContext must be used within a LevelProgressProvider'
+    );
+  }
+  const { setLevelCompleted } = levelProgressContext;
   const [boardSquares, setBoardSquares] = useState<string[][]>(
     getInitialBoardSquares(currentLevel)
   );
@@ -160,7 +168,7 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
   }
 
   function getOverlappingPieces() {
-    const overlappingPieces = [];
+    const overlappingPieces: string[] = [];
     for (let row = 0; row < boardSquares.length; row++) {
       for (let col = 0; col < boardSquares[row].length; col++) {
         if (boardSquares[row][col]?.length > 0) {

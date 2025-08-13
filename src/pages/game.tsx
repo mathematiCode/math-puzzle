@@ -1,22 +1,21 @@
-// @ts-nocheck
 import { useContext, useState} from 'react';
 import levels from '../Game/levels.json' with { type: 'json' };
 import InitialPuzzlePiece from '../Game/PuzzlePieces/InitialPuzzlePiece';
 import PieceOverlay from '../Game/PuzzlePieces/PieceOverlay';
 import Board from '../Game/Board/Board';
-import PlacedPieces from '../Game/PlacedPieces.tsx';
+import PlacedPieces from '../Game/PlacedPieces';
 import DragAndDropArea from '../Game/DragAndDropArea';
-import Button from '../components/Button.tsx';
+import Button from '../components/Button';
 import InstructionsModal from '../Game/Instructions/InstructionsModal';
 import LevelCompleteModal from '../Game/LevelComplete';
 import { motion } from 'motion/react';
 import styled from 'styled-components';
 import { DragOverlay } from '@dnd-kit/core';
 import { PiecesInPlayContext } from '../context/PiecesInPlay';
-import { CurrentLevelContext } from '../context/CurrentLevel.tsx';
+import { CurrentLevelContext } from '../context/CurrentLevel';
 import { getInitialPieces } from '../Game/utils/getInitialPieces';
-import { LevelProgressContext } from '../context/LevelProgress.tsx';
-import { Piece } from '../types/piece.ts';
+import { LevelProgressContext } from '../context/LevelProgress';
+import { Piece } from '../types/piece';
 import { BoardSquaresContext } from '../context/BoardSquares';
 import Hotjar from '@hotjar/browser';
 import { ChevronLeft, ChevronRight, RotateCcw, HelpCircle } from 'lucide-react';
@@ -29,13 +28,23 @@ function Game() {
     levelPosition,
     previousLevel,
     nextLevel,
-    setSizeOfEachUnit,
   } = useContext(CurrentLevelContext);
   const [activePiece, setActivePiece] = useState<Piece | null>(null);
-  const { isLevelCompleted } = useContext(LevelProgressContext);
-  const { boardSquares, resetBoardSquares, checkIfPassedLevel } = useContext(BoardSquaresContext);
-    const { piecesInPlay, resetPieces, setPiecesForNewLevel } =
-    useContext(PiecesInPlayContext);
+  const levelProgressContext = useContext(LevelProgressContext);
+  if (!levelProgressContext) {
+    throw new Error('LevelProgressContext must be used within a LevelProgressProvider');
+  }
+  const { isLevelCompleted } = levelProgressContext;
+  const boardSquaresContext = useContext(BoardSquaresContext);
+  if (!boardSquaresContext) {
+    throw new Error('BoardSquaresContext must be used within a BoardSquaresProvider');
+  }
+  const { resetBoardSquares, checkIfPassedLevel } = boardSquaresContext;
+  const piecesInPlayContext = useContext(PiecesInPlayContext);
+  if (!piecesInPlayContext) {
+    throw new Error('PiecesInPlayContext must be used within a PiecesInPlayProvider');
+  }
+  const { piecesInPlay, resetPieces, setPiecesForNewLevel } = piecesInPlayContext;
   const [isRotating, setIsRotating] = useState(false);
   const [levelCompletedShown, setLevelCompletedShown] = useState(false);
 
@@ -47,7 +56,7 @@ function Game() {
     await previousLevel();
     const newPieces = getInitialPieces(currentLevel - 1);
     await setPiecesForNewLevel(newPieces);
-    await setSizeOfEachUnit(currentLevel - 1);
+    //await setSizeOfEachUnit(currentLevel - 1);
     await resetBoardSquares(currentLevel - 1);
     setLevelCompletedShown(false); // Reset modal state for new level
   }
@@ -56,7 +65,7 @@ function Game() {
     await nextLevel();
     const newPieces = getInitialPieces(currentLevel + 1);
     await setPiecesForNewLevel(newPieces);
-    await setSizeOfEachUnit(currentLevel + 1);
+    //await setSizeOfEachUnit(currentLevel + 1);
     await resetBoardSquares(currentLevel + 1);
     setLevelCompletedShown(false); // Reset modal state for new level
   }
@@ -72,13 +81,13 @@ function Game() {
       <ErrorBoundary>
       <Main id='main'>
         <ErrorBoundary>
-      <DragAndDropArea id='drag-and-drop-area'
+      <DragAndDropArea data-testid='drag-and-drop-area'
         setActivePiece={setActivePiece}
         key={currentLevel}
         isRotating={isRotating}
         setIsRotating={setIsRotating}
           >
-        <PiecesContainer id='pieces-container' $currentLevel={currentLevel}>
+        <PiecesContainer data-testid='pieces-container' $currentLevel={currentLevel}>
           {piecesInPlay.map((piece: Piece, pieceIndex: number) => {
             if (piece.location != null) return null;
             return (
@@ -93,7 +102,7 @@ function Game() {
             );
           })}
               </PiecesContainer>
-        <BoardWrapper id='board-wrapper'>
+        <BoardWrapper data-testid='board-wrapper'>
           <Board
             dimensions={levels[currentLevel].dimensions}
             boardSections={levels[currentLevel].boardSections}
@@ -112,10 +121,10 @@ function Game() {
           </DragAndDropArea>
               </ErrorBoundary>
        </Main>
-      <ButtonContainer id='button-container'>
+      <ButtonContainer data-testid='button-container'>
         <Button color='hsl(178, 30.00%, 56.10%)' textColor='black' disabled={levelPosition == 'first'} onClick={setToPrevious}>
-        <ChevronLeft />Previous Level 
-        </Button>
+        <ChevronLeft />Previous Level
+          </Button>
         <Button color='hsl(178, 100%, 23%)' textColor='white' disabled={levelPosition == 'last'} onClick={setToNext}>
         Next Level <ChevronRight />
         </Button>

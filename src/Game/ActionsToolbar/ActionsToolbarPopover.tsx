@@ -1,4 +1,3 @@
-//@ts-no-check
 import { useContext } from 'react';
 import { Tooltip } from 'antd';
 import { motion } from 'motion/react';
@@ -29,7 +28,7 @@ function ActionsToolbarPopover({
 }: {
   children: React.ReactElement;
   runRotationAnimation: any;
-  delegated: any;
+  delegated?: any;
 }) {
   const context = useContext(PiecesInPlayContext);
   if (!context) {
