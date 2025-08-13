@@ -1,4 +1,4 @@
-import { useContext, useMemo } from 'react';
+import { useContext } from 'react';
 import {
   DndContext,
   useSensor,
@@ -10,7 +10,6 @@ import {
 } from '@dnd-kit/core';
 import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core';
 // import { createSnapModifier } from '@dnd-kit/modifiers';
-// import { CurrentLevelContext } from '../context/CurrentLevel';
 import { PiecesInPlayContext } from '../context/PiecesInPlay';
 import { Piece } from '../types/piece';
 import { useSelectedPiece } from '../context/SelectedPiece';
@@ -83,18 +82,6 @@ function DragAndDropArea({
     return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   };
 
-  // const offsetTouch = (args: any) => {
-  //   const { transform } = args;
-  //   if (isTouchDevice() && transform) {
-  //     return {
-  //       ...transform,
-  //       x: transform.x + 20, // move slightly to the right
-  //       y: transform.y - 40, // move upward away from thumb
-  //     };
-  //   }
-  //   return transform;
-  // };
-
   // const snapToGrid = useMemo(
   //   () => createSnapModifier(sizeOfEachUnit),
   //   [sizeOfEachUnit]
@@ -149,7 +136,8 @@ function DragAndDropArea({
   const handleDragEnd = (event: DragEndEvent) => {
     const id = event.active.id as string;
     const piece = piecesInPlay.find(piece => piece.id === id);
-    if (piece?.location != null) {
+    if (!piece) return;
+    if (piece.location != null) {
       const { x, y } = convertLocationToXAndY(piece.location);
       removePieceFromBoard(x, y, piece?.width, piece?.height, piece?.id ?? '');
     }
@@ -161,8 +149,8 @@ function DragAndDropArea({
       const { correctedX, correctedY } = getNewValidLocation(
         x,
         y,
-        piece?.width,
-        piece?.height,
+        piece.width,
+        piece.height,
         boardWidth,
         boardHeight
       );
@@ -170,35 +158,32 @@ function DragAndDropArea({
       const { outerOverlaps, innerOverlaps, squaresOutsideBoard } =
         countOverlappingSquares(
           newLocation,
-          piece?.width ?? 0,
-          piece?.height ?? 0
+          piece.width ?? 0,
+          piece.height ?? 0
         );
-      console.log({ outerOverlaps, innerOverlaps, squaresOutsideBoard });
       if (outerOverlaps + innerOverlaps + squaresOutsideBoard > 0) {
         setPieceStability(id, false);
-        console.log('piece should be unstable now.');
       } else {
         setPieceStability(id, true);
       }
       addPieceToBoard(
         correctedX,
         correctedY,
-        piece?.width,
-        piece?.height,
-        piece?.id ?? ''
+        piece.width,
+        piece.height,
+        piece.id ?? ''
       );
     } else movePiece(id, null);
     const overlappingPieces = getOverlappingPieces();
     piecesInPlay.forEach(piece => {
-      if (piece.location === 'null' || piece.location === 'instructions')
-        return;
+      if (piece.location === null || piece.location === 'instructions') return;
       if (overlappingPieces.includes(piece.id ?? '')) {
-        setPieceStability(piece?.id, false);
+        setPieceStability(piece.id, false);
       } else {
         const { squaresOutsideBoard } = countOverlappingSquares(
-          piece?.location,
-          piece?.width ?? 0,
-          piece?.height ?? 0
+          piece.location,
+          piece.width ?? 0,
+          piece.height ?? 0
         );
         if (squaresOutsideBoard > 0) {
           setPieceStability(piece.id, false);
@@ -216,7 +201,6 @@ function DragAndDropArea({
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       collisionDetection={customCollisionDetection}
-      // modifiers={[offsetTouch]}
     >
       {children}
     </DndContext>

@@ -1,29 +1,22 @@
-/* eslint-disable react/prop-types */
-// @ts-nocheck
 import { createContext, useState, useContext } from 'react';
 import {
   CurrentLevelContext,
   CurrentLevelContextType,
-} from './CurrentLevel.tsx';
-import { BoardSquaresContext } from './BoardSquares';
+} from './CurrentLevel';
 import { colors } from '../CONSTANTS';
-import { InitialPiece, Piece } from '../types/piece.ts';
-import { convertLocationToXAndY } from '../Game/utils/utilities.ts';
-import { getNewValidLocation } from '../Game/utils/getNewValidLocation.ts';
-import { useAnimate } from 'motion/dist/react';
+import { Piece } from '../types/piece';
+import { convertLocationToXAndY } from '../Game/utils/utilities';
+import { getNewValidLocation } from '../Game/utils/getNewValidLocation';
 import levels from '../Game/levels.json' with { type: 'json' };
 import Hotjar from '@hotjar/browser';
-import Board from '../components/Board/Board';
-import { remove } from 'lodash';
-import { X } from 'lucide-react';
+import { BoardSquaresContext, BoardSquaresContextType } from './BoardSquares';
 
 export interface PiecesInPlayContextType {
   piecesInPlay: Piece[];
   movePiece: (pieceId: string, newLocation: string | null) => void;
   updateDimensions: (pieceId: string, width: number, height: number) => void;
-  rotatePiece: (pieceIndex: number) => void;
   resetPieces: () => void;
-  setPiecesForNewLevel: (newPieces?: InitialPiece[]) => void;
+  setPiecesForNewLevel: (newPieces?: Piece[]) => void;
   setPieceStability: (pieceId: string, isStable: boolean) => void;
 }
 
@@ -38,14 +31,12 @@ export function PiecesInPlayProvider({
 }) {
   const { initialPieces, boardDimensions, currentLevel } =
     useContext<CurrentLevelContextType>(CurrentLevelContext);
-  const {
-    boardSquares,
-    addPieceToBoard,
-    removePieceFromBoard,
-    resetBoardSquares,
-    countOverlappingSquares,
-  } = useContext(BoardSquaresContext);
-  const [piecesInPlay, setPiecesInPlay] = useState<InitialPiece[] | Piece[]>(
+  const boardSquaresContext = useContext<BoardSquaresContextType | null>(BoardSquaresContext);
+  if (!boardSquaresContext) {
+    throw new Error('BoardSquaresContext must be used within a BoardSquaresProvider');
+  }
+  const { countOverlappingSquares } = boardSquaresContext;
+  const [piecesInPlay, setPiecesInPlay] = useState<Piece[]>(
     initialPieces
   );
   const { boardWidth, boardHeight } = boardDimensions;
@@ -92,21 +83,16 @@ export function PiecesInPlayProvider({
     }
   }
 
-  function updateDimensions(pieceId: string, width: number, height: number) {
+  function updateDimensions(pieceId: string, newWidth: number, newHeight: number) {
     const pieceIndex = piecesInPlay.findIndex(piece => piece.id === pieceId);
     if (pieceIndex === -1) {
       console.error('Piece not found');
       return;
     }
     const updatedPieces = [...piecesInPlay];
-    const {
-      location,
-      width: oldWidth,
-      height: oldHeight,
-    } = piecesInPlay[pieceIndex];
-    updatedPieces[pieceIndex].width = width;
-    updatedPieces[pieceIndex].height = height;
-    if (width > boardWidth || height > boardHeight) {
+    updatedPieces[pieceIndex].width = newWidth;
+    updatedPieces[pieceIndex].height = newHeight;
+    if (newWidth > boardWidth || newHeight > boardHeight) {
       updatedPieces[pieceIndex].isStable = false;
     } else {
       updatedPieces[pieceIndex].isStable = true;
@@ -117,7 +103,7 @@ export function PiecesInPlayProvider({
   function resetPieces() {
     const initialLocation = null;
     try {
-      const piecesAfterReset = [
+      const piecesAfterReset: Piece[] = [
         {
           width: 3,
           height: 2,
@@ -125,6 +111,7 @@ export function PiecesInPlayProvider({
           color: 'hsl(0, 61%, 66%)',
           id: 'sample-0',
           isRotated: false,
+          isStable: true
         },
         ...levels[currentLevel].pieces.map((piece, index) => ({
           ...piece,
@@ -132,6 +119,7 @@ export function PiecesInPlayProvider({
           color: colors[index % colors.length],
           id: `i-${index + 1}`,
           isRotated: false,
+          isStable: true
         })),
       ];
       setPiecesInPlay(piecesAfterReset);
@@ -141,7 +129,7 @@ export function PiecesInPlayProvider({
   }
 
 
-  function setPiecesForNewLevel(newPieces?: InitialPiece[]) {
+  function setPiecesForNewLevel(newPieces?: Piece[]) {
     setPiecesInPlay(newPieces || initialPieces);
   }
 
@@ -162,8 +150,7 @@ export function PiecesInPlayProvider({
       return;
     }
     const pieceNumber = numberMatch[1];
-    
-    // Find piece by number (ignoring prefix)
+
     const pieceIndex = piecesInPlay.findIndex(piece => {
       const pieceNumberMatch = piece.id.match(/^[ib]-(\d+)$/);
       return pieceNumberMatch && pieceNumberMatch[1] === pieceNumber;

@@ -156,7 +156,6 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
         }
       }
     }
-    console.log(boardSquares);
     return { outerOverlaps, innerOverlaps, squaresOutsideBoard };
   }
 

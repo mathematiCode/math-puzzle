@@ -1,10 +1,10 @@
-import { InitialPiece } from '../../types/piece';
+import { Piece } from '../../types/piece';
 import levels from '../levels.json' assert { type: 'json' };
 import { colors } from '../../CONSTANTS';
 
 const initialLocation = null;
 
-export function getInitialPieces(level: number): InitialPiece[] {
+export function getInitialPieces(level: number): Piece[] {
   return [
     {
       width: 3,

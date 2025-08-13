@@ -69,6 +69,7 @@ function Game() {
 
   return (
     <>
+      <ErrorBoundary>
       <Main id='main'>
         <ErrorBoundary>
       <DragAndDropArea id='drag-and-drop-area'
@@ -133,7 +134,8 @@ function Game() {
         completed={checkIfPassedLevel()} 
         levelCompletedShown={levelCompletedShown}
         onClose={handleCloseModal}
-      />
+        />
+        </ErrorBoundary>
     </>
   );
 }
