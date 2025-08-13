@@ -185,15 +185,12 @@ export const PiecesContainer = styled(motion.div).attrs({
   flex-direction: row;
   flex-wrap: wrap;
   align-items: start;
-  justify-content: space-between; 
   gap: calc(var(--sizeOfEachUnit) / 2);
   overflow-y: auto;
   max-height:  65vh;
   height: fit-content;
   padding-top: 10px;
   line-height: 0;
-  background-color: hsl(100, 65%, 89%);
-  border: 8px solid hsl(178, 100%, 23%);
   margin-inline: 10px;
   padding: 18px;
 
