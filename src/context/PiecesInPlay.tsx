@@ -64,18 +64,21 @@ export function PiecesInPlayProvider({
       setPiecesInPlay(updatedPieces);
       if (outerOverlaps + innerOverlaps > 0) {
         updatedPieces[pieceIndex].isStable = false;
+        setPieceStability(`b-${pieceIndex}`, false);
         setPiecesInPlay(updatedPieces);
         Hotjar.event('piece placed partially overlapping another piece');
       } else if (squaresOutsideBoard > 0) {
-        updatedPieces[pieceIndex].isStable = false;
+        setPieceStability(`b-${pieceIndex}`, false);
         setPiecesInPlay(updatedPieces);
         Hotjar.event('piece placed partially off board');
       } else {
         updatedPieces[pieceIndex].isStable = true;
+        setPieceStability(`b-${pieceIndex}`, true);
       }
     } else if (newLocation === null) {
       updatedPieces[pieceIndex].location = null;
       updatedPieces[pieceIndex].id = `i-${pieceIndex}`;
+      setPieceStability(`i-${pieceIndex}`, true);
       setPiecesInPlay(updatedPieces);
       if (oldLocation !== null) {
         Hotjar.event('move off of board');
@@ -93,9 +96,9 @@ export function PiecesInPlayProvider({
     updatedPieces[pieceIndex].width = newWidth;
     updatedPieces[pieceIndex].height = newHeight;
     if (newWidth > boardWidth || newHeight > boardHeight) {
-      updatedPieces[pieceIndex].isStable = false;
+      setPieceStability(`b-${pieceIndex}`, false);
     } else {
-      updatedPieces[pieceIndex].isStable = true;
+      setPieceStability(`b-${pieceIndex}`, true);
     }
     setPiecesInPlay(updatedPieces);
   }

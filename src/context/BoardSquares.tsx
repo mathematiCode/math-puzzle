@@ -36,7 +36,7 @@ export type BoardSquaresContextType = {
     innerOverlaps: number;
     squaresOutsideBoard: number;
   };
-  getOverlappingPieces: () => string[];
+  getUnstablePieces: () => string[];
   checkIfPassedLevel: () => boolean;
 };
 
@@ -167,7 +167,7 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
     return { outerOverlaps, innerOverlaps, squaresOutsideBoard };
   }
 
-  function getOverlappingPieces() {
+  function getUnstablePieces() {
     const overlappingPieces: string[] = [];
     for (let row = 0; row < boardSquares.length; row++) {
       for (let col = 0; col < boardSquares[row].length; col++) {
@@ -199,7 +199,7 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
   }
 
   function checkIfPassedLevel() {
-    const unstablePieces = getOverlappingPieces();
+    const unstablePieces = getUnstablePieces();
     const noOverlaps = unstablePieces.length === 0;
     const noEmptySquares = countEmptySquares() === 0;
     if (noOverlaps && noEmptySquares) {
@@ -216,7 +216,7 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
         removePieceFromBoard,
         resetBoardSquares,
         countOverlappingSquares,
-        getOverlappingPieces,
+        getUnstablePieces,
         checkIfPassedLevel,
       }}
     >
