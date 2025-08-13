@@ -1,4 +1,3 @@
-// @ts-nocheck
 import Home from './pages/home';
 import About from './pages/about';
 import Math from './pages/math';

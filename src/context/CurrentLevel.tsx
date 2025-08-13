@@ -4,13 +4,13 @@ import { colors } from '../CONSTANTS';
 export const CurrentLevelContext = createContext<CurrentLevelContextType>(
   {} as CurrentLevelContextType
 );
-import { InitialPiece } from '../types/piece';
+import { Piece } from '../types/piece';
 import { calculateUnitSize, findLargestHeight } from '../Game/utils/utilities';
 import Hotjar from '@hotjar/browser';
 
 export interface CurrentLevelContextType {
   currentLevel: number;
-  initialPieces: InitialPiece[];
+  initialPieces: Piece[];
   boardDimensions: { boardWidth: number; boardHeight: number };
   levelPosition: 'first' | 'middle' | 'last';
   levelId: number;
@@ -19,10 +19,6 @@ export interface CurrentLevelContextType {
   previousLevel: () => void;
   setCurrentLevel: (level: number) => void;
 }
-
-// export const CurrentLevelContext = createContext<CurrentLevelContextType>(
-//   {} as CurrentLevelContextType
-// );
 
 const initialLocation = null;
 const numberOfLevels = levels.length;
@@ -141,6 +137,7 @@ export function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
           previousLevel,
           setCurrentLevel,
         } as CurrentLevelContextType
+        // maybe I should export these (top 6) as a named object instead of separate variables. 
       }
     >
       {children}

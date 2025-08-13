@@ -1,4 +1,3 @@
-//@ts-no-check
 import { useContext } from 'react';
 import { Tooltip } from 'antd';
 import { motion } from 'motion/react';
@@ -29,7 +28,7 @@ function ActionsToolbarPopover({
 }: {
   children: React.ReactElement;
   runRotationAnimation: any;
-  delegated: any;
+  delegated?: any;
 }) {
   const context = useContext(PiecesInPlayContext);
   if (!context) {
@@ -44,25 +43,26 @@ function ActionsToolbarPopover({
 
   function handleHorizontalStretch() {
     Hotjar.event('double width attempt');
-    const id = selectedPiece?.id;
-    const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
+    if (!selectedPiece) {
+      return;
+    }
+    const id = selectedPiece.id;
+    const isOnBoard =
+      selectedPiece.location &&
+      selectedPiece.location.match(/^\(\d+,\d+\)$/) &&
+      selectedPiece.id.startsWith('b-');
     const stretchIsPossible =
       selectedPiece != null && Number.isInteger(selectedPiece.height / 2);
     if (stretchIsPossible) {
       const newHeight = selectedPiece.height / 2;
       const newWidth = selectedPiece.width * 2;
-      updateDimensions(pieceIndex, newWidth, newHeight);
-      if (
-        selectedPiece.location != null &&
-        selectedPiece.location != 'instructions' &&
-        selectedPiece.id != null
-      ) {
+      updateDimensions(id ?? 'invalidId', newWidth, newHeight);
+      if (isOnBoard) {
         updateLocationAndBoardSquares(
           selectedPiece,
           newWidth,
           newHeight,
-          movePiece,
-          pieceIndex
+          movePiece
         );
       }
       Hotjar.event('double width successfully');
@@ -75,21 +75,19 @@ function ActionsToolbarPopover({
       const newHeight = selectedPiece.height * 2;
       const newWidth = selectedPiece.width / 2;
       const id = selectedPiece.id;
-      const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
       const isOnBoard =
         selectedPiece.location &&
         selectedPiece.location.match(/^\(\d+,\d+\)$/) &&
-        selectedPiece.id?.startsWith('b-');
+        selectedPiece.id.startsWith('b-');
       if (isOnBoard) {
         updateLocationAndBoardSquares(
           selectedPiece,
           newWidth,
           newHeight,
-          movePiece,
-          pieceIndex
+          movePiece
         );
       }
-      updateDimensions(pieceIndex, newWidth, newHeight);
+      updateDimensions(id ?? 'invalidId', newWidth, newHeight);
       Hotjar.event('double height successfully');
     }
   }
@@ -111,7 +109,9 @@ function ActionsToolbarPopover({
   const rotateDisabled = selectedPiece == null;
   return (
     <Popover withArrow trapFocus size="small" positioning="below">
-      <PopoverTrigger {...delegated}>{children}</PopoverTrigger>
+      <PopoverTrigger data-testid="actions-toolbar-trigger" {...delegated}>
+        {children}
+      </PopoverTrigger>
       <PopoverSurface id="actions">
         <ActionsToolbar>
           <Tooltip placement="bottom" title={showTooltips && 'Rotate'}>

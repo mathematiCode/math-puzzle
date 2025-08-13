@@ -37,7 +37,6 @@ const SamplePiece = ({
   }
 
   async function runRotationAnimation(selectedPiece) {
-    const pieceIndex = 0; // sample piece is always 0
     setIsRotating(true);
     try {
       await animate(
@@ -45,7 +44,7 @@ const SamplePiece = ({
         { rotate: 90 },
         { type: 'spring', stiffness: 150, damping: 11 }
       );
-      updateDimensions(pieceIndex, selectedPiece.height, selectedPiece.width);
+      updateDimensions('sample-0', selectedPiece.height, selectedPiece.width);
       await animate(scope.current, { rotate: 0 }, { duration: 0 });
     } finally {
       setIsRotating(false);
@@ -56,7 +55,10 @@ const SamplePiece = ({
   const isSelected = selectedPiece?.id === piece.id;
 
   return (
-    <ActionsToolbarPopover runRotationAnimation={runRotationAnimation}>
+    <ActionsToolbarPopover
+      data-testid={`actions-toolbar-trigger`}
+      runRotationAnimation={runRotationAnimation}
+    >
       <SamplePieceWrapper
         ref={scope}
         data-testid={piece.id}
@@ -81,9 +83,10 @@ export const SamplePieceWrapper = styled(motion.button)`
   border: none;
   z-index: 2;
   border: 2px solid black;
-  margin: 0;
   margin-bottom: 30px;
+  margin-left: 20px;
   margin-top: 10px;
+  place-self: center;
   &:active {
     cursor: grab;
   }

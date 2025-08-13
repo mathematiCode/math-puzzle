@@ -12,17 +12,15 @@ function PlacedPieces({
 }) {
   return (
     <PlacedPiecesWrapper>
-      {piecesInPlay.map((piece, index) =>
+      {piecesInPlay.map(piece =>
         piece.location != null &&
         piece.location != 'instructions' &&
         piece.id != 'sample-0' ? (
           <PieceOnBoard
             piece={piece}
-            id={`b-${index}`}
-            key={`b-${index}`}
+            key={piece.id}
             isRotating={isRotating}
             setIsRotating={setIsRotating}
-            isStable={piece.isStable ?? true}
           />
         ) : null
       )}

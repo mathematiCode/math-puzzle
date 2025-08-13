@@ -52,7 +52,7 @@ const InitialPuzzlePiece = ({
         { rotate: 90 },
         { type: 'spring', stiffness: 150, damping: 11 }
       );
-      updateDimensions(pieceIndex, selectedPiece.height, selectedPiece.width);
+      updateDimensions(piece.id, selectedPiece.height, selectedPiece.width);
       await animate(scope.current, { rotate: 0 }, { duration: 0 });
     } finally {
       setIsRotating(false);

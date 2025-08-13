@@ -1,4 +1,4 @@
-import { useContext, useMemo } from 'react';
+import { useContext } from 'react';
 import {
   DndContext,
   useSensor,
@@ -10,7 +10,6 @@ import {
 } from '@dnd-kit/core';
 import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core';
 // import { createSnapModifier } from '@dnd-kit/modifiers';
-// import { CurrentLevelContext } from '../context/CurrentLevel';
 import { PiecesInPlayContext } from '../context/PiecesInPlay';
 import { Piece } from '../types/piece';
 import { useSelectedPiece } from '../context/SelectedPiece';
@@ -40,7 +39,7 @@ function DragAndDropArea({
     );
   }
 
-  const { piecesInPlay, movePiece } = context;
+  const { piecesInPlay, movePiece, setPieceStability } = context;
   const boardSquaresContext = useContext(BoardSquaresContext);
   if (!boardSquaresContext) {
     throw new Error(
@@ -51,7 +50,8 @@ function DragAndDropArea({
     boardSquares,
     addPieceToBoard,
     removePieceFromBoard,
-    getUnstablePieces,
+    getOverlappingPieces,
+    countOverlappingSquares,
   } = boardSquaresContext;
 
   function compareCollisionRects(
@@ -81,18 +81,6 @@ function DragAndDropArea({
   const isTouchDevice = () => {
     return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   };
-
-  // const offsetTouch = (args: any) => {
-  //   const { transform } = args;
-  //   if (isTouchDevice() && transform) {
-  //     return {
-  //       ...transform,
-  //       x: transform.x + 20, // move slightly to the right
-  //       y: transform.y - 40, // move upward away from thumb
-  //     };
-  //   }
-  //   return transform;
-  // };
 
   // const snapToGrid = useMemo(
   //   () => createSnapModifier(sizeOfEachUnit),
@@ -147,16 +135,11 @@ function DragAndDropArea({
 
   const handleDragEnd = (event: DragEndEvent) => {
     const id = event.active.id as string;
-    const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
-    const { x, y } = convertLocationToXAndY(piecesInPlay[pieceIndex].location);
-    if (piecesInPlay[pieceIndex].location != null) {
-      removePieceFromBoard(
-        x,
-        y,
-        piecesInPlay[pieceIndex].width,
-        piecesInPlay[pieceIndex].height,
-        piecesInPlay[pieceIndex].id ?? ''
-      );
+    const piece = piecesInPlay.find(piece => piece.id === id);
+    if (!piece) return;
+    if (piece.location != null) {
+      const { x, y } = convertLocationToXAndY(piece.location);
+      removePieceFromBoard(x, y, piece?.width, piece?.height, piece?.id ?? '');
     }
     if (event?.over?.id) {
       const newLocation = event.over.id.toString();
@@ -166,26 +149,47 @@ function DragAndDropArea({
       const { correctedX, correctedY } = getNewValidLocation(
         x,
         y,
-        piecesInPlay[pieceIndex].width,
-        piecesInPlay[pieceIndex].height,
+        piece.width,
+        piece.height,
         boardWidth,
         boardHeight
       );
-      movePiece(pieceIndex, `(${correctedX},${correctedY})`);
+      movePiece(id, `(${correctedX},${correctedY})`);
+      const { outerOverlaps, innerOverlaps, squaresOutsideBoard } =
+        countOverlappingSquares(
+          newLocation,
+          piece.width ?? 0,
+          piece.height ?? 0
+        );
+      if (outerOverlaps + innerOverlaps + squaresOutsideBoard > 0) {
+        setPieceStability(id, false);
+      } else {
+        setPieceStability(id, true);
+      }
       addPieceToBoard(
         correctedX,
         correctedY,
-        piecesInPlay[pieceIndex].width,
-        piecesInPlay[pieceIndex].height,
-        piecesInPlay[pieceIndex].id ?? ''
+        piece.width,
+        piece.height,
+        piece.id ?? ''
       );
-    } else movePiece(pieceIndex, null);
-    const unstablePieces = getUnstablePieces();
+    } else movePiece(id, null);
+    const overlappingPieces = getOverlappingPieces();
     piecesInPlay.forEach(piece => {
-      if (unstablePieces.includes(piece.id ?? '')) {
-        piece.isStable = false;
+      if (piece.location === null || piece.location === 'instructions') return;
+      if (overlappingPieces.includes(piece.id ?? '')) {
+        setPieceStability(piece.id, false);
       } else {
-        piece.isStable = true;
+        const { squaresOutsideBoard } = countOverlappingSquares(
+          piece.location,
+          piece.width ?? 0,
+          piece.height ?? 0
+        );
+        if (squaresOutsideBoard > 0) {
+          setPieceStability(piece.id, false);
+        } else {
+          setPieceStability(piece.id, true);
+        }
       }
     });
     Hotjar.event('drag end');
@@ -197,7 +201,6 @@ function DragAndDropArea({
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       collisionDetection={customCollisionDetection}
-      // modifiers={[offsetTouch]}
     >
       {children}
     </DndContext>
