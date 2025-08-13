@@ -40,7 +40,7 @@ function DragAndDropArea({
     );
   }
 
-  const { piecesInPlay, movePiece } = context;
+  const { piecesInPlay, movePiece, setPieceStability } = context;
   const boardSquaresContext = useContext(BoardSquaresContext);
   if (!boardSquaresContext) {
     throw new Error(
@@ -51,7 +51,8 @@ function DragAndDropArea({
     boardSquares,
     addPieceToBoard,
     removePieceFromBoard,
-    getUnstablePieces,
+    getOverlappingPieces,
+    countOverlappingSquares,
   } = boardSquaresContext;
 
   function compareCollisionRects(
@@ -166,6 +167,19 @@ function DragAndDropArea({
         boardHeight
       );
       movePiece(id, `(${correctedX},${correctedY})`);
+      const { outerOverlaps, innerOverlaps, squaresOutsideBoard } =
+        countOverlappingSquares(
+          newLocation,
+          piece?.width ?? 0,
+          piece?.height ?? 0
+        );
+      console.log({ outerOverlaps, innerOverlaps, squaresOutsideBoard });
+      if (outerOverlaps + innerOverlaps + squaresOutsideBoard > 0) {
+        setPieceStability(id, false);
+        console.log('piece should be unstable now.');
+      } else {
+        setPieceStability(id, true);
+      }
       addPieceToBoard(
         correctedX,
         correctedY,
@@ -174,12 +188,23 @@ function DragAndDropArea({
         piece?.id ?? ''
       );
     } else movePiece(id, null);
-    const unstablePieces = getUnstablePieces();
+    const overlappingPieces = getOverlappingPieces();
     piecesInPlay.forEach(piece => {
-      if (unstablePieces.includes(piece.id ?? '')) {
-        piece.isStable = false;
+      if (piece.location === 'null' || piece.location === 'instructions')
+        return;
+      if (overlappingPieces.includes(piece.id ?? '')) {
+        setPieceStability(piece?.id, false);
       } else {
-        piece.isStable = true;
+        const { squaresOutsideBoard } = countOverlappingSquares(
+          piece?.location,
+          piece?.width ?? 0,
+          piece?.height ?? 0
+        );
+        if (squaresOutsideBoard > 0) {
+          setPieceStability(piece.id, false);
+        } else {
+          setPieceStability(piece.id, true);
+        }
       }
     });
     Hotjar.event('drag end');

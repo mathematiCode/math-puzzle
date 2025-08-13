@@ -34,7 +34,7 @@ export type BoardSquaresContextType = {
     innerOverlaps: number;
     squaresOutsideBoard: number;
   };
-  getUnstablePieces: () => string[];
+  getOverlappingPieces: () => string[];
   checkIfPassedLevel: () => boolean;
 };
 
@@ -156,26 +156,27 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
         }
       }
     }
+    console.log(boardSquares);
     return { outerOverlaps, innerOverlaps, squaresOutsideBoard };
   }
 
-  function getUnstablePieces() {
-    const unstablePieces = [];
+  function getOverlappingPieces() {
+    const overlappingPieces = [];
     for (let row = 0; row < boardSquares.length; row++) {
       for (let col = 0; col < boardSquares[row].length; col++) {
         if (boardSquares[row][col]?.length > 0) {
           const ids = boardSquares[row][col].split(', ').map(id => id.trim());
           if (ids.length > 1) {
             ids.forEach(id => {
-              if (!unstablePieces.includes(id)) {
-                unstablePieces.push(id);
+              if (!overlappingPieces.includes(id)) {
+                overlappingPieces.push(id);
               }
             });
           }
         }
       }
     }
-    return unstablePieces;
+    return overlappingPieces;
   }
 
   function countEmptySquares() {
@@ -191,7 +192,7 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
   }
 
   function checkIfPassedLevel() {
-    const unstablePieces = getUnstablePieces();
+    const unstablePieces = getOverlappingPieces();
     const noOverlaps = unstablePieces.length === 0;
     const noEmptySquares = countEmptySquares() === 0;
     if (noOverlaps && noEmptySquares) {
@@ -208,7 +209,7 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
         removePieceFromBoard,
         resetBoardSquares,
         countOverlappingSquares,
-        getUnstablePieces,
+        getOverlappingPieces,
         checkIfPassedLevel,
       }}
     >
