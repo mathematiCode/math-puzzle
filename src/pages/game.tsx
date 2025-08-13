@@ -78,7 +78,6 @@ function Game() {
 
   return (
     <>
-      <ErrorBoundary>
       <Main id='main'>
         <ErrorBoundary>
       <DragAndDropArea data-testid='drag-and-drop-area'
@@ -87,8 +86,8 @@ function Game() {
         isRotating={isRotating}
         setIsRotating={setIsRotating}
           >
-        <PiecesContainer data-testid='pieces-container' $currentLevel={currentLevel}>
-          {piecesInPlay.map((piece: Piece, pieceIndex: number) => {
+        <PiecesContainer data-testid='pieces-container' $currentLevel={currentLevel} key={currentLevel}>  
+          {piecesInPlay.map((piece: Piece) => {
             if (piece.location != null) return null;
             return (
               <InitialPuzzlePiece
@@ -144,8 +143,7 @@ function Game() {
         levelCompletedShown={levelCompletedShown}
         onClose={handleCloseModal}
         />
-        </ErrorBoundary>
-    </>
+        </>
   );
 }
 
@@ -189,7 +187,6 @@ export const BoardWrapper = styled.div`
 
 export const PiecesContainer = styled(motion.div).attrs({
   layout: true,
-  key: props => props.$currentLevel,
 })<{ $currentLevel: number }>`
   display: flex;
   flex-direction: row;

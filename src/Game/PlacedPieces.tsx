@@ -18,11 +18,9 @@ function PlacedPieces({
         piece.id != 'sample-0' ? (
           <PieceOnBoard
             piece={piece}
-            id={`b-${index}`}
             key={`b-${index}`}
             isRotating={isRotating}
             setIsRotating={setIsRotating}
-            isStable={piece.isStable ?? true}
           />
         ) : null
       )}

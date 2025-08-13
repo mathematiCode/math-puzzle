@@ -43,11 +43,14 @@ function ActionsToolbarPopover({
 
   function handleHorizontalStretch() {
     Hotjar.event('double width attempt');
-    const id = selectedPiece?.id;
+    if (!selectedPiece) {
+      return;
+    }
+    const id = selectedPiece.id;
     const isOnBoard =
-      selectedPiece?.location &&
-      selectedPiece?.location.match(/^\(\d+,\d+\)$/) &&
-      selectedPiece?.id?.startsWith('b-');
+      selectedPiece.location &&
+      selectedPiece.location.match(/^\(\d+,\d+\)$/) &&
+      selectedPiece.id.startsWith('b-');
     const stretchIsPossible =
       selectedPiece != null && Number.isInteger(selectedPiece.height / 2);
     if (stretchIsPossible) {
@@ -73,9 +76,9 @@ function ActionsToolbarPopover({
       const newWidth = selectedPiece.width / 2;
       const id = selectedPiece.id;
       const isOnBoard =
-        selectedPiece?.location &&
-        selectedPiece?.location.match(/^\(\d+,\d+\)$/) &&
-        selectedPiece?.id?.startsWith('b-');
+        selectedPiece.location &&
+        selectedPiece.location.match(/^\(\d+,\d+\)$/) &&
+        selectedPiece.id.startsWith('b-');
       if (isOnBoard) {
         updateLocationAndBoardSquares(
           selectedPiece,

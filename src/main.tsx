@@ -7,19 +7,22 @@ import { SelectedPieceProvider } from './context/SelectedPiece';
 import { CurrentLevelProvider } from './context/CurrentLevel';
 import { BoardSquaresProvider } from './context/BoardSquares';
 import { LevelProgressProvider } from './context/LevelProgress';
+import ErrorBoundary from './components/ErrorBoundary';
 
 createRoot(document.getElementById('root') as HTMLElement).render(
-  //<StrictMode>
-  <CurrentLevelProvider>
-    <LevelProgressProvider>
-      <BoardSquaresProvider>
-        <PiecesInPlayProvider>
-          <SelectedPieceProvider>
-            <App />
-          </SelectedPieceProvider>
-        </PiecesInPlayProvider>
-      </BoardSquaresProvider>
-    </LevelProgressProvider>
-  </CurrentLevelProvider>
-  // </StrictMode>
+  <StrictMode>
+    <ErrorBoundary>
+      <CurrentLevelProvider>
+        <LevelProgressProvider>
+          <BoardSquaresProvider>
+            <PiecesInPlayProvider>
+              <SelectedPieceProvider>
+                <App />
+              </SelectedPieceProvider>
+            </PiecesInPlayProvider>
+          </BoardSquaresProvider>
+        </LevelProgressProvider>
+      </CurrentLevelProvider>
+    </ErrorBoundary>
+  </StrictMode>
 );
