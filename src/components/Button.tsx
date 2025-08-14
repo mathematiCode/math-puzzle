@@ -67,6 +67,7 @@ export const StyledButton = styled.button.attrs(props => ({
     margin: 5px;
     padding: 8px 4px;
     line-height: 1.1;
+    height: 36px;
 
     svg {
       display: none;
