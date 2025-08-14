@@ -90,7 +90,7 @@ const LevelControls = ({
           disabled={levelPosition === 'first'}
           $isLeft={true}
         >
-          <ChevronLeft size={isMobile ? 20 : 30} />
+          <ChevronLeft size={isMobile ? 24 : 30} />
         </NavigationButton>
         <LevelDisplay>Level {currentLevel + 1}</LevelDisplay>
         <NavigationButton
@@ -98,7 +98,7 @@ const LevelControls = ({
           disabled={levelPosition === 'last'}
           $isLeft={false}
         >
-          <ChevronRight size={isMobile ? 20 : 30} />
+          <ChevronRight size={isMobile ? 24 : 30} />
         </NavigationButton>
       </LevelNavigationControl>
       <Button
@@ -143,7 +143,6 @@ const LevelNavigationControl = styled.div`
   display: flex;
   align-items: center;
   border-radius: 8px;
-  height: 100%;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
   background-color: hsl(180, 89.1%, 26.6%);
   border: 1px solid black;
@@ -155,8 +154,9 @@ const LevelNavigationControl = styled.div`
   @media (max-width: 768px) {
     margin-right: 0px;
     margin-left: 0px;
-    height: 24px;
-    border-radius: 4px;
+    border-radius: 5px;
+    padding 4px 4px;
+    height: 36px;
   }
 `;
 
@@ -166,7 +166,6 @@ const NavigationButton = styled.button<{ $isLeft: boolean }>`
   align-items: center;
   justify-content: center;
   border: none;
-  padding: 12px 8px;
   cursor: pointer;
   transition: background-color 0.2s ease;
 
@@ -176,8 +175,7 @@ const NavigationButton = styled.button<{ $isLeft: boolean }>`
   }
 
   @media (max-width: 768px) {
-    padding: 2px 4px;
-    font-size: 0.8rem;
+    padding: 8px 4px;
   }
 
   svg {
@@ -197,8 +195,8 @@ const LevelDisplay = styled.div`
   text-align: center;
 
   @media (max-width: 768px) {
-    font-size: 0.9rem;
-    padding: 0px 2px;
+    font-size: 1rem;
+    padding: 8px 4px;
     min-width: 40px;
   }
 `;
