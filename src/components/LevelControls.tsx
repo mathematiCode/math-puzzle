@@ -187,7 +187,7 @@ const LevelDisplay = styled.div`
   align-items: center;
   justify-content: center;
   padding: 12px 8px;
-  font-weight: bold;
+  font-weight: 600;
   color: white;
   font-size: 1.3rem;
   min-width: 80px;
@@ -195,6 +195,7 @@ const LevelDisplay = styled.div`
 
   @media (max-width: 768px) {
     font-size: 1rem;
+    line-height: 1.1;
     padding: 4px 4px;
     min-width: 40px;
   }
