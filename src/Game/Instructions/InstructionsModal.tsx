@@ -64,12 +64,16 @@ const InstructionsModal = ({
   const { updateDimensions } = context;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const closeModal = () => {
-    updateDimensions(0, 3, 2); // Resetting the example piece to it's original dimensions
+    updateDimensions('sample-0', 3, 2); // Resetting the example piece to it's original dimensions
   };
 
   return (
     <>
-      <Button color="hsl(38, 87%, 70%)" textColor="black" onClick={showModal}>
+      <Button
+        color="hsl(38, 87%, 70%)"
+        textColor="black"
+        onClick={() => setIsModalOpen(true)}
+      >
         <HelpCircle /> How to Play
       </Button>
       <AntModal
