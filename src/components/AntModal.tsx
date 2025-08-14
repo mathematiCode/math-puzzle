@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { Modal, Button } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
@@ -94,8 +94,6 @@ interface AntModalProps {
   width?: number | string;
   centered?: boolean;
   closable?: boolean;
-  maskClosable?: boolean;
-  keyboard?: boolean;
   destroyOnHidden?: boolean;
   titleSize?: 'large' | 'small';
 }
@@ -116,8 +114,6 @@ function AntModal({
   width = '70%',
   centered = true,
   closable = true,
-  maskClosable = true,
-  keyboard = true,
   destroyOnHidden = false,
 }: AntModalProps) {
   const handleCancel = () => {
@@ -158,10 +154,12 @@ function AntModal({
       width={width}
       centered={centered}
       closable={closable && showCloseButton}
-      maskClosable={maskClosable}
-      keyboard={keyboard}
+      maskClosable={true}
+      keyboard={true}
       closeIcon={<CloseOutlined />}
       destroyOnHidden={destroyOnHidden}
+      data-tabster="ignore"
+      data-focus-lock="disabled"
     >
       {children}
     </StyledModal>
