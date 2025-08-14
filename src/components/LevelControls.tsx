@@ -175,7 +175,7 @@ const NavigationButton = styled.button<{ $isLeft: boolean }>`
   }
 
   @media (max-width: 768px) {
-    padding: 8px 4px;
+    padding: 4px 4px;
   }
 
   svg {
@@ -196,7 +196,7 @@ const LevelDisplay = styled.div`
 
   @media (max-width: 768px) {
     font-size: 1rem;
-    padding: 8px 4px;
+    padding: 4px 4px;
     min-width: 40px;
   }
 `;
