@@ -50,7 +50,7 @@ function DragAndDropArea({
     boardSquares,
     addPieceToBoard,
     removePieceFromBoard,
-    getOverlappingPieces,
+    getUnstablePieces,
     countOverlappingSquares,
   } = boardSquaresContext;
 
@@ -174,10 +174,10 @@ function DragAndDropArea({
         piece.id ?? ''
       );
     } else movePiece(id, null);
-    const overlappingPieces = getOverlappingPieces();
+    const unstablePieces = getUnstablePieces();
     piecesInPlay.forEach(piece => {
       if (piece.location === null || piece.location === 'instructions') return;
-      if (overlappingPieces.includes(piece.id ?? '')) {
+      if (unstablePieces.includes(piece.id ?? '')) {
         setPieceStability(piece.id, false);
       } else {
         const { squaresOutsideBoard } = countOverlappingSquares(

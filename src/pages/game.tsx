@@ -5,8 +5,7 @@ import PieceOverlay from '../Game/PuzzlePieces/PieceOverlay';
 import Board from '../Game/Board/Board';
 import PlacedPieces from '../Game/PlacedPieces';
 import DragAndDropArea from '../Game/DragAndDropArea';
-import Button from '../components/Button';
-import InstructionsModal from '../Game/Instructions/InstructionsModal';
+import LevelControls from '../components/LevelControls';
 import LevelCompleteModal from '../Game/LevelComplete';
 import { motion } from 'motion/react';
 import styled from 'styled-components';
@@ -18,7 +17,6 @@ import { LevelProgressContext } from '../context/LevelProgress';
 import { Piece } from '../types/piece';
 import { BoardSquaresContext } from '../context/BoardSquares';
 import Hotjar from '@hotjar/browser';
-import { ChevronLeft, ChevronRight, RotateCcw, HelpCircle } from 'lucide-react';
 import ErrorBoundary from '../components/ErrorBoundary';
 
 function Game() {
@@ -44,37 +42,13 @@ function Game() {
   if (!piecesInPlayContext) {
     throw new Error('PiecesInPlayContext must be used within a PiecesInPlayProvider');
   }
-  const { piecesInPlay, resetPieces, setPiecesForNewLevel } = piecesInPlayContext;
+  const { piecesInPlay } = piecesInPlayContext;
   const [isRotating, setIsRotating] = useState(false);
   const [levelCompletedShown, setLevelCompletedShown] = useState(false);
 
   const handleCloseModal = () => {
     setLevelCompletedShown(true); // Prevent modal from showing again for this level
   };
-
-  async function setToPrevious() {
-    await previousLevel();
-    const newPieces = getInitialPieces(currentLevel - 1);
-    await setPiecesForNewLevel(newPieces);
-    //await setSizeOfEachUnit(currentLevel - 1);
-    await resetBoardSquares(currentLevel - 1);
-    setLevelCompletedShown(false); // Reset modal state for new level
-  }
-
-  async function setToNext() {
-    await nextLevel();
-    const newPieces = getInitialPieces(currentLevel + 1);
-    await setPiecesForNewLevel(newPieces);
-    //await setSizeOfEachUnit(currentLevel + 1);
-    await resetBoardSquares(currentLevel + 1);
-    setLevelCompletedShown(false); // Reset modal state for new level
-  }
-
-    function resetLevel() {
-    resetPieces();
-    resetBoardSquares(currentLevel);
-    setLevelCompletedShown(false); // Reset modal state when resetting level
-  }
 
   return (
     <>
@@ -120,23 +94,13 @@ function Game() {
           </DragAndDropArea>
               </ErrorBoundary>
        </Main>
-      <ButtonContainer data-testid='button-container'>
-        <Button color='hsl(178, 30.00%, 56.10%)' textColor='black' disabled={levelPosition == 'first'} onClick={setToPrevious}>
-        <ChevronLeft />Previous Level
-          </Button>
-        <Button color='hsl(178, 100%, 23%)' textColor='white' disabled={levelPosition == 'last'} onClick={setToNext}>
-        Next Level <ChevronRight />
-        </Button>
-        <Button color='hsla(0, 58.70%, 70.60%, 0.88)' textColor='black' onClick={resetLevel}>
-         <RotateCcw/> Reset Game 
-        </Button>
-        <InstructionsModal
-          isRotating={isRotating}
-          setIsRotating={setIsRotating}
-          piecesInPlay={piecesInPlay}
-          setActivePiece={setActivePiece}
-        />
-      </ButtonContainer>
+      <LevelControls
+        levelPosition={levelPosition}
+        setLevelCompletedShown={setLevelCompletedShown}
+        isRotating={isRotating}
+        setIsRotating={setIsRotating}
+        setActivePiece={setActivePiece}
+      />
       <LevelCompleteModal 
         level={levelId} 
         completed={checkIfPassedLevel()} 
@@ -207,29 +171,6 @@ export const PiecesContainer = styled(motion.div).attrs({
     align-items: center;
     justify-content: space-around;
     margin-inline: 0px;
-  }
-`;
-
-export const ButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  bottom: 20px;
-  z-index: 3;
-  background-color: hsl(107, 100.00%, 93.70%);
-  border-radius: 10px;
-  border: 3px solid hsl(180, 89.10%, 21.60%);
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
-
-  @media (max-width: 750px) {
-    bottom: 0px;
-  }
-
-  @media (max-width: 450px) {
-    left: 0;
-    right: 0;
-    width: 100%;
   }
 `;
 

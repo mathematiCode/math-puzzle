@@ -2,7 +2,7 @@ import { useDraggable } from '@dnd-kit/core';
 import { mergeRefs } from '@chakra-ui/react';
 import Rectangle from '../Rectangle';
 import ActionsToolbarPopover from '../ActionsToolbar/ActionsToolbarPopover';
-import { useState, memo, useContext } from 'react';
+import { memo, useContext } from 'react';
 import { motion, useAnimate, HTMLMotionProps } from 'motion/react';
 import styled from 'styled-components';
 import { convertLocationToXAndY } from '../utils/utilities';
