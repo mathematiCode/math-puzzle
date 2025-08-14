@@ -64,6 +64,7 @@ const InstructionsModal = ({
   const { updateDimensions } = context;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const closeModal = () => {
+    setIsModalOpen(false);
     updateDimensions('sample-0', 3, 2); // Resetting the example piece to it's original dimensions
   };
 

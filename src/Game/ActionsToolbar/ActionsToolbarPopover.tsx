@@ -42,17 +42,18 @@ function ActionsToolbarPopover({
     if (!selectedPiece) {
       return;
     }
+    console.log('selectedPiece', selectedPiece);
     const id = selectedPiece.id;
     const isOnBoard =
       selectedPiece.location &&
       selectedPiece.location.match(/^\(\d+,\d+\)$/) &&
       selectedPiece.id.startsWith('b-');
-    const stretchIsPossible =
-      selectedPiece != null && Number.isInteger(selectedPiece.height / 2);
+    const stretchIsPossible = Number.isInteger(selectedPiece.height / 2);
     if (stretchIsPossible) {
       const newHeight = selectedPiece.height / 2;
       const newWidth = selectedPiece.width * 2;
-      updateDimensions(id ?? 'invalidId', newWidth, newHeight);
+      updateDimensions(id, newWidth, newHeight);
+      console.log('updated dimensions');
       if (isOnBoard) {
         updateLocationAndBoardSquares(
           selectedPiece,

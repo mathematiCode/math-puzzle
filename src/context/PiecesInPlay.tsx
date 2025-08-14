@@ -95,6 +95,9 @@ export function PiecesInPlayProvider({
     const updatedPieces = [...piecesInPlay];
     updatedPieces[pieceIndex].width = newWidth;
     updatedPieces[pieceIndex].height = newHeight;
+    if (pieceId === 'sample-0') {
+      return;
+    }
     if (newWidth > boardWidth || newHeight > boardHeight) {
       setPieceStability(`b-${pieceIndex}`, false);
     } else {
@@ -137,7 +140,11 @@ export function PiecesInPlayProvider({
   }
 
   function setPieceStability(pieceId: string, isStable: boolean) {
-    // if pieceId starts with i-${num} create a constant called onBoardId and set it to b-${num}
+    // Skip the sample piece (instructions piece)
+    if (pieceId === 'sample-0') {
+      console.log('skipping sample piece');
+      return;
+    }
     const iPattern = /^i-(\d+)$/;
     const match = pieceId.match(iPattern);
     if (match) {

@@ -74,7 +74,6 @@ const LevelControls = ({
   }
 
   const [isMobile] = useMediaQuery(['(max-width: 768px)']);
-  console.log(isMobile);
 
   return (
     <ButtonContainer data-testid="button-container">

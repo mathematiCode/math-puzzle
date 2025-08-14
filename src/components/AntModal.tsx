@@ -11,6 +11,10 @@ const StyledModal = styled(Modal)<{ titleSize: 'large' | 'small' }>`
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.7);
     max-width: 700px;
     margin: 0 auto;
+
+    @media screen and (max-width: 768px) {
+      max-width: 96%;
+    }
   }
 
   .ant-modal-header {
@@ -111,7 +115,7 @@ function AntModal({
   cancelText = 'Cancel',
   onOk,
   onCancel,
-  width = '70%',
+  width = 'auto',
   centered = true,
   closable = true,
   destroyOnHidden = false,
@@ -158,8 +162,6 @@ function AntModal({
       keyboard={true}
       closeIcon={<CloseOutlined />}
       destroyOnHidden={destroyOnHidden}
-      data-tabster="ignore"
-      data-focus-lock="disabled"
     >
       {children}
     </StyledModal>
