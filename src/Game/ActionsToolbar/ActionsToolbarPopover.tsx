@@ -42,7 +42,6 @@ function ActionsToolbarPopover({
     if (!selectedPiece) {
       return;
     }
-    console.log('selectedPiece', selectedPiece);
     const id = selectedPiece.id;
     const isOnBoard =
       selectedPiece.location &&
@@ -53,7 +52,6 @@ function ActionsToolbarPopover({
       const newHeight = selectedPiece.height / 2;
       const newWidth = selectedPiece.width * 2;
       updateDimensions(id, newWidth, newHeight);
-      console.log('updated dimensions');
       if (isOnBoard) {
         updateLocationAndBoardSquares(
           selectedPiece,

@@ -96,6 +96,7 @@ export function PiecesInPlayProvider({
     updatedPieces[pieceIndex].width = newWidth;
     updatedPieces[pieceIndex].height = newHeight;
     if (pieceId === 'sample-0') {
+      setPiecesInPlay(updatedPieces);
       return;
     }
     if (newWidth > boardWidth || newHeight > boardHeight) {
