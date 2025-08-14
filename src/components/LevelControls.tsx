@@ -74,7 +74,6 @@ const LevelControls = ({
   }
 
   const [isMobile] = useMediaQuery(['(max-width: 768px)']);
-  console.log(isMobile);
 
   return (
     <ButtonContainer data-testid="button-container">
@@ -164,6 +163,7 @@ const NavigationButton = styled.button<{ $isLeft: boolean }>`
   color: white;
   align-items: center;
   justify-content: center;
+  padding: 0px 8px;
   border: none;
   cursor: pointer;
   transition: background-color 0.2s ease;

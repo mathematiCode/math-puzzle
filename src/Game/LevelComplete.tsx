@@ -1,26 +1,25 @@
-import Modal from '../components/Modal';
+import AntModal from '../components/AntModal';
 import styled from 'styled-components';
 
 const LevelCompleteModal = ({
   level,
   completed,
-  onClose,
   levelCompletedShown,
+  onClose,
 }: {
   level: number;
   completed: boolean;
-  onClose: () => void;
   levelCompletedShown: boolean;
+  onClose: () => void; // Deleting  this makes it impossible to close.
 }) => {
   return (
-    <Modal
+    <AntModal
       open={completed && !levelCompletedShown}
-      onClose={onClose}
       title={`Level ${level} Complete!`}
-      centerContent={true}
+      onClose={onClose}
     >
       <StyledImage src={`/assets/foxes.svg`} alt={`Two foxes cheering`} />
-    </Modal>
+    </AntModal>
   );
 };
 

@@ -1,7 +1,7 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import styled from 'styled-components';
-import { AlertTriangle, RefreshCw } from 'lucide-react';
-import Modal from './Modal';
+import { AlertTriangle } from 'lucide-react';
+import AntModal from './AntModal';
 
 const ErrorContainer = styled.div`
   display: flex;
@@ -133,7 +133,7 @@ class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <Modal open={true} onClose={() => {}} showCloseButton={false}>
+        <AntModal open={true} showCloseButton={false}>
           <ErrorContainer>
             <ErrorIcon>
               <AlertTriangle size={48} />
@@ -155,7 +155,7 @@ class ErrorBoundary extends Component<Props, State> {
               </ErrorStack>
             </ErrorDetails>
           </ErrorContainer>
-        </Modal>
+        </AntModal>
       );
     }
 
