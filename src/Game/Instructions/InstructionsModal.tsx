@@ -13,6 +13,7 @@ const StyledDiv = styled.div`
   padding: '20px';
   width: '90px';
   margin-bottom: '90px';
+  margin-inline: '0px';
 
   @media screen and (max-width: 768px) {
     margin-bottom: '90px';
@@ -64,11 +65,6 @@ const InstructionsModal = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const closeModal = () => {
     updateDimensions(0, 3, 2); // Resetting the example piece to it's original dimensions
-    setIsRotating(false);
-    setIsModalOpen(false);
-  };
-  const showModal = () => {
-    setIsModalOpen(true);
   };
 
   return (

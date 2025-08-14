@@ -1,8 +1,73 @@
-// @ts-nocheck
-
 import styled from 'styled-components';
 import { useNavigate } from 'react-router';
 import MathematicalToolsGrid from '../components/MathematicalToolsGrid';
+
+function Home() {
+  const navigate = useNavigate();
+
+  const handlePlayGame = () => {
+    navigate('/game');
+  };
+
+  return (
+    <div>
+      <HeroSection>
+        <Container>
+          <Title>Frectangles</Title>
+          <Subtitle>Where Math Meets Puzzle-Solving Fun</Subtitle>
+          <PlayButton onClick={handlePlayGame}>Play Game</PlayButton>
+        </Container>
+      </HeroSection>
+
+      <Container>
+        <Section>
+          <SectionTitle>Perfect for Students & Teachers</SectionTitle>
+          <BenefitsGrid>
+            <BenefitCard>
+              <BenefitTitle>Build Number Intuition</BenefitTitle>
+              <BenefitText>
+                Students practice estimating the magnitude of numbers while
+                manipulating puzzle pieces, developing a deeper understanding of
+                numerical relationships.
+              </BenefitText>
+            </BenefitCard>
+            <BenefitCard>
+              <BenefitTitle>Visualize Math Properties</BenefitTitle>
+              <BenefitText>
+                Make abstract mathematical concepts concrete through hands-on
+                manipulation of shapes and sizes, connecting operations to
+                visual representations.
+              </BenefitText>
+            </BenefitCard>
+            <BenefitCard>
+              <BenefitTitle>Classroom Ready</BenefitTitle>
+              <BenefitText>
+                Teachers can use these informal experiences as launching points
+                for deeper discussions about mathematical expressions and
+                equivalent operations.
+              </BenefitText>
+            </BenefitCard>
+          </BenefitsGrid>
+        </Section>
+      </Container>
+
+      <MathematicalToolsGrid />
+
+      <CallToAction>
+        <Container>
+          <CTATitle>Ready to Transform Math Learning?</CTATitle>
+          <CTAText>
+            Start building mathematical intuition through interactive puzzle
+            solving
+          </CTAText>
+          <PlayButton onClick={handlePlayGame}>Start Playing Now</PlayButton>
+        </Container>
+      </CallToAction>
+    </div>
+  );
+}
+
+export default Home;
 
 const Container = styled.div`
   max-width: 1200px;
@@ -142,70 +207,3 @@ const CTAText = styled.p`
   margin-bottom: 2rem;
   opacity: 0.9;
 `;
-
-function Home() {
-  const navigate = useNavigate();
-
-  const handlePlayGame = () => {
-    navigate('/game');
-  };
-
-  return (
-    <div>
-      <HeroSection>
-        <Container>
-          <Title>Frectangles</Title>
-          <Subtitle>Where Math Meets Puzzle-Solving Fun</Subtitle>
-          <PlayButton onClick={handlePlayGame}>Play Game</PlayButton>
-        </Container>
-      </HeroSection>
-
-      <Container>
-        <Section>
-          <SectionTitle>Perfect for Students & Teachers</SectionTitle>
-          <BenefitsGrid>
-            <BenefitCard>
-              <BenefitTitle>Build Number Intuition</BenefitTitle>
-              <BenefitText>
-                Students practice estimating the magnitude of numbers while
-                manipulating puzzle pieces, developing a deeper understanding of
-                numerical relationships.
-              </BenefitText>
-            </BenefitCard>
-            <BenefitCard>
-              <BenefitTitle>Visualize Math Properties</BenefitTitle>
-              <BenefitText>
-                Make abstract mathematical concepts concrete through hands-on
-                manipulation of shapes and sizes, connecting operations to
-                visual representations.
-              </BenefitText>
-            </BenefitCard>
-            <BenefitCard>
-              <BenefitTitle>Classroom Ready</BenefitTitle>
-              <BenefitText>
-                Teachers can use these informal experiences as launching points
-                for deeper discussions about mathematical expressions and
-                equivalent operations.
-              </BenefitText>
-            </BenefitCard>
-          </BenefitsGrid>
-        </Section>
-      </Container>
-
-      <MathematicalToolsGrid />
-
-      <CallToAction>
-        <Container>
-          <CTATitle>Ready to Transform Math Learning?</CTATitle>
-          <CTAText>
-            Start building mathematical intuition through interactive puzzle
-            solving
-          </CTAText>
-          <PlayButton onClick={handlePlayGame}>Start Playing Now</PlayButton>
-        </Container>
-      </CallToAction>
-    </div>
-  );
-}
-
-export default Home;

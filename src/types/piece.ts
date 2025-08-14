@@ -1,11 +1,11 @@
 export interface Piece {
   width: number;
   height: number;
-  id?: string;
+  id: string;
   location: string | null;
-  isRotated?: boolean;
-  color?: string;
-  isStable?: boolean;
+  isRotated: boolean;
+  color: string;
+  isStable: boolean;
 }
 
 export interface InitialPiece {

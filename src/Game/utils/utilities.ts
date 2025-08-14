@@ -1,4 +1,4 @@
-import { Piece } from '../types/piece';
+import { Piece } from '../../types/piece';
 
 export function updatePiecesInPlay() {
   /**  check if puzzle piece was already placed on the board 
@@ -77,48 +77,10 @@ export function findLargestHeight(
   return Math.max(...heights);
 }
 
-// export function updateLocationForCollision(
-//   location: string,
-//   pieceWidth: number,
-//   pieceHeight: number,
-//   // boardWidth: number,
-//   // boardHeight: number,
-//   boardSquares: string[][]
-// ) {
-//   let updatedLocation = location;
-
-//   const { outerOverlaps, innerOverlaps } = countOverlappingSquares(
-//     location,
-//     pieceWidth,
-//     pieceHeight,
-//     boardSquares
-//   );
-
-//   if (innerOverlaps > 0) return null;
-
-//   /* Count total potentially overlapping squares.
-
-//   if rightmost column of piece is overlapping by 1 column with more than 1 overlapping square AND IF there is empty space to the left, shift one unit to the left.
-//         Check if there are still some squares with an overlap
-//         IF not, early return
-//   else If rightmost column of piece is overlapping by 1 column with more than 1 overlapping square AND IF there is empty space to the right, shift one unit to the right.
-//         Check if there are still some squares with an overlap
-//         IF not, early return
-
-//  if topmost row of piece is overlapping by 1 column AND IF there is empty space below , shift one unit down
-//         Check if there are still some squares with an overlap
-//         IF not, early return
-//  else if bottom-most row of piece is overlapping by 1 AND IF there is empty space below, shift one unit up
-//         Check if there are still some squares with an overlap
-//         IF not, early return
-
-//     return null (which means it will go back to the intial pieces container)
-
-//  */
-
-//   return updatedLocation;
-// }
-
 export function findPieceById(piecesInPlay: Piece[], id: string) {
   return piecesInPlay.find(piece => piece.id === id);
+}
+
+export function getPieceNumber(id: string) {
+  return parseInt(id.slice(id.indexOf('-') + 1), 10);
 }
