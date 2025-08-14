@@ -34,30 +34,12 @@ const InitialPuzzlePiece = ({
   });
   const refs = mergeRefs(scope, setNodeRef);
 
-  // Safari-specific focus management
-  const handleFocus = (event: React.FocusEvent) => {
-    // Ensure proper focus management in Safari
-    event.currentTarget.setAttribute('data-focused', 'true');
-  };
-
-  const handleBlur = (event: React.FocusEvent) => {
-    // Clean up focus state in Safari
-    event.currentTarget.removeAttribute('data-focused');
-  };
-
   function handlePieceSelected() {
     setSelectedPiece(piece);
     setActivePiece(piece);
     Hotjar.event(
       `initial piece selected width:${piece.width} height:${piece.height}`
     );
-  }
-
-  function handleKeyDown(event: React.KeyboardEvent) {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      handlePieceSelected();
-    }
   }
 
   async function runRotationAnimation(selectedPiece) {
@@ -87,14 +69,8 @@ const InitialPuzzlePiece = ({
         {...listeners}
         {...attributes}
         onClick={handlePieceSelected}
-        onKeyDown={handleKeyDown}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
         isDragging={isDragging && isSelected}
         layout={!isRotating && !isDragging}
-        tabIndex={0}
-        role="button"
-        aria-label={`Select puzzle piece ${piece.id}`}
         {...(!(isRotating && isSelected) ? { layoutId: piece.id } : {})}
       >
         <Rectangle
@@ -120,31 +96,9 @@ export const InitialPieceWrapper = styled(motion.button)`
   z-index: 2;
   border: 2px solid black;
   margin: 0;
-  outline: none;
-  cursor: pointer;
-  position: relative;
-
   &:active {
     cursor: grab;
   }
-
-  &:focus {
-    outline: 2px solid #007bff;
-    outline-offset: 2px;
-  }
-
-  &:focus:not(:focus-visible) {
-    outline: none;
-  }
-
-  /* Safari-specific focus management */
-  &[data-focused='true'] {
-    outline: 2px solid #007bff;
-    outline-offset: 2px;
-  }
-
-  /* Ensure proper stacking context for Safari */
-  transform: translateZ(0);
 `;
 
 InitialPuzzlePiece.displayName = 'InitialPuzzlePiece';
