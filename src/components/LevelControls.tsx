@@ -155,7 +155,6 @@ const LevelNavigationControl = styled.div`
     margin-right: 0px;
     margin-left: 0px;
     border-radius: 5px;
-    padding 4px 4px;
     height: 36px;
   }
 `;
@@ -175,7 +174,7 @@ const NavigationButton = styled.button<{ $isLeft: boolean }>`
   }
 
   @media (max-width: 768px) {
-    padding: 4px 4px;
+    padding: 0px 4px;
   }
 
   svg {
