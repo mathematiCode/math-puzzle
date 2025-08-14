@@ -73,7 +73,7 @@ const LevelControls = ({
     setLevelCompletedShown(false);
   }
 
-  const isMobile = useMediaQuery(['(max-width: 768px)']);
+  const [isMobile] = useMediaQuery(['(max-width: 768px)']);
   console.log(isMobile);
 
   return (
@@ -192,7 +192,7 @@ const LevelDisplay = styled.div`
   padding: 12px 8px;
   font-weight: bold;
   color: white;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   min-width: 80px;
   text-align: center;
 
