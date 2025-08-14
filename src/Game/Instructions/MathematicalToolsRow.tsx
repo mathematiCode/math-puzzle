@@ -63,7 +63,7 @@ const Container = styled.div`
   max-width: 1200px;
   height: fit-content;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0px;
   container-type: inline-size;
 `;
 
@@ -103,7 +103,7 @@ const ToolWrapper = styled.div`
   }
 
   @container (max-width: 768px) {
-    flex: 0 1 80%;
+    flex: 0 1 50%;
     width: unset;
   }
 `;

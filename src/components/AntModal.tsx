@@ -14,7 +14,7 @@ const StyledModal = styled(Modal)<{ titleSize: 'large' | 'small' }>`
 
     @media screen and (max-width: 768px) {
       max-width: 96%;
-      margin-top: 40px;
+      margin-top: 20px;
     }
   }
 
