@@ -1,10 +1,12 @@
-//@ts-nocheck
 import { createContext, useContext, useState, ReactNode } from 'react';
-import levels from '../levels.json';
-import { getInitialBoardSquares } from '../utils/getInitialBoardSquares';
-import { CurrentLevelContext } from './CurrentLevel.tsx';
-import { convertLocationToXAndY } from '../utils/utilities';
-import { LevelProgressContext } from './LevelProgress.tsx';
+import levels from '../Game/levels.json';
+import { getInitialBoardSquares } from '../Game/utils/getInitialBoardSquares';
+import { CurrentLevelContext } from './CurrentLevel';
+import { convertLocationToXAndY } from '../Game/utils/utilities';
+import {
+  LevelProgressContext,
+  LevelProgressContextType,
+} from './LevelProgress';
 import Hotjar from '@hotjar/browser';
 
 export type BoardSquaresContextType = {
@@ -28,8 +30,7 @@ export type BoardSquaresContextType = {
   countOverlappingSquares: (
     location: string,
     pieceWidth: number,
-    pieceHeight: number,
-    boardSquares: string[][]
+    pieceHeight: number
   ) => {
     outerOverlaps: number;
     innerOverlaps: number;
@@ -44,7 +45,13 @@ export const BoardSquaresContext =
 
 export function BoardSquaresProvider({ children }: { children: ReactNode }) {
   const { currentLevel } = useContext(CurrentLevelContext);
-  const { setLevelCompleted } = useContext(LevelProgressContext);
+  const levelProgressContext = useContext(LevelProgressContext);
+  if (!levelProgressContext) {
+    throw new Error(
+      'LevelProgressContext must be used within a LevelProgressProvider'
+    );
+  }
+  const { setLevelCompleted } = levelProgressContext;
   const [boardSquares, setBoardSquares] = useState<string[][]>(
     getInitialBoardSquares(currentLevel)
   );
@@ -132,8 +139,7 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
   function countOverlappingSquares(
     location: string,
     pieceWidth: number,
-    pieceHeight: number,
-    boardSquares: string[][]
+    pieceHeight: number
   ) {
     let outerOverlaps = 0;
     let innerOverlaps = 0;
@@ -162,22 +168,22 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
   }
 
   function getUnstablePieces() {
-    const unstablePieces = [];
+    const overlappingPieces: string[] = [];
     for (let row = 0; row < boardSquares.length; row++) {
       for (let col = 0; col < boardSquares[row].length; col++) {
         if (boardSquares[row][col]?.length > 0) {
           const ids = boardSquares[row][col].split(', ').map(id => id.trim());
           if (ids.length > 1) {
             ids.forEach(id => {
-              if (!unstablePieces.includes(id)) {
-                unstablePieces.push(id);
+              if (!overlappingPieces.includes(id)) {
+                overlappingPieces.push(id);
               }
             });
           }
         }
       }
     }
-    return unstablePieces;
+    return overlappingPieces;
   }
 
   function countEmptySquares() {

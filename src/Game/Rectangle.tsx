@@ -29,7 +29,7 @@ const Container = styled(motion.div)<{
   transform: translate3d(0px, 0px, 0px) !important;
   display: grid;
   grid-template-columns: repeat(${props => props.$width}, 1fr);
-  width: fit-content;
+  width: min-content;
   height: min-content;
   gap: 0px;
   padding: 0px;

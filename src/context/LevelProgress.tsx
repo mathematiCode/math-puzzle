@@ -3,7 +3,7 @@ import { Piece } from '../types/piece';
 import {
   getLevelsArray,
   getTotalLevels as getTotalLevelsFromUtils,
-} from '../utils/getLevelsArray';
+} from '../Game/utils/getLevelsArray';
 
 type LevelProgress = {
   level: number;

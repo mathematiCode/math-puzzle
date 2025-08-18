@@ -1,12 +1,12 @@
 // @ts-nocheck
 import { useContext, useState } from 'react';
 import { useDraggable } from '@dnd-kit/core';
-import Rectangle from './Rectangle.tsx';
-import ActionsToolbarPopover from './ActionsToolbarPopover.tsx';
+import Rectangle from '../Rectangle';
+import ActionsToolbarPopover from '../ActionsToolbar/ActionsToolbarPopover';
 import { motion, useAnimate } from 'motion/react';
-import { useSelectedPiece } from '../context/SelectedPiece.tsx';
-import { PiecesInPlayContext } from '../context/PiecesInPlay.tsx';
-import { Piece } from '../types/piece.ts';
+import { useSelectedPiece } from '../../context/SelectedPiece';
+import { PiecesInPlayContext } from '../../context/PiecesInPlay';
+import { Piece } from '../../types/piece';
 import styled from 'styled-components';
 import { mergeRefs } from '@chakra-ui/react';
 import Hotjar from '@hotjar/browser';
@@ -52,7 +52,7 @@ const InitialPuzzlePiece = ({
         { rotate: 90 },
         { type: 'spring', stiffness: 150, damping: 11 }
       );
-      updateDimensions(pieceIndex, selectedPiece.height, selectedPiece.width);
+      updateDimensions(piece.id, selectedPiece.height, selectedPiece.width);
       await animate(scope.current, { rotate: 0 }, { duration: 0 });
     } finally {
       setIsRotating(false);
@@ -69,7 +69,7 @@ const InitialPuzzlePiece = ({
         {...listeners}
         {...attributes}
         onClick={handlePieceSelected}
-        isDragging={isDragging}
+        isDragging={isDragging && isSelected}
         layout={!isRotating && !isDragging}
         {...(!(isRotating && isSelected) ? { layoutId: piece.id } : {})}
       >

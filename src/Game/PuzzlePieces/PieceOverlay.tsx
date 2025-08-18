@@ -1,8 +1,8 @@
 import { memo } from 'react';
 import { motion } from 'motion/react';
 import PropTypes from 'prop-types';
-import Rectangle from './Rectangle';
-import { Piece } from '../types/piece';
+import Rectangle from '../Rectangle.js';
+import { Piece } from '../../types/piece.js';
 
 // Simple touch device detection
 const isTouchDevice = () => {
@@ -17,6 +17,7 @@ function PieceOverlay({ piece }: { piece: Piece }) {
         cursor: 'grab',
         border: '2px solid black',
         position: 'relative',
+        isolation: 'isolate',
         left: isTouchDevice() ? 20 : 0, // offset only visually
         top: isTouchDevice() ? -40 : 0,
       }}

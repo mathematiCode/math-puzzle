@@ -62,11 +62,12 @@ export const StyledButton = styled.button.attrs(props => ({
     cursor: not-allowed;
   }
 
-  @media (max-width: 850px) {
-    font-size: 0.9rem;
+  @media (max-width: 768px) {
+    font-size: 1rem;
     margin: 5px;
-    padding: 3px;
+    padding: 8px 4px;
     line-height: 1.1;
+    height: 36px;
 
     svg {
       display: none;

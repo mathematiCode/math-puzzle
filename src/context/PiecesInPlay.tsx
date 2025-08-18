@@ -1,29 +1,23 @@
-/* eslint-disable react/prop-types */
-// @ts-nocheck
 import { createContext, useState, useContext } from 'react';
 import {
   CurrentLevelContext,
   CurrentLevelContextType,
-} from './CurrentLevel.tsx';
-import { BoardSquaresContext } from './BoardSquares';
+} from './CurrentLevel';
 import { colors } from '../CONSTANTS';
-import { InitialPiece, Piece } from '../types/piece.ts';
-import { convertLocationToXAndY } from '../utils/utilities.ts';
-import { getNewValidLocation } from '../utils/getNewValidLocation.ts';
-import { useAnimate } from 'motion/dist/react';
-import levels from '../levels.json' with { type: 'json' };
+import { Piece } from '../types/piece';
+import { convertLocationToXAndY } from '../Game/utils/utilities';
+import { getNewValidLocation } from '../Game/utils/getNewValidLocation';
+import levels from '../Game/levels.json' with { type: 'json' };
 import Hotjar from '@hotjar/browser';
-import Board from '../components/Board.tsx';
-import { remove } from 'lodash';
-import { X } from 'lucide-react';
+import { BoardSquaresContext, BoardSquaresContextType } from './BoardSquares';
 
 export interface PiecesInPlayContextType {
   piecesInPlay: Piece[];
-  movePiece: (pieceIndex: number, newLocation: string | null) => void;
-  updateDimensions: (pieceIndex: number, width: number, height: number) => void;
-  rotatePiece: (pieceIndex: number) => void;
+  movePiece: (pieceId: string, newLocation: string | null) => void;
+  updateDimensions: (pieceId: string, width: number, height: number) => void;
   resetPieces: () => void;
-  setPiecesForNewLevel: (newPieces?: InitialPiece[]) => void;
+  setPiecesForNewLevel: (newPieces?: Piece[]) => void;
+  setPieceStability: (pieceId: string, isStable: boolean) => void;
 }
 
 export const PiecesInPlayContext =
@@ -37,19 +31,18 @@ export function PiecesInPlayProvider({
 }) {
   const { initialPieces, boardDimensions, currentLevel } =
     useContext<CurrentLevelContextType>(CurrentLevelContext);
-  const {
-    boardSquares,
-    addPieceToBoard,
-    removePieceFromBoard,
-    resetBoardSquares,
-    countOverlappingSquares,
-  } = useContext(BoardSquaresContext);
-  const [piecesInPlay, setPiecesInPlay] = useState<InitialPiece[] | Piece[]>(
+  const boardSquaresContext = useContext<BoardSquaresContextType | null>(BoardSquaresContext);
+  if (!boardSquaresContext) {
+    throw new Error('BoardSquaresContext must be used within a BoardSquaresProvider');
+  }
+  const { countOverlappingSquares } = boardSquaresContext;
+  const [piecesInPlay, setPiecesInPlay] = useState<Piece[]>(
     initialPieces
   );
   const { boardWidth, boardHeight } = boardDimensions;
 
-  function movePiece(pieceIndex: number, newLocation: string | null) {
+  function movePiece(pieceId: string, newLocation: string | null) {
+    const pieceIndex = piecesInPlay.findIndex(piece => piece.id === pieceId);
     const updatedPieces = [...piecesInPlay];
     const oldLocation = piecesInPlay[pieceIndex].location;
     const { x: oldX, y: oldY } = convertLocationToXAndY(oldLocation);
@@ -63,8 +56,7 @@ export function PiecesInPlayProvider({
       const { outerOverlaps, innerOverlaps, squaresOutsideBoard } = countOverlappingSquares(
         newValidLocation,
         pieceWidth,
-        pieceHeight,
-        boardSquares
+        pieceHeight
       );
       updatedPieces[pieceIndex].location = newValidLocation;
       updatedPieces[pieceIndex].id = `b-${pieceIndex}`;
@@ -72,18 +64,21 @@ export function PiecesInPlayProvider({
       setPiecesInPlay(updatedPieces);
       if (outerOverlaps + innerOverlaps > 0) {
         updatedPieces[pieceIndex].isStable = false;
+        setPieceStability(`b-${pieceIndex}`, false);
         setPiecesInPlay(updatedPieces);
         Hotjar.event('piece placed partially overlapping another piece');
       } else if (squaresOutsideBoard > 0) {
-        updatedPieces[pieceIndex].isStable = false;
+        setPieceStability(`b-${pieceIndex}`, false);
         setPiecesInPlay(updatedPieces);
         Hotjar.event('piece placed partially off board');
       } else {
         updatedPieces[pieceIndex].isStable = true;
+        setPieceStability(`b-${pieceIndex}`, true);
       }
     } else if (newLocation === null) {
       updatedPieces[pieceIndex].location = null;
       updatedPieces[pieceIndex].id = `i-${pieceIndex}`;
+      setPieceStability(`i-${pieceIndex}`, true);
       setPiecesInPlay(updatedPieces);
       if (oldLocation !== null) {
         Hotjar.event('move off of board');
@@ -91,19 +86,23 @@ export function PiecesInPlayProvider({
     }
   }
 
-  function updateDimensions(pieceIndex: number, width: number, height: number) {
+  function updateDimensions(pieceId: string, newWidth: number, newHeight: number) {
+    const pieceIndex = piecesInPlay.findIndex(piece => piece.id === pieceId);
+    if (pieceIndex === -1) {
+      console.error('Piece not found');
+      return;
+    }
     const updatedPieces = [...piecesInPlay];
-    const {
-      location,
-      width: oldWidth,
-      height: oldHeight,
-    } = piecesInPlay[pieceIndex];
-    updatedPieces[pieceIndex].width = width;
-    updatedPieces[pieceIndex].height = height;
-    if (width > boardWidth || height > boardHeight) {
-      updatedPieces[pieceIndex].isStable = false;
+    updatedPieces[pieceIndex].width = newWidth;
+    updatedPieces[pieceIndex].height = newHeight;
+    if (pieceId === 'sample-0') {
+      setPiecesInPlay(updatedPieces);
+      return;
+    }
+    if (newWidth > boardWidth || newHeight > boardHeight) {
+      setPieceStability(`b-${pieceIndex}`, false);
     } else {
-      updatedPieces[pieceIndex].isStable = true;
+      setPieceStability(`b-${pieceIndex}`, true);
     }
     setPiecesInPlay(updatedPieces);
   }
@@ -111,7 +110,7 @@ export function PiecesInPlayProvider({
   function resetPieces() {
     const initialLocation = null;
     try {
-      const piecesAfterReset = [
+      const piecesAfterReset: Piece[] = [
         {
           width: 3,
           height: 2,
@@ -119,6 +118,7 @@ export function PiecesInPlayProvider({
           color: 'hsl(0, 61%, 66%)',
           id: 'sample-0',
           isRotated: false,
+          isStable: true
         },
         ...levels[currentLevel].pieces.map((piece, index) => ({
           ...piece,
@@ -126,6 +126,7 @@ export function PiecesInPlayProvider({
           color: colors[index % colors.length],
           id: `i-${index + 1}`,
           isRotated: false,
+          isStable: true
         })),
       ];
       setPiecesInPlay(piecesAfterReset);
@@ -135,8 +136,46 @@ export function PiecesInPlayProvider({
   }
 
 
-  function setPiecesForNewLevel(newPieces?: InitialPiece[]) {
+  function setPiecesForNewLevel(newPieces?: Piece[]) {
     setPiecesInPlay(newPieces || initialPieces);
+  }
+
+  function setPieceStability(pieceId: string, isStable: boolean) {
+    // Skip the sample piece (instructions piece)
+    if (pieceId === 'sample-0') {
+      console.log('skipping sample piece');
+      return;
+    }
+    const iPattern = /^i-(\d+)$/;
+    const match = pieceId.match(iPattern);
+    if (match) {
+      const num = match[1];
+      const onBoardId = `b-${num}`;
+    }
+    
+    // Extract the number from pieceId (removes i- or b- prefix)
+    const numberPattern = /^[ib]-(\d+)$/;
+    const numberMatch = pieceId.match(numberPattern);
+    if (!numberMatch) {
+      console.error('Invalid pieceId format');
+      return;
+    }
+    const pieceNumber = numberMatch[1];
+
+    const pieceIndex = piecesInPlay.findIndex(piece => {
+      const pieceNumberMatch = piece.id.match(/^[ib]-(\d+)$/);
+      return pieceNumberMatch && pieceNumberMatch[1] === pieceNumber;
+    });
+    
+    if (pieceIndex === -1) {
+      console.error('Piece not found');
+      console.log(`Could not find ${pieceId}`)
+      console.log(piecesInPlay);
+      return;
+    }
+    const updatedPieces = [...piecesInPlay];
+    updatedPieces[pieceIndex].isStable = isStable;
+    setPiecesInPlay(updatedPieces);
   }
   return (
     <PiecesInPlayContext.Provider
@@ -146,6 +185,7 @@ export function PiecesInPlayProvider({
         updateDimensions,
         resetPieces,
         setPiecesForNewLevel,
+        setPieceStability,
       }}
     >
       {children}
