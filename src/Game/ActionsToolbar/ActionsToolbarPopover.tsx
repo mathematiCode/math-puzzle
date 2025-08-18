@@ -26,6 +26,8 @@ function ActionsToolbarPopover({
   runRotationAnimation: any;
   delegated?: any;
 }) {
+  /* Cloning the children is necessary for the popover to position correctly when pieces are positioned absolutely on the board. */
+  const childrenWithDelegatedProps = cloneElement(children, delegated);
   const context = useContext(PiecesInPlayContext);
   if (!context) {
     throw new Error(
@@ -104,11 +106,7 @@ function ActionsToolbarPopover({
   const rotateDisabled = selectedPiece == null;
   return (
     <Popover.Root>
-      <Popover.Trigger asChild>
-        /* This is necessary for popover to position correctly when pieces are
-        positioned absolutely on the board. */
-        {cloneElement(children, delegated)}
-      </Popover.Trigger>
+      <Popover.Trigger asChild>{childrenWithDelegatedProps}</Popover.Trigger>
       <Popover.Portal container={document.body}>
         <PopoverContent sideOffset={5} align="center" side="bottom">
           <ActionsToolbar>
