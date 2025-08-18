@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import SocialLinks from '../components/SocialLinks';
 
 const Container = styled.div`
   max-width: 800px;
@@ -71,6 +72,7 @@ function About() {
           edtech company.
         </p>
       </Content>
+      <SocialLinks />
     </Container>
   );
 }
