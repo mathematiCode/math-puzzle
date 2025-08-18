@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, cloneElement } from 'react';
 import { Tooltip } from 'antd';
 import { motion } from 'motion/react';
 import * as Popover from '@radix-ui/react-popover';
@@ -105,9 +105,9 @@ function ActionsToolbarPopover({
   return (
     <Popover.Root>
       <Popover.Trigger asChild>
-        <div {...delegated}>{children}</div>
+        {cloneElement(children, delegated)}
       </Popover.Trigger>
-      <Popover.Portal>
+      <Popover.Portal container={document.body}>
         <PopoverContent sideOffset={5} align="center" side="bottom">
           <ActionsToolbar>
             <Tooltip placement="bottom" title={showTooltips && 'Rotate'}>
