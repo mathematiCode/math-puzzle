@@ -105,6 +105,8 @@ function ActionsToolbarPopover({
   return (
     <Popover.Root>
       <Popover.Trigger asChild>
+        /* This is necessary for popover to position correctly when pieces are
+        positioned absolutely on the board. */
         {cloneElement(children, delegated)}
       </Popover.Trigger>
       <Popover.Portal container={document.body}>
