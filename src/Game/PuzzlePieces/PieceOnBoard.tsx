@@ -25,6 +25,7 @@ import {
   BoardSquaresContextType,
 } from '../../context/BoardSquares';
 import { getNewValidLocation } from '../utils/getNewValidLocation';
+import { getRandomVibrationAnimation } from '../utils/getRandomVibrationAnimation';
 
 interface PieceWrapperProps extends HTMLMotionProps<'button'> {
   x: number;
@@ -161,16 +162,7 @@ function PieceOnBoard({
         layout={!isRotating && !isDragging && !isStable}
         isDragging={isDragging}
         isSelected={isSelected}
-        animate={
-          isStable
-            ? { x: 0, y: 0 }
-            : { x: [0, -1, 1, -1, 1, 0], y: [0, 1, -1, 1, -1, 0] }
-        }
-        transition={
-          isStable
-            ? { duration: 0.1 } // or 0 for instant snap
-            : { duration: 0.2, repeat: Infinity, ease: 'linear' }
-        }
+        animate={isStable ? { x: 0, y: 0 } : getRandomVibrationAnimation()}
       >
         <Rectangle
           width={piece.width}

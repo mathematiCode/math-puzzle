@@ -52,8 +52,8 @@ function Game() {
 
   return (
     <>
-      <Main id='main'>
         <ErrorBoundary>
+      <Main id='main'>
       <DragAndDropArea data-testid='drag-and-drop-area'
         setActivePiece={setActivePiece}
         key={currentLevel}
@@ -92,7 +92,6 @@ function Game() {
           </DragOverlay>
               ) : null}
           </DragAndDropArea>
-              </ErrorBoundary>
        </Main>
       <LevelControls
         levelPosition={levelPosition}
@@ -106,7 +105,8 @@ function Game() {
         completed={checkIfPassedLevel()} 
         levelCompletedShown={levelCompletedShown}
         onClose={handleCloseModal}
-        />
+      />
+      </ErrorBoundary>
         </>
   );
 }
