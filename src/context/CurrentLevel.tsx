@@ -5,7 +5,8 @@ export const CurrentLevelContext = createContext<CurrentLevelContextType>(
   {} as CurrentLevelContextType
 );
 import { Piece } from '../types/piece';
-import { calculateUnitSize, findLargestHeight } from '../Game/utils/utilities';
+import { findLargestHeight } from '../Game/utils/utilities';
+import { calculateUnitSize } from '../Game/utils/calculateUnitSize';
 import Hotjar from '@hotjar/browser';
 
 export interface CurrentLevelContextType {
@@ -58,6 +59,7 @@ export function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
   };
   const { width, height } = levels[currentLevel].dimensions;
   const levelId = levels[currentLevel].id;
+  const numPieces = levels[currentLevel].pieces.length;
 
   const windowWidth = window.innerWidth;
   const windowHeight = window.innerHeight;
@@ -67,7 +69,8 @@ export function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
     windowHeight,
     width,
     height,
-    largestHeight
+    largestHeight,
+    numPieces
   );
   document.documentElement.style.setProperty(
     '--sizeOfEachUnit',
@@ -96,6 +99,7 @@ export function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
       width,
       height,
       largestHeight,
+      numPieces
     );
     document.documentElement.style.setProperty(
       '--sizeOfEachUnit',
