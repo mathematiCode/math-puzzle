@@ -23,29 +23,6 @@ const Section = styled.section`
   margin: 2.5rem 0;
 `;
 
-// const PillContainer = styled.div`
-//   display: flex;
-//   gap: 2rem;
-//   justify-content: center;
-//   margin-block: 0.8rem;
-
-//   @media (max-width: 768px) {
-//     gap: 0.5rem;
-// `;
-
-// const Pill = styled.span`
-//   background-color: hsl(0, 61%, 66%);
-//   color: #fff;
-//   padding: 0.3rem 0.5rem;
-//   border-radius: 0.5rem;
-//   font-size: 1.4rem;
-//   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
-
-//   @media (max-width: 768px) {
-//     font-size: 1rem;
-//   }
-// `;
-
 const SectionTitle = styled.h2`
   color: #007571;
   font-size: 1.8rem;
@@ -84,11 +61,6 @@ function Math() {
       <Content>
         <Section>
           <Title>What Math Can This Help Me Learn or Teach?</Title>
-          {/* <PillContainer>
-            <Pill>Commutative Property</Pill>
-            <Pill>Associative Property</Pill>
-            <Pill>Distributive Property</Pill>
-          </PillContainer> */}
           <p>
             Frectangles is designed to encourage students to recognize
             equivalent expressions visually through rectangles. Two rectangles
@@ -109,11 +81,11 @@ function Math() {
           <SectionTitle>The Current Challenge</SectionTitle>
           <p>
             In the current version of Frectangles, students will likely approach
-            the puzzles through visual estimation, eyeballing side lengths and
-            using intuition to determine which pieces might fit where. While
-            they may recognize that the "double width, halve height" tool
-            creates shorter, longer rectangles, they may not be processing the
-            underlying mathematical relationships.
+            the puzzles through visual estimation, eyeballing side lengths to
+            determine which pieces might fit where. While they may recognize
+            that the "double width, halve height" tool creates shorter, longer
+            rectangles, they probably won't realize the underlying mathematical
+            transformation.
           </p>
           <p>
             This presents a common educational challenge: students might
@@ -128,7 +100,7 @@ function Math() {
             Planned Features to Encourage Mathematical Thinking
           </SectionTitle>
           <p>
-            I'm developing two key features designed to promote more intentional
+            I'm developing two key features to promote more intentional
             mathematical reasoning:
           </p>
 
@@ -137,9 +109,10 @@ function Math() {
             <p>
               By making the grid invisible on most levels and displaying
               numerical side lengths instead, students will need to engage in
-              quick mental math. For example, they'll need to calculate whether
-              doubling a width of 4 will actually produce the dimensions they
-              need, rather than relying purely on visual estimation.
+              mental math to decide which tools to use. For example, they'll
+              need to calculate whether doubling a width of 4 will actually
+              produce the dimensions they need, rather than relying purely on
+              visual estimation.
             </p>
             <Image src="./assets/PiecesWithLabels.png" alt="No Grid Example" />
           </FeatureBox>
@@ -147,13 +120,12 @@ function Math() {
           <FeatureBox>
             <FeatureTitle>Strategic Tool Limitations</FeatureTitle>
             <p>
-              Implementing thoughtful constraints on tool usage will encourage
-              students to predict the mathematical effects of each
-              transformation before acting. This creates incentive for strategic
-              thinking and helps prevent the random trial-and-error approach
-              that bypasses mathematical reasoning. I'm thinking of using icons
-              similar to notifications to show how many uses of each tool are
-              remaining.
+              Implementing constraints on tool usage will encourage students to
+              predict the mathematical effects of each transformation before
+              trying them. This will create an incentive for strategic thinking
+              and help prevent the random trial-and-error approach that bypasses
+              mathematical reasoning. I'm thinking of using icons similar to
+              notifications to show how many uses of each tool are remaining.
             </p>
             <Image
               src="./assets/LimitsExample.png"
@@ -166,18 +138,19 @@ function Math() {
         <Section>
           <SectionTitle>Next Steps: Testing & Iteration</SectionTitle>
           <p>
-            Once these features are implemented, extensive testing with actual
-            students will be essential to refine the balance between challenge
-            and accessibility. This user-centered approach will help determine
-            the optimal combination of constraints, feedback mechanisms, and
-            visual displays that promote mathematical thinking while maintaining
-            student engagement.
+            Once these features are implemented, I will do user testing with
+            actual students to ensure an each level provides adequate challenge
+            but is still accessible and encouraging. This user-centered approach
+            will help determine the optimal level progression, action
+            constraints that promote mathematical thinking while maintaining
+            student enjoyment.
           </p>
           <p>
-            The goal is to create an educational tool that naturally guides
-            students toward mathematical reasoning through thoughtful game
-            design, rather than explicit instruction—making learning both
-            effective and enjoyable.
+            The goal is a game that allows students to develop stronger
+            intuition about equivalent expressions and properties of operations
+            over time. With the support and guidance of a teacher, these
+            experiences in the game can be built upon more formally with numeric
+            and algebraic representations.
           </p>
         </Section>
       </Content>
