@@ -7,17 +7,21 @@ const ErrorContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  margin: 1rem;
+  justify-content: start;
+  justify-self: start;
+  align-self: center;
+  padding-block: 1rem;
+  top: 0px;
   border-radius: 12px;
   text-align: center;
   min-height: 200px;
+  max-width: min(700px, 100%);
 `;
 
 const ErrorIcon = styled.div`
   color: hsl(0, 61%, 70%);
   margin-bottom: 1rem;
+  margin-top: 1rem;
   font-size: 3rem;
 `;
 
@@ -32,14 +36,13 @@ const ErrorMessage = styled.p`
   color: #333;
   font-size: 1rem;
   margin-bottom: 1.5rem;
-  max-width: 500px;
+  max-width: 100%;
   line-height: 1.5;
 `;
 
 const ErrorDetails = styled.details`
-  margin-bottom: 1.5rem;
   text-align: left;
-  max-width: 500px;
+  max-width: 100%;
   width: 100%;
 `;
 
@@ -63,32 +66,9 @@ const ErrorStack = styled.pre`
   border-radius: 6px;
   font-size: 0.8rem;
   color: #666;
-  overflow-x: auto;
+  overflow: auto;
+  max-height: min(400px, 50%);
   border: 1px solid #ddd;
-`;
-
-const RetryButton = styled.button`
-  background: #007571;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: hsl(178, 100%, 23%);
-    transform: translateY(-1px);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
 `;
 
 interface Props {
@@ -133,29 +113,26 @@ class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <AntModal open={true} showCloseButton={false}>
-          <ErrorContainer>
-            <ErrorIcon>
-              <AlertTriangle size={48} />
-            </ErrorIcon>
+        <ErrorContainer>
+          <ErrorIcon>
+            <AlertTriangle size={48} />
+          </ErrorIcon>
 
-            <ErrorTitle>Something went wrong</ErrorTitle>
+          <ErrorTitle>Something went wrong</ErrorTitle>
 
-            <ErrorMessage>
-              We encountered an unexpected error. We will check the logs and
-              prevent this from happening again. For now, try refreshing the
-              page.
-            </ErrorMessage>
+          <ErrorMessage>
+            We encountered an unexpected error. We will check the logs and
+            prevent this from happening again. For now, try refreshing the page.
+          </ErrorMessage>
 
-            <ErrorDetails>
-              <ErrorSummary>Technical Details (for developers)</ErrorSummary>
-              <ErrorStack>
-                {this.state.error?.toString()}
-                {this.state.errorInfo?.componentStack}
-              </ErrorStack>
-            </ErrorDetails>
-          </ErrorContainer>
-        </AntModal>
+          <ErrorDetails>
+            <ErrorSummary>Technical Details (for developers)</ErrorSummary>
+            <ErrorStack>
+              {this.state.error?.toString()}
+              {this.state.errorInfo?.componentStack}
+            </ErrorStack>
+          </ErrorDetails>
+        </ErrorContainer>
       );
     }
 
