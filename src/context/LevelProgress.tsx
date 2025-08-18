@@ -4,6 +4,7 @@ import {
   getLevelsArray,
   getTotalLevels as getTotalLevelsFromUtils,
 } from '../Game/utils/getLevelsArray';
+import Hotjar from '@hotjar/browser';
 
 type LevelProgress = {
   level: number;
@@ -46,6 +47,7 @@ export function LevelProgressProvider({ children }: { children: ReactNode }) {
         : levelProgress
     );
     setLevelProgress(newLevelProgress);
+    Hotjar.event(`Completed Level ${level}`);
   }
 
   function isLevelCompleted(level: number): boolean {
