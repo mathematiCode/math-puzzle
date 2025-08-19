@@ -3,10 +3,7 @@ import levels from '../Game/levels.json';
 import { getInitialBoardSquares } from '../Game/utils/getInitialBoardSquares';
 import { CurrentLevelContext } from './CurrentLevel';
 import { convertLocationToXAndY } from '../Game/utils/utilities';
-import {
-  LevelProgressContext,
-  LevelProgressContextType,
-} from './LevelProgress';
+import { GameProgressContext, GameProgressContextType } from './GameProgress';
 import Hotjar from '@hotjar/browser';
 import useLocalStorageState from 'use-local-storage-state';
 
@@ -46,13 +43,13 @@ export const BoardSquaresContext =
 
 export function BoardSquaresProvider({ children }: { children: ReactNode }) {
   const { currentLevel } = useContext(CurrentLevelContext);
-  const levelProgressContext = useContext(LevelProgressContext);
-  if (!levelProgressContext) {
+  const gameProgressContext = useContext(GameProgressContext);
+  if (!gameProgressContext) {
     throw new Error(
-      'LevelProgressContext must be used within a LevelProgressProvider'
+      'GameProgressContext must be used within a GameProgressProvider'
     );
   }
-  const { setLevelCompleted } = levelProgressContext;
+  const { setLevelCompleted } = gameProgressContext;
   const [boardSquares, setBoardSquares] = useLocalStorageState<string[][]>(
     'boardSquares',
     {

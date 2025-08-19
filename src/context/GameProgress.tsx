@@ -6,15 +6,15 @@ import {
 } from '../Game/utils/getLevelsArray';
 import Hotjar from '@hotjar/browser';
 
-type LevelProgress = {
+type GameProgress = {
   level: number;
   completed: boolean;
   pieces: Piece[];
 };
 
-export type LevelProgressContextType = {
-  levelProgress: LevelProgress[];
-  setLevelProgress: (levelProgress: LevelProgress[]) => void;
+export type GameProgressContextType = {
+  gameProgress: GameProgress[];
+  setGameProgress: (gameProgress: GameProgress[]) => void;
   setLevelCompleted: (level: number) => void;
   isLevelCompleted: (level: number) => boolean;
   getTotalLevels: () => number;
@@ -22,12 +22,12 @@ export type LevelProgressContextType = {
   resetProgress: () => void;
 };
 
-export const LevelProgressContext =
-  createContext<LevelProgressContextType | null>(null);
+export const GameProgressContext =
+  createContext<GameProgressContextType | null>(null);
 
-export function LevelProgressProvider({ children }: { children: ReactNode }) {
+export function GameProgressProvider({ children }: { children: ReactNode }) {
   // Create initial level progress array with the correct number of levels
-  const initialLevelProgress = getLevelsArray<LevelProgress>({
+  const initialGameProgress = getLevelsArray<GameProgress>({
     level: 0,
     completed: false,
     pieces: [],
@@ -37,21 +37,21 @@ export function LevelProgressProvider({ children }: { children: ReactNode }) {
     pieces: [],
   }));
 
-  const [levelProgress, setLevelProgress] =
-    useState<LevelProgress[]>(initialLevelProgress);
+  const [gameProgress, setGameProgress] =
+    useState<GameProgress[]>(initialGameProgress);
 
   function setLevelCompleted(level: number) {
-    const newLevelProgress = levelProgress.map(levelProgress =>
-      levelProgress.level === level
-        ? { ...levelProgress, completed: true }
-        : levelProgress
+    const newGameProgress = gameProgress.map(gameProgress =>
+      gameProgress.level === level
+        ? { ...gameProgress, completed: true }
+        : gameProgress
     );
-    setLevelProgress(newLevelProgress);
+    setGameProgress(newGameProgress);
     Hotjar.event(`Completed Level ${level}`);
   }
 
   function isLevelCompleted(level: number): boolean {
-    return levelProgress[level]?.completed || false;
+    return gameProgress[level]?.completed || false;
   }
 
   function getTotalLevels(): number {
@@ -59,18 +59,18 @@ export function LevelProgressProvider({ children }: { children: ReactNode }) {
   }
 
   function getCompletedLevels(): number {
-    return levelProgress.filter(level => level.completed).length;
+    return gameProgress.filter(level => level.completed).length;
   }
 
   function resetProgress(): void {
-    setLevelProgress(initialLevelProgress);
+    setGameProgress(initialGameProgress);
   }
 
   return (
-    <LevelProgressContext.Provider
+    <GameProgressContext.Provider
       value={{
-        levelProgress,
-        setLevelProgress,
+        gameProgress,
+        setGameProgress,
         setLevelCompleted,
         isLevelCompleted,
         getTotalLevels,
@@ -79,15 +79,15 @@ export function LevelProgressProvider({ children }: { children: ReactNode }) {
       }}
     >
       {children}
-    </LevelProgressContext.Provider>
+    </GameProgressContext.Provider>
   );
 }
 
-export const useLevelProgress = () => {
-  const context = useContext(LevelProgressContext);
+export const useGameProgress = () => {
+  const context = useContext(GameProgressContext);
   if (!context) {
     throw new Error(
-      'useLevelProgress must be used within a LevelProgressProvider'
+      'useGameProgress must be used within a GameProgressProvider'
     );
   }
   return context;

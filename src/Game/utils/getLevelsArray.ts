@@ -15,7 +15,7 @@ export function getLevelsArray<T>(defaultValue: T): T[] {
  * Creates an array of level progress objects, one for each level
  * @returns An array of level progress objects
  */
-export function getInitialLevelProgressArray() {
+export function getInitialGameProgressArray() {
   return getLevelsArray({
     completed: false,
     attempts: 0,

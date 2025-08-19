@@ -1,4 +1,4 @@
-import { useState} from 'react';
+import { useContext, useState} from 'react';
 import levels from './levels.json' with { type: 'json' };
 import InitialPuzzlePiece from './PuzzlePieces/InitialPuzzlePiece';
 import PieceOverlay from './PuzzlePieces/PieceOverlay';
@@ -10,11 +10,15 @@ import LevelCompleteModal from './LevelComplete';
 import { motion } from 'motion/react';
 import styled from 'styled-components';
 import { DragOverlay } from '@dnd-kit/core';
-import { usePiecesInPlay } from '../context/PiecesInPlay';
-import { useCurrentLevel } from '../context/CurrentLevel';
-import { useGameProgress } from '../context/GameProgress';
+// import { usePiecesInPlay } from '../context/PiecesInPlay';
+// import { useCurrentLevel } from '../context/CurrentLevel';
+// import { useGameProgress } from '../context/GameProgress';
+// import { useBoardSquares } from '../context/BoardSquares';
+import { CurrentLevelContext } from '../context/CurrentLevel';
+import { GameProgressContext } from '../context/GameProgress';
+import { BoardSquaresContext } from '../context/BoardSquares';
+import { PiecesInPlayContext } from '../context/PiecesInPlay';
 import { Piece } from '../types/piece';
-import { useBoardSquares } from '../context/BoardSquares';
 import Hotjar from '@hotjar/browser';
 
 function Game() {
@@ -22,11 +26,23 @@ function Game() {
     currentLevel,
     levelId,
     levelPosition,
-  } = useCurrentLevel();
+    } = useContext(CurrentLevelContext);
   const [activePiece, setActivePiece] = useState<Piece | null>(null);
-  const { isLevelCompleted } = useGameProgress();
-  const { checkIfPassedLevel } = useBoardSquares();
-  const { piecesInPlay } = usePiecesInPlay();
+  const gameProgressContext = useContext(GameProgressContext);
+  if (!gameProgressContext) {
+    throw new Error('GameProgressContext must be used within a GameProgressProvider');
+  }
+  const { isLevelCompleted } = gameProgressContext;
+  const boardSquaresContext = useContext(BoardSquaresContext);
+  if (!boardSquaresContext) {
+    throw new Error('BoardSquaresContext must be used within a BoardSquaresProvider');
+  }
+  const { checkIfPassedLevel } = boardSquaresContext;
+  const piecesInPlayContext = useContext(PiecesInPlayContext);
+  if (!piecesInPlayContext) {
+    throw new Error('PiecesInPlayContext must be used within a PiecesInPlayProvider');
+  }
+  const { piecesInPlay } = piecesInPlayContext;
   const [isRotating, setIsRotating] = useState(false);
   const [levelCompletedShown, setLevelCompletedShown] = useState(false);
 
