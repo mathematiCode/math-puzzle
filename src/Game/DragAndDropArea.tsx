@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import {
   DndContext,
   useSensor,
@@ -15,7 +14,7 @@ import { Piece } from '../types/piece';
 import { useSelectedPiece } from '../context/SelectedPiece';
 import { convertLocationToXAndY, rateDroppability } from './utils/utilities';
 import Hotjar from '@hotjar/browser';
-import { BoardSquaresContext } from '../context/BoardSquares';
+import { useBoardSquares } from '../context/BoardSquares';
 import { getNewValidLocation } from './utils/getNewValidLocation';
 interface DragAndDropAreaProps {
   children: React.ReactNode;
@@ -33,19 +32,13 @@ function DragAndDropArea({
   const { setSelectedPiece } = useSelectedPiece();
   // const { sizeOfEachUnit } = useCurrentLevel();
   const { piecesInPlay, movePiece, setPieceStability } = usePiecesInPlay();
-  const boardSquaresContext = useContext(BoardSquaresContext);
-  if (!boardSquaresContext) {
-    throw new Error(
-      'DragAndDropArea must be used within a BoardSquaresProvider'
-    );
-  }
   const {
     boardSquares,
     addPieceToBoard,
     removePieceFromBoard,
     getUnstablePieces,
     countOverlappingSquares,
-  } = boardSquaresContext;
+  } = useBoardSquares();
 
   function compareCollisionRects(
     { data: { value: a } }: { data: { value: number } },

@@ -3,12 +3,12 @@ import { describe, it, expect, vi } from 'vitest';
 import '@testing-library/react';
 import React from 'react';
 import { render, act } from '@testing-library/react';
-import { BoardSquaresProvider, BoardSquaresContext } from './BoardSquares';
+import { BoardSquaresProvider, useBoardSquares } from './BoardSquares';
 import { CurrentLevelContext } from './CurrentLevel';
 import { getInitialBoardSquares } from '../Game/utils/getInitialBoardSquares';
 
 function TestConsumer({ callback }: { callback: (ctx: any) => void }) {
-  const ctx = React.useContext(BoardSquaresContext);
+  const ctx = useBoardSquares();
   React.useEffect(() => {
     if (ctx) callback(ctx);
     // eslint-disable-next-line

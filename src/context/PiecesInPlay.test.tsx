@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { PiecesInPlayProvider, usePiecesInPlay } from './PiecesInPlay';
 import { CurrentLevelContext } from './CurrentLevel';

@@ -3,10 +3,9 @@ import Button from './Button';
 import InstructionsModal from '../Game/Instructions/InstructionsModal';
 import { ChevronLeft, ChevronRight, RotateCcw } from 'lucide-react';
 import { Piece } from '../types/piece';
-import { useContext } from 'react';
 import { getInitialPieces } from '../Game/utils/getInitialPieces';
 import { usePiecesInPlay } from '../context/PiecesInPlay';
-import { BoardSquaresContext } from '../context/BoardSquares';
+import { useBoardSquares } from '../context/BoardSquares';
 import { useGameProgress } from '../context/GameProgress';
 import { useMediaQuery } from '@chakra-ui/react';
 import { useCurrentLevel } from '../context/CurrentLevel';
@@ -30,13 +29,7 @@ const LevelControls = ({
   const piecesInPlayContext = usePiecesInPlay();
   const { piecesInPlay, resetPieces, setPiecesForNewLevel } =
     piecesInPlayContext;
-  const boardSquaresContext = useContext(BoardSquaresContext);
-  if (!boardSquaresContext) {
-    throw new Error(
-      'BoardSquaresContext must be used within a BoardSquaresProvider'
-    );
-  }
-  const { resetBoardSquares } = boardSquaresContext;
+  const { resetBoardSquares } = useBoardSquares();
   const { resetProgress } = useGameProgress();
   async function setToPrevious() {
     await previousLevel();

@@ -1,9 +1,8 @@
-import { useContext, cloneElement } from 'react';
+import { cloneElement } from 'react';
 import { Tooltip } from 'antd';
 import { motion } from 'motion/react';
 import * as Popover from '@radix-ui/react-popover';
 import styled from 'styled-components';
-import { useSelectedPiece } from '../../context/SelectedPiece';
 import { usePiecesInPlay } from '../../context/PiecesInPlay';
 import { useCurrentPiece } from '../../hooks/useCurrentPiece';
 import AnimatedLottieIcon from '../../components/AnimatedLottieIcon';
@@ -13,9 +12,6 @@ import verticalStretchAnimation from '../../assets/icons-animation/vertical-stre
 import cutAnimation from '../../assets/icons-animation/cut-tool.json';
 import combineAnimation from '../../assets/icons-animation/combine-tool.json';
 import Hotjar from '@hotjar/browser';
-import { convertLocationToXAndY } from '../utils/utilities';
-import { BoardSquaresContext } from '../../context/BoardSquares';
-import { getNewValidLocation } from '../utils/getNewValidLocation';
 import { usePieceLocationHandler } from './usePieceLocationHandler';
 
 function ActionsToolbarPopover({
@@ -30,7 +26,6 @@ function ActionsToolbarPopover({
   /* Cloning the children is necessary for the popover to position correctly when pieces are positioned absolutely on the board. */
   const childrenWithDelegatedProps = cloneElement(children, delegated);
   const { updateDimensions, movePiece } = usePiecesInPlay();
-  const { selectedPiece } = useSelectedPiece();
   const currentPiece = useCurrentPiece();
   const showTooltips = false;
   const { updateLocationAndBoardSquares } = usePieceLocationHandler();

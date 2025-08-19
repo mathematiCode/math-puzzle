@@ -219,3 +219,15 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
     </BoardSquaresContext.Provider>
   );
 }
+
+export const useBoardSquares = () => {
+  const context = useContext<BoardSquaresContextType | null>(
+    BoardSquaresContext
+  );
+  if (!context) {
+    throw new Error(
+      'useBoardSquares must be used within a BoardSquaresProvider'
+    );
+  }
+  return context;
+};

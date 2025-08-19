@@ -10,7 +10,7 @@ import { convertLocationToXAndY } from '../Game/utils/utilities';
 import { getNewValidLocation } from '../Game/utils/getNewValidLocation';
 import levels from '../Game/levels.json' with { type: 'json' };
 import Hotjar from '@hotjar/browser';
-import { BoardSquaresContext, BoardSquaresContextType } from './BoardSquares';
+import { useBoardSquares } from './BoardSquares';
 
 export interface PiecesInPlayContextType {
   piecesInPlay: Piece[];
@@ -32,11 +32,7 @@ export function PiecesInPlayProvider({
 }) {
   const { initialPieces, boardDimensions, currentLevel } =
     useContext<CurrentLevelContextType>(CurrentLevelContext);
-  const boardSquaresContext = useContext<BoardSquaresContextType | null>(BoardSquaresContext);
-  if (!boardSquaresContext) {
-    throw new Error('BoardSquaresContext must be used within a BoardSquaresProvider');
-  }
-  const { countOverlappingSquares } = boardSquaresContext;
+  const { countOverlappingSquares } = useBoardSquares();
   const [piecesInPlay, setPiecesInPlay] = useLocalStorageState<Piece[]>(
     'piecesInPlay', {
     defaultValue: initialPieces

@@ -2,19 +2,16 @@ import { useDraggable } from '@dnd-kit/core';
 import { mergeRefs } from '@chakra-ui/react';
 import Rectangle from '../Rectangle';
 import ActionsToolbarPopover from '../ActionsToolbar/ActionsToolbarPopover';
-import { memo, useContext } from 'react';
+import { memo } from 'react';
 import { motion, useAnimate, HTMLMotionProps } from 'motion/react';
 import styled from 'styled-components';
 import { convertLocationToXAndY } from '../utils/utilities';
 import { Piece } from '../../types/piece';
-import {
-  SelectedPieceContext,
-  SelectedPieceContextType,
-} from '../../context/SelectedPiece';
+import { useSelectedPiece } from '../../context/SelectedPiece';
 import { usePiecesInPlay } from '../../context/PiecesInPlay';
 import { useCurrentLevel } from '../../context/CurrentLevel';
+import { useBoardSquares } from '../../context/BoardSquares';
 import Hotjar from '@hotjar/browser';
-import { BoardSquaresContext } from '../../context/BoardSquares';
 import { getNewValidLocation } from '../utils/getNewValidLocation';
 import { getRandomVibrationAnimation } from '../utils/getRandomVibrationAnimation';
 
@@ -58,18 +55,12 @@ function PieceOnBoard({
   setIsRotating: (isRotating: boolean) => void;
 }) {
   const isStable = piece.isStable;
-  const selectedPieceContext = useContext(SelectedPieceContext);
   const { piecesInPlay, updateDimensions, movePiece } = usePiecesInPlay();
   const currentLevelContext = useCurrentLevel();
-  const boardSquaresContext = useContext(BoardSquaresContext);
 
-  if (!selectedPieceContext || !boardSquaresContext) {
-    throw new Error('PieceOnBoard must be used within all required providers');
-  }
-
-  const { selectedPiece, setSelectedPiece } = selectedPieceContext;
+  const { selectedPiece, setSelectedPiece } = useSelectedPiece();
   const { boardDimensions } = currentLevelContext;
-  const { addPieceToBoard, removePieceFromBoard } = boardSquaresContext;
+  const { addPieceToBoard, removePieceFromBoard } = useBoardSquares();
   const [scope, animate] = useAnimate();
 
   const { x, y } = convertLocationToXAndY(piece.location);
