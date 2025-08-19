@@ -11,16 +11,10 @@ import {
   SelectedPieceContext,
   SelectedPieceContextType,
 } from '../../context/SelectedPiece';
-import {
-  PiecesInPlayContext,
-  PiecesInPlayContextType,
-} from '../../context/PiecesInPlay';
+import { usePiecesInPlay } from '../../context/PiecesInPlay';
 import { useCurrentLevel } from '../../context/CurrentLevel';
 import Hotjar from '@hotjar/browser';
-import {
-  BoardSquaresContext,
-  BoardSquaresContextType,
-} from '../../context/BoardSquares';
+import { BoardSquaresContext } from '../../context/BoardSquares';
 import { getNewValidLocation } from '../utils/getNewValidLocation';
 import { getRandomVibrationAnimation } from '../utils/getRandomVibrationAnimation';
 
@@ -65,16 +59,15 @@ function PieceOnBoard({
 }) {
   const isStable = piece.isStable;
   const selectedPieceContext = useContext(SelectedPieceContext);
-  const piecesInPlayContext = useContext(PiecesInPlayContext);
+  const { piecesInPlay, updateDimensions, movePiece } = usePiecesInPlay();
   const currentLevelContext = useCurrentLevel();
   const boardSquaresContext = useContext(BoardSquaresContext);
 
-  if (!selectedPieceContext || !piecesInPlayContext || !boardSquaresContext) {
+  if (!selectedPieceContext || !boardSquaresContext) {
     throw new Error('PieceOnBoard must be used within all required providers');
   }
 
   const { selectedPiece, setSelectedPiece } = selectedPieceContext;
-  const { piecesInPlay, updateDimensions, movePiece } = piecesInPlayContext;
   const { boardDimensions } = currentLevelContext;
   const { addPieceToBoard, removePieceFromBoard } = boardSquaresContext;
   const [scope, animate] = useAnimate();

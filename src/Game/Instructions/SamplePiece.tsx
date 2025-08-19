@@ -1,11 +1,11 @@
 // @ts-nocheck
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import Rectangle from '../Rectangle';
 import ActionsToolbarPopover from '../ActionsToolbar/ActionsToolbarPopover';
 import { motion, useAnimate } from 'motion/react';
 import { useSelectedPiece } from '../../context/SelectedPiece';
-import { PiecesInPlayContext } from '../../context/PiecesInPlay';
+import { usePiecesInPlay } from '../../context/PiecesInPlay';
 import { Piece } from '../../types/piece';
 import styled from 'styled-components';
 import { mergeRefs } from '@chakra-ui/react';
@@ -26,7 +26,7 @@ const SamplePiece = ({
 }) => {
   const { selectedPiece, setSelectedPiece } = useSelectedPiece();
   const [scope, animate] = useAnimate();
-  const { updateDimensions } = useContext(PiecesInPlayContext);
+  const { updateDimensions } = usePiecesInPlay();
 
   function handlePieceSelected() {
     setSelectedPiece(piece);

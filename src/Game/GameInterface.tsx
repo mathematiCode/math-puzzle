@@ -17,7 +17,7 @@ import { DragOverlay } from '@dnd-kit/core';
 import { useCurrentLevel } from '../context/CurrentLevel';
 import { useGameProgress } from '../context/GameProgress';
 import { BoardSquaresContext } from '../context/BoardSquares';
-import { PiecesInPlayContext } from '../context/PiecesInPlay';
+import { usePiecesInPlay } from '../context/PiecesInPlay';
 import { Piece } from '../types/piece';
 import Hotjar from '@hotjar/browser';
 
@@ -34,11 +34,7 @@ function Game() {
     throw new Error('BoardSquaresContext must be used within a BoardSquaresProvider');
   }
   const { checkIfPassedLevel } = boardSquaresContext;
-  const piecesInPlayContext = useContext(PiecesInPlayContext);
-  if (!piecesInPlayContext) {
-    throw new Error('PiecesInPlayContext must be used within a PiecesInPlayProvider');
-  }
-  const { piecesInPlay } = piecesInPlayContext;
+  const { piecesInPlay } = usePiecesInPlay();
   const [isRotating, setIsRotating] = useState(false);
   const [levelCompletedShown, setLevelCompletedShown] = useState(false);
 

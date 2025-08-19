@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 import * as Popover from '@radix-ui/react-popover';
 import styled from 'styled-components';
 import { useSelectedPiece } from '../../context/SelectedPiece';
-import { PiecesInPlayContext } from '../../context/PiecesInPlay';
+import { usePiecesInPlay } from '../../context/PiecesInPlay';
 import { useCurrentPiece } from '../../hooks/useCurrentPiece';
 import AnimatedLottieIcon from '../../components/AnimatedLottieIcon';
 import rotateToolAnimation from '../../assets/icons-animation/rotate-tool.json';
@@ -29,13 +29,7 @@ function ActionsToolbarPopover({
 }) {
   /* Cloning the children is necessary for the popover to position correctly when pieces are positioned absolutely on the board. */
   const childrenWithDelegatedProps = cloneElement(children, delegated);
-  const context = useContext(PiecesInPlayContext);
-  if (!context) {
-    throw new Error(
-      'ActionsToolbarPopover must be used within a PiecesInPlayProvider'
-    );
-  }
-  const { updateDimensions, movePiece } = context;
+  const { updateDimensions, movePiece } = usePiecesInPlay();
   const { selectedPiece } = useSelectedPiece();
   const currentPiece = useCurrentPiece();
   const showTooltips = false;

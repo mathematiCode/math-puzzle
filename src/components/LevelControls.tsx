@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight, RotateCcw } from 'lucide-react';
 import { Piece } from '../types/piece';
 import { useContext } from 'react';
 import { getInitialPieces } from '../Game/utils/getInitialPieces';
-import { PiecesInPlayContext } from '../context/PiecesInPlay';
+import { usePiecesInPlay } from '../context/PiecesInPlay';
 import { BoardSquaresContext } from '../context/BoardSquares';
 import { useGameProgress } from '../context/GameProgress';
 import { useMediaQuery } from '@chakra-ui/react';
@@ -27,12 +27,7 @@ const LevelControls = ({
   setActivePiece,
 }: LevelControlsProps) => {
   const { currentLevel, previousLevel, nextLevel } = useCurrentLevel();
-  const piecesInPlayContext = useContext(PiecesInPlayContext);
-  if (!piecesInPlayContext) {
-    throw new Error(
-      'PiecesInPlayContext must be used within a PiecesInPlayProvider'
-    );
-  }
+  const piecesInPlayContext = usePiecesInPlay();
   const { piecesInPlay, resetPieces, setPiecesForNewLevel } =
     piecesInPlayContext;
   const boardSquaresContext = useContext(BoardSquaresContext);

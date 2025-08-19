@@ -10,7 +10,7 @@ import {
 } from '@dnd-kit/core';
 import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core';
 // import { createSnapModifier } from '@dnd-kit/modifiers';
-import { PiecesInPlayContext } from '../context/PiecesInPlay';
+import { usePiecesInPlay } from '../context/PiecesInPlay';
 import { Piece } from '../types/piece';
 import { useSelectedPiece } from '../context/SelectedPiece';
 import { convertLocationToXAndY, rateDroppability } from './utils/utilities';
@@ -32,14 +32,7 @@ function DragAndDropArea({
 }: DragAndDropAreaProps) {
   const { setSelectedPiece } = useSelectedPiece();
   // const { sizeOfEachUnit } = useCurrentLevel();
-  const context = useContext(PiecesInPlayContext);
-  if (!context) {
-    throw new Error(
-      'DragAndDropArea must be used within a PiecesInPlayProvider'
-    );
-  }
-
-  const { piecesInPlay, movePiece, setPieceStability } = context;
+  const { piecesInPlay, movePiece, setPieceStability } = usePiecesInPlay();
   const boardSquaresContext = useContext(BoardSquaresContext);
   if (!boardSquaresContext) {
     throw new Error(

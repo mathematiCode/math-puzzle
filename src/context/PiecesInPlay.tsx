@@ -197,3 +197,11 @@ export function PiecesInPlayProvider({
     </PiecesInPlayContext.Provider>
   );
 }
+
+export const usePiecesInPlay = () => {
+  const context = useContext<PiecesInPlayContextType | null>(PiecesInPlayContext);
+  if (!context) {
+    throw new Error('usePiecesInPlay must be used within a PiecesInPlayProvider');
+  }
+  return context;
+};

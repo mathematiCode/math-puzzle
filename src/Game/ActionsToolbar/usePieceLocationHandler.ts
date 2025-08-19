@@ -13,7 +13,7 @@ export function usePieceLocationHandler() {
       'UpdateLocationAndBoardSquares must be used within a BoardSquaresProvider'
     );
   }
-  // const piecesInPlayContext = useContext(PiecesInPlayContext);
+  // const piecesInPlayContext = usePiecesInPlay();
   // if (!piecesInPlayContext) {
   //   throw new Error(
   //     'UpdateLocationAndBoardSquares must be used within a PiecesInPlayProvider'

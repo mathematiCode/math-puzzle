@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { PiecesInPlayProvider, PiecesInPlayContext } from './PiecesInPlay';
+import { PiecesInPlayProvider, usePiecesInPlay } from './PiecesInPlay';
 import { CurrentLevelContext } from './CurrentLevel';
 import { BoardSquaresContext } from './BoardSquares';
 import { Piece } from '../types/piece';
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 
 // Mock dependencies
 vi.mock('@hotjar/browser', () => ({
@@ -36,7 +36,7 @@ vi.mock('../Game/utils/getNewValidLocation', () => ({
 
 // Test component to access context
 function TestComponent({ onContext }: { onContext: (context: any) => void }) {
-  const context = useContext(PiecesInPlayContext);
+  const context = usePiecesInPlay();
   useEffect(() => {
     if (context) {
       onContext(context);
