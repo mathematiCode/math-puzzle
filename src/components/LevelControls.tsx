@@ -8,7 +8,7 @@ import { useContext } from 'react';
 import { getInitialPieces } from '../Game/utils/getInitialPieces';
 import { PiecesInPlayContext } from '../context/PiecesInPlay';
 import { BoardSquaresContext } from '../context/BoardSquares';
-import { GameProgressContext } from '../context/GameProgress';
+import { useGameProgress } from '../context/GameProgress';
 import { useMediaQuery } from '@chakra-ui/react';
 
 interface LevelControlsProps {
@@ -43,17 +43,11 @@ const LevelControls = ({
     );
   }
   const { resetBoardSquares } = boardSquaresContext;
-  const gameProgressContext = useContext(GameProgressContext);
-  if (!gameProgressContext) {
-    throw new Error(
-      'GameProgressContext must be used within a GameProgressProvider'
-    );
-  }
+  const { resetProgress } = useGameProgress();
   async function setToPrevious() {
     await previousLevel();
     const newPieces = getInitialPieces(currentLevel - 1);
     await setPiecesForNewLevel(newPieces);
-    //await setSizeOfEachUnit(currentLevel - 1);
     await resetBoardSquares(currentLevel - 1);
     setLevelCompletedShown(false);
   }
@@ -62,7 +56,6 @@ const LevelControls = ({
     await nextLevel();
     const newPieces = getInitialPieces(currentLevel + 1);
     await setPiecesForNewLevel(newPieces);
-    //await setSizeOfEachUnit(currentLevel + 1);
     await resetBoardSquares(currentLevel + 1);
     setLevelCompletedShown(false);
   }

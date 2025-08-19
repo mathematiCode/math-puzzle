@@ -15,7 +15,7 @@ import { DragOverlay } from '@dnd-kit/core';
 // import { useGameProgress } from '../context/GameProgress';
 // import { useBoardSquares } from '../context/BoardSquares';
 import { CurrentLevelContext } from '../context/CurrentLevel';
-import { GameProgressContext } from '../context/GameProgress';
+import { useGameProgress } from '../context/GameProgress';
 import { BoardSquaresContext } from '../context/BoardSquares';
 import { PiecesInPlayContext } from '../context/PiecesInPlay';
 import { Piece } from '../types/piece';
@@ -28,11 +28,7 @@ function Game() {
     levelPosition,
     } = useContext(CurrentLevelContext);
   const [activePiece, setActivePiece] = useState<Piece | null>(null);
-  const gameProgressContext = useContext(GameProgressContext);
-  if (!gameProgressContext) {
-    throw new Error('GameProgressContext must be used within a GameProgressProvider');
-  }
-  const { isLevelCompleted } = gameProgressContext;
+  const { isLevelCompleted } = useGameProgress();
   const boardSquaresContext = useContext(BoardSquaresContext);
   if (!boardSquaresContext) {
     throw new Error('BoardSquaresContext must be used within a BoardSquaresProvider');
@@ -162,6 +158,7 @@ export const PiecesContainer = styled(motion.div).attrs({
   line-height: 0;
   margin-inline: 10px;
   padding: 18px;
+  background-color: transparent;
 
   @media (max-width: 750px) {
     max-height: 40vh;
