@@ -8,6 +8,7 @@ import {
   LevelProgressContextType,
 } from './LevelProgress';
 import Hotjar from '@hotjar/browser';
+import useLocalStorageState from 'use-local-storage-state';
 
 export type BoardSquaresContextType = {
   boardSquares: string[][];
@@ -52,8 +53,11 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
     );
   }
   const { setLevelCompleted } = levelProgressContext;
-  const [boardSquares, setBoardSquares] = useState<string[][]>(
-    getInitialBoardSquares(currentLevel)
+  const [boardSquares, setBoardSquares] = useLocalStorageState<string[][]>(
+    'boardSquares',
+    {
+      defaultValue: getInitialBoardSquares(currentLevel),
+    }
   );
   const boardWidth = levels[currentLevel].dimensions.width;
   const boardHeight = levels[currentLevel].dimensions.height;
