@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 import levels from '../Game/levels.json';
 import { getInitialBoardSquares } from '../Game/utils/getInitialBoardSquares';
-import { CurrentLevelContext } from './CurrentLevel';
+import { useCurrentLevel } from './CurrentLevel';
 import { convertLocationToXAndY } from '../Game/utils/utilities';
 import { useGameProgress } from './GameProgress';
 import Hotjar from '@hotjar/browser';
@@ -42,7 +42,7 @@ export const BoardSquaresContext =
   createContext<BoardSquaresContextType | null>(null);
 
 export function BoardSquaresProvider({ children }: { children: ReactNode }) {
-  const { currentLevel } = useContext(CurrentLevelContext);
+  const { currentLevel } = useCurrentLevel();
   const { setLevelCompleted } = useGameProgress();
   const [boardSquares, setBoardSquares] = useLocalStorageState<string[][]>(
     'boardSquares',

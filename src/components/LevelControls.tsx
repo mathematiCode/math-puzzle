@@ -3,13 +3,13 @@ import Button from './Button';
 import InstructionsModal from '../Game/Instructions/InstructionsModal';
 import { ChevronLeft, ChevronRight, RotateCcw } from 'lucide-react';
 import { Piece } from '../types/piece';
-import { CurrentLevelContext } from '../context/CurrentLevel';
 import { useContext } from 'react';
 import { getInitialPieces } from '../Game/utils/getInitialPieces';
 import { PiecesInPlayContext } from '../context/PiecesInPlay';
 import { BoardSquaresContext } from '../context/BoardSquares';
 import { useGameProgress } from '../context/GameProgress';
 import { useMediaQuery } from '@chakra-ui/react';
+import { useCurrentLevel } from '../context/CurrentLevel';
 
 interface LevelControlsProps {
   levelPosition: string;
@@ -26,8 +26,7 @@ const LevelControls = ({
   setIsRotating,
   setActivePiece,
 }: LevelControlsProps) => {
-  const { currentLevel, previousLevel, nextLevel } =
-    useContext(CurrentLevelContext);
+  const { currentLevel, previousLevel, nextLevel } = useCurrentLevel();
   const piecesInPlayContext = useContext(PiecesInPlayContext);
   if (!piecesInPlayContext) {
     throw new Error(

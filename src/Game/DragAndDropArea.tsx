@@ -31,7 +31,7 @@ function DragAndDropArea({
   setIsRotating,
 }: DragAndDropAreaProps) {
   const { setSelectedPiece } = useSelectedPiece();
-  // const { sizeOfEachUnit } = useContext(CurrentLevelContext);
+  // const { sizeOfEachUnit } = useCurrentLevel();
   const context = useContext(PiecesInPlayContext);
   if (!context) {
     throw new Error(

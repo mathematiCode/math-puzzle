@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { ComponentProps, forwardRef, useContext } from 'react';
 //import { PiecesInPlayContext } from '../context/PiecesInPlay';
-import { CurrentLevelContext } from '../context/CurrentLevel';
+import { useCurrentLevel } from '../context/CurrentLevel';
 
 interface UnitProps extends ComponentProps<'div'> {
   color?: string;
@@ -47,7 +47,7 @@ export const BasicUnit = styled.div<{
 
 export const Unit = forwardRef<HTMLDivElement, UnitProps>(
   ({ color, isExample, unitSize, ...delegated }, ref) => {
-    const { sizeOfEachUnit } = useContext(CurrentLevelContext);
+    const { sizeOfEachUnit } = useCurrentLevel();
     return (
       <BasicUnit
         {...delegated}
@@ -74,7 +74,7 @@ export const MotionUnit = ({
   isExample?: boolean;
   ref?: HTMLElement;
 }) => {
-  const { sizeOfEachUnit } = useContext(CurrentLevelContext);
+  const { sizeOfEachUnit } = useCurrentLevel();
   return (
     <StyledMotionUnit
       layout={layout}

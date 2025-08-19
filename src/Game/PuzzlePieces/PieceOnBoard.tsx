@@ -15,10 +15,7 @@ import {
   PiecesInPlayContext,
   PiecesInPlayContextType,
 } from '../../context/PiecesInPlay';
-import {
-  CurrentLevelContext,
-  CurrentLevelContextType,
-} from '../../context/CurrentLevel';
+import { useCurrentLevel } from '../../context/CurrentLevel';
 import Hotjar from '@hotjar/browser';
 import {
   BoardSquaresContext,
@@ -69,7 +66,7 @@ function PieceOnBoard({
   const isStable = piece.isStable;
   const selectedPieceContext = useContext(SelectedPieceContext);
   const piecesInPlayContext = useContext(PiecesInPlayContext);
-  const currentLevelContext = useContext(CurrentLevelContext);
+  const currentLevelContext = useCurrentLevel();
   const boardSquaresContext = useContext(BoardSquaresContext);
 
   if (!selectedPieceContext || !piecesInPlayContext || !boardSquaresContext) {

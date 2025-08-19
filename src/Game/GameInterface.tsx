@@ -14,7 +14,7 @@ import { DragOverlay } from '@dnd-kit/core';
 // import { useCurrentLevel } from '../context/CurrentLevel';
 // import { useGameProgress } from '../context/GameProgress';
 // import { useBoardSquares } from '../context/BoardSquares';
-import { CurrentLevelContext } from '../context/CurrentLevel';
+import { useCurrentLevel } from '../context/CurrentLevel';
 import { useGameProgress } from '../context/GameProgress';
 import { BoardSquaresContext } from '../context/BoardSquares';
 import { PiecesInPlayContext } from '../context/PiecesInPlay';
@@ -26,7 +26,7 @@ function Game() {
     currentLevel,
     levelId,
     levelPosition,
-    } = useContext(CurrentLevelContext);
+    } = useCurrentLevel();
   const [activePiece, setActivePiece] = useState<Piece | null>(null);
   const { isLevelCompleted } = useGameProgress();
   const boardSquaresContext = useContext(BoardSquaresContext);

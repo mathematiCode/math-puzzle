@@ -1,4 +1,4 @@
-import { createContext, useState, type ReactNode } from 'react';
+import { createContext, useContext, type ReactNode } from 'react';
 import useLocalStorageState from 'use-local-storage-state';
 import levels from '../Game/levels.json' with { type: 'json' };
 import { colors } from '../CONSTANTS';
@@ -150,4 +150,14 @@ export function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
       {children}
     </CurrentLevelContext.Provider>
   );
+}
+
+export const useCurrentLevel = () => {
+  const context = useContext(CurrentLevelContext);
+  if (!context) {
+    throw new Error(
+      'useCurrentLevel must be used within a CurrentLevelProvider'
+    );
+  }
+  return context;
 }
