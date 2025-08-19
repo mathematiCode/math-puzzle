@@ -12,20 +12,18 @@ import styled from 'styled-components';
 import { DragOverlay } from '@dnd-kit/core';
 import { PiecesInPlayContext } from '../context/PiecesInPlay';
 import { CurrentLevelContext } from '../context/CurrentLevel';
-import { getInitialPieces } from '../Game/utils/getInitialPieces';
 import { LevelProgressContext } from '../context/LevelProgress';
 import { Piece } from '../types/piece';
 import { BoardSquaresContext } from '../context/BoardSquares';
 import Hotjar from '@hotjar/browser';
 import ErrorBoundary from '../components/ErrorBoundary';
+import { SelectedPieceProvider } from '../context/SelectedPiece';
 
 function Game() {
   const {
     currentLevel,
     levelId,
     levelPosition,
-    previousLevel,
-    nextLevel,
   } = useContext(CurrentLevelContext);
   const [activePiece, setActivePiece] = useState<Piece | null>(null);
   const levelProgressContext = useContext(LevelProgressContext);
@@ -37,7 +35,7 @@ function Game() {
   if (!boardSquaresContext) {
     throw new Error('BoardSquaresContext must be used within a BoardSquaresProvider');
   }
-  const { resetBoardSquares, checkIfPassedLevel } = boardSquaresContext;
+  const { checkIfPassedLevel } = boardSquaresContext;
   const piecesInPlayContext = useContext(PiecesInPlayContext);
   if (!piecesInPlayContext) {
     throw new Error('PiecesInPlayContext must be used within a PiecesInPlayProvider');
@@ -52,6 +50,7 @@ function Game() {
 
   return (
     <>
+      <SelectedPieceProvider>
         <ErrorBoundary>
       <Main id='main'>
       <DragAndDropArea data-testid='drag-and-drop-area'
@@ -106,7 +105,8 @@ function Game() {
         levelCompletedShown={levelCompletedShown}
         onClose={handleCloseModal}
       />
-      </ErrorBoundary>
+        </ErrorBoundary>
+        </SelectedPieceProvider>
         </>
   );
 }

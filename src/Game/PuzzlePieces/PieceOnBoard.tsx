@@ -95,13 +95,20 @@ function PieceOnBoard({
   3. There is additional logic for PieceOnBoard rotations to adjust the piece location after the rotation to make it appear to rotate around the center. 
   */
   async function runRotationAnimation(selectedPiece: Piece) {
-    const { x, y } = convertLocationToXAndY(selectedPiece.location);
-    const oldWidth = selectedPiece.width;
-    const oldHeight = selectedPiece.height;
+    // Get the current piece from PiecesInPlay to ensure we have up-to-date dimensions
+    const currentPiece = piecesInPlay.find(p => p.id === selectedPiece.id);
+    if (!currentPiece) {
+      console.error('Current piece not found in PiecesInPlay');
+      return;
+    }
+
+    const { x, y } = convertLocationToXAndY(currentPiece.location);
+    const oldWidth = currentPiece.width;
+    const oldHeight = currentPiece.height;
     const newWidth = oldHeight;
     const newHeight = oldWidth;
     const { boardWidth, boardHeight } = boardDimensions;
-    removePieceFromBoard(x, y, oldWidth, oldHeight, selectedPiece.id);
+    removePieceFromBoard(x, y, oldWidth, oldHeight, currentPiece.id);
 
     setIsRotating(true);
     try {
@@ -133,7 +140,7 @@ function PieceOnBoard({
         correctedY,
         newWidth,
         newHeight,
-        selectedPiece.id
+        currentPiece.id
       );
     }
     Hotjar.event('rotation');

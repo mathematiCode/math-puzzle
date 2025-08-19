@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { PiecesInPlayProvider } from './context/PiecesInPlay';
-import { SelectedPieceProvider } from './context/SelectedPiece';
 import { CurrentLevelProvider } from './context/CurrentLevel';
 import { BoardSquaresProvider } from './context/BoardSquares';
 import { LevelProgressProvider } from './context/LevelProgress';
@@ -16,9 +15,7 @@ createRoot(document.getElementById('root') as HTMLElement).render(
         <LevelProgressProvider>
           <BoardSquaresProvider>
             <PiecesInPlayProvider>
-              <SelectedPieceProvider>
-                <App />
-              </SelectedPieceProvider>
+              <App />
             </PiecesInPlayProvider>
           </BoardSquaresProvider>
         </LevelProgressProvider>

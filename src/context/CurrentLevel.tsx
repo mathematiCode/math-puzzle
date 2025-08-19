@@ -1,4 +1,5 @@
 import { createContext, useState, type ReactNode } from 'react';
+import useLocalStorageState from 'use-local-storage-state';
 import levels from '../Game/levels.json' with { type: 'json' };
 import { colors } from '../CONSTANTS';
 export const CurrentLevelContext = createContext<CurrentLevelContextType>(
@@ -51,7 +52,9 @@ function getInitialPieces(level: number) {
 }
 
 export function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
-  const [currentLevel, setCurrentLevel] = useState(0);
+  const [currentLevel, setCurrentLevel] = useLocalStorageState('currentLevel', {
+    defaultValue: 1
+  });
 
   const boardDimensions = {
     boardWidth: levels[currentLevel].dimensions.width,

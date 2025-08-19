@@ -44,7 +44,8 @@ const SamplePiece = ({
         { rotate: 90 },
         { type: 'spring', stiffness: 150, damping: 11 }
       );
-      updateDimensions('sample-0', selectedPiece.height, selectedPiece.width);
+      // Use the current piece dimensions from the piece prop instead of selectedPiece
+      updateDimensions('sample-0', piece.height, piece.width);
       await animate(scope.current, { rotate: 0 }, { duration: 0 });
     } finally {
       setIsRotating(false);

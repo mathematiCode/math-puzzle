@@ -1,4 +1,5 @@
 import { createContext, useState, useContext } from 'react';
+import useLocalStorageState from 'use-local-storage-state';
 import {
   CurrentLevelContext,
   CurrentLevelContextType,
@@ -36,9 +37,12 @@ export function PiecesInPlayProvider({
     throw new Error('BoardSquaresContext must be used within a BoardSquaresProvider');
   }
   const { countOverlappingSquares } = boardSquaresContext;
-  const [piecesInPlay, setPiecesInPlay] = useState<Piece[]>(
-    initialPieces
-  );
+  const [piecesInPlay, setPiecesInPlay] = useLocalStorageState<Piece[]>(
+    'piecesInPlay', {
+    defaultValue: initialPieces
+  });
+  //const [piecesInPlay, setPiecesInPlay] = useState<Piece[]>(initialPieces);
+  console.log(piecesInPlay);
   const { boardWidth, boardHeight } = boardDimensions;
 
   function movePiece(pieceId: string, newLocation: string | null) {
@@ -99,6 +103,7 @@ export function PiecesInPlayProvider({
       setPiecesInPlay(updatedPieces);
       return;
     }
+    console.log(`updating to ${newWidth}x${newHeight}`)
     if (newWidth > boardWidth || newHeight > boardHeight) {
       setPieceStability(`b-${pieceIndex}`, false);
     } else {
