@@ -20,6 +20,7 @@ export type GameProgressContextType = {
   getTotalLevels: () => number;
   getCompletedLevels: () => number;
   resetProgress: () => void;
+  setPiecesSolution: (level: number, pieces: Piece[]) => void;
 };
 
 export const GameProgressContext =
@@ -62,6 +63,16 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
     return gameProgress.filter(level => level.completed).length;
   }
 
+  function setPiecesSolution(level: number, pieces: Piece[]): void {
+    setGameProgress(
+      gameProgress.map(gameProgress =>
+        gameProgress.level === level
+          ? { ...gameProgress, pieces }
+          : gameProgress
+      )
+    );
+  }
+
   function resetProgress(): void {
     setGameProgress(initialGameProgress);
   }
@@ -75,6 +86,7 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
         isLevelCompleted,
         getTotalLevels,
         getCompletedLevels,
+        setPiecesSolution,
         resetProgress,
       }}
     >
