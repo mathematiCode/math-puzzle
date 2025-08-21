@@ -1,11 +1,11 @@
 // @ts-nocheck
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import Rectangle from '../Rectangle';
 import ActionsToolbarPopover from '../ActionsToolbar/ActionsToolbarPopover';
 import { motion, useAnimate } from 'motion/react';
 import { useSelectedPiece } from '../../context/SelectedPiece';
-import { PiecesInPlayContext } from '../../context/PiecesInPlay';
+import { usePiecesInPlay } from '../../context/PiecesInPlay';
 import { Piece } from '../../types/piece';
 import styled from 'styled-components';
 import { mergeRefs } from '@chakra-ui/react';
@@ -28,7 +28,7 @@ const InitialPuzzlePiece = ({
 }) => {
   const { selectedPiece, setSelectedPiece } = useSelectedPiece();
   const [scope, animate] = useAnimate();
-  const { updateDimensions } = useContext(PiecesInPlayContext);
+  const { updateDimensions } = usePiecesInPlay();
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: piece.id,
   });
@@ -52,7 +52,9 @@ const InitialPuzzlePiece = ({
         { rotate: 90 },
         { type: 'spring', stiffness: 150, damping: 11 }
       );
-      updateDimensions(piece.id, selectedPiece.height, selectedPiece.width);
+      console.log(`selected piece to rotate is`, selectedPiece);
+      // Use the current piece dimensions from the piece prop instead of selectedPiece
+      updateDimensions(piece.id, piece.height, piece.width);
       await animate(scope.current, { rotate: 0 }, { duration: 0 });
     } finally {
       setIsRotating(false);

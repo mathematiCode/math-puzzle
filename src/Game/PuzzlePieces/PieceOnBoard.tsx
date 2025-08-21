@@ -2,28 +2,16 @@ import { useDraggable } from '@dnd-kit/core';
 import { mergeRefs } from '@chakra-ui/react';
 import Rectangle from '../Rectangle';
 import ActionsToolbarPopover from '../ActionsToolbar/ActionsToolbarPopover';
-import { memo, useContext } from 'react';
+import { memo } from 'react';
 import { motion, useAnimate, HTMLMotionProps } from 'motion/react';
 import styled from 'styled-components';
 import { convertLocationToXAndY } from '../utils/utilities';
 import { Piece } from '../../types/piece';
-import {
-  SelectedPieceContext,
-  SelectedPieceContextType,
-} from '../../context/SelectedPiece';
-import {
-  PiecesInPlayContext,
-  PiecesInPlayContextType,
-} from '../../context/PiecesInPlay';
-import {
-  CurrentLevelContext,
-  CurrentLevelContextType,
-} from '../../context/CurrentLevel';
+import { useSelectedPiece } from '../../context/SelectedPiece';
+import { usePiecesInPlay } from '../../context/PiecesInPlay';
+import { useCurrentLevel } from '../../context/CurrentLevel';
+import { useBoardSquares } from '../../context/BoardSquares';
 import Hotjar from '@hotjar/browser';
-import {
-  BoardSquaresContext,
-  BoardSquaresContextType,
-} from '../../context/BoardSquares';
 import { getNewValidLocation } from '../utils/getNewValidLocation';
 import { getRandomVibrationAnimation } from '../utils/getRandomVibrationAnimation';
 
@@ -67,19 +55,12 @@ function PieceOnBoard({
   setIsRotating: (isRotating: boolean) => void;
 }) {
   const isStable = piece.isStable;
-  const selectedPieceContext = useContext(SelectedPieceContext);
-  const piecesInPlayContext = useContext(PiecesInPlayContext);
-  const currentLevelContext = useContext(CurrentLevelContext);
-  const boardSquaresContext = useContext(BoardSquaresContext);
+  const { piecesInPlay, updateDimensions, movePiece } = usePiecesInPlay();
+  const currentLevelContext = useCurrentLevel();
 
-  if (!selectedPieceContext || !piecesInPlayContext || !boardSquaresContext) {
-    throw new Error('PieceOnBoard must be used within all required providers');
-  }
-
-  const { selectedPiece, setSelectedPiece } = selectedPieceContext;
-  const { piecesInPlay, updateDimensions, movePiece } = piecesInPlayContext;
+  const { selectedPiece, setSelectedPiece } = useSelectedPiece();
   const { boardDimensions } = currentLevelContext;
-  const { addPieceToBoard, removePieceFromBoard } = boardSquaresContext;
+  const { addPieceToBoard, removePieceFromBoard } = useBoardSquares();
   const [scope, animate] = useAnimate();
 
   const { x, y } = convertLocationToXAndY(piece.location);
@@ -95,13 +76,20 @@ function PieceOnBoard({
   3. There is additional logic for PieceOnBoard rotations to adjust the piece location after the rotation to make it appear to rotate around the center. 
   */
   async function runRotationAnimation(selectedPiece: Piece) {
-    const { x, y } = convertLocationToXAndY(selectedPiece.location);
-    const oldWidth = selectedPiece.width;
-    const oldHeight = selectedPiece.height;
+    // Get the current piece from PiecesInPlay to ensure we have up-to-date dimensions
+    const currentPiece = piecesInPlay.find(p => p.id === selectedPiece.id);
+    if (!currentPiece) {
+      console.error('Current piece not found in PiecesInPlay');
+      return;
+    }
+
+    const { x, y } = convertLocationToXAndY(currentPiece.location);
+    const oldWidth = currentPiece.width;
+    const oldHeight = currentPiece.height;
     const newWidth = oldHeight;
     const newHeight = oldWidth;
     const { boardWidth, boardHeight } = boardDimensions;
-    removePieceFromBoard(x, y, oldWidth, oldHeight, selectedPiece.id);
+    removePieceFromBoard(x, y, oldWidth, oldHeight, currentPiece.id);
 
     setIsRotating(true);
     try {
@@ -133,7 +121,7 @@ function PieceOnBoard({
         correctedY,
         newWidth,
         newHeight,
-        selectedPiece.id
+        currentPiece.id
       );
     }
     Hotjar.event('rotation');

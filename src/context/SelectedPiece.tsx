@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 import { Piece } from '../types/piece';
+import useLocalStorageState from 'use-local-storage-state';
 
 export type SelectedPieceContextType = {
   selectedPiece: Piece | null;

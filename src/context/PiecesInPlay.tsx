@@ -1,4 +1,5 @@
 import { createContext, useState, useContext } from 'react';
+import useLocalStorageState from 'use-local-storage-state';
 import {
   CurrentLevelContext,
   CurrentLevelContextType,
@@ -9,7 +10,7 @@ import { convertLocationToXAndY } from '../Game/utils/utilities';
 import { getNewValidLocation } from '../Game/utils/getNewValidLocation';
 import levels from '../Game/levels.json' with { type: 'json' };
 import Hotjar from '@hotjar/browser';
-import { BoardSquaresContext, BoardSquaresContextType } from './BoardSquares';
+import { useBoardSquares } from './BoardSquares';
 
 export interface PiecesInPlayContextType {
   piecesInPlay: Piece[];
@@ -31,14 +32,11 @@ export function PiecesInPlayProvider({
 }) {
   const { initialPieces, boardDimensions, currentLevel } =
     useContext<CurrentLevelContextType>(CurrentLevelContext);
-  const boardSquaresContext = useContext<BoardSquaresContextType | null>(BoardSquaresContext);
-  if (!boardSquaresContext) {
-    throw new Error('BoardSquaresContext must be used within a BoardSquaresProvider');
-  }
-  const { countOverlappingSquares } = boardSquaresContext;
-  const [piecesInPlay, setPiecesInPlay] = useState<Piece[]>(
-    initialPieces
-  );
+  const { countOverlappingSquares } = useBoardSquares();
+  const [piecesInPlay, setPiecesInPlay] = useLocalStorageState<Piece[]>(
+    'piecesInPlay', {
+    defaultValue: initialPieces
+  });
   const { boardWidth, boardHeight } = boardDimensions;
 
   function movePiece(pieceId: string, newLocation: string | null) {
@@ -99,6 +97,7 @@ export function PiecesInPlayProvider({
       setPiecesInPlay(updatedPieces);
       return;
     }
+    console.log(`updating to ${newWidth}x${newHeight}`)
     if (newWidth > boardWidth || newHeight > boardHeight) {
       setPieceStability(`b-${pieceIndex}`, false);
     } else {
@@ -141,9 +140,7 @@ export function PiecesInPlayProvider({
   }
 
   function setPieceStability(pieceId: string, isStable: boolean) {
-    // Skip the sample piece (instructions piece)
     if (pieceId === 'sample-0') {
-      console.log('skipping sample piece');
       return;
     }
     const iPattern = /^i-(\d+)$/;
@@ -192,3 +189,11 @@ export function PiecesInPlayProvider({
     </PiecesInPlayContext.Provider>
   );
 }
+
+export const usePiecesInPlay = () => {
+  const context = useContext<PiecesInPlayContextType | null>(PiecesInPlayContext);
+  if (!context) {
+    throw new Error('usePiecesInPlay must be used within a PiecesInPlayProvider');
+  }
+  return context;
+};

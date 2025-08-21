@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import {
   DndContext,
   useSensor,
@@ -9,14 +8,15 @@ import {
   rectIntersection,
 } from '@dnd-kit/core';
 import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core';
-// import { createSnapModifier } from '@dnd-kit/modifiers';
-import { PiecesInPlayContext } from '../context/PiecesInPlay';
+import { usePiecesInPlay } from '../context/PiecesInPlay';
 import { Piece } from '../types/piece';
 import { useSelectedPiece } from '../context/SelectedPiece';
 import { convertLocationToXAndY, rateDroppability } from './utils/utilities';
 import Hotjar from '@hotjar/browser';
-import { BoardSquaresContext } from '../context/BoardSquares';
+import { useBoardSquares } from '../context/BoardSquares';
 import { getNewValidLocation } from './utils/getNewValidLocation';
+import { useLevelStatus } from '../hooks/useLevelStatus';
+
 interface DragAndDropAreaProps {
   children: React.ReactNode;
   setActivePiece: (piece: Piece) => void;
@@ -31,29 +31,15 @@ function DragAndDropArea({
   setIsRotating,
 }: DragAndDropAreaProps) {
   const { setSelectedPiece } = useSelectedPiece();
-  // const { sizeOfEachUnit } = useContext(CurrentLevelContext);
-  const context = useContext(PiecesInPlayContext);
-  if (!context) {
-    throw new Error(
-      'DragAndDropArea must be used within a PiecesInPlayProvider'
-    );
-  }
-
-  const { piecesInPlay, movePiece, setPieceStability } = context;
-  const boardSquaresContext = useContext(BoardSquaresContext);
-  if (!boardSquaresContext) {
-    throw new Error(
-      'DragAndDropArea must be used within a BoardSquaresProvider'
-    );
-  }
+  const { piecesInPlay, movePiece, setPieceStability } = usePiecesInPlay();
   const {
     boardSquares,
     addPieceToBoard,
     removePieceFromBoard,
     getUnstablePieces,
     countOverlappingSquares,
-  } = boardSquaresContext;
-
+  } = useBoardSquares();
+  const { checkAndHandleLevelStatus } = useLevelStatus();
   function compareCollisionRects(
     { data: { value: a } }: { data: { value: number } },
     { data: { value: b } }: { data: { value: number } }
@@ -77,7 +63,6 @@ function DragAndDropArea({
     return potentialDroppables.sort(compareCollisionRects);
   }
 
-  // Simple touch device detection
   const isTouchDevice = () => {
     return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   };
@@ -134,6 +119,7 @@ function DragAndDropArea({
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
+    const unstablePieces = getUnstablePieces();
     const id = event.active.id as string;
     const piece = piecesInPlay.find(piece => piece.id === id);
     if (!piece) return;
@@ -174,7 +160,6 @@ function DragAndDropArea({
         piece.id ?? ''
       );
     } else movePiece(id, null);
-    const unstablePieces = getUnstablePieces();
     piecesInPlay.forEach(piece => {
       if (piece.location === null || piece.location === 'instructions') return;
       if (unstablePieces.includes(piece.id ?? '')) {
@@ -193,6 +178,7 @@ function DragAndDropArea({
       }
     });
     Hotjar.event('drag end');
+    checkAndHandleLevelStatus();
   };
 
   return (

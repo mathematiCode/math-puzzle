@@ -1,23 +1,16 @@
 import { Piece } from '../../types/piece';
 import { convertLocationToXAndY } from '../utils/utilities';
 import { getNewValidLocation } from '../utils/getNewValidLocation';
-import { useContext } from 'react';
-import { BoardSquaresContext } from '../../context/BoardSquares';
+import { useBoardSquares } from '../../context/BoardSquares';
 import Hotjar from '@hotjar/browser';
 
-export function useUpdateLocation() {
-  const boardSquaresContext = useContext(BoardSquaresContext);
-  if (!boardSquaresContext) {
-    throw new Error(
-      'UpdateLocationAndBoardSquares must be used within a BoardSquaresProvider'
-    );
-  }
+export function usePieceLocationHandler() {
   const {
     boardSquares,
     countOverlappingSquares,
     removePieceFromBoard,
     addPieceToBoard,
-  } = boardSquaresContext;
+  } = useBoardSquares();
 
   const updateLocationAndBoardSquares = (
     selectedPiece: Piece,
@@ -36,6 +29,7 @@ export function useUpdateLocation() {
       );
     if (innerOverlaps + outerOverlaps > 0) {
       Hotjar.event('Collision alert');
+      // setPieceStability(selectedPiece.id, false);
     } else if (squaresOutsideBoard > 0) {
       Hotjar.event('Piece placed partially off board');
       const { correctedX, correctedY } = getNewValidLocation(
@@ -45,6 +39,9 @@ export function useUpdateLocation() {
         newHeight,
         boardWidth,
         boardHeight
+      );
+      console.log(
+        `possibly moving piece ${selectedPiece.id} to (${correctedX},${correctedY})`
       );
       movePiece(
         selectedPiece.id ?? 'invalidId',
@@ -68,7 +65,10 @@ export function useUpdateLocation() {
       boardWidth,
       boardHeight
     );
-    movePiece(selectedPiece.id ?? 'invalidId', `(${correctedX},${correctedY})`);
+    movePiece(selectedPiece.id, `(${correctedX},${correctedY})`);
+    console.log(
+      `moving piece ${selectedPiece.id} to (${correctedX},${correctedY})`
+    );
     x = correctedX;
     y = correctedY;
     addPieceToBoard(x, y, newWidth, newHeight, selectedPiece.id ?? '');

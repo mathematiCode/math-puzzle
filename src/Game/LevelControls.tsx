@@ -1,19 +1,17 @@
 import styled from 'styled-components';
-import Button from './Button';
-import InstructionsModal from '../Game/Instructions/InstructionsModal';
+import Button from '../components/Button';
+import InstructionsModal from './Instructions/InstructionsModal';
 import { ChevronLeft, ChevronRight, RotateCcw } from 'lucide-react';
 import { Piece } from '../types/piece';
-import { CurrentLevelContext } from '../context/CurrentLevel';
-import { useContext } from 'react';
-import { getInitialPieces } from '../Game/utils/getInitialPieces';
-import { PiecesInPlayContext } from '../context/PiecesInPlay';
-import { BoardSquaresContext } from '../context/BoardSquares';
-import { LevelProgressContext } from '../context/LevelProgress';
+import { getInitialPieces } from './utils/getInitialPieces';
+import { usePiecesInPlay } from '../context/PiecesInPlay';
+import { useBoardSquares } from '../context/BoardSquares';
+import { useGameProgress } from '../context/GameProgress';
 import { useMediaQuery } from '@chakra-ui/react';
+import { useCurrentLevel } from '../context/CurrentLevel';
 
 interface LevelControlsProps {
   levelPosition: string;
-  setLevelCompletedShown: (completed: boolean) => void;
   isRotating: boolean;
   setIsRotating: (rotating: boolean) => void;
   setActivePiece: (piece: Piece | null) => void;
@@ -21,56 +19,50 @@ interface LevelControlsProps {
 
 const LevelControls = ({
   levelPosition,
-  setLevelCompletedShown,
   isRotating,
   setIsRotating,
   setActivePiece,
 }: LevelControlsProps) => {
-  const { currentLevel, previousLevel, nextLevel } =
-    useContext(CurrentLevelContext);
-  const piecesInPlayContext = useContext(PiecesInPlayContext);
-  if (!piecesInPlayContext) {
-    throw new Error(
-      'PiecesInPlayContext must be used within a PiecesInPlayProvider'
-    );
-  }
-  const { piecesInPlay, resetPieces, setPiecesForNewLevel } =
-    piecesInPlayContext;
-  const boardSquaresContext = useContext(BoardSquaresContext);
-  if (!boardSquaresContext) {
-    throw new Error(
-      'BoardSquaresContext must be used within a BoardSquaresProvider'
-    );
-  }
-  const { resetBoardSquares } = boardSquaresContext;
-  const levelProgressContext = useContext(LevelProgressContext);
-  if (!levelProgressContext) {
-    throw new Error(
-      'LevelProgressContext must be used within a LevelProgressProvider'
-    );
-  }
+  const { currentLevel, previousLevel, nextLevel } = useCurrentLevel();
+  const { piecesInPlay, resetPieces, setPiecesForNewLevel } = usePiecesInPlay();
+  const { resetBoardSquares } = useBoardSquares();
+  const { resetLevel, gameProgress, setPiecesForLevel } = useGameProgress();
   async function setToPrevious() {
-    await previousLevel();
-    const newPieces = getInitialPieces(currentLevel - 1);
-    await setPiecesForNewLevel(newPieces);
-    //await setSizeOfEachUnit(currentLevel - 1);
-    await resetBoardSquares(currentLevel - 1);
-    setLevelCompletedShown(false);
+    setPiecesForLevel(currentLevel, piecesInPlay);
+    previousLevel();
+    const newLevel = currentLevel - 1;
+    const savedPieces = gameProgress[newLevel]?.pieces;
+
+    if (savedPieces && savedPieces.length > 0) {
+      setPiecesForNewLevel(savedPieces);
+    } else {
+      const newPieces = getInitialPieces(newLevel);
+      setPiecesForNewLevel(newPieces);
+    }
+
+    resetBoardSquares(newLevel);
   }
 
   async function setToNext() {
-    await nextLevel();
-    const newPieces = getInitialPieces(currentLevel + 1);
-    await setPiecesForNewLevel(newPieces);
-    //await setSizeOfEachUnit(currentLevel + 1);
-    await resetBoardSquares(currentLevel + 1);
-    setLevelCompletedShown(false);
+    setPiecesForLevel(currentLevel, piecesInPlay);
+    nextLevel();
+    const newLevel = currentLevel + 1;
+    const savedPieces = gameProgress[newLevel]?.pieces;
+
+    if (savedPieces && savedPieces.length > 0) {
+      setPiecesForNewLevel(savedPieces);
+    } else {
+      const newPieces = getInitialPieces(newLevel);
+      setPiecesForNewLevel(newPieces);
+    }
+
+    resetBoardSquares(newLevel);
   }
 
-  function resetLevel() {
+  function handleResetLevel() {
     resetPieces();
     resetBoardSquares(currentLevel);
-    setLevelCompletedShown(false);
+    resetLevel(currentLevel);
   }
 
   const [isMobile] = useMediaQuery(['(max-width: 768px)']);
@@ -103,7 +95,7 @@ const LevelControls = ({
       <Button
         color="hsla(0, 58.70%, 70.60%, 0.88)"
         textColor="black"
-        onClick={resetLevel}
+        onClick={handleResetLevel}
       >
         <RotateCcw /> Reset Game
       </Button>

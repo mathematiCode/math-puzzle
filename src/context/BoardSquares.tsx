@@ -1,13 +1,11 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 import levels from '../Game/levels.json';
 import { getInitialBoardSquares } from '../Game/utils/getInitialBoardSquares';
-import { CurrentLevelContext } from './CurrentLevel';
+import { useCurrentLevel } from './CurrentLevel';
 import { convertLocationToXAndY } from '../Game/utils/utilities';
-import {
-  LevelProgressContext,
-  LevelProgressContextType,
-} from './LevelProgress';
+import { useGameProgress } from './GameProgress';
 import Hotjar from '@hotjar/browser';
+import useLocalStorageState from 'use-local-storage-state';
 
 export type BoardSquaresContextType = {
   boardSquares: string[][];
@@ -36,6 +34,7 @@ export type BoardSquaresContextType = {
     innerOverlaps: number;
     squaresOutsideBoard: number;
   };
+  countEmptySquares: () => number;
   getUnstablePieces: () => string[];
   checkIfPassedLevel: () => boolean;
 };
@@ -44,16 +43,13 @@ export const BoardSquaresContext =
   createContext<BoardSquaresContextType | null>(null);
 
 export function BoardSquaresProvider({ children }: { children: ReactNode }) {
-  const { currentLevel } = useContext(CurrentLevelContext);
-  const levelProgressContext = useContext(LevelProgressContext);
-  if (!levelProgressContext) {
-    throw new Error(
-      'LevelProgressContext must be used within a LevelProgressProvider'
-    );
-  }
-  const { setLevelCompleted } = levelProgressContext;
-  const [boardSquares, setBoardSquares] = useState<string[][]>(
-    getInitialBoardSquares(currentLevel)
+  const { currentLevel } = useCurrentLevel();
+  const { setLevelCompleted } = useGameProgress();
+  const [boardSquares, setBoardSquares] = useLocalStorageState<string[][]>(
+    'boardSquares',
+    {
+      defaultValue: getInitialBoardSquares(currentLevel),
+    }
   );
   const boardWidth = levels[currentLevel].dimensions.width;
   const boardHeight = levels[currentLevel].dimensions.height;
@@ -92,12 +88,12 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
     }
     setBoardSquares(newBoardSquares);
 
-    setTimeout(() => {
-      if (checkIfPassedLevel()) {
-        Hotjar.event('Level completed!');
-        setLevelCompleted(currentLevel);
-      }
-    }, 0);
+    // setTimeout(() => {
+    //   if (checkIfPassedLevel()) {
+    //     Hotjar.event('Level completed!');
+    //     setLevelCompleted(currentLevel);
+    //   }
+    // }, 0);
   }
   function removePieceFromBoard(
     x: number,
@@ -216,6 +212,7 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
         removePieceFromBoard,
         resetBoardSquares,
         countOverlappingSquares,
+        countEmptySquares,
         getUnstablePieces,
         checkIfPassedLevel,
       }}
@@ -224,3 +221,15 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
     </BoardSquaresContext.Provider>
   );
 }
+
+export const useBoardSquares = () => {
+  const context = useContext<BoardSquaresContextType | null>(
+    BoardSquaresContext
+  );
+  if (!context) {
+    throw new Error(
+      'useBoardSquares must be used within a BoardSquaresProvider'
+    );
+  }
+  return context;
+};

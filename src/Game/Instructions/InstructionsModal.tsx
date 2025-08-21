@@ -1,9 +1,9 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { HelpCircle } from 'lucide-react';
 import styled from 'styled-components';
 import Button from '../../components/Button';
 import SamplePiece from './SamplePiece';
-import { PiecesInPlayContext } from '../../context/PiecesInPlay';
+import { usePiecesInPlay } from '../../context/PiecesInPlay';
 import MathematicalToolsRow from './MathematicalToolsRow';
 import ErrorBoundary from '../../components/ErrorBoundary';
 import AntModal from '../../components/AntModal';
@@ -55,13 +55,7 @@ const InstructionsModal = ({
   piecesInPlay: Piece[];
   setActivePiece: (piece: Piece) => void;
 }) => {
-  const context = useContext(PiecesInPlayContext);
-  if (!context) {
-    throw new Error(
-      'InstructionsModal must be used within a PiecesInPlayProvider'
-    );
-  }
-  const { updateDimensions } = context;
+  const { updateDimensions } = usePiecesInPlay();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const closeModal = () => {
     setIsModalOpen(false);

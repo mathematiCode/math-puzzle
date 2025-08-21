@@ -1,5 +1,6 @@
 import AntModal from '../components/AntModal';
 import styled from 'styled-components';
+// import { useLevelCompletion } from '../hooks/useLevelCompletion';
 
 const LevelCompleteModal = ({
   level,
@@ -10,8 +11,10 @@ const LevelCompleteModal = ({
   level: number;
   completed: boolean;
   levelCompletedShown: boolean;
-  onClose: () => void; // Deleting  this makes it impossible to close.
+  onClose: () => void;
 }) => {
+  // const { handleLevelCheck } = useLevelCompletion();
+  // const completed = handleLevelCheck();
   return (
     <AntModal
       open={completed && !levelCompletedShown}

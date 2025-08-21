@@ -1,10 +1,10 @@
-import { useContext, cloneElement } from 'react';
+import { cloneElement } from 'react';
 import { Tooltip } from 'antd';
 import { motion } from 'motion/react';
 import * as Popover from '@radix-ui/react-popover';
 import styled from 'styled-components';
-import { useSelectedPiece } from '../../context/SelectedPiece';
-import { PiecesInPlayContext } from '../../context/PiecesInPlay';
+import { usePiecesInPlay } from '../../context/PiecesInPlay';
+import { useCurrentPiece } from '../../hooks/useCurrentPiece';
 import AnimatedLottieIcon from '../../components/AnimatedLottieIcon';
 import rotateToolAnimation from '../../assets/icons-animation/rotate-tool.json';
 import horizontalStretchAnimation from '../../assets/icons-animation/horizontal-stretch-tool.json';
@@ -12,10 +12,8 @@ import verticalStretchAnimation from '../../assets/icons-animation/vertical-stre
 import cutAnimation from '../../assets/icons-animation/cut-tool.json';
 import combineAnimation from '../../assets/icons-animation/combine-tool.json';
 import Hotjar from '@hotjar/browser';
-import { convertLocationToXAndY } from '../utils/utilities';
-import { BoardSquaresContext } from '../../context/BoardSquares';
-import { getNewValidLocation } from '../utils/getNewValidLocation';
-import { useUpdateLocation } from './useUpdateLocation';
+import { usePieceLocationHandler } from './usePieceLocationHandler';
+import { useLevelStatus } from '../../hooks/useLevelStatus';
 
 function ActionsToolbarPopover({
   children,
@@ -28,57 +26,65 @@ function ActionsToolbarPopover({
 }) {
   /* Cloning the children is necessary for the popover to position correctly when pieces are positioned absolutely on the board. */
   const childrenWithDelegatedProps = cloneElement(children, delegated);
-  const context = useContext(PiecesInPlayContext);
-  if (!context) {
-    throw new Error(
-      'ActionsToolbarPopover must be used within a PiecesInPlayProvider'
-    );
-  }
-  const { updateDimensions, movePiece } = context;
-  const { selectedPiece } = useSelectedPiece();
+  const { updateDimensions, movePiece } = usePiecesInPlay();
+  const currentPiece = useCurrentPiece();
   const showTooltips = false;
-  const { updateLocationAndBoardSquares } = useUpdateLocation();
-
+  const { updateLocationAndBoardSquares } = usePieceLocationHandler();
+  const { checkAndHandleLevelStatus } = useLevelStatus();
   function handleHorizontalStretch() {
     Hotjar.event('double width attempt');
-    if (!selectedPiece) {
+    if (!currentPiece) {
       return;
     }
-    const id = selectedPiece.id;
+    const id = currentPiece.id;
     const isOnBoard =
-      selectedPiece.location &&
-      selectedPiece.location.match(/^\(\d+,\d+\)$/) &&
-      selectedPiece.id.startsWith('b-');
-    const stretchIsPossible = Number.isInteger(selectedPiece.height / 2);
+      currentPiece.location &&
+      currentPiece.location.match(/^\(\d+,\d+\)$/) &&
+      currentPiece.id.startsWith('b-');
+    const stretchIsPossible = Number.isInteger(currentPiece.height / 2);
+    console.log(`horizontal stretch is possible: ${stretchIsPossible}`);
+    console.log('currentPiece', currentPiece);
     if (stretchIsPossible) {
-      const newHeight = selectedPiece.height / 2;
-      const newWidth = selectedPiece.width * 2;
+      console.log(
+        `piece ${id} with width:${currentPiece.width} and height:${currentPiece.height} is being stretched horizontally`
+      );
+      const newHeight = currentPiece.height / 2;
+      const newWidth = currentPiece.width * 2;
       updateDimensions(id, newWidth, newHeight);
       if (isOnBoard) {
         updateLocationAndBoardSquares(
-          selectedPiece,
+          currentPiece,
           newWidth,
           newHeight,
           movePiece
         );
       }
+      checkAndHandleLevelStatus();
       Hotjar.event('double width successfully');
     }
   }
 
   function handleVerticalStretch() {
+    if (!currentPiece) {
+      return;
+    }
     Hotjar.event('double height attempt');
-    if (selectedPiece && Number.isInteger(selectedPiece.width / 2)) {
-      const newHeight = selectedPiece.height * 2;
-      const newWidth = selectedPiece.width / 2;
-      const id = selectedPiece.id;
+    const stretchIsPossible = Number.isInteger(currentPiece.width / 2);
+    console.log(`vertical stretch is possible: ${stretchIsPossible}`);
+    if (stretchIsPossible) {
+      const newHeight = currentPiece.height * 2;
+      const newWidth = currentPiece.width / 2;
+      const id = currentPiece.id;
       const isOnBoard =
-        selectedPiece.location &&
-        selectedPiece.location.match(/^\(\d+,\d+\)$/) &&
-        selectedPiece.id.startsWith('b-');
+        currentPiece.location &&
+        currentPiece.location.match(/^\(\d+,\d+\)$/) &&
+        currentPiece.id.startsWith('b-');
+      console.log(
+        `piece ${id} with width:${currentPiece.width} and height:${currentPiece.height} is being stretched vertically`
+      );
       if (isOnBoard) {
         updateLocationAndBoardSquares(
-          selectedPiece,
+          currentPiece,
           newWidth,
           newHeight,
           movePiece
@@ -86,6 +92,7 @@ function ActionsToolbarPopover({
       }
       updateDimensions(id ?? 'invalidId', newWidth, newHeight);
       Hotjar.event('double height successfully');
+      checkAndHandleLevelStatus();
     }
   }
 
@@ -100,10 +107,10 @@ function ActionsToolbarPopover({
   }
 
   const horizontalStretchDisabled =
-    selectedPiece?.height == null || selectedPiece.height % 2 !== 0;
+    currentPiece?.height == null || currentPiece.height % 2 !== 0;
   const verticalStretchDisabled =
-    selectedPiece?.width == null || selectedPiece.width % 2 !== 0;
-  const rotateDisabled = selectedPiece == null;
+    currentPiece?.width == null || currentPiece.width % 2 !== 0;
+  const rotateDisabled = currentPiece == null;
   return (
     <Popover.Root>
       <Popover.Trigger asChild>{childrenWithDelegatedProps}</Popover.Trigger>
@@ -112,7 +119,7 @@ function ActionsToolbarPopover({
           <ActionsToolbar>
             <Tooltip placement="bottom" title={showTooltips && 'Rotate'}>
               <IconButton
-                onClick={() => runRotationAnimation(selectedPiece)}
+                onClick={() => runRotationAnimation(currentPiece)}
                 aria-label="Rotate"
                 isDisabled={rotateDisabled}
                 disabled={rotateDisabled}
