@@ -37,8 +37,6 @@ export function PiecesInPlayProvider({
     'piecesInPlay', {
     defaultValue: initialPieces
   });
-  //const [piecesInPlay, setPiecesInPlay] = useState<Piece[]>(initialPieces);
-  console.log(piecesInPlay);
   const { boardWidth, boardHeight } = boardDimensions;
 
   function movePiece(pieceId: string, newLocation: string | null) {
@@ -142,9 +140,7 @@ export function PiecesInPlayProvider({
   }
 
   function setPieceStability(pieceId: string, isStable: boolean) {
-    // Skip the sample piece (instructions piece)
     if (pieceId === 'sample-0') {
-      console.log('skipping sample piece');
       return;
     }
     const iPattern = /^i-(\d+)$/;

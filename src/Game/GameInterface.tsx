@@ -12,11 +12,8 @@ import styled from 'styled-components';
 import { DragOverlay } from '@dnd-kit/core';
 import { useCurrentLevel } from '../context/CurrentLevel';
 import { useGameProgress } from '../context/GameProgress';
-import { useBoardSquares } from '../context/BoardSquares';
 import { usePiecesInPlay } from '../context/PiecesInPlay';
 import { Piece } from '../types/piece';
-import { useLevelStatus } from '../hooks/useLevelStatus';
-//import { useLevelCompletion } from '../hooks/useLevelCompletion';
 
 function Game() {
   const {
@@ -32,10 +29,8 @@ function Game() {
  // const [levelCompletedShown, setLevelCompletedShown] = useState(false);
   const levelCompletedShown = gameProgress[currentLevel].modalShown;
   const passedLevel = isLevelCompleted(currentLevel);
-  console.log('passedLevel', passedLevel);
-  
+
   const handleCloseModal = () => {
-   // setLevelCompletedShown(true); // Prevent modal from showing again for this level
     setModalShown(currentLevel);
   };
 
@@ -84,7 +79,6 @@ function Game() {
        </Main>
       <LevelControls
         levelPosition={levelPosition}
-       // setLevelCompletedShown={setModalShown}
         isRotating={isRotating}
         setIsRotating={setIsRotating}
         setActivePiece={setActivePiece}

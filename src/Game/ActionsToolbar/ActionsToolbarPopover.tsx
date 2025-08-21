@@ -13,6 +13,7 @@ import cutAnimation from '../../assets/icons-animation/cut-tool.json';
 import combineAnimation from '../../assets/icons-animation/combine-tool.json';
 import Hotjar from '@hotjar/browser';
 import { usePieceLocationHandler } from './usePieceLocationHandler';
+import { useLevelStatus } from '../../hooks/useLevelStatus';
 
 function ActionsToolbarPopover({
   children,
@@ -29,7 +30,7 @@ function ActionsToolbarPopover({
   const currentPiece = useCurrentPiece();
   const showTooltips = false;
   const { updateLocationAndBoardSquares } = usePieceLocationHandler();
-
+  const { checkLevelStatus } = useLevelStatus();
   function handleHorizontalStretch() {
     Hotjar.event('double width attempt');
     if (!currentPiece) {
@@ -58,6 +59,7 @@ function ActionsToolbarPopover({
           movePiece
         );
       }
+      checkLevelStatus();
       Hotjar.event('double width successfully');
     }
   }
@@ -90,6 +92,7 @@ function ActionsToolbarPopover({
       }
       updateDimensions(id ?? 'invalidId', newWidth, newHeight);
       Hotjar.event('double height successfully');
+      checkLevelStatus();
     }
   }
 

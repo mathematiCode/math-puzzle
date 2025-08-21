@@ -8,7 +8,6 @@ import {
   rectIntersection,
 } from '@dnd-kit/core';
 import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core';
-// import { createSnapModifier } from '@dnd-kit/modifiers';
 import { usePiecesInPlay } from '../context/PiecesInPlay';
 import { Piece } from '../types/piece';
 import { useSelectedPiece } from '../context/SelectedPiece';
@@ -16,10 +15,8 @@ import { convertLocationToXAndY, rateDroppability } from './utils/utilities';
 import Hotjar from '@hotjar/browser';
 import { useBoardSquares } from '../context/BoardSquares';
 import { getNewValidLocation } from './utils/getNewValidLocation';
-//import { useLevelStatus } from '../hooks/useLevelStatus';
-import { useGameProgress } from '../context/GameProgress';
-import { useCurrentLevel } from '../context/CurrentLevel';
-//import { useLevelCompletion } from '../hooks/useLevelCompletion';
+import { useLevelStatus } from '../hooks/useLevelStatus';
+
 interface DragAndDropAreaProps {
   children: React.ReactNode;
   setActivePiece: (piece: Piece) => void;
@@ -34,7 +31,6 @@ function DragAndDropArea({
   setIsRotating,
 }: DragAndDropAreaProps) {
   const { setSelectedPiece } = useSelectedPiece();
-  // const { sizeOfEachUnit } = useCurrentLevel();
   const { piecesInPlay, movePiece, setPieceStability } = usePiecesInPlay();
   const {
     boardSquares,
@@ -42,11 +38,8 @@ function DragAndDropArea({
     removePieceFromBoard,
     getUnstablePieces,
     countOverlappingSquares,
-    countEmptySquares,
   } = useBoardSquares();
-  const { setPiecesSolution, setLevelCompleted } = useGameProgress();
-  const { currentLevel } = useCurrentLevel();
-  // const { handleLevelCheck } = useLevelCompletion();
+  const { checkLevelStatus } = useLevelStatus();
   function compareCollisionRects(
     { data: { value: a } }: { data: { value: number } },
     { data: { value: b } }: { data: { value: number } }
@@ -185,13 +178,7 @@ function DragAndDropArea({
       }
     });
     Hotjar.event('drag end');
-    const isLevelPassed =
-      unstablePieces.length === 0 && countEmptySquares() === 0;
-    console.log('isLevelPassed', isLevelPassed);
-    if (isLevelPassed) {
-      setLevelCompleted(currentLevel, piecesInPlay);
-      // setPiecesSolution(currentLevel, piecesInPlay);
-    }
+    checkLevelStatus();
   };
 
   return (
