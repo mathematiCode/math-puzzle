@@ -5,7 +5,7 @@ import PieceOverlay from './PuzzlePieces/PieceOverlay';
 import Board from './Board/Board';
 import PlacedPieces from './PlacedPieces';
 import DragAndDropArea from './DragAndDropArea';
-import LevelControls from '../components/LevelControls';
+import LevelControls from './LevelControls';
 import LevelCompleteModal from './LevelComplete';
 import { motion } from 'motion/react';
 import styled from 'styled-components';

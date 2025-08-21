@@ -11,7 +11,7 @@ export function useLevelStatus() {
   const { piecesInPlay } = usePiecesInPlay();
   const unstablePieces = getUnstablePieces();
 
-  const checkLevelStatus = useCallback(() => {
+  const checkAndHandleLevelStatus = useCallback(() => {
     const isLevelPassed =
       unstablePieces.length === 0 && countEmptySquares() === 0;
     if (isLevelPassed) {
@@ -25,5 +25,5 @@ export function useLevelStatus() {
     setLevelCompleted,
   ]);
 
-  return { checkLevelStatus };
+  return { checkAndHandleLevelStatus };
 }

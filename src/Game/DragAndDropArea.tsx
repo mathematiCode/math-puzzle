@@ -39,7 +39,7 @@ function DragAndDropArea({
     getUnstablePieces,
     countOverlappingSquares,
   } = useBoardSquares();
-  const { checkLevelStatus } = useLevelStatus();
+  const { checkAndHandleLevelStatus } = useLevelStatus();
   function compareCollisionRects(
     { data: { value: a } }: { data: { value: number } },
     { data: { value: b } }: { data: { value: number } }
@@ -178,7 +178,7 @@ function DragAndDropArea({
       }
     });
     Hotjar.event('drag end');
-    checkLevelStatus();
+    checkAndHandleLevelStatus();
   };
 
   return (

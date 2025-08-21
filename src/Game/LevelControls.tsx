@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import Button from './Button';
-import InstructionsModal from '../Game/Instructions/InstructionsModal';
+import Button from '../components/Button';
+import InstructionsModal from './Instructions/InstructionsModal';
 import { ChevronLeft, ChevronRight, RotateCcw } from 'lucide-react';
 import { Piece } from '../types/piece';
-import { getInitialPieces } from '../Game/utils/getInitialPieces';
+import { getInitialPieces } from './utils/getInitialPieces';
 import { usePiecesInPlay } from '../context/PiecesInPlay';
 import { useBoardSquares } from '../context/BoardSquares';
 import { useGameProgress } from '../context/GameProgress';
@@ -12,7 +12,6 @@ import { useCurrentLevel } from '../context/CurrentLevel';
 
 interface LevelControlsProps {
   levelPosition: string;
-  // setLevelCompletedShown: (completed: boolean) => void;
   isRotating: boolean;
   setIsRotating: (rotating: boolean) => void;
   setActivePiece: (piece: Piece | null) => void;
@@ -20,7 +19,6 @@ interface LevelControlsProps {
 
 const LevelControls = ({
   levelPosition,
-  //  setLevelCompletedShown,
   isRotating,
   setIsRotating,
   setActivePiece,
@@ -28,48 +26,43 @@ const LevelControls = ({
   const { currentLevel, previousLevel, nextLevel } = useCurrentLevel();
   const { piecesInPlay, resetPieces, setPiecesForNewLevel } = usePiecesInPlay();
   const { resetBoardSquares } = useBoardSquares();
-  const { resetProgress, resetLevel, gameProgress } = useGameProgress();
+  const { resetLevel, gameProgress, setPiecesForLevel } = useGameProgress();
   async function setToPrevious() {
-    await previousLevel();
+    setPiecesForLevel(currentLevel, piecesInPlay);
+    previousLevel();
     const newLevel = currentLevel - 1;
     const savedPieces = gameProgress[newLevel]?.pieces;
 
     if (savedPieces && savedPieces.length > 0) {
-      // Use saved pieces from GameProgress if available
-      await setPiecesForNewLevel(savedPieces);
+      setPiecesForNewLevel(savedPieces);
     } else {
-      // Use initial pieces if no saved pieces exist
       const newPieces = getInitialPieces(newLevel);
-      await setPiecesForNewLevel(newPieces);
+      setPiecesForNewLevel(newPieces);
     }
 
-    await resetBoardSquares(newLevel);
-    //  setLevelCompletedShown(false);
+    resetBoardSquares(newLevel);
   }
 
   async function setToNext() {
-    await nextLevel();
+    setPiecesForLevel(currentLevel, piecesInPlay);
+    nextLevel();
     const newLevel = currentLevel + 1;
     const savedPieces = gameProgress[newLevel]?.pieces;
 
     if (savedPieces && savedPieces.length > 0) {
-      // Use saved pieces from GameProgress if available
-      await setPiecesForNewLevel(savedPieces);
+      setPiecesForNewLevel(savedPieces);
     } else {
-      // Use initial pieces if no saved pieces exist
       const newPieces = getInitialPieces(newLevel);
-      await setPiecesForNewLevel(newPieces);
+      setPiecesForNewLevel(newPieces);
     }
 
-    await resetBoardSquares(newLevel);
-    // setLevelCompletedShown(false);
+    resetBoardSquares(newLevel);
   }
 
   function handleResetLevel() {
     resetPieces();
     resetBoardSquares(currentLevel);
     resetLevel(currentLevel);
-    // setLevelCompletedShown(false);
   }
 
   const [isMobile] = useMediaQuery(['(max-width: 768px)']);

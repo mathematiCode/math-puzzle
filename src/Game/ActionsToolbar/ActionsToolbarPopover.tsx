@@ -30,7 +30,7 @@ function ActionsToolbarPopover({
   const currentPiece = useCurrentPiece();
   const showTooltips = false;
   const { updateLocationAndBoardSquares } = usePieceLocationHandler();
-  const { checkLevelStatus } = useLevelStatus();
+  const { checkAndHandleLevelStatus } = useLevelStatus();
   function handleHorizontalStretch() {
     Hotjar.event('double width attempt');
     if (!currentPiece) {
@@ -59,7 +59,7 @@ function ActionsToolbarPopover({
           movePiece
         );
       }
-      checkLevelStatus();
+      checkAndHandleLevelStatus();
       Hotjar.event('double width successfully');
     }
   }
@@ -92,7 +92,7 @@ function ActionsToolbarPopover({
       }
       updateDimensions(id ?? 'invalidId', newWidth, newHeight);
       Hotjar.event('double height successfully');
-      checkLevelStatus();
+      checkAndHandleLevelStatus();
     }
   }
 

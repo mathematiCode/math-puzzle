@@ -20,6 +20,7 @@ export type GameProgressContextType = {
   resetProgress: () => void;
   setModalShown: (level: number) => void;
   resetLevel: (level: number) => void;
+  setPiecesForLevel: (level: number, pieces: Piece[]) => void;
 };
 
 export const GameProgressContext =
@@ -73,15 +74,15 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
     setGameProgress(newGameProgress);
   }
 
-  // function setPiecesSolution(level: number, pieces: Piece[]): void {
-  //   console.log('setting pieces solution to:', pieces);
-  //   const newGameProgress = gameProgress.map(gameProgress =>
-  //     gameProgress.level === level
-  //       ? { ...gameProgress, pieces: pieces }
-  //       : gameProgress
-  //   );
-  //   setGameProgress(newGameProgress);
-  // }
+  function setPiecesForLevel(level: number, pieces: Piece[]): void {
+    //   console.log('setting pieces solution to:', pieces);
+    const newGameProgress = gameProgress.map(gameProgress =>
+      gameProgress.level === level
+        ? { ...gameProgress, pieces: pieces }
+        : gameProgress
+    );
+    setGameProgress(newGameProgress);
+  }
 
   function resetProgress(): void {
     setGameProgress(initialGameProgress);
@@ -107,6 +108,7 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
         setModalShown,
         resetProgress,
         resetLevel,
+        setPiecesForLevel,
       }}
     >
       {children}
