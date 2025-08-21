@@ -15,6 +15,8 @@ import { useGameProgress } from '../context/GameProgress';
 import { useBoardSquares } from '../context/BoardSquares';
 import { usePiecesInPlay } from '../context/PiecesInPlay';
 import { Piece } from '../types/piece';
+import { useLevelStatus } from '../hooks/useLevelStatus';
+//import { useLevelCompletion } from '../hooks/useLevelCompletion';
 
 function Game() {
   const {
@@ -23,15 +25,20 @@ function Game() {
     levelPosition,
     } = useCurrentLevel();
   const [activePiece, setActivePiece] = useState<Piece | null>(null);
-  const { isLevelCompleted } = useGameProgress();
-  const { checkIfPassedLevel } = useBoardSquares();
+  const { gameProgress, isLevelCompleted, setModalShown } = useGameProgress();
+ // const { handleLevelCheck } = useLevelCompletion();
   const { piecesInPlay } = usePiecesInPlay();
   const [isRotating, setIsRotating] = useState(false);
-  const [levelCompletedShown, setLevelCompletedShown] = useState(false);
-
+ // const [levelCompletedShown, setLevelCompletedShown] = useState(false);
+  const levelCompletedShown = gameProgress[currentLevel].modalShown;
+  const passedLevel = isLevelCompleted(currentLevel);
+  console.log('passedLevel', passedLevel);
+  
   const handleCloseModal = () => {
-    setLevelCompletedShown(true); // Prevent modal from showing again for this level
+   // setLevelCompletedShown(true); // Prevent modal from showing again for this level
+    setModalShown(currentLevel);
   };
+
 
   return (
     <>
@@ -77,17 +84,17 @@ function Game() {
        </Main>
       <LevelControls
         levelPosition={levelPosition}
-        setLevelCompletedShown={setLevelCompletedShown}
+       // setLevelCompletedShown={setModalShown}
         isRotating={isRotating}
         setIsRotating={setIsRotating}
         setActivePiece={setActivePiece}
       />
-      <LevelCompleteModal 
-        level={levelId} 
-        completed={checkIfPassedLevel()} 
-        levelCompletedShown={levelCompletedShown}
-        onClose={handleCloseModal}
-      />
+        <LevelCompleteModal
+          level={levelId}
+          completed={passedLevel}
+          levelCompletedShown={levelCompletedShown}
+          onClose={handleCloseModal}
+        />
         </>
   );
 }

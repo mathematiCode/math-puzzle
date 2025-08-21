@@ -34,6 +34,7 @@ export type BoardSquaresContextType = {
     innerOverlaps: number;
     squaresOutsideBoard: number;
   };
+  countEmptySquares: () => number;
   getUnstablePieces: () => string[];
   checkIfPassedLevel: () => boolean;
 };
@@ -87,12 +88,12 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
     }
     setBoardSquares(newBoardSquares);
 
-    setTimeout(() => {
-      if (checkIfPassedLevel()) {
-        Hotjar.event('Level completed!');
-        setLevelCompleted(currentLevel);
-      }
-    }, 0);
+    // setTimeout(() => {
+    //   if (checkIfPassedLevel()) {
+    //     Hotjar.event('Level completed!');
+    //     setLevelCompleted(currentLevel);
+    //   }
+    // }, 0);
   }
   function removePieceFromBoard(
     x: number,
@@ -211,6 +212,7 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
         removePieceFromBoard,
         resetBoardSquares,
         countOverlappingSquares,
+        countEmptySquares,
         getUnstablePieces,
         checkIfPassedLevel,
       }}

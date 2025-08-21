@@ -16,6 +16,10 @@ import { convertLocationToXAndY, rateDroppability } from './utils/utilities';
 import Hotjar from '@hotjar/browser';
 import { useBoardSquares } from '../context/BoardSquares';
 import { getNewValidLocation } from './utils/getNewValidLocation';
+//import { useLevelStatus } from '../hooks/useLevelStatus';
+import { useGameProgress } from '../context/GameProgress';
+import { useCurrentLevel } from '../context/CurrentLevel';
+//import { useLevelCompletion } from '../hooks/useLevelCompletion';
 interface DragAndDropAreaProps {
   children: React.ReactNode;
   setActivePiece: (piece: Piece) => void;
@@ -38,8 +42,11 @@ function DragAndDropArea({
     removePieceFromBoard,
     getUnstablePieces,
     countOverlappingSquares,
+    countEmptySquares,
   } = useBoardSquares();
-
+  const { setPiecesSolution, setLevelCompleted } = useGameProgress();
+  const { currentLevel } = useCurrentLevel();
+  // const { handleLevelCheck } = useLevelCompletion();
   function compareCollisionRects(
     { data: { value: a } }: { data: { value: number } },
     { data: { value: b } }: { data: { value: number } }
@@ -63,7 +70,6 @@ function DragAndDropArea({
     return potentialDroppables.sort(compareCollisionRects);
   }
 
-  // Simple touch device detection
   const isTouchDevice = () => {
     return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   };
@@ -120,6 +126,7 @@ function DragAndDropArea({
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
+    const unstablePieces = getUnstablePieces();
     const id = event.active.id as string;
     const piece = piecesInPlay.find(piece => piece.id === id);
     if (!piece) return;
@@ -160,7 +167,6 @@ function DragAndDropArea({
         piece.id ?? ''
       );
     } else movePiece(id, null);
-    const unstablePieces = getUnstablePieces();
     piecesInPlay.forEach(piece => {
       if (piece.location === null || piece.location === 'instructions') return;
       if (unstablePieces.includes(piece.id ?? '')) {
@@ -179,6 +185,13 @@ function DragAndDropArea({
       }
     });
     Hotjar.event('drag end');
+    const isLevelPassed =
+      unstablePieces.length === 0 && countEmptySquares() === 0;
+    console.log('isLevelPassed', isLevelPassed);
+    if (isLevelPassed) {
+      setLevelCompleted(currentLevel, piecesInPlay);
+      // setPiecesSolution(currentLevel, piecesInPlay);
+    }
   };
 
   return (

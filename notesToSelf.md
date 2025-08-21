@@ -10,4 +10,20 @@ Piece starts spazzing sometimes when you double the width or the height in certa
 
 An update of dimensions (double and halving) that results in an overlap should also trigger the vibration animation.
 
-// testing
+I have these contexts
+
+      <CurrentLevelProvider>
+        <GameProgressProvider> // Which levels were passed and the solutions PiecesInPlay array for each passed level
+          <BoardSquaresProvider> // A 2D array showing which pieces are where on the grid. Has a checkIfLevelPassed function
+            <PiecesInPlayProvider> // An array of the puzzle pieces with their dimensions and locations
+              <SelectedPieceProvider>
+                <ErrorBoundary>
+                  <GameInterface />
+                </ErrorBoundary>
+              </SelectedPieceProvider>
+            </PiecesInPlayProvider>
+          </BoardSquaresProvider>
+        </GameProgressProvider>
+      </CurrentLevelProvider>
+
+All three of these save to local storage. I want to be able to check if the user passed the level either after each move, or each time a piece gets added to boardSquares, and then update GameProgress that they passed the level and pass the solution (piecesInPlay array).

@@ -1,26 +1,25 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, ReactNode } from 'react';
 import { Piece } from '../types/piece';
-import {
-  getLevelsArray,
-  getTotalLevels as getTotalLevelsFromUtils,
-} from '../Game/utils/getLevelsArray';
+import { getLevelsArray } from '../Game/utils/getLevelsArray';
 import Hotjar from '@hotjar/browser';
+import useLocalStorageState from 'use-local-storage-state';
 
 type GameProgress = {
   level: number;
   completed: boolean;
+  modalShown: boolean;
   pieces: Piece[];
 };
 
 export type GameProgressContextType = {
   gameProgress: GameProgress[];
   setGameProgress: (gameProgress: GameProgress[]) => void;
-  setLevelCompleted: (level: number) => void;
+  setLevelCompleted: (level: number, pieces: Piece[]) => void;
   isLevelCompleted: (level: number) => boolean;
-  getTotalLevels: () => number;
   getCompletedLevels: () => number;
   resetProgress: () => void;
-  setPiecesSolution: (level: number, pieces: Piece[]) => void;
+  setModalShown: (level: number) => void;
+  resetLevel: (level: number) => void;
 };
 
 export const GameProgressContext =
@@ -31,20 +30,26 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
   const initialGameProgress = getLevelsArray<GameProgress>({
     level: 0,
     completed: false,
+    modalShown: false,
     pieces: [],
   }).map((_, index) => ({
     level: index,
     completed: false,
+    modalShown: false,
     pieces: [],
   }));
 
-  const [gameProgress, setGameProgress] =
-    useState<GameProgress[]>(initialGameProgress);
+  const [gameProgress, setGameProgress] = useLocalStorageState<GameProgress[]>(
+    'gameProgress',
+    {
+      defaultValue: initialGameProgress,
+    }
+  );
 
-  function setLevelCompleted(level: number) {
+  function setLevelCompleted(level: number, pieces: Piece[]) {
     const newGameProgress = gameProgress.map(gameProgress =>
       gameProgress.level === level
-        ? { ...gameProgress, completed: true }
+        ? { ...gameProgress, completed: true, pieces: pieces }
         : gameProgress
     );
     setGameProgress(newGameProgress);
@@ -55,26 +60,40 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
     return gameProgress[level]?.completed || false;
   }
 
-  function getTotalLevels(): number {
-    return getTotalLevelsFromUtils();
-  }
-
   function getCompletedLevels(): number {
     return gameProgress.filter(level => level.completed).length;
   }
 
-  function setPiecesSolution(level: number, pieces: Piece[]): void {
-    setGameProgress(
-      gameProgress.map(gameProgress =>
-        gameProgress.level === level
-          ? { ...gameProgress, pieces }
-          : gameProgress
-      )
+  function setModalShown(level: number): void {
+    const newGameProgress = gameProgress.map(gameProgress =>
+      gameProgress.level === level
+        ? { ...gameProgress, modalShown: true }
+        : gameProgress
     );
+    setGameProgress(newGameProgress);
   }
+
+  // function setPiecesSolution(level: number, pieces: Piece[]): void {
+  //   console.log('setting pieces solution to:', pieces);
+  //   const newGameProgress = gameProgress.map(gameProgress =>
+  //     gameProgress.level === level
+  //       ? { ...gameProgress, pieces: pieces }
+  //       : gameProgress
+  //   );
+  //   setGameProgress(newGameProgress);
+  // }
 
   function resetProgress(): void {
     setGameProgress(initialGameProgress);
+  }
+
+  function resetLevel(level: number): void {
+    const newGameProgress = gameProgress.map(gameProgress =>
+      gameProgress.level === level
+        ? { ...gameProgress, completed: false, modalShown: false, pieces: [] }
+        : gameProgress
+    );
+    setGameProgress(newGameProgress);
   }
 
   return (
@@ -84,10 +103,10 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
         setGameProgress,
         setLevelCompleted,
         isLevelCompleted,
-        getTotalLevels,
         getCompletedLevels,
-        setPiecesSolution,
+        setModalShown,
         resetProgress,
+        resetLevel,
       }}
     >
       {children}
