@@ -29,7 +29,6 @@ export function usePieceLocationHandler() {
         selectedPiece.height,
         selectedPiece.id
       );
-      console.log('after removing piece from board', boardSquares);
       const { innerOverlaps, outerOverlaps, squaresOutsideBoard } =
         countOverlappingSquares(
           selectedPiece.location ?? 'invalidLocation',

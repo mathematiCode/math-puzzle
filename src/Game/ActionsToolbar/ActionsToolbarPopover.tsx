@@ -46,7 +46,6 @@ function ActionsToolbarPopover({
     if (stretchIsPossible) {
       const newHeight = currentPiece.height / 2;
       const newWidth = currentPiece.width * 2;
-      updateDimensions(currentPiece.id ?? 'invalidId', newWidth, newHeight);
       if (isOnBoard) {
         updateLocationAndBoardSquares(
           currentPiece,
@@ -55,6 +54,8 @@ function ActionsToolbarPopover({
           movePiece
         );
       }
+      updateDimensions(currentPiece.id, newWidth, newHeight);
+      updateStabilityAllPieces();
       checkAndHandleLevelStatus();
       Hotjar.event('double width successfully');
     }
@@ -81,7 +82,7 @@ function ActionsToolbarPopover({
           movePiece
         );
       }
-      updateDimensions(currentPiece.id ?? 'invalidId', newWidth, newHeight);
+      updateDimensions(currentPiece.id, newWidth, newHeight);
       Hotjar.event('double height successfully');
       updateStabilityAllPieces();
       checkAndHandleLevelStatus();

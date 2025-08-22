@@ -127,10 +127,6 @@ function DragAndDropArea({
     if (piece.location != null) {
       const { x, y } = convertLocationToXAndY(piece.location);
       removePieceFromBoard(x, y, piece.width, piece.height, piece.id);
-      console.log(
-        'after removing piece from board in handleDragEnd',
-        boardSquares
-      );
     }
     if (event.over?.id) {
       const newLocation = event.over.id.toString();

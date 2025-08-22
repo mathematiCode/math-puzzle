@@ -17,6 +17,5 @@ export function getInitialBoardSquares(level: number) {
       boardSquares.push(row);
     }
   }
-  // console.log('current level:', level, boardSquares);
   return boardSquares;
 }
