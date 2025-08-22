@@ -2,10 +2,10 @@ import { calculateUnitSize } from './calculateUnitSize';
 import { describe, it, expect } from 'vitest';
 
 const upperLimit = (idealSize: number) =>
-  Math.round(idealSize + idealSize * 0.15);
+  Math.round(idealSize + idealSize * 0.2);
 const lowerLimit = (idealSize: number) =>
-  Math.round(idealSize - idealSize * 0.44);
-/*This means the function will calculate an appropriate unit size up to 15% larger than the ideal and up to 44% smaller*/
+  Math.round(idealSize - idealSize * 0.4);
+/*This means the function will calculate an appropriate unit size up to 20% larger than the ideal and up to 40% smaller*/
 
 describe('calculate sizes for level 1', () => {
   it(`calculates around 94 for laptop`, () => {

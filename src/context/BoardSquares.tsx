@@ -1,10 +1,8 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, ReactNode } from 'react';
 import levels from '../Game/levels.json';
 import { getInitialBoardSquares } from '../Game/utils/getInitialBoardSquares';
 import { useCurrentLevel } from './CurrentLevel';
 import { convertLocationToXAndY } from '../Game/utils/utilities';
-import { useGameProgress } from './GameProgress';
-import Hotjar from '@hotjar/browser';
 import useLocalStorageState from 'use-local-storage-state';
 
 export type BoardSquaresContextType = {
@@ -44,7 +42,6 @@ export const BoardSquaresContext =
 
 export function BoardSquaresProvider({ children }: { children: ReactNode }) {
   const { currentLevel } = useCurrentLevel();
-  const { setLevelCompleted } = useGameProgress();
   const [boardSquares, setBoardSquares] = useLocalStorageState<string[][]>(
     'boardSquares',
     {
@@ -80,20 +77,14 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
         } else if (newBoardSquares[row][col] == 'invalid') {
           console.error('Piece was placed on invalid squares.');
         } else {
-          newBoardSquares[row][col] = newBoardSquares[row][col]
-            ? `${newBoardSquares[row][col]}, ${id}`
-            : `${id}`;
+          newBoardSquares[row][col] =
+            newBoardSquares[row][col] !== ''
+              ? `${newBoardSquares[row][col]}, ${id}`
+              : id;
         }
       }
     }
     setBoardSquares(newBoardSquares);
-
-    // setTimeout(() => {
-    //   if (checkIfPassedLevel()) {
-    //     Hotjar.event('Level completed!');
-    //     setLevelCompleted(currentLevel);
-    //   }
-    // }, 0);
   }
   function removePieceFromBoard(
     x: number,

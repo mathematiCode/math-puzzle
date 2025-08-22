@@ -18,6 +18,7 @@ function TestConsumer({ callback }: { callback: (ctx: any) => void }) {
 
 const mockCurrentLevelContextValue = {
   currentLevel: 0,
+  levelId: '1',
   initialPieces: [
     {
       width: 2,
@@ -26,6 +27,7 @@ const mockCurrentLevelContextValue = {
       location: null,
       isRotated: false,
       color: 'red',
+      isStable: true,
     },
   ],
   boardDimensions: { boardWidth: 3, boardHeight: 3 },

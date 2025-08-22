@@ -14,6 +14,7 @@ import combineAnimation from '../../assets/icons-animation/combine-tool.json';
 import Hotjar from '@hotjar/browser';
 import { usePieceLocationHandler } from './usePieceLocationHandler';
 import { useLevelStatus } from '../../hooks/useLevelStatus';
+import { usePieceStabilitySetter } from '../../hooks/usePieceStabilitySetter';
 
 function ActionsToolbarPopover({
   children,
@@ -31,26 +32,20 @@ function ActionsToolbarPopover({
   const showTooltips = false;
   const { updateLocationAndBoardSquares } = usePieceLocationHandler();
   const { checkAndHandleLevelStatus } = useLevelStatus();
+  const { updateStabilityAllPieces } = usePieceStabilitySetter();
   function handleHorizontalStretch() {
     Hotjar.event('double width attempt');
     if (!currentPiece) {
       return;
     }
-    const id = currentPiece.id;
     const isOnBoard =
       currentPiece.location &&
       currentPiece.location.match(/^\(\d+,\d+\)$/) &&
       currentPiece.id.startsWith('b-');
     const stretchIsPossible = Number.isInteger(currentPiece.height / 2);
-    console.log(`horizontal stretch is possible: ${stretchIsPossible}`);
-    console.log('currentPiece', currentPiece);
     if (stretchIsPossible) {
-      console.log(
-        `piece ${id} with width:${currentPiece.width} and height:${currentPiece.height} is being stretched horizontally`
-      );
       const newHeight = currentPiece.height / 2;
       const newWidth = currentPiece.width * 2;
-      updateDimensions(id, newWidth, newHeight);
       if (isOnBoard) {
         updateLocationAndBoardSquares(
           currentPiece,
@@ -59,6 +54,8 @@ function ActionsToolbarPopover({
           movePiece
         );
       }
+      updateDimensions(currentPiece.id, newWidth, newHeight);
+      updateStabilityAllPieces();
       checkAndHandleLevelStatus();
       Hotjar.event('double width successfully');
     }
@@ -70,18 +67,13 @@ function ActionsToolbarPopover({
     }
     Hotjar.event('double height attempt');
     const stretchIsPossible = Number.isInteger(currentPiece.width / 2);
-    console.log(`vertical stretch is possible: ${stretchIsPossible}`);
     if (stretchIsPossible) {
       const newHeight = currentPiece.height * 2;
       const newWidth = currentPiece.width / 2;
-      const id = currentPiece.id;
       const isOnBoard =
         currentPiece.location &&
         currentPiece.location.match(/^\(\d+,\d+\)$/) &&
         currentPiece.id.startsWith('b-');
-      console.log(
-        `piece ${id} with width:${currentPiece.width} and height:${currentPiece.height} is being stretched vertically`
-      );
       if (isOnBoard) {
         updateLocationAndBoardSquares(
           currentPiece,
@@ -90,8 +82,9 @@ function ActionsToolbarPopover({
           movePiece
         );
       }
-      updateDimensions(id ?? 'invalidId', newWidth, newHeight);
+      updateDimensions(currentPiece.id, newWidth, newHeight);
       Hotjar.event('double height successfully');
+      updateStabilityAllPieces();
       checkAndHandleLevelStatus();
     }
   }

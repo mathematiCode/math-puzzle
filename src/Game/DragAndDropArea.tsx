@@ -16,6 +16,7 @@ import Hotjar from '@hotjar/browser';
 import { useBoardSquares } from '../context/BoardSquares';
 import { getNewValidLocation } from './utils/getNewValidLocation';
 import { useLevelStatus } from '../hooks/useLevelStatus';
+import { usePieceStabilitySetter } from '../hooks/usePieceStabilitySetter';
 
 interface DragAndDropAreaProps {
   children: React.ReactNode;
@@ -32,6 +33,7 @@ function DragAndDropArea({
 }: DragAndDropAreaProps) {
   const { setSelectedPiece } = useSelectedPiece();
   const { piecesInPlay, movePiece, setPieceStability } = usePiecesInPlay();
+  const { updateStabilityAllPieces } = usePieceStabilitySetter();
   const {
     boardSquares,
     addPieceToBoard,
@@ -118,16 +120,15 @@ function DragAndDropArea({
     Hotjar.event('drag start');
   };
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const unstablePieces = getUnstablePieces();
+  const handleDragEnd = async (event: DragEndEvent) => {
     const id = event.active.id as string;
     const piece = piecesInPlay.find(piece => piece.id === id);
     if (!piece) return;
     if (piece.location != null) {
       const { x, y } = convertLocationToXAndY(piece.location);
-      removePieceFromBoard(x, y, piece?.width, piece?.height, piece?.id ?? '');
+      removePieceFromBoard(x, y, piece.width, piece.height, piece.id);
     }
-    if (event?.over?.id) {
+    if (event.over?.id) {
       const newLocation = event.over.id.toString();
       const { x, y } = convertLocationToXAndY(newLocation);
       const boardWidth = boardSquares[0].length;
@@ -140,13 +141,10 @@ function DragAndDropArea({
         boardWidth,
         boardHeight
       );
-      movePiece(id, `(${correctedX},${correctedY})`);
+      const newValidLocation = `(${correctedX},${correctedY})`;
+      movePiece(id, newValidLocation);
       const { outerOverlaps, innerOverlaps, squaresOutsideBoard } =
-        countOverlappingSquares(
-          newLocation,
-          piece.width ?? 0,
-          piece.height ?? 0
-        );
+        countOverlappingSquares(newValidLocation, piece.width, piece.height);
       if (outerOverlaps + innerOverlaps + squaresOutsideBoard > 0) {
         setPieceStability(id, false);
       } else {
@@ -157,27 +155,11 @@ function DragAndDropArea({
         correctedY,
         piece.width,
         piece.height,
-        piece.id ?? ''
+        piece.id
       );
     } else movePiece(id, null);
-    piecesInPlay.forEach(piece => {
-      if (piece.location === null || piece.location === 'instructions') return;
-      if (unstablePieces.includes(piece.id ?? '')) {
-        setPieceStability(piece.id, false);
-      } else {
-        const { squaresOutsideBoard } = countOverlappingSquares(
-          piece.location,
-          piece.width ?? 0,
-          piece.height ?? 0
-        );
-        if (squaresOutsideBoard > 0) {
-          setPieceStability(piece.id, false);
-        } else {
-          setPieceStability(piece.id, true);
-        }
-      }
-    });
     Hotjar.event('drag end');
+    updateStabilityAllPieces();
     checkAndHandleLevelStatus();
   };
 

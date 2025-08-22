@@ -75,7 +75,6 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
   }
 
   function setPiecesForLevel(level: number, pieces: Piece[]): void {
-    //   console.log('setting pieces solution to:', pieces);
     const newGameProgress = gameProgress.map(gameProgress =>
       gameProgress.level === level
         ? { ...gameProgress, pieces: pieces }

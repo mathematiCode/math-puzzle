@@ -19,11 +19,11 @@ export interface PiecesInPlayContextType {
   resetPieces: () => void;
   setPiecesForNewLevel: (newPieces?: Piece[]) => void;
   setPieceStability: (pieceId: string, isStable: boolean) => void;
+  resetStabilityOfAllPieces: () => void;
 }
 
 export const PiecesInPlayContext =
   createContext<PiecesInPlayContextType | null>(null);
-const initialLocation = null;
 
 export function PiecesInPlayProvider({
   children,
@@ -46,37 +46,23 @@ export function PiecesInPlayProvider({
     const { x: oldX, y: oldY } = convertLocationToXAndY(oldLocation);
     const pieceHeight = piecesInPlay[pieceIndex].height;
     const pieceWidth = piecesInPlay[pieceIndex].width;
-    let newValidLocation = newLocation;
+    // let newValidLocation = newLocation;
     if (newLocation != null) {
       const { x, y } = convertLocationToXAndY(newLocation);
-      const { correctedX, correctedY } = getNewValidLocation(x, y, pieceWidth, pieceHeight, boardWidth, boardHeight);
-      newValidLocation = `(${correctedX},${correctedY})`;
+     //const { correctedX, correctedY } = getNewValidLocation(x, y, pieceWidth, pieceHeight, boardWidth, boardHeight);
+     // newValidLocation = `(${x},${y})`;
       const { outerOverlaps, innerOverlaps, squaresOutsideBoard } = countOverlappingSquares(
-        newValidLocation,
+        newLocation,
         pieceWidth,
         pieceHeight
       );
-      updatedPieces[pieceIndex].location = newValidLocation;
+      updatedPieces[pieceIndex].location = newLocation;
       updatedPieces[pieceIndex].id = `b-${pieceIndex}`;
    
       setPiecesInPlay(updatedPieces);
-      if (outerOverlaps + innerOverlaps > 0) {
-        updatedPieces[pieceIndex].isStable = false;
-        setPieceStability(`b-${pieceIndex}`, false);
-        setPiecesInPlay(updatedPieces);
-        Hotjar.event('piece placed partially overlapping another piece');
-      } else if (squaresOutsideBoard > 0) {
-        setPieceStability(`b-${pieceIndex}`, false);
-        setPiecesInPlay(updatedPieces);
-        Hotjar.event('piece placed partially off board');
-      } else {
-        updatedPieces[pieceIndex].isStable = true;
-        setPieceStability(`b-${pieceIndex}`, true);
-      }
     } else if (newLocation === null) {
       updatedPieces[pieceIndex].location = null;
       updatedPieces[pieceIndex].id = `i-${pieceIndex}`;
-      setPieceStability(`i-${pieceIndex}`, true);
       setPiecesInPlay(updatedPieces);
       if (oldLocation !== null) {
         Hotjar.event('move off of board');
@@ -96,12 +82,6 @@ export function PiecesInPlayProvider({
     if (pieceId === 'sample-0') {
       setPiecesInPlay(updatedPieces);
       return;
-    }
-    console.log(`updating to ${newWidth}x${newHeight}`)
-    if (newWidth > boardWidth || newHeight > boardHeight) {
-      setPieceStability(`b-${pieceIndex}`, false);
-    } else {
-      setPieceStability(`b-${pieceIndex}`, true);
     }
     setPiecesInPlay(updatedPieces);
   }
@@ -174,6 +154,17 @@ export function PiecesInPlayProvider({
     updatedPieces[pieceIndex].isStable = isStable;
     setPiecesInPlay(updatedPieces);
   }
+
+
+  function resetStabilityOfAllPieces() {
+    const updatedPieces = [...piecesInPlay];
+    updatedPieces.forEach(piece => {
+      piece.isStable = true;
+    });
+    setPiecesInPlay(updatedPieces);
+  }
+   
+    
   return (
     <PiecesInPlayContext.Provider
       value={{
@@ -183,6 +174,7 @@ export function PiecesInPlayProvider({
         resetPieces,
         setPiecesForNewLevel,
         setPieceStability,
+        resetStabilityOfAllPieces,
       }}
     >
       {children}
