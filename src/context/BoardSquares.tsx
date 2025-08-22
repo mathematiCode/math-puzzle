@@ -44,7 +44,6 @@ export const BoardSquaresContext =
 
 export function BoardSquaresProvider({ children }: { children: ReactNode }) {
   const { currentLevel } = useCurrentLevel();
-  const { setLevelCompleted } = useGameProgress();
   const [boardSquares, setBoardSquares] = useLocalStorageState<string[][]>(
     'boardSquares',
     {
@@ -87,6 +86,7 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
       }
     }
     setBoardSquares(newBoardSquares);
+    console.log('after adding piece to board', newBoardSquares);
 
     // setTimeout(() => {
     //   if (checkIfPassedLevel()) {
@@ -126,6 +126,7 @@ export function BoardSquaresProvider({ children }: { children: ReactNode }) {
       }
     }
     setBoardSquares(newBoardSquares);
+    console.log('after removing piece from board', newBoardSquares);
   }
 
   function resetBoardSquares(level: number) {
