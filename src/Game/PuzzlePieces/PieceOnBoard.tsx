@@ -14,6 +14,7 @@ import { useBoardSquares } from '../../context/BoardSquares';
 import Hotjar from '@hotjar/browser';
 import { getNewValidLocation } from '../utils/getNewValidLocation';
 import { getRandomVibrationAnimation } from '../utils/getRandomVibrationAnimation';
+import { usePieceStabilitySetter } from '../../hooks/usePieceStabilitySetter';
 
 interface PieceWrapperProps extends HTMLMotionProps<'button'> {
   x: number;
@@ -57,7 +58,7 @@ function PieceOnBoard({
   const isStable = piece.isStable;
   const { piecesInPlay, updateDimensions, movePiece } = usePiecesInPlay();
   const currentLevelContext = useCurrentLevel();
-
+  const { updateStabilityAllPieces } = usePieceStabilitySetter();
   const { selectedPiece, setSelectedPiece } = useSelectedPiece();
   const { boardDimensions } = currentLevelContext;
   const { addPieceToBoard, removePieceFromBoard } = useBoardSquares();
@@ -123,6 +124,7 @@ function PieceOnBoard({
         newHeight,
         currentPiece.id
       );
+      updateStabilityAllPieces();
     }
     Hotjar.event('rotation');
   }

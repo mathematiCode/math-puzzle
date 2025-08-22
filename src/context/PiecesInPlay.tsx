@@ -49,7 +49,7 @@ export function PiecesInPlayProvider({
     // let newValidLocation = newLocation;
     if (newLocation != null) {
       const { x, y } = convertLocationToXAndY(newLocation);
-     // const { correctedX, correctedY } = getNewValidLocation(x, y, pieceWidth, pieceHeight, boardWidth, boardHeight);
+     //const { correctedX, correctedY } = getNewValidLocation(x, y, pieceWidth, pieceHeight, boardWidth, boardHeight);
      // newValidLocation = `(${x},${y})`;
       const { outerOverlaps, innerOverlaps, squaresOutsideBoard } = countOverlappingSquares(
         newLocation,
@@ -60,24 +60,9 @@ export function PiecesInPlayProvider({
       updatedPieces[pieceIndex].id = `b-${pieceIndex}`;
    
       setPiecesInPlay(updatedPieces);
-      if (outerOverlaps + innerOverlaps > 0) {
-        // updatedPieces[pieceIndex].isStable = false;
-        setPieceStability(`b-${pieceIndex}`, false);
-        setPiecesInPlay(updatedPieces);
-        Hotjar.event('piece placed partially overlapping another piece');
-      } else if (squaresOutsideBoard > 0) {
-        setPieceStability(`b-${pieceIndex}`, false);
-        setPiecesInPlay(updatedPieces);
-        Hotjar.event('piece placed partially off board');
-      } else {
-        //updatedPieces[pieceIndex].isStable = true;
-        setPieceStability(`b-${pieceIndex}`, true);
-        setPiecesInPlay(updatedPieces);
-      }
     } else if (newLocation === null) {
       updatedPieces[pieceIndex].location = null;
       updatedPieces[pieceIndex].id = `i-${pieceIndex}`;
-      setPieceStability(`i-${pieceIndex}`, true);
       setPiecesInPlay(updatedPieces);
       if (oldLocation !== null) {
         Hotjar.event('move off of board');
@@ -97,12 +82,6 @@ export function PiecesInPlayProvider({
     if (pieceId === 'sample-0') {
       setPiecesInPlay(updatedPieces);
       return;
-    }
-    console.log(`updating to ${newWidth}x${newHeight}`)
-    if (newWidth > boardWidth || newHeight > boardHeight) {
-      setPieceStability(`b-${pieceIndex}`, false);
-    } else {
-      setPieceStability(`b-${pieceIndex}`, true);
     }
     setPiecesInPlay(updatedPieces);
   }
