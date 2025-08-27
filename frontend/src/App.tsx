@@ -1,3 +1,4 @@
+// import { useEffect } from 'react';
 import Home from './pages/home';
 import About from './pages/about';
 import Math from './pages/math';
@@ -52,6 +53,21 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  // Test backend connection
+  // useEffect(() => {
+  //   const testBackend = async () => {
+  //     try {
+  //       const response = await fetch('http://localhost:8000/hello');
+  //       const data = await response.json();
+  //       console.log('Backend response:', data);
+  //     } catch (error) {
+  //       console.error('Error connecting to backend:', error);
+  //     }
+  //   };
+
+  //   testBackend();
+  // }, []);
+
   return <RouterProvider router={router} />;
 }
 
