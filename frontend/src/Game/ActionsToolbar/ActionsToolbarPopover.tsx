@@ -1,4 +1,3 @@
-import { cloneElement } from 'react';
 import { Tooltip } from 'antd';
 import { motion } from 'motion/react';
 import * as Popover from '@radix-ui/react-popover';
@@ -19,14 +18,10 @@ import { usePieceStabilitySetter } from '../../hooks/usePieceStabilitySetter';
 function ActionsToolbarPopover({
   children,
   runRotationAnimation, // lives in PuzzlePiece components
-  ...delegated
 }: {
   children: React.ReactElement;
   runRotationAnimation: any;
-  delegated?: any;
 }) {
-  /* Cloning the children is necessary for the popover to position correctly when pieces are positioned absolutely on the board. */
-  const childrenWithDelegatedProps = cloneElement(children, delegated);
   const { updateDimensions, movePiece } = usePiecesInPlay();
   const currentPiece = useCurrentPiece();
   const showTooltips = false;
@@ -106,7 +101,7 @@ function ActionsToolbarPopover({
   const rotateDisabled = currentPiece == null;
   return (
     <Popover.Root>
-      <Popover.Trigger asChild>{childrenWithDelegatedProps}</Popover.Trigger>
+      <Popover.Trigger asChild>{children}</Popover.Trigger>
       <Popover.Portal container={document.body}>
         <PopoverContent sideOffset={5} align="center" side="bottom">
           <ActionsToolbar>

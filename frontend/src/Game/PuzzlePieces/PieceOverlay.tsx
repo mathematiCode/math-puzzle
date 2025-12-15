@@ -40,5 +40,4 @@ PieceOverlay.propTypes = {
   piece: PropTypes.object.isRequired,
 };
 
-const MemoizedPieceOverlay = memo(PieceOverlay);
-export default MemoizedPieceOverlay;
+export default PieceOverlay;

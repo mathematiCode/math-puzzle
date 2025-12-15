@@ -9,16 +9,16 @@ export function useLevelStatus() {
   const { setLevelCompleted } = useGameProgress();
   const { currentLevel } = useCurrentLevel();
   const { piecesInPlay } = usePiecesInPlay();
-  const unstablePieces = getUnstablePieces();
 
   const checkAndHandleLevelStatus = useCallback(() => {
+    const unstablePieces = getUnstablePieces();
     const isLevelPassed =
       unstablePieces.length === 0 && countEmptySquares() === 0;
     if (isLevelPassed) {
       setLevelCompleted(currentLevel, piecesInPlay);
     }
   }, [
-    unstablePieces,
+    getUnstablePieces,
     countEmptySquares,
     currentLevel,
     piecesInPlay,

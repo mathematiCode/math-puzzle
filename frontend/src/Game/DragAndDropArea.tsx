@@ -51,7 +51,6 @@ function DragAndDropArea({
 
   function customCollisionDetection(args: any) {
     const { collisionRect } = args;
-
     const x = collisionRect.left;
     const y = collisionRect.top;
 
@@ -120,7 +119,7 @@ function DragAndDropArea({
     Hotjar.event('drag start');
   };
 
-  const handleDragEnd = async (event: DragEndEvent) => {
+  const handleDragEnd = (event: DragEndEvent) => {
     const id = event.active.id as string;
     const piece = piecesInPlay.find(piece => piece.id === id);
     if (!piece) return;
