@@ -13,6 +13,8 @@ function PieceOverlay({ piece }: { piece: Piece }) {
   return (
     <motion.div
       className="unit-container"
+      data-testid="drag-overlay"
+      data-piece-id={piece.id}
       style={{
         cursor: 'grab',
         border: '2px solid black',
