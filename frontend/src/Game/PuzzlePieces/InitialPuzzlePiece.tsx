@@ -43,8 +43,6 @@ const InitialPuzzlePiece = ({
   }
 
   async function runRotationAnimation(selectedPiece) {
-    const id = selectedPiece?.id;
-    const pieceIndex = parseInt(id?.slice(id?.indexOf('-') + 1) ?? '0', 10);
     setIsRotating(true);
     try {
       await animate(

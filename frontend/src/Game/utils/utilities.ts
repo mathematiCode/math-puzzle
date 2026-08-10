@@ -43,6 +43,6 @@ export function findPieceById(piecesInPlay: Piece[], id: string) {
   return piecesInPlay.find(piece => piece.id === id);
 }
 
-export function getPieceNumber(id: string) {
-  return parseInt(id.slice(id.indexOf('-') + 1), 10);
+export function findPieceIndexById(piecesInPlay: Piece[], id: string) {
+  return piecesInPlay.findIndex(piece => piece.id === id);
 }

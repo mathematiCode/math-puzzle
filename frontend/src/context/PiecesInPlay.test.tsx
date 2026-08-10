@@ -19,10 +19,6 @@ vi.mock('../Game/utils/utilities', () => ({
     if (location === '(0,0)') return { x: 0, y: 0 };
     return { x: 0, y: 0 };
   }),
-  getPieceNumber: vi.fn(id => {
-    const match = id.match(/\d+/);
-    return match ? parseInt(match[0]) : 0;
-  }),
 }));
 
 vi.mock('../Game/utils/getNewValidLocation', () => ({

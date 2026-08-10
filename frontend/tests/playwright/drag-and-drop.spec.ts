@@ -57,20 +57,22 @@ test.describe('Drag and drop', () => {
     await openFreshGame(page, 0);
 
     // i-4 is 2×1 — easy to place on the valid top-right area starting at (2,0).
-    const trayPiece = pieceLocator(page, 'i-4');
+    const tray = page.getByTestId('pieces-container');
+    const board = page.getByTestId('board-wrapper');
+    const trayPiece = tray.getByTestId('i-4');
     const target = boardSquare(page, 2, 0);
 
     await dragPieceTo(page, trayPiece, target);
 
-    // On the board, id flips from i-* to b-* using the piecesInPlay index.
-    const placedPiece = pieceLocator(page, 'b-4');
-    await expect(placedPiece).toBeVisible();
-    await expect(pieceLocator(page, 'i-4')).toHaveCount(0);
-
-    // Piece should be gone from the tray.
-    const tray = page.getByTestId('pieces-container');
+    // Piece id stays stable; location moves it from tray to board.
+    await expect(board.getByTestId('i-4')).toBeVisible();
     await expect(tray.getByTestId('i-4')).toHaveCount(0);
-    await expect(tray.getByTestId('b-4')).toHaveCount(0);
+
+    const piecesInPlay = await page.evaluate(() =>
+      JSON.parse(window.localStorage.getItem('piecesInPlay') || '[]')
+    );
+    const placed = piecesInPlay.find((p: { id: string }) => p.id === 'i-4');
+    expect(placed?.location).toBe('(2,0)');
   });
 
   test('moves a piece already on the board to a new square', async ({
@@ -78,32 +80,41 @@ test.describe('Drag and drop', () => {
   }) => {
     await openFreshGame(page, 0);
 
+    const board = page.getByTestId('board-wrapper');
+
     await dragPieceTo(
       page,
       pieceLocator(page, 'i-4'),
       boardSquare(page, 2, 0)
     );
-    await expect(pieceLocator(page, 'b-4')).toBeVisible();
+    await expect(board.getByTestId('i-4')).toBeVisible();
+    // Wait for tray→board layout animation to finish before the next drag.
+    await expect(page.getByTestId('drag-overlay')).toHaveCount(0);
+    await expect
+      .poll(async () => {
+        const pieces = await page.evaluate(() =>
+          JSON.parse(window.localStorage.getItem('piecesInPlay') || '[]')
+        );
+        return pieces.find((p: { id: string }) => p.id === 'i-4')?.location;
+      })
+      .toBe('(2,0)');
 
-    // Drop well away from the first placement. Collision detection uses the
-    // piece's top-left, so aim for a square that stays under that corner.
     await dragPieceTo(
       page,
-      pieceLocator(page, 'b-4'),
+      board.getByTestId('i-4'),
       boardSquare(page, 0, 4)
     );
 
-    // Same piece id should still be on the board after the move.
-    await expect(pieceLocator(page, 'b-4')).toBeVisible();
-    await expect(pieceLocator(page, 'i-4')).toHaveCount(0);
+    await expect(board.getByTestId('i-4')).toBeVisible();
 
-    const piecesInPlay = await page.evaluate(() =>
-      JSON.parse(window.localStorage.getItem('piecesInPlay') || '[]')
-    );
-    const moved = piecesInPlay.find(
-      (p: { id: string }) => p.id === 'b-4'
-    );
-    expect(moved?.location).toBe('(0,4)');
+    await expect
+      .poll(async () => {
+        const pieces = await page.evaluate(() =>
+          JSON.parse(window.localStorage.getItem('piecesInPlay') || '[]')
+        );
+        return pieces.find((p: { id: string }) => p.id === 'i-4')?.location;
+      })
+      .toBe('(0,4)');
   });
 
   test('records overlapping piece ids when two pieces share squares', async ({
@@ -111,28 +122,30 @@ test.describe('Drag and drop', () => {
   }) => {
     await openFreshGame(page, 0);
 
+    const board = page.getByTestId('board-wrapper');
+
     // Place the small 2×1 piece, then drop another piece on top of it.
     await dragPieceTo(
       page,
       pieceLocator(page, 'i-4'),
       boardSquare(page, 2, 2)
     );
-    await expect(pieceLocator(page, 'b-4')).toBeVisible();
+    await expect(board.getByTestId('i-4')).toBeVisible();
 
     await dragPieceTo(
       page,
       pieceLocator(page, 'i-1'),
       boardSquare(page, 2, 2)
     );
-    await expect(pieceLocator(page, 'b-1')).toBeVisible();
+    await expect(board.getByTestId('i-1')).toBeVisible();
 
     // Both pieces remain on the board; shared cells should list both ids.
     const boardSquares = await page.evaluate(() =>
       JSON.parse(window.localStorage.getItem('boardSquares') || '[]')
     );
     const sharedCell: string = boardSquares[2][2];
-    expect(sharedCell).toContain('b-4');
-    expect(sharedCell).toContain('b-1');
+    expect(sharedCell).toContain('i-4');
+    expect(sharedCell).toContain('i-1');
     expect(sharedCell.split(', ').length).toBeGreaterThanOrEqual(2);
 
     const piecesInPlay = await page.evaluate(() =>
@@ -140,10 +153,10 @@ test.describe('Drag and drop', () => {
     );
     const overlapping = piecesInPlay.filter(
       (p: { id: string; isStable?: boolean }) =>
-        p.id === 'b-1' || p.id === 'b-4'
+        p.id === 'i-1' || p.id === 'i-4'
     );
-    expect(overlapping.some((p: { isStable?: boolean }) => p.isStable === false)).toBe(
-      true
-    );
+    expect(
+      overlapping.some((p: { isStable?: boolean }) => p.isStable === false)
+    ).toBe(true);
   });
 });

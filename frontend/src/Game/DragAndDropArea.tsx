@@ -105,16 +105,17 @@ function DragAndDropArea({
 
   const handleDragStart = (event: DragStartEvent) => {
     const id = event.active.id as string;
-    const pieceIndex = parseInt(id.slice(id.indexOf('-') + 1), 10);
+    const piece = piecesInPlay.find(p => p.id === id);
+    if (!piece) return;
     if (isRotating) {
       setTimeout(() => {
-        setActivePiece(piecesInPlay[pieceIndex]);
-        setSelectedPiece(piecesInPlay[pieceIndex]);
+        setActivePiece(piece);
+        setSelectedPiece(piece);
         setIsRotating(false);
       }, 500);
     } else {
-      setActivePiece(piecesInPlay[pieceIndex]);
-      setSelectedPiece(piecesInPlay[pieceIndex]);
+      setActivePiece(piece);
+      setSelectedPiece(piece);
     }
     Hotjar.event('drag start');
   };

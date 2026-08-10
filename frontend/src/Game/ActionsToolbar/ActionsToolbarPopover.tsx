@@ -34,9 +34,9 @@ function ActionsToolbarPopover({
       return;
     }
     const isOnBoard =
-      currentPiece.location &&
-      currentPiece.location.match(/^\(\d+,\d+\)$/) &&
-      currentPiece.id.startsWith('b-');
+      !!currentPiece.location &&
+      currentPiece.location !== 'instructions' &&
+      /^\(\d+,\d+\)$/.test(currentPiece.location);
     const stretchIsPossible = Number.isInteger(currentPiece.height / 2);
     if (stretchIsPossible) {
       const newHeight = currentPiece.height / 2;
@@ -66,9 +66,9 @@ function ActionsToolbarPopover({
       const newHeight = currentPiece.height * 2;
       const newWidth = currentPiece.width / 2;
       const isOnBoard =
-        currentPiece.location &&
-        currentPiece.location.match(/^\(\d+,\d+\)$/) &&
-        currentPiece.id.startsWith('b-');
+        !!currentPiece.location &&
+        currentPiece.location !== 'instructions' &&
+        /^\(\d+,\d+\)$/.test(currentPiece.location);
       if (isOnBoard) {
         updateLocationAndBoardSquares(
           currentPiece,
