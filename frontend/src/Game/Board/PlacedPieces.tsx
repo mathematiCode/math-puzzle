@@ -1,5 +1,6 @@
 import PieceOnBoard from '../PuzzlePieces/PieceOnBoard';
 import { Piece } from '../../types/piece';
+import { isSample } from '../utils/piece';
 import styled from 'styled-components';
 
 function PlacedPieces({
@@ -16,7 +17,7 @@ function PlacedPieces({
       {piecesInPlay.map(piece =>
         piece.location != null &&
         piece.location != 'instructions' &&
-        piece.id != 'sample-0' ? (
+        !isSample(piece) ? (
           <PieceOnBoard
             piece={piece}
             key={piece.id}

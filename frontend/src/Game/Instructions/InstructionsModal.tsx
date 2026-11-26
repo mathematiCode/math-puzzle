@@ -8,6 +8,7 @@ import MathematicalToolsRow from './MathematicalToolsRow';
 import ErrorBoundary from '../../components/ErrorBoundary';
 import AntModal from '../../components/AntModal';
 import { Piece } from '../../types/piece';
+import { isSample } from '../utils/piece';
 
 const StyledDiv = styled.div`
   padding: '20px';
@@ -57,9 +58,13 @@ const InstructionsModal = ({
 }) => {
   const { updateDimensions } = usePiecesInPlay();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const samplePiece = piecesInPlay.find(isSample);
   const closeModal = () => {
     setIsModalOpen(false);
-    updateDimensions('sample-0', 3, 2); // Resetting the example piece to it's original dimensions
+    // Reset the example piece to its original dimensions.
+    if (samplePiece) {
+      updateDimensions(samplePiece.id, 3, 2);
+    }
   };
 
   return (
@@ -108,7 +113,7 @@ const InstructionsModal = ({
           <StyledDiv>
             <ErrorBoundary>
               <SamplePiece
-                piece={piecesInPlay[0]}
+                piece={samplePiece ?? piecesInPlay[0]}
                 isRotating={isRotating}
                 setIsRotating={setIsRotating}
                 setActivePiece={setActivePiece}

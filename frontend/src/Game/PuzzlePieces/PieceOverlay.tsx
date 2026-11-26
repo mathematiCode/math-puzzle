@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import PropTypes from 'prop-types';
 import Rectangle from '../Rectangle.js';
 import { Piece } from '../../types/piece.js';
+import { pieceTestId } from '../utils/piece';
 
 // Simple touch device detection
 const isTouchDevice = () => {
@@ -14,7 +15,7 @@ function PieceOverlay({ piece }: { piece: Piece }) {
     <motion.div
       className="unit-container"
       data-testid="drag-overlay"
-      data-piece-id={piece.id}
+      data-piece-id={pieceTestId(piece)}
       style={{
         cursor: 'grab',
         border: '2px solid black',

@@ -6,6 +6,7 @@ import { memo } from 'react';
 import { motion, useAnimate, HTMLMotionProps } from 'motion/react';
 import styled from 'styled-components';
 import { convertLocationToXAndY } from '../utils/utilities';
+import { pieceTestId } from '../utils/piece';
 import { Piece } from '../../types/piece';
 import { useSelectedPiece } from '../../context/SelectedPiece';
 import { usePiecesInPlay } from '../../context/PiecesInPlay';
@@ -146,7 +147,7 @@ function PieceOnBoard({
         {...listeners}
         {...attributes}
         onClick={handlePieceSelected}
-        data-testid={piece.id}
+        data-testid={pieceTestId(piece)}
         x={x as number}
         y={y as number}
         layout={!isRotating && !isDragging && !isStable}
