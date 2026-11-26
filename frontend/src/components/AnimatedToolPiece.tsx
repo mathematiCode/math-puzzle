@@ -175,27 +175,21 @@ function ColorGrid({
 /* ----------------------------------- cut ---------------------------------- */
 
 function CutPiece({ unit, transformed }: { unit: number; transformed: boolean }) {
-  // Rest: one seamless salmon rectangle. Apply: the two halves slide apart and
-  // only then does the right product turn blue — 3(2 + 3) → 3(2) + 3(3).
+  // Rest: one seamless salmon rectangle. Apply: the right product turns blue
+  // first, then the two halves slide apart — 3(2 + 3) → 3(2) + 3(3).
   const sep = unit * 0.6;
+  const slide = { ...SLIDE_SPRING, delay: transformed ? 0.25 : 0 };
   return (
     <SplitRow>
-      <PieceShadow
-        animate={{ x: transformed ? -sep : 0 }}
-        transition={SLIDE_SPRING}
-      >
+      <PieceShadow animate={{ x: transformed ? -sep : 0 }} transition={slide}>
         <ColorGrid cols={2} rows={2} unit={unit} color={RED} />
       </PieceShadow>
-      <PieceShadow
-        animate={{ x: transformed ? sep : 0 }}
-        transition={SLIDE_SPRING}
-      >
+      <PieceShadow animate={{ x: transformed ? sep : 0 }} transition={slide}>
         <ColorGrid
           cols={3}
           rows={2}
           unit={unit}
           color={transformed ? TEAL : RED}
-          colorDelay={transformed ? 0.3 : 0}
         />
       </PieceShadow>
     </SplitRow>
@@ -215,7 +209,7 @@ function CombinePiece({
   // together and meld into one all-salmon rectangle — 3(2) + 3(3) → 3(2 + 3).
   const sep = unit * 0.9;
   return (
-    <SplitRow animate={{ scale: transformed ? [1, 1.12, 1] : 1 }}>
+    <SplitRow>
       <PieceShadow
         animate={{ x: transformed ? 0 : -sep }}
         transition={SLAM_SPRING}
@@ -241,9 +235,9 @@ function CombinePiece({
 /* --------------------------------- styles --------------------------------- */
 
 const CELL_SPRING = { type: 'spring', stiffness: 260, damping: 24 } as const;
-// Calm separation for the cut; snappier, slightly springy slam for the combine.
+// Calm separation for the cut; smooth, well-damped glide (no bounce) for combine.
 const SLIDE_SPRING = { type: 'spring', stiffness: 240, damping: 22 } as const;
-const SLAM_SPRING = { type: 'spring', stiffness: 340, damping: 16 } as const;
+const SLAM_SPRING = { type: 'spring', stiffness: 260, damping: 38 } as const;
 
 const Stage = styled.div<{ $size: number }>`
   display: flex;
@@ -283,7 +277,7 @@ const ColorCell = styled.div<{ $unit: number }>`
   height: ${props => props.$unit}px;
   border: 1.5px solid #1b1b1b;
   box-sizing: border-box;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.22s ease;
 `;
 
 const PieceShadow = styled(motion.div)`
