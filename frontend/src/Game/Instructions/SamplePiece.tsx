@@ -7,6 +7,7 @@ import { motion, useAnimate } from 'motion/react';
 import { useSelectedPiece } from '../../context/SelectedPiece';
 import { usePiecesInPlay } from '../../context/PiecesInPlay';
 import { Piece } from '../../types/piece';
+import { pieceTestId } from '../utils/piece';
 import styled from 'styled-components';
 import { mergeRefs } from '@chakra-ui/react';
 import Hotjar from '@hotjar/browser';
@@ -45,7 +46,7 @@ const SamplePiece = ({
         { type: 'spring', stiffness: 150, damping: 11 }
       );
       // Use the current piece dimensions from the piece prop instead of selectedPiece
-      updateDimensions('sample-0', piece.height, piece.width);
+      updateDimensions(piece.id, piece.height, piece.width);
       await animate(scope.current, { rotate: 0 }, { duration: 0 });
     } finally {
       setIsRotating(false);
@@ -62,7 +63,7 @@ const SamplePiece = ({
     >
       <SamplePieceWrapper
         ref={scope}
-        data-testid={piece.id}
+        data-testid={pieceTestId(piece)}
         onClick={handlePieceSelected}
         {...(!(isRotating && isSelected) ? { layoutId: piece.id } : {})}
       >

@@ -49,7 +49,9 @@ describe('PiecesInPlay updateDimensions', () => {
     currentLevel: 0,
     initialPieces: [
       {
-        id: 'sample-0',
+        id: 'sample',
+        order: [0],
+        kind: 'sample',
         width: 3,
         height: 2,
         location: 'instructions',
@@ -57,7 +59,9 @@ describe('PiecesInPlay updateDimensions', () => {
         isRotated: false,
       },
       {
-        id: 'i-1',
+        id: 'piece-1',
+        order: [1],
+        kind: 'puzzle',
         width: 2,
         height: 3,
         location: null,
@@ -65,7 +69,9 @@ describe('PiecesInPlay updateDimensions', () => {
         isRotated: false,
       },
       {
-        id: 'b-2',
+        id: 'piece-2',
+        order: [2],
+        kind: 'puzzle',
         width: 1,
         height: 2,
         location: '(1,2)',
@@ -101,9 +107,14 @@ describe('PiecesInPlay updateDimensions', () => {
   };
 
   beforeEach(() => {
+    // The provider persists via useLocalStorageState; clear between tests so
+    // state from a prior test doesn't leak in through localStorage.
+    localStorage.clear();
     mockPiecesInPlay = [
       {
-        id: 'sample-0',
+        id: 'sample',
+        order: [0],
+        kind: 'sample',
         width: 3,
         height: 2,
         location: 'instructions',
@@ -111,7 +122,9 @@ describe('PiecesInPlay updateDimensions', () => {
         isRotated: false,
       },
       {
-        id: 'i-1',
+        id: 'piece-1',
+        order: [1],
+        kind: 'puzzle',
         width: 2,
         height: 3,
         location: null,
@@ -119,7 +132,9 @@ describe('PiecesInPlay updateDimensions', () => {
         isRotated: false,
       },
       {
-        id: 'b-2',
+        id: 'piece-2',
+        order: [2],
+        kind: 'puzzle',
         width: 1,
         height: 2,
         location: '(1,2)',
@@ -153,7 +168,7 @@ describe('PiecesInPlay updateDimensions', () => {
 
   describe('Valid piece updates', () => {
     it('should update dimensions for a valid piece ID', async () => {
-      const pieceId = 'i-1';
+      const pieceId = 'piece-1';
       const newWidth = 4;
       const newHeight = 2;
 
@@ -169,7 +184,7 @@ describe('PiecesInPlay updateDimensions', () => {
     });
 
     it('should update dimensions for a board piece', async () => {
-      const pieceId = 'b-2';
+      const pieceId = 'piece-2';
       const newWidth = 3;
       const newHeight = 1;
 
@@ -185,7 +200,7 @@ describe('PiecesInPlay updateDimensions', () => {
     });
 
     it('should preserve other piece properties when updating dimensions', () => {
-      const pieceId = 'i-1';
+      const pieceId = 'piece-1';
       const originalPiece = mockContext.piecesInPlay.find(
         (p: Piece) => p.id === pieceId
       );
@@ -204,8 +219,8 @@ describe('PiecesInPlay updateDimensions', () => {
     });
 
     it('should not affect other pieces when updating one piece', () => {
-      const pieceId = 'i-1';
-      const otherPieceId = 'b-2';
+      const pieceId = 'piece-1';
+      const otherPieceId = 'piece-2';
       const originalOtherPiece = mockContext.piecesInPlay.find(
         (p: Piece) => p.id === otherPieceId
       );
@@ -268,7 +283,7 @@ describe('PiecesInPlay updateDimensions', () => {
 
   describe('Multiple updates', () => {
     it('should handle multiple consecutive updates to the same piece', async () => {
-      const pieceId = 'b-2';
+      const pieceId = 'piece-2';
 
       const piece1Before = mockContext.piecesInPlay.find(
         (p: Piece) => p.id === pieceId
@@ -281,10 +296,10 @@ describe('PiecesInPlay updateDimensions', () => {
       await mockContext.updateDimensions(pieceId, 1, 1);
 
       const piece1 = mockContext.piecesInPlay.find(
-        (p: Piece) => p.id === 'i-1'
+        (p: Piece) => p.id === 'piece-1'
       );
       const piece2 = mockContext.piecesInPlay.find(
-        (p: Piece) => p.id === 'b-2'
+        (p: Piece) => p.id === 'piece-2'
       );
       expect(piece1.width).toBe(2);
       expect(piece1.height).toBe(3);
@@ -295,24 +310,24 @@ describe('PiecesInPlay updateDimensions', () => {
     it('should handle updates to different pieces', async () => {
       // Get pieces before updates
       const piece1Before = mockContext.piecesInPlay.find(
-        (p: Piece) => p.id === 'i-1'
+        (p: Piece) => p.id === 'piece-1'
       );
       expect(piece1Before.width).toBe(2); // Original width
       expect(piece1Before.height).toBe(3); // Original width
 
       const piece2Before = mockContext.piecesInPlay.find(
-        (p: Piece) => p.id === 'b-2'
+        (p: Piece) => p.id === 'piece-2'
       );
       expect(piece2Before.width).toBe(1); // Original width
       expect(piece2Before.height).toBe(2); // Original width
 
-      await mockContext.updateDimensions('i-1', 3, 4);
-      await mockContext.updateDimensions('b-2', 2, 3);
+      await mockContext.updateDimensions('piece-1', 3, 4);
+      await mockContext.updateDimensions('piece-2', 2, 3);
       const piece1 = mockContext.piecesInPlay.find(
-        (p: Piece) => p.id === 'i-1'
+        (p: Piece) => p.id === 'piece-1'
       );
       const piece2 = mockContext.piecesInPlay.find(
-        (p: Piece) => p.id === 'b-2'
+        (p: Piece) => p.id === 'piece-2'
       );
       expect(piece1.width).toBe(3);
       expect(piece1.height).toBe(4);

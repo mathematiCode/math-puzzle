@@ -12,8 +12,29 @@ export async function openFreshGame(page: Page, levelIndex = 0) {
   await expect(page.getByTestId('board-wrapper')).toBeVisible();
 }
 
-export function pieceLocator(page: Page, pieceId: string) {
-  return page.getByTestId(pieceId);
+/**
+ * Pieces are selected by their order-path label (e.g. "4", "3.1"), exposed as
+ * the data-testid. Piece `id`s are opaque uuids, so tests address pieces by this
+ * stable, human-readable label instead.
+ */
+export function pieceLocator(page: Page, pieceLabel: string) {
+  return page.getByTestId(pieceLabel);
+}
+
+/** Resolve a piece's opaque uuid from its order-path label via persisted state. */
+export async function pieceIdByLabel(
+  page: Page,
+  label: string
+): Promise<string | undefined> {
+  return page.evaluate(pieceLabel => {
+    const pieces = JSON.parse(
+      window.localStorage.getItem('piecesInPlay') || '[]'
+    );
+    const match = pieces.find(
+      (piece: { order: number[] }) => piece.order.join('.') === pieceLabel
+    );
+    return match?.id;
+  }, label);
 }
 
 export function boardSquare(page: Page, x: number, y: number) {

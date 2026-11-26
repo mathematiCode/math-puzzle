@@ -4,9 +4,8 @@ import {
   CurrentLevelContext,
   CurrentLevelContextType,
 } from './CurrentLevel';
-import { colors } from '../CONSTANTS';
 import { Piece } from '../types/piece';
-import levels from '../Game/levels.json' with { type: 'json' };
+import { createInitialPieces, isSample } from '../Game/utils/piece';
 import Hotjar from '@hotjar/browser';
 
 export interface PiecesInPlayContextType {
@@ -34,65 +33,45 @@ export function PiecesInPlayProvider({
     defaultValue: initialPieces
   });
 
+  // All mutators use the functional update form of setPiecesInPlay. A single
+  // event handler (e.g. a drag drop) fires several of these in a row, so each
+  // must build on the latest state rather than the stale `piecesInPlay` closure,
+  // otherwise later updates clobber earlier ones (e.g. stability overwriting a
+  // just-applied location).
   function movePiece(pieceId: string, newLocation: string | null) {
-    const pieceIndex = piecesInPlay.findIndex(piece => piece.id === pieceId);
-    if (pieceIndex === -1) {
+    const piece = piecesInPlay.find(piece => piece.id === pieceId);
+    if (!piece) {
       console.error('Piece not found');
       return;
     }
-    const updatedPieces = [...piecesInPlay];
-    const oldLocation = piecesInPlay[pieceIndex].location;
-    if (newLocation != null) {
-      updatedPieces[pieceIndex].location = newLocation;
-      setPiecesInPlay(updatedPieces);
-    } else {
-      updatedPieces[pieceIndex].location = null;
-      setPiecesInPlay(updatedPieces);
-      if (oldLocation !== null) {
-        Hotjar.event('move off of board');
-      }
+    const oldLocation = piece.location;
+    setPiecesInPlay(prevPieces =>
+      prevPieces.map(piece =>
+        piece.id === pieceId ? { ...piece, location: newLocation } : piece
+      )
+    );
+    if (newLocation == null && oldLocation !== null) {
+      Hotjar.event('move off of board');
     }
   }
 
   function updateDimensions(pieceId: string, newWidth: number, newHeight: number) {
-    const pieceIndex = piecesInPlay.findIndex(piece => piece.id === pieceId);
-    if (pieceIndex === -1) {
+    if (piecesInPlay.findIndex(piece => piece.id === pieceId) === -1) {
       console.error('Piece not found');
       return;
     }
-    const updatedPieces = [...piecesInPlay];
-    updatedPieces[pieceIndex].width = newWidth;
-    updatedPieces[pieceIndex].height = newHeight;
-    if (pieceId === 'sample-0') {
-      setPiecesInPlay(updatedPieces);
-      return;
-    }
-    setPiecesInPlay(updatedPieces);
+    setPiecesInPlay(prevPieces =>
+      prevPieces.map(piece =>
+        piece.id === pieceId
+          ? { ...piece, width: newWidth, height: newHeight }
+          : piece
+      )
+    );
   }
 
   function resetPieces() {
-    const initialLocation = null;
     try {
-      const piecesAfterReset: Piece[] = [
-        {
-          width: 3,
-          height: 2,
-          location: 'instructions',
-          color: 'hsl(0, 61%, 66%)',
-          id: 'sample-0',
-          isRotated: false,
-          isStable: true
-        },
-        ...levels[currentLevel].pieces.map((piece, index) => ({
-          ...piece,
-          location: initialLocation,
-          color: colors[index % colors.length],
-          id: `i-${index + 1}`,
-          isRotated: false,
-          isStable: true
-        })),
-      ];
-      setPiecesInPlay(piecesAfterReset);
+      setPiecesInPlay(createInitialPieces(currentLevel));
     } catch (error) {
       console.error('Error resetting pieces:', error);
     }
@@ -104,26 +83,26 @@ export function PiecesInPlayProvider({
   }
 
   function setPieceStability(pieceId: string, isStable: boolean) {
-    if (pieceId === 'sample-0') {
-      return;
-    }
-    const pieceIndex = piecesInPlay.findIndex(piece => piece.id === pieceId);
-    if (pieceIndex === -1) {
+    const piece = piecesInPlay.find(piece => piece.id === pieceId);
+    if (!piece) {
       console.error('Piece not found');
       return;
     }
-    const updatedPieces = [...piecesInPlay];
-    updatedPieces[pieceIndex].isStable = isStable;
-    setPiecesInPlay(updatedPieces);
+    if (isSample(piece)) {
+      return;
+    }
+    setPiecesInPlay(prevPieces =>
+      prevPieces.map(piece =>
+        piece.id === pieceId ? { ...piece, isStable } : piece
+      )
+    );
   }
 
 
   function resetStabilityOfAllPieces() {
-    const updatedPieces = [...piecesInPlay];
-    updatedPieces.forEach(piece => {
-      piece.isStable = true;
-    });
-    setPiecesInPlay(updatedPieces);
+    setPiecesInPlay(prevPieces =>
+      prevPieces.map(piece => ({ ...piece, isStable: true }))
+    );
   }
    
     

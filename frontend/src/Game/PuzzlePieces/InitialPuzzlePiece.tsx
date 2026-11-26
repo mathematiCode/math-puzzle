@@ -7,6 +7,7 @@ import { motion, useAnimate } from 'motion/react';
 import { useSelectedPiece } from '../../context/SelectedPiece';
 import { usePiecesInPlay } from '../../context/PiecesInPlay';
 import { Piece } from '../../types/piece';
+import { pieceTestId } from '../utils/piece';
 import styled from 'styled-components';
 import { mergeRefs } from '@chakra-ui/react';
 import Hotjar from '@hotjar/browser';
@@ -68,7 +69,7 @@ const InitialPuzzlePiece = ({
         {...listeners}
         {...attributes}
         onClick={handlePieceSelected}
-        data-testid={piece.id}
+        data-testid={pieceTestId(piece)}
         isDragging={isDragging && isSelected}
         layout={!isRotating && !isDragging}
         {...(!(isRotating && isSelected) ? { layoutId: piece.id } : {})}

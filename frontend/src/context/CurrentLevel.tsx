@@ -1,11 +1,11 @@
 import { createContext, useContext, type ReactNode } from 'react';
 import useLocalStorageState from 'use-local-storage-state';
 import levels from '../Game/levels.json' with { type: 'json' };
-import { colors } from '../CONSTANTS';
 export const CurrentLevelContext = createContext<CurrentLevelContextType>(
   {} as CurrentLevelContextType
 );
 import { Piece } from '../types/piece';
+import { createInitialPieces } from '../Game/utils/piece';
 import { findLargestHeight } from '../Game/utils/utilities';
 import { calculateUnitSize } from '../Game/utils/calculateUnitSize';
 import Hotjar from '@hotjar/browser';
@@ -22,33 +22,10 @@ export interface CurrentLevelContextType {
   setCurrentLevel: (level: number) => void;
 }
 
-const initialLocation = null;
 const numberOfLevels = levels.length;
 
 interface CurrentLevelProviderProps {
   children: ReactNode;
-}
-
-function getInitialPieces(level: number) {
-  const instructionsPiece = {
-    width: 3,
-    height: 2,
-    location: 'instructions',
-    color: 'hsl(0, 61%, 66%)',
-    id: 'sample-0',
-    isRotated: false,
-    isStable: true,
-  };
-  return [
-    instructionsPiece,
-    ...levels[level].pieces.map((piece, index) => ({
-      ...piece,
-      location: initialLocation,
-      color: colors[index % colors.length],
-      id: `i-${index + 1}`,
-      isRotated: false,
-    })),
-  ];
 }
 
 export function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
@@ -89,7 +66,7 @@ export function CurrentLevelProvider({ children }: CurrentLevelProviderProps) {
     levelPosition = 'middle';
   }
 
-  const initialPieces = getInitialPieces(currentLevel);
+  const initialPieces = createInitialPieces(currentLevel);
 
   function setSizeOfEachUnit(currentLevel: number) {
     const windowWidth = window.innerWidth;
