@@ -2,6 +2,7 @@ import { useState} from 'react';
 import levels from './levels.json' with { type: 'json' };
 import InitialPuzzlePiece from './PuzzlePieces/InitialPuzzlePiece';
 import PieceOverlay from './PuzzlePieces/PieceOverlay';
+import PiecePreview from './PuzzlePieces/PiecePreview';
 import Board from './Board/Board';
 import PlacedPieces from './PlacedPieces';
 import DragAndDropArea from './DragAndDropArea';
@@ -22,6 +23,7 @@ function Game() {
     levelPosition,
     } = useCurrentLevel();
   const [activePiece, setActivePiece] = useState<Piece | null>(null);
+  const [previewLocation, setPreviewLocation] = useState<string | null>(null);
   const { gameProgress, isLevelCompleted, setModalShown } = useGameProgress();
  // const { handleLevelCheck } = useLevelCompletion();
   const { piecesInPlay } = usePiecesInPlay();
@@ -43,6 +45,7 @@ function Game() {
         key={currentLevel}
         isRotating={isRotating}
         setIsRotating={setIsRotating}
+        setPreviewLocation={setPreviewLocation}
           >
         <PiecesContainer data-testid='pieces-container' $currentLevel={currentLevel} key={currentLevel}>  
           {piecesInPlay.map((piece: Piece) => {
@@ -69,6 +72,9 @@ function Game() {
             isRotating={isRotating}
             setIsRotating={setIsRotating}
           />
+          {activePiece && previewLocation && !isRotating ? (
+            <PiecePreview piece={activePiece} location={previewLocation} />
+          ) : null}
               </BoardWrapper>
         {activePiece && !isRotating ? (
           <DragOverlay>

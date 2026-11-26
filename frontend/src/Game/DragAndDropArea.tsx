@@ -7,7 +7,11 @@ import {
   useSensors,
   rectIntersection,
 } from '@dnd-kit/core';
-import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core';
+import type {
+  DragStartEvent,
+  DragEndEvent,
+  DragOverEvent,
+} from '@dnd-kit/core';
 import { usePiecesInPlay } from '../context/PiecesInPlay';
 import { Piece } from '../types/piece';
 import { useSelectedPiece } from '../context/SelectedPiece';
@@ -23,6 +27,7 @@ interface DragAndDropAreaProps {
   setActivePiece: (piece: Piece) => void;
   isRotating: boolean;
   setIsRotating: (isRotating: boolean) => void;
+  setPreviewLocation: (location: string | null) => void;
 }
 
 function DragAndDropArea({
@@ -30,6 +35,7 @@ function DragAndDropArea({
   setActivePiece,
   isRotating,
   setIsRotating,
+  setPreviewLocation,
 }: DragAndDropAreaProps) {
   const { setSelectedPiece } = useSelectedPiece();
   const { piecesInPlay, movePiece, setPieceStability } = usePiecesInPlay();
@@ -120,7 +126,35 @@ function DragAndDropArea({
     Hotjar.event('drag start');
   };
 
+  // Show a translucent preview of where the piece would land as it is dragged
+  // over the board, so the player can see the drop target before releasing.
+  const handleDragOver = (event: DragOverEvent) => {
+    const id = event.active.id as string;
+    const piece = piecesInPlay.find(p => p.id === id);
+    if (!piece) {
+      setPreviewLocation(null);
+      return;
+    }
+    if (event.over?.id) {
+      const { x, y } = convertLocationToXAndY(event.over.id.toString());
+      const boardWidth = boardSquares[0].length;
+      const boardHeight = boardSquares.length;
+      const { correctedX, correctedY } = getNewValidLocation(
+        x,
+        y,
+        piece.width,
+        piece.height,
+        boardWidth,
+        boardHeight
+      );
+      setPreviewLocation(`(${correctedX},${correctedY})`);
+    } else {
+      setPreviewLocation(null);
+    }
+  };
+
   const handleDragEnd = (event: DragEndEvent) => {
+    setPreviewLocation(null);
     const id = event.active.id as string;
     const piece = piecesInPlay.find(piece => piece.id === id);
     if (!piece) return;
@@ -167,7 +201,9 @@ function DragAndDropArea({
     <DndContext
       sensors={sensors}
       onDragStart={handleDragStart}
+      onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
+      onDragCancel={() => setPreviewLocation(null)}
       collisionDetection={customCollisionDetection}
     >
       {children}
