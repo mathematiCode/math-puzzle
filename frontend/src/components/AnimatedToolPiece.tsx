@@ -187,7 +187,6 @@ function CutPiece({ unit, transformed }: { unit: number; transformed: boolean })
         <ColorGrid cols={2} rows={2} unit={unit} color={RED} />
       </PieceShadow>
       <PieceShadow
-        style={{ marginLeft: -1.5 }}
         animate={{ x: transformed ? sep : 0 }}
         transition={SLIDE_SPRING}
       >
@@ -224,7 +223,6 @@ function CombinePiece({
         <ColorGrid cols={2} rows={2} unit={unit} color={RED} />
       </PieceShadow>
       <PieceShadow
-        style={{ marginLeft: -1.5 }}
         animate={{ x: transformed ? 0 : sep }}
         transition={SLAM_SPRING}
       >
