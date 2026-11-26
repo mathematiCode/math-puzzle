@@ -147,24 +147,57 @@ function DoubleHalvePiece({
   );
 }
 
+/** A rectangular piece whose fill colour transitions (optionally delayed). */
+function ColorGrid({
+  cols,
+  rows,
+  unit,
+  color,
+  colorDelay = 0,
+}: GridProps & { colorDelay?: number }) {
+  const cells = Array.from({ length: cols * rows });
+  return (
+    <Grid $cols={cols} $unit={unit}>
+      {cells.map((_, i) => (
+        <ColorCell
+          key={i}
+          $unit={unit}
+          style={{
+            backgroundColor: color,
+            transitionDelay: `${colorDelay}s`,
+          }}
+        />
+      ))}
+    </Grid>
+  );
+}
+
 /* ----------------------------------- cut ---------------------------------- */
 
 function CutPiece({ unit, transformed }: { unit: number; transformed: boolean }) {
+  // Rest: one seamless salmon rectangle. Apply: the two halves slide apart and
+  // only then does the right product turn blue — 3(2 + 3) → 3(2) + 3(3).
+  const sep = unit * 0.6;
   return (
-    <SplitRow
-      animate={{ gap: transformed ? unit * 0.6 : 0 }}
-      transition={{ type: 'spring', stiffness: 220, damping: 20 }}
-    >
-      <PieceShadow animate={{ x: transformed ? -2 : 0 }}>
-        <PieceGrid cols={2} rows={2} unit={unit} color={RED} />
+    <SplitRow>
+      <PieceShadow
+        animate={{ x: transformed ? -sep : 0 }}
+        transition={SLIDE_SPRING}
+      >
+        <ColorGrid cols={2} rows={2} unit={unit} color={RED} />
       </PieceShadow>
-      <Seam
-        animate={{ opacity: transformed ? 0 : 1, scaleY: transformed ? 0.6 : 1 }}
-        transition={{ duration: 0.2 }}
-        $unit={unit}
-      />
-      <PieceShadow animate={{ x: transformed ? 2 : 0 }}>
-        <PieceGrid cols={3} rows={2} unit={unit} color={TEAL} />
+      <PieceShadow
+        style={{ marginLeft: -1.5 }}
+        animate={{ x: transformed ? sep : 0 }}
+        transition={SLIDE_SPRING}
+      >
+        <ColorGrid
+          cols={3}
+          rows={2}
+          unit={unit}
+          color={transformed ? TEAL : RED}
+          colorDelay={transformed ? 0.3 : 0}
+        />
       </PieceShadow>
     </SplitRow>
   );
@@ -179,22 +212,29 @@ function CombinePiece({
   unit: number;
   transformed: boolean;
 }) {
-  // Resting state shows two separate pieces; applying the tool glues them.
+  // Rest: two separate pieces, salmon + blue, held well apart. Apply: they slam
+  // together and meld into one all-salmon rectangle — 3(2) + 3(3) → 3(2 + 3).
+  const sep = unit * 0.9;
   return (
-    <SplitRow
-      animate={{ gap: transformed ? 0 : unit * 0.6 }}
-      transition={{ type: 'spring', stiffness: 220, damping: 20 }}
-    >
-      <PieceShadow animate={{ scale: transformed ? [1, 1, 1.04, 1] : 1 }}>
-        <PieceGrid cols={2} rows={2} unit={unit} color={RED} />
+    <SplitRow animate={{ scale: transformed ? [1, 1.12, 1] : 1 }}>
+      <PieceShadow
+        animate={{ x: transformed ? 0 : -sep }}
+        transition={SLAM_SPRING}
+      >
+        <ColorGrid cols={2} rows={2} unit={unit} color={RED} />
       </PieceShadow>
-      <Seam
-        animate={{ opacity: transformed ? 1 : 0, scaleY: transformed ? 1 : 0.6 }}
-        transition={{ duration: 0.2 }}
-        $unit={unit}
-      />
-      <PieceShadow animate={{ scale: transformed ? [1, 1, 1.04, 1] : 1 }}>
-        <PieceGrid cols={3} rows={2} unit={unit} color={TEAL} />
+      <PieceShadow
+        style={{ marginLeft: -1.5 }}
+        animate={{ x: transformed ? 0 : sep }}
+        transition={SLAM_SPRING}
+      >
+        <ColorGrid
+          cols={3}
+          rows={2}
+          unit={unit}
+          color={transformed ? RED : TEAL}
+          colorDelay={transformed ? 0.18 : 0}
+        />
       </PieceShadow>
     </SplitRow>
   );
@@ -203,6 +243,9 @@ function CombinePiece({
 /* --------------------------------- styles --------------------------------- */
 
 const CELL_SPRING = { type: 'spring', stiffness: 260, damping: 24 } as const;
+// Calm separation for the cut; snappier, slightly springy slam for the combine.
+const SLIDE_SPRING = { type: 'spring', stiffness: 240, damping: 22 } as const;
+const SLAM_SPRING = { type: 'spring', stiffness: 340, damping: 16 } as const;
 
 const Stage = styled.div<{ $size: number }>`
   display: flex;
@@ -237,6 +280,14 @@ const MotionCell = styled(motion.div)<{ $unit: number; $color: string }>`
   box-sizing: border-box;
 `;
 
+const ColorCell = styled.div<{ $unit: number }>`
+  width: ${props => props.$unit}px;
+  height: ${props => props.$unit}px;
+  border: 1.5px solid #1b1b1b;
+  box-sizing: border-box;
+  transition: background-color 0.3s ease;
+`;
+
 const PieceShadow = styled(motion.div)`
   filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.28));
 `;
@@ -245,19 +296,6 @@ const SplitRow = styled(motion.div)`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-
-const Seam = styled(motion.div)<{ $unit: number }>`
-  width: 2px;
-  height: ${props => props.$unit * 2}px;
-  border-radius: 2px;
-  background: repeating-linear-gradient(
-    to bottom,
-    #1b1b1b 0,
-    #1b1b1b 3px,
-    transparent 3px,
-    transparent 6px
-  );
 `;
 
 export default AnimatedToolPiece;
