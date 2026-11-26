@@ -39,7 +39,7 @@ function Game() {
 
   return (
     <>
-      <Main id='main'>
+      <Main id='main' $isRotating={isRotating}>
       <DragAndDropArea data-testid='drag-and-drop-area'
         setActivePiece={setActivePiece}
         key={currentLevel}
@@ -47,7 +47,7 @@ function Game() {
         setIsRotating={setIsRotating}
         setPreviewLocation={setPreviewLocation}
           >
-        <PiecesContainer data-testid='pieces-container' $currentLevel={currentLevel} key={currentLevel}>  
+        <PiecesContainer data-testid='pieces-container' $currentLevel={currentLevel} $isRotating={isRotating} key={currentLevel}>
           {piecesInPlay.map((piece: Piece) => {
             if (piece.location != null) return null;
             return (
@@ -99,7 +99,7 @@ function Game() {
   );
 }
 
-export const Main = styled.main`
+export const Main = styled.main<{ $isRotating?: boolean }>`
   display: grid;
   grid-template-columns: 60% 40%;
   grid-template-rows: 1fr 90px;
@@ -110,7 +110,7 @@ export const Main = styled.main`
   height: 100%;
   width: 100cqw;
   max-width: 1600px;
-  overflow-y: clip;
+  overflow-y: ${({ $isRotating }) => ($isRotating ? 'visible' : 'clip')};
   position: fixed;
   padding-bottom: 60px;
 
@@ -139,13 +139,13 @@ export const BoardWrapper = styled.div`
 
 export const PiecesContainer = styled(motion.div).attrs({
   layout: true,
-})<{ $currentLevel: number }>`
+})<{ $currentLevel: number; $isRotating?: boolean }>`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: start;
   gap: calc(var(--sizeOfEachUnit) / 2);
-  overflow-y: auto;
+  overflow: ${({ $isRotating }) => ($isRotating ? 'visible' : 'hidden auto')};
   max-height:  65vh;
   height: fit-content;
   padding-top: 10px;
