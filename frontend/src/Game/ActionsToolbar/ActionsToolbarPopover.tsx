@@ -14,6 +14,8 @@ import Hotjar from '@hotjar/browser';
 import { usePieceLocationHandler } from './usePieceLocationHandler';
 import { useLevelStatus } from '../../hooks/useLevelStatus';
 import { usePieceStabilitySetter } from '../../hooks/usePieceStabilitySetter';
+import { useGameProgress } from '../../context/GameProgress';
+import { useCurrentLevel } from '../../context/CurrentLevel';
 
 function ActionsToolbarPopover({
   children,
@@ -28,6 +30,8 @@ function ActionsToolbarPopover({
   const { updateLocationAndBoardSquares } = usePieceLocationHandler();
   const { checkAndHandleLevelStatus } = useLevelStatus();
   const { updateStabilityAllPieces } = usePieceStabilitySetter();
+  const { incrementMoves } = useGameProgress();
+  const { currentLevel } = useCurrentLevel();
   function handleHorizontalStretch() {
     Hotjar.event('double width attempt');
     if (!currentPiece) {
@@ -52,6 +56,7 @@ function ActionsToolbarPopover({
       updateDimensions(currentPiece.id, newWidth, newHeight);
       updateStabilityAllPieces();
       checkAndHandleLevelStatus();
+      incrementMoves(currentLevel);
       Hotjar.event('double width successfully');
     }
   }
@@ -81,6 +86,7 @@ function ActionsToolbarPopover({
       Hotjar.event('double height successfully');
       updateStabilityAllPieces();
       checkAndHandleLevelStatus();
+      incrementMoves(currentLevel);
     }
   }
 
@@ -107,7 +113,10 @@ function ActionsToolbarPopover({
           <ActionsToolbar>
             <Tooltip placement="bottom" title={showTooltips && 'Rotate'}>
               <IconButton
-                onClick={() => runRotationAnimation(currentPiece)}
+                onClick={() => {
+                  runRotationAnimation(currentPiece);
+                  incrementMoves(currentLevel);
+                }}
                 aria-label="Rotate"
                 isDisabled={rotateDisabled}
                 disabled={rotateDisabled}
