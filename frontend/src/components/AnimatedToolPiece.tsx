@@ -11,11 +11,13 @@ import styled from 'styled-components';
  * It is intentionally self-contained (no game context required) so it can be
  * dropped into marketing/instructional cards such as MathematicalToolsGrid.
  *
- * `transformed === true` always represents the "tool has been applied" state:
- *   - rotate:      resting = upright,        applied = rotated 90°
- *   - doubleHalve: resting = tall (2×4),     applied = wide (4×2)
- *   - cut:         resting = one rectangle,  applied = split into two
- *   - combine:     resting = two rectangles, applied = glued into one
+ * Each piece's dimensions mirror the equation shown beneath its card:
+ *   - rotate:      3×5 = 5×3            (upright 3×5 → rotated 5×3)
+ *   - doubleHalve: 4×(2×3) = (4×2)×3    (4×6 block reflows to 8×3)
+ *   - cut:         3(2+3) = 3(2)+3(3)   (5×3 splits into 2×3 + 3×3)
+ *   - combine:     3(2)+3(3) = 3(2+3)   (2×3 + 3×3 glue into 5×3)
+ *
+ * `transformed === true` always represents the "tool has been applied" state.
  */
 
 export type Tool = 'rotate' | 'doubleHalve' | 'cut' | 'combine';
@@ -29,7 +31,7 @@ interface AnimatedToolPieceProps {
   label?: string;
 }
 
-function AnimatedToolPiece({ tool, unit = 22, label }: AnimatedToolPieceProps) {
+function AnimatedToolPiece({ tool, unit = 16, label }: AnimatedToolPieceProps) {
   const [active, setActive] = useState(false);
   const [transformed, setTransformed] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -63,7 +65,7 @@ function AnimatedToolPiece({ tool, unit = 22, label }: AnimatedToolPieceProps) {
       role="img"
       aria-label={label ? `${label} tool animation` : `${tool} tool animation`}
       tabIndex={0}
-      $size={unit * 5}
+      $size={unit * 6}
       onMouseEnter={engage}
       onMouseLeave={release}
       onFocus={engage}
@@ -122,7 +124,7 @@ function RotatePiece({ unit, transformed }: { unit: number; transformed: boolean
       animate={{ rotate: transformed ? 90 : 0 }}
       transition={{ type: 'spring', stiffness: 160, damping: 13 }}
     >
-      <PieceGrid cols={3} rows={2} unit={unit} color={RED} />
+      <PieceGrid cols={3} rows={5} unit={unit} color={RED} />
     </PieceShadow>
   );
 }
@@ -136,10 +138,11 @@ function DoubleHalvePiece({
   unit: number;
   transformed: boolean;
 }) {
-  // 8 unit squares reflow from a tall 2×4 block to a wide 4×2 block while
-  // conserving area — a visual stand-in for 4 × (2 × 3) = (4 × 2) × 3.
-  const cols = transformed ? 4 : 2;
-  const rows = transformed ? 2 : 4;
+  // 24 unit squares reflow from a 4×6 block to an 8×3 block while conserving
+  // area — the two groupings of 4 × (2 × 3) = (4 × 2) × 3 (double the width,
+  // halve the height).
+  const cols = transformed ? 8 : 4;
+  const rows = transformed ? 3 : 6;
   return (
     <PieceShadow animate={{ scale: transformed ? [1, 1.05, 1] : 1 }}>
       <PieceGrid cols={cols} rows={rows} unit={unit} color={RED} layoutCells />
@@ -175,21 +178,28 @@ function ColorGrid({
 /* ----------------------------------- cut ---------------------------------- */
 
 function CutPiece({ unit, transformed }: { unit: number; transformed: boolean }) {
-  // Rest: one seamless salmon rectangle. Apply: the right product turns blue
-  // first, then the two halves slide apart — 3(2 + 3) → 3(2) + 3(3).
+  // Rest: one seamless 5×3 salmon rectangle. Apply: the two halves slide apart
+  // and the right product (3×3) turns blue as it moves away — the colour fades
+  // in mid-slide — 3(2 + 3) → 3(2) + 3(3).
   const sep = unit * 0.6;
-  const slide = { ...SLIDE_SPRING, delay: transformed ? 0.25 : 0 };
   return (
     <SplitRow>
-      <PieceShadow animate={{ x: transformed ? -sep : 0 }} transition={slide}>
-        <ColorGrid cols={2} rows={2} unit={unit} color={RED} />
+      <PieceShadow
+        animate={{ x: transformed ? -sep : 0 }}
+        transition={SLIDE_SPRING}
+      >
+        <ColorGrid cols={2} rows={3} unit={unit} color={RED} />
       </PieceShadow>
-      <PieceShadow animate={{ x: transformed ? sep : 0 }} transition={slide}>
+      <PieceShadow
+        animate={{ x: transformed ? sep : 0 }}
+        transition={SLIDE_SPRING}
+      >
         <ColorGrid
           cols={3}
-          rows={2}
+          rows={3}
           unit={unit}
           color={transformed ? TEAL : RED}
+          colorDelay={transformed ? 0.1 : 0}
         />
       </PieceShadow>
     </SplitRow>
@@ -214,7 +224,7 @@ function CombinePiece({
         animate={{ x: transformed ? 0 : -sep }}
         transition={SLAM_SPRING}
       >
-        <ColorGrid cols={2} rows={2} unit={unit} color={RED} />
+        <ColorGrid cols={2} rows={3} unit={unit} color={RED} />
       </PieceShadow>
       <PieceShadow
         animate={{ x: transformed ? 0 : sep }}
@@ -222,7 +232,7 @@ function CombinePiece({
       >
         <ColorGrid
           cols={3}
-          rows={2}
+          rows={3}
           unit={unit}
           color={transformed ? RED : TEAL}
           colorDelay={transformed ? 0.18 : 0}
