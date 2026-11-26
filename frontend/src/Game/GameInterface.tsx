@@ -39,7 +39,7 @@ function Game() {
 
   return (
     <>
-      <Main id='main'>
+      <Main id='main' $isRotating={isRotating}>
       <DragAndDropArea data-testid='drag-and-drop-area'
         setActivePiece={setActivePiece}
         key={currentLevel}
@@ -99,7 +99,7 @@ function Game() {
   );
 }
 
-export const Main = styled.main`
+export const Main = styled.main<{ $isRotating?: boolean }>`
   display: grid;
   grid-template-columns: 60% 40%;
   grid-template-rows: 1fr 90px;
@@ -110,7 +110,7 @@ export const Main = styled.main`
   height: 100%;
   width: 100cqw;
   max-width: 1600px;
-  overflow-y: clip;
+  overflow-y: ${({ $isRotating }) => ($isRotating ? 'visible' : 'clip')};
   position: fixed;
   padding-bottom: 60px;
 
