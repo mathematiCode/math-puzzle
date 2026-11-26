@@ -1,9 +1,5 @@
 import styled from 'styled-components';
-import AnimatedLottieIcon from './AnimatedLottieIcon';
-import rotateToolAnimation from '../assets/icons-animation/rotate-tool.json';
-import horizontalStretchAnimation from '../assets/icons-animation/horizontal-stretch-tool.json';
-import cutAnimation from '../assets/icons-animation/cut-tool.json';
-import combineAnimation from '../assets/icons-animation/combine-tool.json';
+import AnimatedToolPiece from './AnimatedToolPiece';
 
 function MathematicalToolsGrid() {
   return (
@@ -15,10 +11,7 @@ function MathematicalToolsGrid() {
             <ToolConnection>Commutative Property</ToolConnection>
             <ToolCard>
               <ToolIcon>
-                <AnimatedLottieIcon
-                  animationData={rotateToolAnimation}
-                  size={56}
-                />
+                <AnimatedToolPiece tool="rotate" label="Rotate" />
               </ToolIcon>
               <ToolTitle>Rotate</ToolTitle>
               <ToolExample>3 × 5 = 5 × 3</ToolExample>
@@ -29,10 +22,7 @@ function MathematicalToolsGrid() {
             <ToolConnection>Associative Property</ToolConnection>
             <ToolCard>
               <ToolIcon>
-                <AnimatedLottieIcon
-                  animationData={horizontalStretchAnimation}
-                  size={56}
-                />
+                <AnimatedToolPiece tool="doubleHalve" label="Double & Halve" />
               </ToolIcon>
               <ToolTitle>Double & Halve</ToolTitle>
               <ToolExample>4 × (2 × 3) = (4 × 2) × 3</ToolExample>
@@ -44,7 +34,7 @@ function MathematicalToolsGrid() {
             <ToolCard>
               <Tag>Coming Soon</Tag>
               <ToolIcon>
-                <AnimatedLottieIcon animationData={cutAnimation} size={56} />
+                <AnimatedToolPiece tool="cut" label="Cut" />
               </ToolIcon>
               <ToolTitle>Cut</ToolTitle>
               <ToolExample>3(2 + 3) = 3(2) + 3(3)</ToolExample>
@@ -56,10 +46,7 @@ function MathematicalToolsGrid() {
             <ToolCard>
               <Tag>Coming Soon</Tag>
               <ToolIcon>
-                <AnimatedLottieIcon
-                  animationData={combineAnimation}
-                  size={56}
-                />
+                <AnimatedToolPiece tool="combine" label="Combine" />
               </ToolIcon>
               <ToolTitle>Combine</ToolTitle>
               <ToolExample>3(2) + 3(3) = 3(2 + 3)</ToolExample>
