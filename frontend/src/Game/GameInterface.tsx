@@ -47,7 +47,7 @@ function Game() {
         setIsRotating={setIsRotating}
         setPreviewLocation={setPreviewLocation}
           >
-        <PiecesContainer data-testid='pieces-container' $currentLevel={currentLevel} key={currentLevel}>  
+        <PiecesContainer data-testid='pieces-container' $currentLevel={currentLevel} $isRotating={isRotating} key={currentLevel}>
           {piecesInPlay.map((piece: Piece) => {
             if (piece.location != null) return null;
             return (
@@ -139,13 +139,13 @@ export const BoardWrapper = styled.div`
 
 export const PiecesContainer = styled(motion.div).attrs({
   layout: true,
-})<{ $currentLevel: number }>`
+})<{ $currentLevel: number; $isRotating?: boolean }>`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: start;
   gap: calc(var(--sizeOfEachUnit) / 2);
-  overflow-y: auto;
+  overflow: ${({ $isRotating }) => ($isRotating ? 'visible' : 'hidden auto')};
   max-height:  65vh;
   height: fit-content;
   padding-top: 10px;
