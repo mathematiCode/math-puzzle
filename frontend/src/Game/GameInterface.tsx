@@ -11,9 +11,11 @@ import LevelCompleteModal from './LevelComplete';
 import { motion } from 'motion/react';
 import styled from 'styled-components';
 import { DragOverlay } from '@dnd-kit/core';
+import { Lock, RotateCcw } from 'lucide-react';
 import { useCurrentLevel } from '../context/CurrentLevel';
 import { useGameProgress } from '../context/GameProgress';
 import { usePiecesInPlay } from '../context/PiecesInPlay';
+import { useResetLevel } from '../hooks/useResetLevel';
 import { Piece } from '../types/piece';
 import { RETURN_TO_CONTAINER_DURATION } from './utils/utilities';
 
@@ -32,6 +34,7 @@ function Game() {
   const { gameProgress, isLevelCompleted, setModalShown } = useGameProgress();
  // const { handleLevelCheck } = useLevelCompletion();
   const { piecesInPlay } = usePiecesInPlay();
+  const { resetCurrentLevel } = useResetLevel();
   const [isRotating, setIsRotating] = useState(false);
  // const [levelCompletedShown, setLevelCompletedShown] = useState(false);
   const levelCompletedShown = gameProgress[currentLevel].modalShown;
@@ -81,6 +84,20 @@ function Game() {
           />
           {activePiece && previewLocation && !isRotating ? (
             <PiecePreview piece={activePiece} location={previewLocation} />
+          ) : null}
+          {passedLevel ? (
+            <LockBadge
+              type="button"
+              onClick={resetCurrentLevel}
+              aria-label="Level complete and locked. Reset this level to move the pieces again."
+              title="Reset this level to move the pieces again"
+            >
+              <Lock aria-hidden="true" />
+              <span>Level complete — locked</span>
+              <Divider aria-hidden="true" />
+              <RotateCcw aria-hidden="true" />
+              <span>Reset to move pieces</span>
+            </LockBadge>
           ) : null}
               </BoardWrapper>
         {activePiece && !isRotating ? (
@@ -147,6 +164,86 @@ export const BoardWrapper = styled.div`
   padding-top: 15px;
   position: relative;
   isolation: isolate;
+`;
+
+// Clickable "level locked" indicator shown once a level is completed. It floats
+// over the top of the solved board; clicking it resets the level so the pieces
+// can be moved again. Pieces are already drag-locked, so this is the in-context
+// way to unlock, mirroring the Reset Game button.
+export const LockBadge = styled.button`
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 7;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 2px solid black;
+  border-radius: 999px;
+  background-color: hsl(180, 89.1%, 26.6%);
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  animation: lockBadgeIn 0.25s ease-out;
+
+  @keyframes lockBadgeIn {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -6px);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  }
+
+  &:hover {
+    background-color: hsl(180, 89.1%, 21.6%);
+  }
+  &:active {
+    transform: translateX(-50%) scale(0.97);
+  }
+  &:focus-visible {
+    outline: 3px solid hsl(107, 100%, 70%);
+    outline-offset: 2px;
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 750px) {
+    font-size: 0.78rem;
+    padding: 6px 12px;
+    gap: 6px;
+    max-width: 92vw;
+    white-space: normal;
+    text-align: left;
+
+    svg {
+      width: 15px;
+      height: 15px;
+    }
+  }
+`;
+
+const Divider = styled.span`
+  width: 1px;
+  align-self: stretch;
+  background-color: rgba(255, 255, 255, 0.5);
+  margin-inline: 2px;
+
+  @media (max-width: 750px) {
+    display: none;
+  }
 `;
 
 export const PiecesContainer = styled(motion.div).attrs({
