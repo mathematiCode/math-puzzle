@@ -51,6 +51,7 @@ export function useSplitPiece() {
       setSelectedPiece(null);
       setCuttingPieceId(null);
       Hotjar.event('separate pieces successfully');
+      return { childA, childB };
     },
     [
       splitPiece,

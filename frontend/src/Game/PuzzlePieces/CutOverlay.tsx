@@ -9,6 +9,7 @@ import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 import { Cut, CutAxis, Piece } from '../../types/piece';
 import { availableCutAxes } from '../utils/piece';
+import { registerSplitOrigin } from '../utils/splitAnimation';
 import { useSplitPiece } from '../../hooks/useSplitPiece';
 import { useCuttingPiece } from '../../context/CuttingPiece';
 
@@ -126,7 +127,22 @@ function CutOverlay({
     // the press — computed fresh from the event so the result matches the cursor.
     event.stopPropagation();
     const target = nearestCut(event.clientX, event.clientY, rect, piece) ?? cut;
-    performSplit(piece, target);
+    const { childB } = performSplit(piece, target);
+    // For a tray piece, the second child (right/bottom half) lands in a brand
+    // new tray slot. Record where that half sat inside the original so the child
+    // can glide from there instead of popping into place. Board pieces are
+    // positioned absolutely at their tiled spot, so they don't need this.
+    if (piece.location == null) {
+      const originLeft =
+        target.axis === 'vertical'
+          ? rect.left + (target.offset / piece.width) * rect.width
+          : rect.left;
+      const originTop =
+        target.axis === 'horizontal'
+          ? rect.top + (target.offset / piece.height) * rect.height
+          : rect.top;
+      registerSplitOrigin(childB.id, { left: originLeft, top: originTop });
+    }
   }
 
   if (!rect) return null;
