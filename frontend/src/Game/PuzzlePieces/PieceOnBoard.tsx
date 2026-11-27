@@ -2,7 +2,8 @@ import { useDraggable } from '@dnd-kit/core';
 import { mergeRefs } from '@chakra-ui/react';
 import Rectangle from '../Rectangle';
 import ActionsToolbarPopover from '../ActionsToolbar/ActionsToolbarPopover';
-import { memo } from 'react';
+import CutOverlay from './CutOverlay';
+import { memo, RefObject } from 'react';
 import { motion, useAnimate, HTMLMotionProps } from 'motion/react';
 import styled from 'styled-components';
 import { convertLocationToXAndY } from '../utils/utilities';
@@ -12,6 +13,7 @@ import { useSelectedPiece } from '../../context/SelectedPiece';
 import { usePiecesInPlay } from '../../context/PiecesInPlay';
 import { useCurrentLevel } from '../../context/CurrentLevel';
 import { useBoardSquares } from '../../context/BoardSquares';
+import { useCuttingPiece } from '../../context/CuttingPiece';
 import Hotjar from '@hotjar/browser';
 import { getNewValidLocation } from '../utils/getNewValidLocation';
 import { getRandomVibrationAnimation } from '../utils/getRandomVibrationAnimation';
@@ -63,6 +65,7 @@ function PieceOnBoard({
   const { selectedPiece, setSelectedPiece } = useSelectedPiece();
   const { boardDimensions } = currentLevelContext;
   const { addPieceToBoard, removePieceFromBoard } = useBoardSquares();
+  const { cuttingPieceId } = useCuttingPiece();
   const [scope, animate] = useAnimate();
 
   const { x, y } = convertLocationToXAndY(piece.location);
@@ -141,6 +144,7 @@ function PieceOnBoard({
   }
 
   return (
+    <>
     <ActionsToolbarPopover runRotationAnimation={runRotationAnimation}>
       <PieceWrapper
         ref={refs}
@@ -166,6 +170,10 @@ function PieceOnBoard({
         />
       </PieceWrapper>
     </ActionsToolbarPopover>
+    {cuttingPieceId === piece.id ? (
+      <CutOverlay piece={piece} targetRef={scope as RefObject<HTMLElement>} />
+    ) : null}
+    </>
   );
 }
 

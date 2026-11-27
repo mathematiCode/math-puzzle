@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import Rectangle from '../Rectangle';
 import ActionsToolbarPopover from '../ActionsToolbar/ActionsToolbarPopover';
+import CutOverlay from './CutOverlay';
 import { motion, useAnimate } from 'motion/react';
 import { useSelectedPiece } from '../../context/SelectedPiece';
+import { useCuttingPiece } from '../../context/CuttingPiece';
 import { usePiecesInPlay } from '../../context/PiecesInPlay';
 import { Piece } from '../../types/piece';
 import { pieceTestId } from '../utils/piece';
@@ -30,6 +32,7 @@ const InitialPuzzlePiece = ({
   setActivePiece: (piece: Piece) => void;
 }) => {
   const { selectedPiece, setSelectedPiece } = useSelectedPiece();
+  const { cuttingPieceId } = useCuttingPiece();
   const [scope, animate] = useAnimate();
   const { updateDimensions } = usePiecesInPlay();
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
@@ -65,6 +68,7 @@ const InitialPuzzlePiece = ({
   const isSelected = selectedPiece?.id === piece.id;
 
   return (
+    <>
     <ActionsToolbarPopover runRotationAnimation={runRotationAnimation}>
       <InitialPieceWrapper
         ref={refs}
@@ -90,6 +94,10 @@ const InitialPuzzlePiece = ({
         />
       </InitialPieceWrapper>
     </ActionsToolbarPopover>
+    {cuttingPieceId === piece.id ? (
+      <CutOverlay piece={piece} targetRef={scope} />
+    ) : null}
+    </>
   );
 };
 

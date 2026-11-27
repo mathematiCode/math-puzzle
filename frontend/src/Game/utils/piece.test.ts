@@ -4,6 +4,9 @@ import {
   comparePath,
   generatePieceId,
   createInitialPieces,
+  createSplitPieces,
+  availableCutAxes,
+  canSplit,
   isSample,
   isOnBoard,
 } from './piece';
@@ -106,6 +109,93 @@ describe('createInitialPieces', () => {
     const pieces = createInitialPieces(0);
     expect(pieces.some(p => p.id.startsWith('i-') || p.id.startsWith('b-'))).toBe(
       false
+    );
+  });
+});
+
+describe('availableCutAxes / canSplit', () => {
+  it('offers an axis only for sides of length >= 2', () => {
+    expect(availableCutAxes(makePiece({ width: 3, height: 2 }))).toEqual([
+      'vertical',
+      'horizontal',
+    ]);
+    expect(availableCutAxes(makePiece({ width: 1, height: 4 }))).toEqual([
+      'horizontal',
+    ]);
+    expect(availableCutAxes(makePiece({ width: 5, height: 1 }))).toEqual([
+      'vertical',
+    ]);
+    expect(availableCutAxes(makePiece({ width: 1, height: 1 }))).toEqual([]);
+  });
+
+  it('only allows splitting cuttable puzzle pieces', () => {
+    expect(canSplit(makePiece({ width: 2, height: 1 }))).toBe(true);
+    expect(canSplit(makePiece({ width: 1, height: 1 }))).toBe(false);
+    expect(
+      canSplit(makePiece({ kind: 'sample', width: 3, height: 2 }))
+    ).toBe(false);
+  });
+});
+
+describe('createSplitPieces', () => {
+  it('splits a tray piece vertically into two tray pieces whose widths sum to the parent', () => {
+    const parent = makePiece({ width: 5, height: 3, order: [2], location: null });
+    const [a, b] = createSplitPieces(parent, { axis: 'vertical', offset: 2 });
+    expect(a.width).toBe(2);
+    expect(a.height).toBe(3);
+    expect(b.width).toBe(3);
+    expect(b.height).toBe(3);
+    expect(a.location).toBeNull();
+    expect(b.location).toBeNull();
+    // Dewey-decimal order paths keep the children adjacent to the parent's slot.
+    expect(a.order).toEqual([2, 1]);
+    expect(b.order).toEqual([2, 2]);
+  });
+
+  it('tiles a board piece footprint on a vertical cut', () => {
+    const parent = makePiece({ width: 4, height: 2, order: [3], location: '(1,5)' });
+    const [a, b] = createSplitPieces(parent, { axis: 'vertical', offset: 1 });
+    expect(a.location).toBe('(1,5)');
+    expect(a.width).toBe(1);
+    expect(b.location).toBe('(2,5)');
+    expect(b.width).toBe(3);
+  });
+
+  it('tiles a board piece footprint on a horizontal cut', () => {
+    const parent = makePiece({ width: 3, height: 4, order: [3, 2], location: '(0,0)' });
+    const [a, b] = createSplitPieces(parent, { axis: 'horizontal', offset: 1 });
+    expect(a.location).toBe('(0,0)');
+    expect(a.height).toBe(1);
+    expect(a.width).toBe(3);
+    expect(b.location).toBe('(0,1)');
+    expect(b.height).toBe(3);
+    expect(b.width).toBe(3);
+    // Nested split extends the parent's path.
+    expect(a.order).toEqual([3, 2, 1]);
+    expect(b.order).toEqual([3, 2, 2]);
+  });
+
+  it('gives each child a fresh unique id and inherits color/rotation', () => {
+    const parent = makePiece({
+      width: 2,
+      height: 2,
+      color: 'blue',
+      isRotated: true,
+      id: 'parent',
+    });
+    const [a, b] = createSplitPieces(parent, { axis: 'vertical', offset: 1 });
+    expect(a.id).not.toBe(parent.id);
+    expect(b.id).not.toBe(parent.id);
+    expect(a.id).not.toBe(b.id);
+    expect(a.color).toBe('blue');
+    expect(b.isRotated).toBe(true);
+  });
+
+  it('preserves total area across a split', () => {
+    const parent = makePiece({ width: 6, height: 4, location: '(0,0)' });
+    const [a, b] = createSplitPieces(parent, { axis: 'horizontal', offset: 3 });
+    expect(a.width * a.height + b.width * b.height).toBe(
+      parent.width * parent.height
     );
   });
 });

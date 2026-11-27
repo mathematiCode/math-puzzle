@@ -3,6 +3,8 @@ import { motion } from 'motion/react';
 import * as Popover from '@radix-ui/react-popover';
 import styled from 'styled-components';
 import { usePiecesInPlay } from '../../context/PiecesInPlay';
+import { useCuttingPiece } from '../../context/CuttingPiece';
+import { canSplit } from '../utils/piece';
 import { useCurrentPiece } from '../../hooks/useCurrentPiece';
 import AnimatedLottieIcon from '../../components/AnimatedLottieIcon';
 import rotateToolAnimation from '../../assets/icons-animation/rotate-tool.json';
@@ -31,6 +33,7 @@ function ActionsToolbarPopover({
   const { checkAndHandleLevelStatus } = useLevelStatus();
   const { updateStabilityAllPieces } = usePieceStabilitySetter();
   const { incrementMoves, isLevelCompleted } = useGameProgress();
+  const { setCuttingPieceId } = useCuttingPiece();
   const { currentLevel } = useCurrentLevel();
   // Once a level is completed, keep the actions toolbar from opening so pieces
   // can't be rotated or stretched to break and re-make the solution (which
@@ -94,14 +97,13 @@ function ActionsToolbarPopover({
     }
   }
 
-  function handleCombinePieces() {
-    Hotjar.event('combine pieces successfully');
-    Hotjar.event('combine pieces unsuccessfully');
-  }
-
-  function handleSeparatePieces() {
-    Hotjar.event('separate pieces successfully');
-    Hotjar.event('separate pieces unsuccessfully');
+  // Enter "cut mode" for the selected piece: the CutOverlay then lets the player
+  // place and rotate a cut line and confirm the split. The actual split happens
+  // there (via useSplitPiece), not here.
+  function handleCutPiece() {
+    if (!currentPiece) return;
+    Hotjar.event('separate pieces attempt');
+    setCuttingPieceId(currentPiece.id);
   }
 
   const horizontalStretchDisabled =
@@ -109,6 +111,9 @@ function ActionsToolbarPopover({
   const verticalStretchDisabled =
     currentPiece?.width == null || currentPiece.width % 2 !== 0;
   const rotateDisabled = currentPiece == null;
+  // A piece can be cut only if it's a puzzle piece with at least one side >= 2
+  // (so there's a whole-unit boundary to cut along).
+  const cutDisabled = currentPiece == null || !canSplit(currentPiece);
   return (
     <Popover.Root {...(isLevelLocked ? { open: false } : {})}>
       <Popover.Trigger asChild>{children}</Popover.Trigger>
@@ -175,12 +180,31 @@ function ActionsToolbarPopover({
                 />
               </IconButton>
             </Tooltip>
-            {/* <Tooltip placement="bottom" title="Cut into two rectangles">
-              <IconButton aria-label="Cut into two rectangles">
-                <AnimatedLottieIcon animationData={cutAnimation} />
-              </IconButton>
+            <Tooltip
+              placement="bottom"
+              title={
+                !showTooltips
+                  ? ''
+                  : cutDisabled
+                  ? 'Disabled because this piece is too small to cut'
+                  : 'Cut into two rectangles'
+              }
+            >
+              <Popover.Close asChild>
+                <IconButton
+                  onClick={handleCutPiece}
+                  aria-label="Cut into two rectangles"
+                  isDisabled={cutDisabled}
+                  disabled={cutDisabled}
+                >
+                  <AnimatedLottieIcon
+                    animationData={cutAnimation}
+                    isDisabled={cutDisabled}
+                  />
+                </IconButton>
+              </Popover.Close>
             </Tooltip>
-            <Tooltip placement="bottom" title="Combine two rectangles">
+            {/* <Tooltip placement="bottom" title="Combine two rectangles">
               <IconButton aria-label="Combine two rectangles">
                 <AnimatedLottieIcon animationData={combineAnimation} />
               </IconButton>

@@ -1,5 +1,18 @@
 export type PieceKind = 'puzzle' | 'sample';
 
+/** Orientation of a cut line: 'vertical' slices left/right, 'horizontal' top/bottom. */
+export type CutAxis = 'vertical' | 'horizontal';
+
+/**
+ * A whole-number cut of a piece. `offset` is the number of units from the left
+ * (vertical axis) or top (horizontal axis) at which to divide, so it must be an
+ * integer in the range 1..(side length - 1).
+ */
+export interface Cut {
+  axis: CutAxis;
+  offset: number;
+}
+
 export interface Piece {
   width: number;
   height: number;
