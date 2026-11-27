@@ -18,6 +18,7 @@ const InitialPuzzlePiece = ({
   setIsRotating,
   isExample = false,
   isActive = false,
+  isReturning = false,
   setActivePiece,
 }: {
   piece: Piece;
@@ -25,6 +26,7 @@ const InitialPuzzlePiece = ({
   setIsRotating: (isRotating: boolean) => void;
   isExample?: boolean;
   isActive?: boolean;
+  isReturning?: boolean;
   setActivePiece: (piece: Piece) => void;
 }) => {
   const { selectedPiece, setSelectedPiece } = useSelectedPiece();
@@ -70,7 +72,7 @@ const InitialPuzzlePiece = ({
         {...attributes}
         onClick={handlePieceSelected}
         data-testid={pieceTestId(piece)}
-        isDragging={isDragging && isSelected}
+        isDragging={(isDragging && isSelected) || isReturning}
         layout={!isRotating && !isDragging}
         {...(!(isRotating && isSelected) ? { layoutId: piece.id } : {})}
       >

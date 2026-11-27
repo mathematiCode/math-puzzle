@@ -15,7 +15,11 @@ import type {
 import { usePiecesInPlay } from '../context/PiecesInPlay';
 import { Piece } from '../types/piece';
 import { useSelectedPiece } from '../context/SelectedPiece';
-import { convertLocationToXAndY, rateDroppability } from './utils/utilities';
+import {
+  convertLocationToXAndY,
+  rateDroppability,
+  RETURN_TO_CONTAINER_DURATION,
+} from './utils/utilities';
 import Hotjar from '@hotjar/browser';
 import { useBoardSquares } from '../context/BoardSquares';
 import { getNewValidLocation } from './utils/getNewValidLocation';
@@ -30,6 +34,7 @@ interface DragAndDropAreaProps {
   isRotating: boolean;
   setIsRotating: (isRotating: boolean) => void;
   setPreviewLocation: (location: string | null) => void;
+  setReturningPieceId: (id: string | null) => void;
 }
 
 function DragAndDropArea({
@@ -38,6 +43,7 @@ function DragAndDropArea({
   isRotating,
   setIsRotating,
   setPreviewLocation,
+  setReturningPieceId,
 }: DragAndDropAreaProps) {
   const { setSelectedPiece } = useSelectedPiece();
   const { piecesInPlay, movePiece, setPieceStability } = usePiecesInPlay();
@@ -197,7 +203,21 @@ function DragAndDropArea({
       );
       // A piece landing on the board counts as a move (issue #115).
       incrementMoves(currentLevel);
-    } else movePiece(id, null);
+    } else {
+      // Dropped back into the initial pieces container. The DragOverlay plays a
+      // drop animation from the release point to the piece's home slot; keep the
+      // real piece hidden until that animation finishes so the piece doesn't
+      // appear in its final place immediately alongside the animated copy
+      // (issue #84).
+      movePiece(id, null);
+      if (piece.location == null) {
+        setReturningPieceId(id);
+        setTimeout(
+          () => setReturningPieceId(null),
+          RETURN_TO_CONTAINER_DURATION
+        );
+      }
+    }
     Hotjar.event('drag end');
     updateStabilityAllPieces();
     checkAndHandleLevelStatus();

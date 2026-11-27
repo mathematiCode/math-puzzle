@@ -124,6 +124,57 @@ test.describe('Drag and drop', () => {
       .toBe('(0,4)');
   });
 
+  test('a piece dropped back in the tray stays hidden until its copy animates home (issue #84)', async ({
+    page,
+  }) => {
+    await openFreshGame(page, 0);
+
+    const tray = page.getByTestId('pieces-container');
+    const piece = tray.getByTestId('1');
+
+    const pieceBox = await piece.boundingBox();
+    const trayBox = await tray.boundingBox();
+    if (!pieceBox || !trayBox) throw new Error('missing bounding boxes');
+
+    // Grab the piece and release it elsewhere *inside the tray* (not over any
+    // board square), so dnd-kit reports no drop target and the piece returns to
+    // the tray with a drop animation. Release near the tray's left edge, well
+    // away from the board (which sits to the right) — collision detection rates
+    // droppables by the dragged piece's rect, so a release near the board edge
+    // would otherwise land the piece on a square.
+    const startX = pieceBox.x + 8;
+    const startY = pieceBox.y + 8;
+    const dropX = trayBox.x + 15;
+    const dropY = trayBox.y + trayBox.height - 20;
+
+    await page.mouse.move(startX, startY);
+    await page.mouse.down();
+    await page.mouse.move(startX + 30, startY + 30, { steps: 5 });
+    await page.mouse.move(dropX, dropY, { steps: 15 });
+    await page.mouse.up();
+
+    // While the released copy animates back to the home slot, the real piece
+    // must NOT appear in its final place — only the animating overlay is shown.
+    const overlay = page.getByTestId('drag-overlay');
+    await expect(overlay).toBeVisible();
+    await expect(piece).toBeHidden();
+
+    // Once the animation finishes the overlay is gone and the single real piece
+    // is visible again, still in the tray (never placed on the board).
+    await expect(overlay).toHaveCount(0);
+    await expect(piece).toBeVisible();
+    await expect(tray.getByTestId('1')).toHaveCount(1);
+
+    const location = await page.evaluate(() => {
+      const pieces = JSON.parse(
+        window.localStorage.getItem('piecesInPlay') || '[]'
+      );
+      return pieces.find((p: { order: number[] }) => p.order.join('.') === '1')
+        ?.location;
+    });
+    expect(location).toBeNull();
+  });
+
   test('records overlapping piece ids when two pieces share squares', async ({
     page,
   }) => {
