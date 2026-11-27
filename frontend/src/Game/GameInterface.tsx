@@ -1,4 +1,4 @@
-import { useState} from 'react';
+import { useState, useEffect } from 'react';
 import levels from './levels.json' with { type: 'json' };
 import InitialPuzzlePiece from './PuzzlePieces/InitialPuzzlePiece';
 import PieceOverlay from './PuzzlePieces/PieceOverlay';
@@ -39,9 +39,21 @@ function Game() {
  // const [levelCompletedShown, setLevelCompletedShown] = useState(false);
   const levelCompletedShown = gameProgress[currentLevel].modalShown;
   const passedLevel = isLevelCompleted(currentLevel);
+  // The lock banner only appears once the player tries to move a piece on an
+  // already-completed level; it stays hidden otherwise. Reset whenever the
+  // level changes so it doesn't carry over to another (possibly completed) level.
+  const [showLockBanner, setShowLockBanner] = useState(false);
+  useEffect(() => {
+    setShowLockBanner(false);
+  }, [currentLevel]);
 
   const handleCloseModal = () => {
     setModalShown(currentLevel);
+  };
+
+  const handleResetLevel = () => {
+    resetCurrentLevel();
+    setShowLockBanner(false);
   };
 
 
@@ -72,7 +84,7 @@ function Game() {
             );
           })}
               </PiecesContainer>
-        <BoardWrapper data-testid='board-wrapper' $levelComplete={passedLevel}>
+        <BoardWrapper data-testid='board-wrapper' $showBanner={passedLevel && showLockBanner}>
           <Board
             dimensions={levels[currentLevel].dimensions}
             boardSections={levels[currentLevel].boardSections}
@@ -86,20 +98,27 @@ function Game() {
             <PiecePreview piece={activePiece} location={previewLocation} />
           ) : null}
           {passedLevel ? (
+            <LockInteractionLayer
+              data-testid="level-locked-overlay"
+              aria-hidden="true"
+              onPointerDown={() => setShowLockBanner(true)}
+            />
+          ) : null}
+          {passedLevel && showLockBanner ? (
             <LockBadge
               type="button"
-              onClick={resetCurrentLevel}
-              aria-label="Level complete and locked. Reset this level to move the pieces again."
-              title="Reset this level to move the pieces again"
+              onClick={handleResetLevel}
+              aria-label="Level complete and locked. Reset this level to play again."
+              title="Reset this level to play again"
             >
               <LockBadgeTitle>
                 <Lock aria-hidden="true" />
-                <span>Level complete</span>
+                <span>Level Complete</span>
               </LockBadgeTitle>
               <Divider aria-hidden="true" />
               <LockBadgeAction>
                 <RotateCcw aria-hidden="true" />
-                <span>Reset to move pieces</span>
+                <span>Reset to play again</span>
               </LockBadgeAction>
             </LockBadge>
           ) : null}
@@ -161,19 +180,29 @@ export const Main = styled.main<{ $isRotating?: boolean }>`
 }
 `;
 
-export const BoardWrapper = styled.div<{ $levelComplete?: boolean }>`
+export const BoardWrapper = styled.div<{ $showBanner?: boolean }>`
   display: grid;
   grid-area: 1fr;
   width: min-content;
-  /* When the level is complete, reserve space above the board for the lock
-     banner so it sits entirely above the board without covering any pieces. */
-  padding-top: ${({ $levelComplete }) => ($levelComplete ? '68px' : '15px')};
+  /* While the lock banner is showing, reserve space above the board so it sits
+     entirely above the board without covering any pieces. */
+  padding-top: ${({ $showBanner }) => ($showBanner ? '68px' : '15px')};
   position: relative;
   isolation: isolate;
 
   @media (max-width: 750px) {
-    padding-top: ${({ $levelComplete }) => ($levelComplete ? '58px' : '15px')};
+    padding-top: ${({ $showBanner }) => ($showBanner ? '58px' : '15px')};
   }
+`;
+
+// Transparent layer over a completed board. It swallows the first interaction
+// with the locked pieces and reveals the lock banner, so the player learns why
+// the pieces won't move. It sits above the pieces but below the banner.
+const LockInteractionLayer = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  cursor: not-allowed;
 `;
 
 // Clickable "level locked" indicator shown once a level is completed. It sits
@@ -191,15 +220,15 @@ export const LockBadge = styled.button`
   align-items: center;
   gap: 14px;
   padding: 10px 24px;
-  border: 3px solid hsl(210, 8%, 35%);
+  border: none;
   border-radius: 8px;
-  background-color: hsl(210, 12%, 91%);
-  color: hsl(210, 10%, 20%);
+  background-color: hsl(38, 87%, 70%);
+  color: black;
   font-weight: 600;
   line-height: 1;
   white-space: nowrap;
   cursor: pointer;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
   animation: lockBadgeIn 0.2s ease-out;
 
   @keyframes lockBadgeIn {
@@ -214,7 +243,7 @@ export const LockBadge = styled.button`
   }
 
   &:hover {
-    background-color: hsl(210, 12%, 85%);
+    background-color: hsl(38, 87%, 76%);
   }
   &:active {
     transform: translateX(-50%) scale(0.98);
@@ -259,7 +288,7 @@ const LockBadgeAction = styled.span`
   align-items: center;
   gap: 8px;
   font-size: 0.95rem;
-  color: hsl(210, 8%, 38%);
+  color: rgba(0, 0, 0, 0.7);
 
   svg {
     width: 17px;
@@ -278,7 +307,7 @@ const LockBadgeAction = styled.span`
 const Divider = styled.span`
   width: 1px;
   align-self: stretch;
-  background-color: hsl(210, 10%, 60%);
+  background-color: rgba(0, 0, 0, 0.3);
 `;
 
 export const PiecesContainer = styled(motion.div).attrs({
