@@ -22,6 +22,9 @@ class Settings(BaseSettings):
     environment: str = "development"
     # Comma-separated list of origins allowed to call the API via CORS.
     cors_origins: str = "http://localhost:3000,https://frectangles.com"
+    # SQLAlchemy database URL. Defaults to a local SQLite file so the app runs
+    # with zero setup; set DATABASE_URL to a managed Postgres URL in production.
+    database_url: str = "sqlite:///./frectangles.db"
 
     @property
     def cors_origins_list(self) -> list[str]:

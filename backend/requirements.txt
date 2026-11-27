@@ -1,3 +1,7 @@
 fastapi==0.116.1
 uvicorn[standard]==0.32.1
 pydantic-settings==2.6.1
+sqlmodel==0.0.22
+# Postgres driver for production (DATABASE_URL=postgresql://...).
+# Local dev uses SQLite and does not need this.
+psycopg2-binary==2.9.10

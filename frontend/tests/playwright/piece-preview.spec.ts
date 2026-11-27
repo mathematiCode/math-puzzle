@@ -7,7 +7,7 @@ test.describe('Piece drop preview', () => {
   }) => {
     await openFreshGame(page, 0);
 
-    const piece = pieceLocator(page, 'i-4');
+    const piece = pieceLocator(page, '4');
     const sourceBox = await piece.boundingBox();
     const target = boardSquare(page, 2, 0);
     const targetBox = await target.boundingBox();

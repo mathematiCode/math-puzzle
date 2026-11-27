@@ -21,6 +21,8 @@ import { useBoardSquares } from '../context/BoardSquares';
 import { getNewValidLocation } from './utils/getNewValidLocation';
 import { useLevelStatus } from '../hooks/useLevelStatus';
 import { usePieceStabilitySetter } from '../hooks/usePieceStabilitySetter';
+import { useGameProgress } from '../context/GameProgress';
+import { useCurrentLevel } from '../context/CurrentLevel';
 
 interface DragAndDropAreaProps {
   children: React.ReactNode;
@@ -48,6 +50,8 @@ function DragAndDropArea({
     countOverlappingSquares,
   } = useBoardSquares();
   const { checkAndHandleLevelStatus } = useLevelStatus();
+  const { incrementMoves } = useGameProgress();
+  const { currentLevel } = useCurrentLevel();
   function compareCollisionRects(
     { data: { value: a } }: { data: { value: number } },
     { data: { value: b } }: { data: { value: number } }
@@ -191,6 +195,8 @@ function DragAndDropArea({
         piece.height,
         piece.id
       );
+      // A piece landing on the board counts as a move (issue #115).
+      incrementMoves(currentLevel);
     } else movePiece(id, null);
     Hotjar.event('drag end');
     updateStabilityAllPieces();
