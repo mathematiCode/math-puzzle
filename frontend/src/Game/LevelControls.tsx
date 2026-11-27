@@ -9,6 +9,7 @@ import { useBoardSquares } from '../context/BoardSquares';
 import { useGameProgress } from '../context/GameProgress';
 import { useMediaQuery } from '@chakra-ui/react';
 import { useCurrentLevel } from '../context/CurrentLevel';
+import { useResetLevel } from '../hooks/useResetLevel';
 
 interface LevelControlsProps {
   levelPosition: string;
@@ -24,11 +25,12 @@ const LevelControls = ({
   setActivePiece,
 }: LevelControlsProps) => {
   const { currentLevel, previousLevel, nextLevel } = useCurrentLevel();
-  const { piecesInPlay, resetPieces, setPiecesForNewLevel } = usePiecesInPlay();
+  const { piecesInPlay, setPiecesForNewLevel } = usePiecesInPlay();
   const { boardSquares, setBoardSquares, resetBoardSquares } =
     useBoardSquares();
-  const { resetLevel, gameProgress, setPiecesForLevel, setBoardSquaresForLevel } =
+  const { gameProgress, setPiecesForLevel, setBoardSquaresForLevel } =
     useGameProgress();
+  const { resetCurrentLevel } = useResetLevel();
 
   // Save the level we're leaving, then load the level we're moving to.
   function switchToLevel(newLevel: number) {
@@ -63,12 +65,6 @@ const LevelControls = ({
     switchToLevel(currentLevel + 1);
   }
 
-  function handleResetLevel() {
-    resetPieces();
-    resetBoardSquares(currentLevel);
-    resetLevel(currentLevel);
-  }
-
   const [isMobile] = useMediaQuery(['(max-width: 768px)']);
 
   return (
@@ -99,7 +95,7 @@ const LevelControls = ({
       <Button
         color="hsla(0, 58.70%, 70.60%, 0.88)"
         textColor="black"
-        onClick={handleResetLevel}
+        onClick={resetCurrentLevel}
       >
         <RotateCcw /> Reset Game
       </Button>

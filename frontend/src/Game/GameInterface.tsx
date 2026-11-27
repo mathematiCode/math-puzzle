@@ -1,4 +1,4 @@
-import { useState} from 'react';
+import { useState, useEffect } from 'react';
 import levels from './levels.json' with { type: 'json' };
 import InitialPuzzlePiece from './PuzzlePieces/InitialPuzzlePiece';
 import PieceOverlay from './PuzzlePieces/PieceOverlay';
@@ -11,9 +11,11 @@ import LevelCompleteModal from './LevelComplete';
 import { motion } from 'motion/react';
 import styled from 'styled-components';
 import { DragOverlay } from '@dnd-kit/core';
+import { Lock, RotateCcw } from 'lucide-react';
 import { useCurrentLevel } from '../context/CurrentLevel';
 import { useGameProgress } from '../context/GameProgress';
 import { usePiecesInPlay } from '../context/PiecesInPlay';
+import { useResetLevel } from '../hooks/useResetLevel';
 import { Piece } from '../types/piece';
 import { RETURN_TO_CONTAINER_DURATION } from './utils/utilities';
 
@@ -32,13 +34,26 @@ function Game() {
   const { gameProgress, isLevelCompleted, setModalShown } = useGameProgress();
  // const { handleLevelCheck } = useLevelCompletion();
   const { piecesInPlay } = usePiecesInPlay();
+  const { resetCurrentLevel } = useResetLevel();
   const [isRotating, setIsRotating] = useState(false);
  // const [levelCompletedShown, setLevelCompletedShown] = useState(false);
   const levelCompletedShown = gameProgress[currentLevel].modalShown;
   const passedLevel = isLevelCompleted(currentLevel);
+  // The lock banner only appears once the player tries to move a piece on an
+  // already-completed level; it stays hidden otherwise. Reset whenever the
+  // level changes so it doesn't carry over to another (possibly completed) level.
+  const [showLockBanner, setShowLockBanner] = useState(false);
+  useEffect(() => {
+    setShowLockBanner(false);
+  }, [currentLevel]);
 
   const handleCloseModal = () => {
     setModalShown(currentLevel);
+  };
+
+  const handleResetLevel = () => {
+    resetCurrentLevel();
+    setShowLockBanner(false);
   };
 
 
@@ -69,7 +84,7 @@ function Game() {
             );
           })}
               </PiecesContainer>
-        <BoardWrapper data-testid='board-wrapper'>
+        <BoardWrapper data-testid='board-wrapper' $showBanner={passedLevel && showLockBanner}>
           <Board
             dimensions={levels[currentLevel].dimensions}
             boardSections={levels[currentLevel].boardSections}
@@ -81,6 +96,31 @@ function Game() {
           />
           {activePiece && previewLocation && !isRotating ? (
             <PiecePreview piece={activePiece} location={previewLocation} />
+          ) : null}
+          {passedLevel ? (
+            <LockInteractionLayer
+              data-testid="level-locked-overlay"
+              aria-hidden="true"
+              onPointerDown={() => setShowLockBanner(true)}
+            />
+          ) : null}
+          {passedLevel && showLockBanner ? (
+            <LockBadge
+              type="button"
+              onClick={handleResetLevel}
+              aria-label="Level complete and locked. Reset this level to play again."
+              title="Reset this level to play again"
+            >
+              <LockBadgeTitle>
+                <Lock aria-hidden="true" />
+                <span>Level Complete</span>
+              </LockBadgeTitle>
+              <Divider aria-hidden="true" />
+              <LockBadgeAction>
+                <RotateCcw aria-hidden="true" />
+                <span>Reset to play again</span>
+              </LockBadgeAction>
+            </LockBadge>
           ) : null}
               </BoardWrapper>
         {activePiece && !isRotating ? (
@@ -140,13 +180,134 @@ export const Main = styled.main<{ $isRotating?: boolean }>`
 }
 `;
 
-export const BoardWrapper = styled.div`
+export const BoardWrapper = styled.div<{ $showBanner?: boolean }>`
   display: grid;
   grid-area: 1fr;
   width: min-content;
-  padding-top: 15px;
+  /* While the lock banner is showing, reserve space above the board so it sits
+     entirely above the board without covering any pieces. */
+  padding-top: ${({ $showBanner }) => ($showBanner ? '68px' : '15px')};
   position: relative;
   isolation: isolate;
+
+  @media (max-width: 750px) {
+    padding-top: ${({ $showBanner }) => ($showBanner ? '58px' : '15px')};
+  }
+`;
+
+// Transparent layer over a completed board. It swallows the first interaction
+// with the locked pieces and reveals the lock banner, so the player learns why
+// the pieces won't move. It sits above the pieces but below the banner.
+const LockInteractionLayer = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  cursor: not-allowed;
+`;
+
+// Clickable "level locked" indicator shown once a level is completed. It sits
+// in reserved space entirely above the board (never covering any pieces),
+// horizontally centered; clicking it resets the level so the pieces can be
+// moved again. Pieces are already drag-locked, so this is the in-context way to
+// unlock, mirroring the Reset Game button.
+export const LockBadge = styled.button`
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  background-color: hsl(38, 87%, 70%);
+  color: black;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+  animation: lockBadgeIn 0.2s ease-out;
+
+  @keyframes lockBadgeIn {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -6px);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  }
+
+  &:hover {
+    background-color: hsl(38, 87%, 76%);
+  }
+  &:active {
+    transform: translateX(-50%) scale(0.98);
+  }
+  &:focus-visible {
+    outline: 3px solid hsl(200, 80%, 50%);
+    outline-offset: 3px;
+  }
+
+  svg {
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 750px) {
+    gap: 10px;
+    padding: 8px 14px;
+  }
+`;
+
+const LockBadgeTitle = styled.span`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.05rem;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  @media (max-width: 750px) {
+    font-size: 0.85rem;
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+`;
+
+const LockBadgeAction = styled.span`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  color: rgba(0, 0, 0, 0.7);
+
+  svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  @media (max-width: 750px) {
+    font-size: 0.78rem;
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+`;
+
+const Divider = styled.span`
+  width: 1px;
+  align-self: stretch;
+  background-color: rgba(0, 0, 0, 0.3);
 `;
 
 export const PiecesContainer = styled(motion.div).attrs({

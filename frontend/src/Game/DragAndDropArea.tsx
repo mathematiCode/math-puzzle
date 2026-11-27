@@ -56,8 +56,12 @@ function DragAndDropArea({
     countOverlappingSquares,
   } = useBoardSquares();
   const { checkAndHandleLevelStatus } = useLevelStatus();
-  const { incrementMoves } = useGameProgress();
+  const { incrementMoves, isLevelCompleted } = useGameProgress();
   const { currentLevel } = useCurrentLevel();
+  // Once a level is completed, lock the pieces in place so the player can't
+  // nudge the solution apart and back together (which would skip the
+  // LevelCompleteModal). Resetting the level re-enables dragging.
+  const isLevelLocked = isLevelCompleted(currentLevel);
   function compareCollisionRects(
     { data: { value: a } }: { data: { value: number } },
     { data: { value: b } }: { data: { value: number } }
@@ -225,7 +229,7 @@ function DragAndDropArea({
 
   return (
     <DndContext
-      sensors={sensors}
+      sensors={isLevelLocked ? [] : sensors}
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}

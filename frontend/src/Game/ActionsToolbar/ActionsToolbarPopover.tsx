@@ -30,8 +30,12 @@ function ActionsToolbarPopover({
   const { updateLocationAndBoardSquares } = usePieceLocationHandler();
   const { checkAndHandleLevelStatus } = useLevelStatus();
   const { updateStabilityAllPieces } = usePieceStabilitySetter();
-  const { incrementMoves } = useGameProgress();
+  const { incrementMoves, isLevelCompleted } = useGameProgress();
   const { currentLevel } = useCurrentLevel();
+  // Once a level is completed, keep the actions toolbar from opening so pieces
+  // can't be rotated or stretched to break and re-make the solution (which
+  // would skip the LevelCompleteModal). Resetting the level unlocks it again.
+  const isLevelLocked = isLevelCompleted(currentLevel);
   function handleHorizontalStretch() {
     Hotjar.event('double width attempt');
     if (!currentPiece) {
@@ -106,7 +110,7 @@ function ActionsToolbarPopover({
     currentPiece?.width == null || currentPiece.width % 2 !== 0;
   const rotateDisabled = currentPiece == null;
   return (
-    <Popover.Root>
+    <Popover.Root {...(isLevelLocked ? { open: false } : {})}>
       <Popover.Trigger asChild>{children}</Popover.Trigger>
       <Popover.Portal container={document.body}>
         <PopoverContent sideOffset={5} align="center" side="bottom">
