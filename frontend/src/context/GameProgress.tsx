@@ -86,13 +86,15 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
     setGameProgress(newGameProgress);
   }
 
+  // Uses the functional updater form so that saving pieces and board squares
+  // for the same level back-to-back compose instead of clobbering each other
+  // (both would otherwise derive from the same stale render snapshot).
   function setPiecesForLevel(level: number, pieces: Piece[]): void {
-    const newGameProgress = gameProgress.map(gameProgress =>
-      gameProgress.level === level
-        ? { ...gameProgress, pieces: pieces }
-        : gameProgress
+    setGameProgress(prev =>
+      prev.map(progress =>
+        progress.level === level ? { ...progress, pieces } : progress
+      )
     );
-    setGameProgress(newGameProgress);
   }
 
   // Persist the board-occupancy grid for a level so it can be restored exactly
@@ -103,12 +105,13 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
     boardSquares: string[][]
   ): void {
     const snapshot = boardSquares.map(row => [...row]);
-    const newGameProgress = gameProgress.map(gameProgress =>
-      gameProgress.level === level
-        ? { ...gameProgress, boardSquares: snapshot }
-        : gameProgress
+    setGameProgress(prev =>
+      prev.map(progress =>
+        progress.level === level
+          ? { ...progress, boardSquares: snapshot }
+          : progress
+      )
     );
-    setGameProgress(newGameProgress);
   }
 
   // Count a "move" (a piece placement or a toolbar action) for a level and

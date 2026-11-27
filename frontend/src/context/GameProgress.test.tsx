@@ -61,6 +61,21 @@ describe('setBoardSquaresForLevel (issue #117)', () => {
     expect(context.gameProgress[0].boardSquares).toEqual([['piece-1', '']]);
   });
 
+  it('saving pieces then board squares for the same level persists both (no clobber)', () => {
+    let context: any;
+    renderProvider(ctx => (context = ctx));
+    const pieces = [{ id: 'p1', location: '(0,0)' }] as any;
+    const board = [['p1', '']];
+    // Both run in the same batch from the same render snapshot — they must
+    // compose, not overwrite each other (regression guard for level nav).
+    act(() => {
+      context.setPiecesForLevel(0, pieces);
+      context.setBoardSquaresForLevel(0, board);
+    });
+    expect(context.gameProgress[0].pieces).toEqual(pieces);
+    expect(context.gameProgress[0].boardSquares).toEqual(board);
+  });
+
   it('resetLevel clears the saved board snapshot', () => {
     let context: any;
     renderProvider(ctx => (context = ctx));
