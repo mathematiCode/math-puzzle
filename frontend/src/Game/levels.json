@@ -1,6 +1,13 @@
 [
   {
     "id": 1,
+    "limits": {
+      "rotate": 3,
+      "horizontalStretch": 2,
+      "verticalStretch": 2,
+      "cut": 1,
+      "combine": 1
+    },
     "dimensions": { "width": 5, "height": 6 },
     "boardSections": [
       [
@@ -24,6 +31,13 @@
   },
   {
     "id": 2,
+    "limits": {
+      "rotate": 3,
+      "horizontalStretch": 2,
+      "verticalStretch": 2,
+      "cut": 1,
+      "combine": 2
+    },
     "dimensions": { "width": 7, "height": 6 },
     "boardSections": [
       [
@@ -48,6 +62,13 @@
   },
   {
     "id": 3,
+    "limits": {
+      "rotate": 3,
+      "horizontalStretch": 3,
+      "verticalStretch": 3,
+      "cut": 2,
+      "combine": 2
+    },
     "dimensions": { "width": 7, "height": 7 },
     "boardSections": [
       [
@@ -70,6 +91,13 @@
   },
   {
     "id": 4,
+    "limits": {
+      "rotate": 4,
+      "horizontalStretch": 3,
+      "verticalStretch": 3,
+      "cut": 2,
+      "combine": 2
+    },
     "dimensions": { "width": 7, "height": 8 },
     "boardSections": [
       [
@@ -96,6 +124,13 @@
   },
   {
     "id": 5,
+    "limits": {
+      "rotate": 4,
+      "horizontalStretch": 3,
+      "verticalStretch": 3,
+      "cut": 2,
+      "combine": 2
+    },
     "dimensions": { "width": 7, "height": 8 },
     "boardSections": [
       [{ "x": 0, "y": 0, "width": 7, "height": 8, "valid": true }]
@@ -113,6 +148,13 @@
   },
   {
     "id": 6,
+    "limits": {
+      "rotate": 5,
+      "horizontalStretch": 4,
+      "verticalStretch": 4,
+      "cut": 2,
+      "combine": 3
+    },
     "dimensions": { "width": 15, "height": 14 },
     "boardSections": [
       [
@@ -140,6 +182,13 @@
   },
   {
     "id": 7,
+    "limits": {
+      "rotate": 4,
+      "horizontalStretch": 3,
+      "verticalStretch": 3,
+      "cut": 2,
+      "combine": 2
+    },
     "dimensions": { "width": 10, "height": 11 },
     "boardSections": [
       [
@@ -165,6 +214,13 @@
   },
   {
     "id": 8,
+    "limits": {
+      "rotate": 5,
+      "horizontalStretch": 4,
+      "verticalStretch": 4,
+      "cut": 2,
+      "combine": 3
+    },
     "dimensions": { "width": 18, "height": 12 },
     "boardSections": [
       [
@@ -192,6 +248,13 @@
   },
   {
     "id": 9,
+    "limits": {
+      "rotate": 4,
+      "horizontalStretch": 3,
+      "verticalStretch": 3,
+      "cut": 2,
+      "combine": 2
+    },
     "dimensions": { "width": 11, "height": 8 },
     "boardSections": [
       [
@@ -222,6 +285,13 @@
   },
   {
     "id": 10,
+    "limits": {
+      "rotate": 4,
+      "horizontalStretch": 3,
+      "verticalStretch": 3,
+      "cut": 2,
+      "combine": 2
+    },
     "dimensions": { "width": 10, "height": 10 },
     "boardSections": [
       [
@@ -268,6 +338,13 @@
   },
   {
     "id": 11,
+    "limits": {
+      "rotate": 6,
+      "horizontalStretch": 5,
+      "verticalStretch": 5,
+      "cut": 3,
+      "combine": 3
+    },
     "dimensions": { "width": 10, "height": 14 },
     "boardSections": [
       [
@@ -321,6 +398,13 @@
   },
   {
     "id": 12,
+    "limits": {
+      "rotate": 8,
+      "horizontalStretch": 6,
+      "verticalStretch": 6,
+      "cut": 3,
+      "combine": 4
+    },
     "dimensions": { "width": 17, "height": 19 },
     "boardSections": [
       [
@@ -384,6 +468,13 @@
   },
   {
     "id": 13,
+    "limits": {
+      "rotate": 7,
+      "horizontalStretch": 6,
+      "verticalStretch": 6,
+      "cut": 3,
+      "combine": 4
+    },
     "dimensions": { "width": 20, "height": 20 },
     "boardSections": [
       [
@@ -416,6 +507,13 @@
   },
   {
     "id": 14,
+    "limits": {
+      "rotate": 7,
+      "horizontalStretch": 5,
+      "verticalStretch": 5,
+      "cut": 3,
+      "combine": 3
+    },
     "dimensions": { "width": 16, "height": 18 },
     "boardSections": [
       [
@@ -479,6 +577,13 @@
   },
   {
     "id": 15,
+    "limits": {
+      "rotate": 7,
+      "horizontalStretch": 6,
+      "verticalStretch": 6,
+      "cut": 3,
+      "combine": 4
+    },
     "dimensions": { "width": 20, "height": 20 },
     "boardSections": [
       [
@@ -511,6 +616,13 @@
   },
   {
     "id": 16,
+    "limits": {
+      "rotate": 6,
+      "horizontalStretch": 5,
+      "verticalStretch": 5,
+      "cut": 3,
+      "combine": 3
+    },
     "dimensions": { "width": 14, "height": 14 },
     "boardSections": [
       [
