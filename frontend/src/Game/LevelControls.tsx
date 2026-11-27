@@ -25,38 +25,42 @@ const LevelControls = ({
 }: LevelControlsProps) => {
   const { currentLevel, previousLevel, nextLevel } = useCurrentLevel();
   const { piecesInPlay, resetPieces, setPiecesForNewLevel } = usePiecesInPlay();
-  const { resetBoardSquares } = useBoardSquares();
-  const { resetLevel, gameProgress, setPiecesForLevel } = useGameProgress();
-  async function setToPrevious() {
-    setPiecesForLevel(currentLevel, piecesInPlay);
-    previousLevel();
-    const newLevel = currentLevel - 1;
-    const savedPieces = gameProgress[newLevel]?.pieces;
+  const { boardSquares, setBoardSquares, resetBoardSquares } =
+    useBoardSquares();
+  const { resetLevel, gameProgress, setPiecesForLevel, setBoardSquaresForLevel } =
+    useGameProgress();
 
+  // Save the level we're leaving, then load the level we're moving to.
+  function switchToLevel(newLevel: number) {
+    // Snapshot the current level's pieces and board so an in-progress level
+    // can be restored exactly when the player returns (issue #117).
+    setPiecesForLevel(currentLevel, piecesInPlay);
+    setBoardSquaresForLevel(currentLevel, boardSquares);
+
+    const savedPieces = gameProgress[newLevel]?.pieces;
     if (savedPieces && savedPieces.length > 0) {
       setPiecesForNewLevel(savedPieces);
     } else {
-      const newPieces = getInitialPieces(newLevel);
-      setPiecesForNewLevel(newPieces);
+      setPiecesForNewLevel(getInitialPieces(newLevel));
     }
 
-    resetBoardSquares(newLevel);
+    const savedBoardSquares = gameProgress[newLevel]?.boardSquares;
+    if (savedBoardSquares && savedBoardSquares.length > 0) {
+      // Deep-copy so later in-place board mutations don't corrupt the snapshot.
+      setBoardSquares(savedBoardSquares.map(row => [...row]));
+    } else {
+      resetBoardSquares(newLevel);
+    }
+  }
+
+  async function setToPrevious() {
+    previousLevel();
+    switchToLevel(currentLevel - 1);
   }
 
   async function setToNext() {
-    setPiecesForLevel(currentLevel, piecesInPlay);
     nextLevel();
-    const newLevel = currentLevel + 1;
-    const savedPieces = gameProgress[newLevel]?.pieces;
-
-    if (savedPieces && savedPieces.length > 0) {
-      setPiecesForNewLevel(savedPieces);
-    } else {
-      const newPieces = getInitialPieces(newLevel);
-      setPiecesForNewLevel(newPieces);
-    }
-
-    resetBoardSquares(newLevel);
+    switchToLevel(currentLevel + 1);
   }
 
   function handleResetLevel() {
