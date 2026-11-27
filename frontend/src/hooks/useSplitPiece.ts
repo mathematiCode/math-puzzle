@@ -11,6 +11,7 @@ import { useCurrentLevel } from '../context/CurrentLevel';
 import { useGameProgress } from '../context/GameProgress';
 import { useLevelStatus } from './useLevelStatus';
 import { usePieceStabilitySetter } from './usePieceStabilitySetter';
+import { useToolLimits } from './useToolLimits';
 
 /**
  * Splits a piece into two along a cut: builds the two children, updates the
@@ -28,6 +29,7 @@ export function useSplitPiece() {
   const { incrementMoves } = useGameProgress();
   const { checkAndHandleLevelStatus } = useLevelStatus();
   const { updateStabilityAllPieces } = usePieceStabilitySetter();
+  const { recordToolUse } = useToolLimits();
 
   const performSplit = useCallback(
     (piece: Piece, cut: Cut) => {
@@ -46,6 +48,10 @@ export function useSplitPiece() {
       updateStabilityAllPieces();
       checkAndHandleLevelStatus();
       incrementMoves(currentLevel);
+      // The cut is only now actually made (the player placed and confirmed the
+      // cut line), so this is where the Cut tool's use is counted — not when the
+      // Cut button was first clicked to enter cut mode (issue #38).
+      recordToolUse('cut');
 
       // The parent piece no longer exists; clear the selection and exit cut mode.
       setSelectedPiece(null);
@@ -63,6 +69,7 @@ export function useSplitPiece() {
       currentLevel,
       setSelectedPiece,
       setCuttingPieceId,
+      recordToolUse,
     ]
   );
 

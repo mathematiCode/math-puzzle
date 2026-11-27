@@ -18,6 +18,7 @@ import { useLevelStatus } from '../../hooks/useLevelStatus';
 import { usePieceStabilitySetter } from '../../hooks/usePieceStabilitySetter';
 import { useGameProgress } from '../../context/GameProgress';
 import { useCurrentLevel } from '../../context/CurrentLevel';
+import { useToolLimits } from '../../hooks/useToolLimits';
 
 function ActionsToolbarPopover({
   children,
@@ -35,13 +36,14 @@ function ActionsToolbarPopover({
   const { incrementMoves, isLevelCompleted } = useGameProgress();
   const { setCuttingPieceId } = useCuttingPiece();
   const { currentLevel } = useCurrentLevel();
+  const { getRemaining, hasRemaining, recordToolUse } = useToolLimits();
   // Once a level is completed, keep the actions toolbar from opening so pieces
   // can't be rotated or stretched to break and re-make the solution (which
   // would skip the LevelCompleteModal). Resetting the level unlocks it again.
   const isLevelLocked = isLevelCompleted(currentLevel);
   function handleHorizontalStretch() {
     Hotjar.event('double width attempt');
-    if (!currentPiece) {
+    if (!currentPiece || !hasRemaining('horizontalStretch')) {
       return;
     }
     const isOnBoard =
@@ -64,12 +66,13 @@ function ActionsToolbarPopover({
       updateStabilityAllPieces();
       checkAndHandleLevelStatus();
       incrementMoves(currentLevel);
+      recordToolUse('horizontalStretch');
       Hotjar.event('double width successfully');
     }
   }
 
   function handleVerticalStretch() {
-    if (!currentPiece) {
+    if (!currentPiece || !hasRemaining('verticalStretch')) {
       return;
     }
     Hotjar.event('double height attempt');
@@ -94,6 +97,7 @@ function ActionsToolbarPopover({
       updateStabilityAllPieces();
       checkAndHandleLevelStatus();
       incrementMoves(currentLevel);
+      recordToolUse('verticalStretch');
     }
   }
 
@@ -101,19 +105,31 @@ function ActionsToolbarPopover({
   // place and rotate a cut line and confirm the split. The actual split happens
   // there (via useSplitPiece), not here.
   function handleCutPiece() {
-    if (!currentPiece) return;
+    if (!currentPiece || !hasRemaining('cut')) return;
     Hotjar.event('separate pieces attempt');
     setCuttingPieceId(currentPiece.id);
   }
 
+  // Remaining uses for each tool on this level (from levels.json `limits`).
+  // Shown as a badge on each button and used to disable a tool at zero.
+  const rotateRemaining = getRemaining('rotate');
+  const horizontalStretchRemaining = getRemaining('horizontalStretch');
+  const verticalStretchRemaining = getRemaining('verticalStretch');
+  const cutRemaining = getRemaining('cut');
+
   const horizontalStretchDisabled =
-    currentPiece?.height == null || currentPiece.height % 2 !== 0;
+    currentPiece?.height == null ||
+    currentPiece.height % 2 !== 0 ||
+    horizontalStretchRemaining <= 0;
   const verticalStretchDisabled =
-    currentPiece?.width == null || currentPiece.width % 2 !== 0;
-  const rotateDisabled = currentPiece == null;
+    currentPiece?.width == null ||
+    currentPiece.width % 2 !== 0 ||
+    verticalStretchRemaining <= 0;
+  const rotateDisabled = currentPiece == null || rotateRemaining <= 0;
   // A piece can be cut only if it's a puzzle piece with at least one side >= 2
-  // (so there's a whole-unit boundary to cut along).
-  const cutDisabled = currentPiece == null || !canSplit(currentPiece);
+  // (so there's a whole-unit boundary to cut along) and cuts remain this level.
+  const cutDisabled =
+    currentPiece == null || !canSplit(currentPiece) || cutRemaining <= 0;
   return (
     <Popover.Root {...(isLevelLocked ? { open: false } : {})}>
       <Popover.Trigger asChild>{children}</Popover.Trigger>
@@ -123,8 +139,10 @@ function ActionsToolbarPopover({
             <Tooltip placement="bottom" title={showTooltips && 'Rotate'}>
               <IconButton
                 onClick={() => {
+                  if (rotateDisabled) return;
                   runRotationAnimation(currentPiece);
                   incrementMoves(currentLevel);
+                  recordToolUse('rotate');
                 }}
                 aria-label="Rotate"
                 isDisabled={rotateDisabled}
@@ -134,6 +152,7 @@ function ActionsToolbarPopover({
                   animationData={rotateToolAnimation}
                   isDisabled={rotateDisabled}
                 />
+                <UsesBadge count={rotateRemaining} />
               </IconButton>
             </Tooltip>
             <Tooltip
@@ -156,6 +175,7 @@ function ActionsToolbarPopover({
                   animationData={horizontalStretchAnimation}
                   isDisabled={horizontalStretchDisabled}
                 />
+                <UsesBadge count={horizontalStretchRemaining} />
               </IconButton>
             </Tooltip>
             <Tooltip
@@ -178,6 +198,7 @@ function ActionsToolbarPopover({
                   animationData={verticalStretchAnimation}
                   isDisabled={verticalStretchDisabled}
                 />
+                <UsesBadge count={verticalStretchRemaining} />
               </IconButton>
             </Tooltip>
             <Tooltip
@@ -201,6 +222,7 @@ function ActionsToolbarPopover({
                     animationData={cutAnimation}
                     isDisabled={cutDisabled}
                   />
+                  <UsesBadge count={cutRemaining} />
                 </IconButton>
               </Popover.Close>
             </Tooltip>
@@ -217,11 +239,50 @@ function ActionsToolbarPopover({
   );
 }
 
+/**
+ * Small red badge in the corner of a tool button showing how many uses of that
+ * tool remain on the current level (issue #37). Renders nothing for a tool with
+ * no limit (count is Infinity). Dims to grey once the tool is used up.
+ */
+function UsesBadge({ count }: { count: number }) {
+  if (!Number.isFinite(count)) return null;
+  return <Badge $depleted={count <= 0}>{count}</Badge>;
+}
+
+const Badge = styled.span<{ $depleted: boolean }>`
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  box-sizing: border-box;
+  border-radius: 9px;
+  background-color: ${({ $depleted }) => ($depleted ? '#b0b0b0' : '#e5533c')};
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+  pointer-events: none;
+  user-select: none;
+
+  @media (max-width: 750px) {
+    top: -6px;
+    right: -6px;
+    min-width: 16px;
+    height: 16px;
+    font-size: 10px;
+    line-height: 16px;
+  }
+`;
+
 const IconButton = styled.button.withConfig({
   shouldForwardProp: prop => prop !== 'isDisabled',
 })<{
   isDisabled?: boolean;
 }>`
+  position: relative;
   padding: 0px;
   margin: 0px;
   border: none;

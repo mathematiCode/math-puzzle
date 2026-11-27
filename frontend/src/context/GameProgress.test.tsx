@@ -118,3 +118,40 @@ describe('completion + move counting compose (issue #115 modal regression)', () 
     expect(context.gameProgress[0].moves).toBe(1);
   });
 });
+
+describe('incrementToolUsage (issue #38 tool limits)', () => {
+  it('counts each tool separately per level and leaves other levels alone', () => {
+    let context: any;
+    renderProvider(ctx => (context = ctx));
+    act(() => {
+      context.incrementToolUsage(0, 'cut');
+      context.incrementToolUsage(0, 'cut');
+      context.incrementToolUsage(0, 'rotate');
+    });
+    expect(context.gameProgress[0].toolUsage).toEqual({ cut: 2, rotate: 1 });
+    expect(context.gameProgress[1].toolUsage).toEqual({});
+  });
+
+  it('composes with incrementMoves in the same handler (no clobber)', () => {
+    let context: any;
+    renderProvider(ctx => (context = ctx));
+    act(() => {
+      context.incrementMoves(0);
+      context.incrementToolUsage(0, 'horizontalStretch');
+    });
+    expect(context.gameProgress[0].moves).toBe(1);
+    expect(context.gameProgress[0].toolUsage).toEqual({ horizontalStretch: 1 });
+  });
+
+  it('resetLevel clears tool usage back to empty', () => {
+    let context: any;
+    renderProvider(ctx => (context = ctx));
+    act(() => {
+      context.incrementToolUsage(0, 'cut');
+    });
+    act(() => {
+      context.resetLevel(0);
+    });
+    expect(context.gameProgress[0].toolUsage).toEqual({});
+  });
+});

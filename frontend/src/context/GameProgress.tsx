@@ -1,5 +1,6 @@
 import { createContext, useContext, ReactNode } from 'react';
 import { Piece } from '../types/piece';
+import { ToolName, ToolUsage } from '../types/tools';
 import { getLevelsArray, getLevelId } from '../Game/utils/getLevelsArray';
 import Hotjar from '@hotjar/browser';
 import useLocalStorageState from 'use-local-storage-state';
@@ -15,6 +16,10 @@ type GameProgress = {
   // #117). Empty array means "no snapshot yet" — fall back to the initial grid.
   boardSquares: string[][];
   moves: number;
+  // How many times each toolbar action has been used on this level. The per-tool
+  // cap lives in levels.json (`limits`); remaining uses = limit - used. Tracked
+  // here so it persists across navigation and resets with the level (issue #38).
+  toolUsage: ToolUsage;
 };
 
 export type GameProgressContextType = {
@@ -29,6 +34,7 @@ export type GameProgressContextType = {
   setPiecesForLevel: (level: number, pieces: Piece[]) => void;
   setBoardSquaresForLevel: (level: number, boardSquares: string[][]) => void;
   incrementMoves: (level: number) => void;
+  incrementToolUsage: (level: number, tool: ToolName) => void;
 };
 
 export const GameProgressContext =
@@ -43,6 +49,7 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
     pieces: [],
     boardSquares: [],
     moves: 0,
+    toolUsage: {},
   }).map((_, index) => ({
     level: index,
     completed: false,
@@ -50,6 +57,7 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
     pieces: [],
     boardSquares: [],
     moves: 0,
+    toolUsage: {},
   }));
 
   const [gameProgress, setGameProgress] = useLocalStorageState<GameProgress[]>(
@@ -148,6 +156,26 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
     void syncLevelProgress(getLevelId(level), newMoveCount);
   }
 
+  // Count one use of a toolbar action for a level (issue #38). Functional
+  // updater form (like incrementMoves) so it composes with any other
+  // same-handler GameProgress update instead of clobbering it from a stale
+  // snapshot. For the Cut tool the caller fires this only once the split is
+  // actually confirmed, not when the tool button is clicked.
+  function incrementToolUsage(level: number, tool: ToolName): void {
+    setGameProgress(prev =>
+      prev.map(progress => {
+        if (progress.level === level) {
+          const usage = progress.toolUsage ?? {};
+          return {
+            ...progress,
+            toolUsage: { ...usage, [tool]: (usage[tool] ?? 0) + 1 },
+          };
+        }
+        return progress;
+      })
+    );
+  }
+
   function resetProgress(): void {
     setGameProgress(initialGameProgress);
   }
@@ -163,6 +191,7 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
               pieces: [],
               boardSquares: [],
               moves: 0,
+              toolUsage: {},
             }
           : progress
       )
@@ -184,6 +213,7 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
         setPiecesForLevel,
         setBoardSquaresForLevel,
         incrementMoves,
+        incrementToolUsage,
       }}
     >
       {children}
