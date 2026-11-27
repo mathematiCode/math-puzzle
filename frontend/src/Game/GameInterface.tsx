@@ -94,7 +94,7 @@ function Game() {
             >
               <LockBadgeTitle>
                 <Lock aria-hidden="true" />
-                <span>Level complete — locked</span>
+                <span>Level complete</span>
               </LockBadgeTitle>
               <Divider aria-hidden="true" />
               <LockBadgeAction>
@@ -191,10 +191,10 @@ export const LockBadge = styled.button`
   align-items: center;
   gap: 14px;
   padding: 10px 24px;
-  border: 3px solid hsl(0, 0%, 35%);
+  border: 3px solid hsl(210, 8%, 35%);
   border-radius: 8px;
-  background-color: hsl(0, 0%, 92%);
-  color: hsl(0, 0%, 20%);
+  background-color: hsl(210, 12%, 91%);
+  color: hsl(210, 10%, 20%);
   font-weight: 600;
   line-height: 1;
   white-space: nowrap;
@@ -214,7 +214,7 @@ export const LockBadge = styled.button`
   }
 
   &:hover {
-    background-color: hsl(0, 0%, 86%);
+    background-color: hsl(210, 12%, 85%);
   }
   &:active {
     transform: translateX(-50%) scale(0.98);
@@ -259,7 +259,7 @@ const LockBadgeAction = styled.span`
   align-items: center;
   gap: 8px;
   font-size: 0.95rem;
-  color: hsl(0, 0%, 38%);
+  color: hsl(210, 8%, 38%);
 
   svg {
     width: 17px;
@@ -278,7 +278,7 @@ const LockBadgeAction = styled.span`
 const Divider = styled.span`
   width: 1px;
   align-self: stretch;
-  background-color: hsl(0, 0%, 60%);
+  background-color: hsl(210, 10%, 60%);
 `;
 
 export const PiecesContainer = styled(motion.div).attrs({
