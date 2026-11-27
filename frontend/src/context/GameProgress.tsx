@@ -10,6 +10,10 @@ type GameProgress = {
   completed: boolean;
   modalShown: boolean;
   pieces: Piece[];
+  // Snapshot of the board-occupancy grid so a level started-but-not-finished
+  // can be restored exactly when the player navigates away and back (issue
+  // #117). Empty array means "no snapshot yet" — fall back to the initial grid.
+  boardSquares: string[][];
   moves: number;
 };
 
@@ -23,6 +27,7 @@ export type GameProgressContextType = {
   setModalShown: (level: number) => void;
   resetLevel: (level: number) => void;
   setPiecesForLevel: (level: number, pieces: Piece[]) => void;
+  setBoardSquaresForLevel: (level: number, boardSquares: string[][]) => void;
   incrementMoves: (level: number) => void;
 };
 
@@ -36,12 +41,14 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
     completed: false,
     modalShown: false,
     pieces: [],
+    boardSquares: [],
     moves: 0,
   }).map((_, index) => ({
     level: index,
     completed: false,
     modalShown: false,
     pieces: [],
+    boardSquares: [],
     moves: 0,
   }));
 
@@ -79,13 +86,32 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
     setGameProgress(newGameProgress);
   }
 
+  // Uses the functional updater form so that saving pieces and board squares
+  // for the same level back-to-back compose instead of clobbering each other
+  // (both would otherwise derive from the same stale render snapshot).
   function setPiecesForLevel(level: number, pieces: Piece[]): void {
-    const newGameProgress = gameProgress.map(gameProgress =>
-      gameProgress.level === level
-        ? { ...gameProgress, pieces: pieces }
-        : gameProgress
+    setGameProgress(prev =>
+      prev.map(progress =>
+        progress.level === level ? { ...progress, pieces } : progress
+      )
     );
-    setGameProgress(newGameProgress);
+  }
+
+  // Persist the board-occupancy grid for a level so it can be restored exactly
+  // when the player returns to a started-but-unfinished level (issue #117). The
+  // grid is deep-copied because the board mutators update row arrays in place.
+  function setBoardSquaresForLevel(
+    level: number,
+    boardSquares: string[][]
+  ): void {
+    const snapshot = boardSquares.map(row => [...row]);
+    setGameProgress(prev =>
+      prev.map(progress =>
+        progress.level === level
+          ? { ...progress, boardSquares: snapshot }
+          : progress
+      )
+    );
   }
 
   // Count a "move" (a piece placement or a toolbar action) for a level and
@@ -115,6 +141,7 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
             completed: false,
             modalShown: false,
             pieces: [],
+            boardSquares: [],
             moves: 0,
           }
         : gameProgress
@@ -135,6 +162,7 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
         resetProgress,
         resetLevel,
         setPiecesForLevel,
+        setBoardSquaresForLevel,
         incrementMoves,
       }}
     >

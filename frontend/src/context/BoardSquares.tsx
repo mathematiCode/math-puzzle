@@ -7,7 +7,7 @@ import useLocalStorageState from 'use-local-storage-state';
 
 export type BoardSquaresContextType = {
   boardSquares: string[][];
-  setBoardSquares: (boardSquares: [][]) => void;
+  setBoardSquares: (boardSquares: string[][]) => void;
   addPieceToBoard: (
     x: number,
     y: number,
