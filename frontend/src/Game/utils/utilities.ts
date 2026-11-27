@@ -28,6 +28,36 @@ export function convertLocationToXAndY(location: string | null) {
   return { x, y };
 }
 
+/**
+ * Returns true only if a piece whose top-left corner is at (x, y) would sit
+ * entirely on playable board squares — every square it covers must be in
+ * bounds and not an 'invalid' (off-shape) square.
+ *
+ * The board can be non-rectangular (see levels.json), so a location can be
+ * inside the board's bounding box yet still hang over squares that aren't part
+ * of the board. getNewValidLocation only clamps to the bounding box, so this
+ * extra check is what actually keeps a piece from being dropped off the board
+ * (issue #59). Occupied-but-valid squares are fine — overlapping other pieces
+ * is an allowed (unstable) placement.
+ */
+export function isPlacementFullyOnBoard(
+  boardSquares: string[][],
+  x: number,
+  y: number,
+  width: number,
+  height: number
+): boolean {
+  for (let row = y; row < y + height; row++) {
+    for (let col = x; col < x + width; col++) {
+      const square = boardSquares?.[row]?.[col];
+      if (square === undefined || square === 'invalid') {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
 export function rateDroppability(x: number, y: number, droppableRect: any) {
   const { top, left, width, height } = droppableRect;
   // I'm multiplying the width and height by 2 to allow a greater range of droppableRects

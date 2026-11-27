@@ -215,4 +215,57 @@ test.describe('Drag and drop', () => {
       overlapping.some((p: { isStable?: boolean }) => p.isStable === false)
     ).toBe(true);
   });
+
+  test('does not place a piece partially off the board (issue #59)', async ({
+    page,
+  }) => {
+    // Level 2 is non-rectangular: rows 0–2 are only 5 wide (cols 5–6 are
+    // off-shape), while the lower rows are 7 wide. Dropping the 3×3 piece
+    // (label 2) with its top-left at (4,0) would hang cols 5–6 off the board.
+    await openFreshGame(page, 1);
+
+    const board = page.getByTestId('board-wrapper');
+    const tray = page.getByTestId('pieces-container');
+
+    await dragPieceTo(page, tray.getByTestId('2'), boardSquare(page, 4, 0));
+    // Let any drop / return-to-tray animation settle.
+    await expect(page.getByTestId('drag-overlay')).toHaveCount(0);
+
+    // Invariant: no placed piece may cover an 'invalid' (off-shape) or
+    // out-of-bounds square. The piece is rejected and returns to the tray.
+    const { offBoard, placedLabels } = await page.evaluate(() => {
+      const pieces = JSON.parse(
+        window.localStorage.getItem('piecesInPlay') || '[]'
+      );
+      const boardSquares: string[][] = JSON.parse(
+        window.localStorage.getItem('boardSquares') || '[]'
+      );
+      const offBoard: string[] = [];
+      const placedLabels: string[] = [];
+      for (const piece of pieces) {
+        const location: string | null = piece.location;
+        if (!location || location === 'instructions') continue;
+        placedLabels.push(piece.order.join('.'));
+        const [x, y] = location
+          .replace(/[()]/g, '')
+          .split(',')
+          .map(Number);
+        for (let row = y; row < y + piece.height; row++) {
+          for (let col = x; col < x + piece.width; col++) {
+            const cell = boardSquares?.[row]?.[col];
+            if (cell === undefined || cell === 'invalid') {
+              offBoard.push(piece.order.join('.'));
+            }
+          }
+        }
+      }
+      return { offBoard, placedLabels };
+    });
+
+    expect(offBoard).toEqual([]);
+    // The rejected piece stays in the tray rather than landing off the board.
+    expect(placedLabels).not.toContain('2');
+    await expect(tray.getByTestId('2')).toBeVisible();
+    await expect(board.getByTestId('2')).toHaveCount(0);
+  });
 });

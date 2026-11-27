@@ -17,6 +17,7 @@ import { Piece } from '../types/piece';
 import { useSelectedPiece } from '../context/SelectedPiece';
 import {
   convertLocationToXAndY,
+  isPlacementFullyOnBoard,
   rateDroppability,
   RETURN_TO_CONTAINER_DURATION,
 } from './utils/utilities';
@@ -161,7 +162,23 @@ function DragAndDropArea({
         boardWidth,
         boardHeight
       );
-      setPreviewLocation(`(${correctedX},${correctedY})`);
+      // Only preview locations where the piece would land entirely on the
+      // board. On a non-rectangular board a piece can be inside the bounding
+      // box yet still hang over off-shape squares; hiding the preview tells
+      // the player that spot isn't a valid drop target (issue #59).
+      if (
+        isPlacementFullyOnBoard(
+          boardSquares,
+          correctedX,
+          correctedY,
+          piece.width,
+          piece.height
+        )
+      ) {
+        setPreviewLocation(`(${correctedX},${correctedY})`);
+      } else {
+        setPreviewLocation(null);
+      }
     } else {
       setPreviewLocation(null);
     }
@@ -172,10 +189,8 @@ function DragAndDropArea({
     const id = event.active.id as string;
     const piece = piecesInPlay.find(piece => piece.id === id);
     if (!piece) return;
-    if (piece.location != null) {
-      const { x, y } = convertLocationToXAndY(piece.location);
-      removePieceFromBoard(x, y, piece.width, piece.height, piece.id);
-    }
+    const originalLocation = piece.location;
+
     if (event.over?.id) {
       const newLocation = event.over.id.toString();
       const { x, y } = convertLocationToXAndY(newLocation);
@@ -189,6 +204,28 @@ function DragAndDropArea({
         boardWidth,
         boardHeight
       );
+      // Reject drops that would leave the piece hanging off the board. On a
+      // non-rectangular board the clamped location can still cover off-shape
+      // squares, so without this check a piece dragged in from outside could
+      // be placed partially off the board (issue #59). The piece stays where
+      // it was and the DragOverlay animates it back to its origin.
+      if (
+        !isPlacementFullyOnBoard(
+          boardSquares,
+          correctedX,
+          correctedY,
+          piece.width,
+          piece.height
+        )
+      ) {
+        Hotjar.event('piece drop rejected off board');
+        Hotjar.event('drag end');
+        return;
+      }
+      if (originalLocation != null) {
+        const { x: oldX, y: oldY } = convertLocationToXAndY(originalLocation);
+        removePieceFromBoard(oldX, oldY, piece.width, piece.height, piece.id);
+      }
       const newValidLocation = `(${correctedX},${correctedY})`;
       movePiece(id, newValidLocation);
       const { outerOverlaps, innerOverlaps, squaresOutsideBoard } =
@@ -208,6 +245,10 @@ function DragAndDropArea({
       // A piece landing on the board counts as a move (issue #115).
       incrementMoves(currentLevel);
     } else {
+      if (originalLocation != null) {
+        const { x: oldX, y: oldY } = convertLocationToXAndY(originalLocation);
+        removePieceFromBoard(oldX, oldY, piece.width, piece.height, piece.id);
+      }
       // Dropped back into the initial pieces container. The DragOverlay plays a
       // drop animation from the release point to the piece's home slot; keep the
       // real piece hidden until that animation finishes so the piece doesn't
