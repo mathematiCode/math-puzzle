@@ -4,6 +4,7 @@ import { GameProgressProvider } from '../context/GameProgress';
 import { BoardSquaresProvider } from '../context/BoardSquares';
 import { PiecesInPlayProvider } from '../context/PiecesInPlay';
 import { SelectedPieceProvider } from '../context/SelectedPiece';
+import { CuttingPieceProvider } from '../context/CuttingPiece';
 import GameInterface from '../Game/GameInterface';
 
 function Game() {
@@ -14,9 +15,11 @@ function Game() {
           <BoardSquaresProvider>
             <PiecesInPlayProvider>
               <SelectedPieceProvider>
-                <ErrorBoundary>
-                  <GameInterface />
-                </ErrorBoundary>
+                <CuttingPieceProvider>
+                  <ErrorBoundary>
+                    <GameInterface />
+                  </ErrorBoundary>
+                </CuttingPieceProvider>
               </SelectedPieceProvider>
             </PiecesInPlayProvider>
           </BoardSquaresProvider>

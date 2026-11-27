@@ -12,6 +12,7 @@ export interface PiecesInPlayContextType {
   piecesInPlay: Piece[];
   movePiece: (pieceId: string, newLocation: string | null) => void;
   updateDimensions: (pieceId: string, width: number, height: number) => void;
+  splitPiece: (parentId: string, childA: Piece, childB: Piece) => void;
   resetPieces: () => void;
   setPiecesForNewLevel: (newPieces?: Piece[]) => void;
   setPieceStability: (pieceId: string, isStable: boolean) => void;
@@ -69,6 +70,24 @@ export function PiecesInPlayProvider({
     );
   }
 
+  // Replace a parent piece with its two split children, inserting them at the
+  // parent's position so the pair keeps the parent's place in the tray/array
+  // (their dewey-decimal order paths also sort them adjacent there) rather than
+  // being appended to the end. The children are precomputed by createSplitPieces
+  // so the caller can also register their board squares with the same objects.
+  function splitPiece(parentId: string, childA: Piece, childB: Piece) {
+    setPiecesInPlay(prevPieces => {
+      const index = prevPieces.findIndex(piece => piece.id === parentId);
+      if (index === -1) {
+        console.error('Piece not found');
+        return prevPieces;
+      }
+      const nextPieces = [...prevPieces];
+      nextPieces.splice(index, 1, childA, childB);
+      return nextPieces;
+    });
+  }
+
   function resetPieces() {
     try {
       setPiecesInPlay(createInitialPieces(currentLevel));
@@ -112,6 +131,7 @@ export function PiecesInPlayProvider({
         piecesInPlay,
         movePiece,
         updateDimensions,
+        splitPiece,
         resetPieces,
         setPiecesForNewLevel,
         setPieceStability,
