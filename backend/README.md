@@ -31,7 +31,9 @@ backend/
 | GET    | `/health`                     | Liveness probe.                                    |
 | GET    | `/hello`                      | Connectivity smoke test.                           |
 | PUT    | `/api/progress`               | Upsert a player's move count for a level.          |
+| PUT    | `/api/progress/complete`      | Mark a (client, level) completed, recording moves. |
 | GET    | `/api/progress/{client_id}`   | List a player's stored per-level progress.         |
+| GET    | `/api/analytics/completions`  | Aggregate started/completed/avg-moves per level.   |
 
 Players are identified by an anonymous `client_id` (a UUID the frontend
 generates and stores in `localStorage`) — no accounts required.

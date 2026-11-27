@@ -11,6 +11,7 @@ vi.mock('@hotjar/browser', () => ({
 }));
 vi.mock('../lib/api', () => ({
   syncLevelProgress: vi.fn(),
+  syncLevelCompletion: vi.fn(),
 }));
 
 function TestConsumer({ callback }: { callback: (ctx: any) => void }) {
