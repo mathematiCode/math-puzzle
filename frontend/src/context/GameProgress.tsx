@@ -60,13 +60,19 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
   );
 
   function setLevelCompleted(level: number, pieces: Piece[]) {
-    const movesTaken = gameProgress[level]?.moves ?? 0;
-    const newGameProgress = gameProgress.map(gameProgress =>
-      gameProgress.level === level
-        ? { ...gameProgress, completed: true, pieces: pieces }
-        : gameProgress
+    // Functional updater so this composes with a same-handler incrementMoves()
+    // instead of overwriting it from a stale snapshot. Capture movesTaken from
+    // the up-to-date `prev` so the analytics sync reflects the real count.
+    let movesTaken = 0;
+    setGameProgress(prev =>
+      prev.map(progress => {
+        if (progress.level === level) {
+          movesTaken = progress.moves ?? 0;
+          return { ...progress, completed: true, pieces };
+        }
+        return progress;
+      })
     );
-    setGameProgress(newGameProgress);
     Hotjar.event(`Completed Level ${level}`);
     // Best-effort sync of the completion (and moves-to-complete) to the backend
     // so the secret analytics page can aggregate it (issue #89). Keyed by the
@@ -83,12 +89,13 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
   }
 
   function setModalShown(level: number): void {
-    const newGameProgress = gameProgress.map(gameProgress =>
-      gameProgress.level === level
-        ? { ...gameProgress, modalShown: true }
-        : gameProgress
+    setGameProgress(prev =>
+      prev.map(progress =>
+        progress.level === level
+          ? { ...progress, modalShown: true }
+          : progress
+      )
     );
-    setGameProgress(newGameProgress);
   }
 
   // Uses the functional updater form so that saving pieces and board squares
@@ -121,16 +128,23 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
 
   // Count a "move" (a piece placement or a toolbar action) for a level and
   // best-effort sync the running total to the backend (issue #115).
+  // Functional updater form (like setPiecesForLevel) is essential here: a move
+  // and a level-completion often fire in the same handler (e.g. a stretch that
+  // finishes the level calls checkAndHandleLevelStatus() then incrementMoves()).
+  // A direct-value setGameProgress derived from a stale snapshot would clobber
+  // the `completed` flag just set by setLevelCompleted, so the "Level Complete"
+  // modal would never appear (issue #115 regression).
   function incrementMoves(level: number): void {
     let newMoveCount = 0;
-    const newGameProgress = gameProgress.map(progress => {
-      if (progress.level === level) {
-        newMoveCount = (progress.moves ?? 0) + 1;
-        return { ...progress, moves: newMoveCount };
-      }
-      return progress;
-    });
-    setGameProgress(newGameProgress);
+    setGameProgress(prev =>
+      prev.map(progress => {
+        if (progress.level === level) {
+          newMoveCount = (progress.moves ?? 0) + 1;
+          return { ...progress, moves: newMoveCount };
+        }
+        return progress;
+      })
+    );
     void syncLevelProgress(getLevelId(level), newMoveCount);
   }
 
@@ -139,19 +153,20 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
   }
 
   function resetLevel(level: number): void {
-    const newGameProgress = gameProgress.map(gameProgress =>
-      gameProgress.level === level
-        ? {
-            ...gameProgress,
-            completed: false,
-            modalShown: false,
-            pieces: [],
-            boardSquares: [],
-            moves: 0,
-          }
-        : gameProgress
+    setGameProgress(prev =>
+      prev.map(progress =>
+        progress.level === level
+          ? {
+              ...progress,
+              completed: false,
+              modalShown: false,
+              pieces: [],
+              boardSquares: [],
+              moves: 0,
+            }
+          : progress
+      )
     );
-    setGameProgress(newGameProgress);
     void syncLevelProgress(getLevelId(level), 0);
   }
 
