@@ -72,7 +72,7 @@ function Game() {
             );
           })}
               </PiecesContainer>
-        <BoardWrapper data-testid='board-wrapper'>
+        <BoardWrapper data-testid='board-wrapper' $levelComplete={passedLevel}>
           <Board
             dimensions={levels[currentLevel].dimensions}
             boardSections={levels[currentLevel].boardSections}
@@ -92,11 +92,15 @@ function Game() {
               aria-label="Level complete and locked. Reset this level to move the pieces again."
               title="Reset this level to move the pieces again"
             >
-              <Lock aria-hidden="true" />
-              <span>Level complete — locked</span>
+              <LockBadgeTitle>
+                <Lock aria-hidden="true" />
+                <span>Level complete — locked</span>
+              </LockBadgeTitle>
               <Divider aria-hidden="true" />
-              <RotateCcw aria-hidden="true" />
-              <span>Reset to move pieces</span>
+              <LockBadgeAction>
+                <RotateCcw aria-hidden="true" />
+                <span>Reset to move pieces</span>
+              </LockBadgeAction>
             </LockBadge>
           ) : null}
               </BoardWrapper>
@@ -157,40 +161,46 @@ export const Main = styled.main<{ $isRotating?: boolean }>`
 }
 `;
 
-export const BoardWrapper = styled.div`
+export const BoardWrapper = styled.div<{ $levelComplete?: boolean }>`
   display: grid;
   grid-area: 1fr;
   width: min-content;
-  padding-top: 15px;
+  /* When the level is complete, reserve space above the board for the lock
+     banner so it sits entirely above the board without covering any pieces. */
+  padding-top: ${({ $levelComplete }) => ($levelComplete ? '68px' : '15px')};
   position: relative;
   isolation: isolate;
+
+  @media (max-width: 750px) {
+    padding-top: ${({ $levelComplete }) => ($levelComplete ? '58px' : '15px')};
+  }
 `;
 
-// Clickable "level locked" indicator shown once a level is completed. It floats
-// over the top of the solved board; clicking it resets the level so the pieces
-// can be moved again. Pieces are already drag-locked, so this is the in-context
-// way to unlock, mirroring the Reset Game button.
+// Clickable "level locked" indicator shown once a level is completed. It sits
+// in reserved space entirely above the board (never covering any pieces),
+// horizontally centered; clicking it resets the level so the pieces can be
+// moved again. Pieces are already drag-locked, so this is the in-context way to
+// unlock, mirroring the Reset Game button.
 export const LockBadge = styled.button`
   position: absolute;
-  top: 6px;
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 7;
+  z-index: 10;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  border: 2px solid black;
-  border-radius: 999px;
-  background-color: hsl(180, 89.1%, 26.6%);
-  color: white;
+  gap: 14px;
+  padding: 10px 24px;
+  border: 3px solid hsl(0, 0%, 35%);
+  border-radius: 8px;
+  background-color: hsl(0, 0%, 92%);
+  color: hsl(0, 0%, 20%);
   font-weight: 600;
-  font-size: 0.95rem;
   line-height: 1;
   white-space: nowrap;
   cursor: pointer;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
-  animation: lockBadgeIn 0.25s ease-out;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
+  animation: lockBadgeIn 0.2s ease-out;
 
   @keyframes lockBadgeIn {
     from {
@@ -204,33 +214,63 @@ export const LockBadge = styled.button`
   }
 
   &:hover {
-    background-color: hsl(180, 89.1%, 21.6%);
+    background-color: hsl(0, 0%, 86%);
   }
   &:active {
-    transform: translateX(-50%) scale(0.97);
+    transform: translateX(-50%) scale(0.98);
   }
   &:focus-visible {
-    outline: 3px solid hsl(107, 100%, 70%);
-    outline-offset: 2px;
+    outline: 3px solid hsl(200, 80%, 50%);
+    outline-offset: 3px;
   }
 
   svg {
-    width: 18px;
-    height: 18px;
     flex-shrink: 0;
   }
 
   @media (max-width: 750px) {
-    font-size: 0.78rem;
-    padding: 6px 12px;
-    gap: 6px;
-    max-width: 92vw;
-    white-space: normal;
-    text-align: left;
+    gap: 10px;
+    padding: 8px 14px;
+  }
+`;
 
+const LockBadgeTitle = styled.span`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.05rem;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  @media (max-width: 750px) {
+    font-size: 0.85rem;
     svg {
-      width: 15px;
-      height: 15px;
+      width: 16px;
+      height: 16px;
+    }
+  }
+`;
+
+const LockBadgeAction = styled.span`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  color: hsl(0, 0%, 38%);
+
+  svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  @media (max-width: 750px) {
+    font-size: 0.78rem;
+    svg {
+      width: 14px;
+      height: 14px;
     }
   }
 `;
@@ -238,12 +278,7 @@ export const LockBadge = styled.button`
 const Divider = styled.span`
   width: 1px;
   align-self: stretch;
-  background-color: rgba(255, 255, 255, 0.5);
-  margin-inline: 2px;
-
-  @media (max-width: 750px) {
-    display: none;
-  }
+  background-color: hsl(0, 0%, 60%);
 `;
 
 export const PiecesContainer = styled(motion.div).attrs({
