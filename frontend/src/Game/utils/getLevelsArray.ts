@@ -55,3 +55,16 @@ export function getTotalLevels(): number {
 export function getLevelIds(): number[] {
   return levels.map(level => level.id);
 }
+
+/**
+ * Gets the stable, order-independent id for the level at a given index.
+ *
+ * Progress/analytics are tracked by this id (not the index) so levels can be
+ * reordered or inserted without scrambling historical data (issue #105).
+ *
+ * @param index - Zero-based position of the level in levels.json
+ * @returns The level's stable id
+ */
+export function getLevelId(index: number): number {
+  return levels[index].id;
+}

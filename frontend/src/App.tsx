@@ -3,6 +3,7 @@ import Home from './pages/home';
 import About from './pages/about';
 import Math from './pages/math';
 import Game from './pages/game';
+import Secret from './pages/secret';
 import Layout from './components/Layout';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import Hotjar from '@hotjar/browser';
@@ -47,6 +48,15 @@ const router = createBrowserRouter([
     element: (
       <Layout>
         <Game />
+      </Layout>
+    ),
+  },
+  // Secret analytics page (issue #89) — intentionally unlisted in the nav.
+  {
+    path: 'data',
+    element: (
+      <Layout>
+        <Secret />
       </Layout>
     ),
   },

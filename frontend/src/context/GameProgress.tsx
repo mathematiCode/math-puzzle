@@ -1,9 +1,9 @@
 import { createContext, useContext, ReactNode } from 'react';
 import { Piece } from '../types/piece';
-import { getLevelsArray } from '../Game/utils/getLevelsArray';
+import { getLevelsArray, getLevelId } from '../Game/utils/getLevelsArray';
 import Hotjar from '@hotjar/browser';
 import useLocalStorageState from 'use-local-storage-state';
-import { syncLevelProgress } from '../lib/api';
+import { syncLevelCompletion, syncLevelProgress } from '../lib/api';
 
 type GameProgress = {
   level: number;
@@ -60,6 +60,7 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
   );
 
   function setLevelCompleted(level: number, pieces: Piece[]) {
+    const movesTaken = gameProgress[level]?.moves ?? 0;
     const newGameProgress = gameProgress.map(gameProgress =>
       gameProgress.level === level
         ? { ...gameProgress, completed: true, pieces: pieces }
@@ -67,6 +68,10 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
     );
     setGameProgress(newGameProgress);
     Hotjar.event(`Completed Level ${level}`);
+    // Best-effort sync of the completion (and moves-to-complete) to the backend
+    // so the secret analytics page can aggregate it (issue #89). Keyed by the
+    // level's stable id, not its index, so tracking survives reordering (#105).
+    void syncLevelCompletion(getLevelId(level), movesTaken);
   }
 
   function isLevelCompleted(level: number): boolean {
@@ -126,7 +131,7 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
       return progress;
     });
     setGameProgress(newGameProgress);
-    void syncLevelProgress(level, newMoveCount);
+    void syncLevelProgress(getLevelId(level), newMoveCount);
   }
 
   function resetProgress(): void {
@@ -147,7 +152,7 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
         : gameProgress
     );
     setGameProgress(newGameProgress);
-    void syncLevelProgress(level, 0);
+    void syncLevelProgress(getLevelId(level), 0);
   }
 
   return (
