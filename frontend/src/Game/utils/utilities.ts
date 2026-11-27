@@ -1,5 +1,14 @@
 import { Piece } from '../../types/piece';
 
+/**
+ * Duration (ms) of the drop animation that plays when a piece is released
+ * back into the initial pieces container. Shared between the DragOverlay's
+ * `dropAnimation` and the logic that keeps the real piece hidden until the
+ * animated copy finishes settling into its home slot (issue #84), so the two
+ * stay in sync and the piece doesn't appear twice.
+ */
+export const RETURN_TO_CONTAINER_DURATION = 250;
+
 export function updatePiecesInPlay() {
   /**  check if puzzle piece was already placed on the board 
          - if it was update it's new location in the array of pieces placed on the board

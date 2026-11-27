@@ -15,6 +15,7 @@ import { useCurrentLevel } from '../context/CurrentLevel';
 import { useGameProgress } from '../context/GameProgress';
 import { usePiecesInPlay } from '../context/PiecesInPlay';
 import { Piece } from '../types/piece';
+import { RETURN_TO_CONTAINER_DURATION } from './utils/utilities';
 
 function Game() {
   const {
@@ -24,6 +25,10 @@ function Game() {
     } = useCurrentLevel();
   const [activePiece, setActivePiece] = useState<Piece | null>(null);
   const [previewLocation, setPreviewLocation] = useState<string | null>(null);
+  // Id of a piece currently animating back into the initial pieces container
+  // after being dropped there. While a piece is "returning" we keep its real
+  // node hidden so only the animated DragOverlay copy is visible (issue #84).
+  const [returningPieceId, setReturningPieceId] = useState<string | null>(null);
   const { gameProgress, isLevelCompleted, setModalShown } = useGameProgress();
  // const { handleLevelCheck } = useLevelCompletion();
   const { piecesInPlay } = usePiecesInPlay();
@@ -46,6 +51,7 @@ function Game() {
         isRotating={isRotating}
         setIsRotating={setIsRotating}
         setPreviewLocation={setPreviewLocation}
+        setReturningPieceId={setReturningPieceId}
           >
         <PiecesContainer data-testid='pieces-container' $currentLevel={currentLevel} $isRotating={isRotating} key={currentLevel}>
           {piecesInPlay.map((piece: Piece) => {
@@ -54,6 +60,7 @@ function Game() {
               <InitialPuzzlePiece
                 piece={piece}
                 isActive={activePiece?.id === piece.id}
+                isReturning={returningPieceId === piece.id}
                 isRotating={isRotating}
                 setIsRotating={setIsRotating}
                 key={piece.id}
@@ -77,7 +84,12 @@ function Game() {
           ) : null}
               </BoardWrapper>
         {activePiece && !isRotating ? (
-          <DragOverlay>
+          <DragOverlay
+            dropAnimation={{
+              duration: RETURN_TO_CONTAINER_DURATION,
+              easing: 'ease',
+            }}
+          >
             <PieceOverlay piece={activePiece} />
           </DragOverlay>
               ) : null}
